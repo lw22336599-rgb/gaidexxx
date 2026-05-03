@@ -12,7 +12,6 @@ export const useSystemConfigStore = defineStore('systemConfig', {
   getters: {
     getConfig: (state) => state.config,
     getShopManagePlatforms: (state) => state.config?.ShopManagePlatforms || [],
-    getShopCopyPlatforms: (state) => state.config?.ShopCopyPlatforms || [],
     getShopResearchPlatforms: (state) => state.config?.ShopResearchPlatforms || [],
     getCustomerServiceUrl: (state) => state.config?.CustomerServiceUrl || '',
     getDownloadUrl: (state) => state.config?.DownloadUrl || '',

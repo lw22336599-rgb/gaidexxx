@@ -30,7 +30,6 @@ const filterBreadcrumb = (data: any) => {
 
 const filterByPlatformConfig = (routes: VabRouteRecord[], config: SystemConfigAllDto | null): VabRouteRecord[] => {
   const managePlatforms = config?.ShopManagePlatforms || []
-  const copyPlatforms = config?.ShopCopyPlatforms || []
   const researchPlatforms = config?.ShopResearchPlatforms || []
 
   const matchType = (route: VabRouteRecord, allowList: ShopType[]) => {
@@ -43,15 +42,13 @@ const filterByPlatformConfig = (routes: VabRouteRecord[], config: SystemConfigAl
       const clone: VabRouteRecord = { ...route }
       if (clone.children && clone.name === 'Shop')
         clone.children = clone.children.filter((child: VabRouteRecord) => matchType(child, managePlatforms))
-      if (clone.children && clone.name === 'ShopCopy')
-        clone.children = clone.children.filter((child: VabRouteRecord) => matchType(child, copyPlatforms))
       if (clone.children && clone.name === 'Survey')
         clone.children = clone.children.filter((child: VabRouteRecord) => matchType(child, researchPlatforms))
       if (clone.children && clone.children.length > 0) clone.children = filterByPlatformConfig(clone.children, config)
 
       // 若指定模块过滤后无可用子路由，则隐藏父级
       const shouldHideChildren =
-        (clone.name === 'Shop' || clone.name === 'ShopCopy' || clone.name === 'Survey') &&
+        (clone.name === 'Shop' || clone.name === 'Survey') &&
         (!clone.children || clone.children.length === 0)
       if (shouldHideChildren) return null
       return clone

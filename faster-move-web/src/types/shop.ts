@@ -15,34 +15,6 @@ export enum ShopType {
 }
 
 /**
- * 工具类型枚举
- * 用于定义不同的工具类型
- */
-export enum ToolType {
-  CopyOldShop = 'copy-old-shop',      // 老店复制到新店
-  CompareCopyShop = 'compare-copy-shop', // 竞对店铺复制
-  BatchPrice = 'batch-price',         // 批量改价
-  UpdateFoodImg = 'updat-foodimg'     // 批量加边框
-}
-
-/**
- * 工具项接口
- * 用于定义工具项的属性
- */
-export interface ToolItem {
-  name: string
-  text: string
-  jifen: string
-  elejifen: string
-  img: string
-  showSiteIcon: boolean
-  toolType: ToolType
-  targetShopTypes: ShopType[] // 支持哪些目标平台
-  fromShopTypes: Record<ShopType, ShopType[]> // 每个目标平台对应的源平台列表
-}
-
-
-/**
  * 基础系统接口
  * 所有表都应继承的基础字段
  */

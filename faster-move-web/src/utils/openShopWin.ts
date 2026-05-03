@@ -14,7 +14,7 @@ export const openWindow = async (row: any) => {
 }
 
 /**
- * 店铺复制等功能共用的打开店铺入口（同样先通过接口获取 cookies）
+ * 打开店铺后台（同样先通过接口获取 cookies）
  */
 export const openShopWindow = async (row: any) => {
   if (row.state && row.state === 3) {

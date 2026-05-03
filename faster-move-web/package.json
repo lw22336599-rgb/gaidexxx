@@ -120,6 +120,8 @@
     "@electron/remote": "^2.1.2",
     "@element-plus/icons-vue": "^2.3.1",
     "@kangc/v-md-editor": "^2.3.18",
+    "@logicflow/core": "^2.2.1",
+    "@logicflow/extension": "^2.2.1",
     "@lucky-canvas/vue": "^0.1.11",
     "@microsoft/fetch-event-source": "^2.0.1",
     "@microsoft/signalr": "^10.0.0",

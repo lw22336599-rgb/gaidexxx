@@ -16,7 +16,7 @@
         </div>
       </div>
 
-      <el-alert title="系统配置仅管理员可编辑，修改后会影响全局菜单与联系入口展示。" type="info" :closable="false" show-icon class="tip" />
+      <el-alert title="系统配置仅管理员可编辑，修改后会影响全局菜单（门店管理、店铺调研等）与联系入口展示。" type="info" :closable="false" show-icon class="tip" />
 
       <el-form ref="formRef" :model="form" :rules="rules" label-width="140px" label-position="left"
         v-loading="loading || saving" class="config-form">
@@ -43,12 +43,6 @@
 
         <el-form-item label="门店管理显示平台" prop="ShopManagePlatforms">
           <el-select v-model="form.ShopManagePlatforms" multiple filterable placeholder="请选择在门店管理中展示的平台">
-            <el-option v-for="item in shopTypeOptions" :key="item.value" :label="item.label" :value="item.value" />
-          </el-select>
-        </el-form-item>
-
-        <el-form-item label="店铺复制显示平台" prop="ShopCopyPlatforms">
-          <el-select v-model="form.ShopCopyPlatforms" multiple filterable placeholder="请选择在店铺复制中展示的平台">
             <el-option v-for="item in shopTypeOptions" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
         </el-form-item>
@@ -120,7 +114,6 @@ const rules: FormRules = {
   DownloadUrl: [{ required: true, message: '请输入软件下载地址', trigger: 'blur' }],
   BusinessContact: [{ required: true, message: '请输入商务洽谈联系方式', trigger: 'blur' }],
   ShopManagePlatforms: [{ required: true, type: 'array', message: '请选择门店管理显示平台', trigger: 'change' }],
-  ShopCopyPlatforms: [{ required: true, type: 'array', message: '请选择店铺复制显示平台', trigger: 'change' }],
   ShopResearchPlatforms: [{ required: true, type: 'array', message: '请选择店铺调研显示平台', trigger: 'change' }],
 }
 
@@ -134,7 +127,6 @@ const applyConfig = (config: SystemConfigAllDto) => {
   form.DownloadUrl = config.DownloadUrl || ''
   form.BusinessContact = config.BusinessContact || ''
   form.ShopManagePlatforms = normalizePlatforms(config.ShopManagePlatforms)
-  form.ShopCopyPlatforms = normalizePlatforms(config.ShopCopyPlatforms)
   form.ShopResearchPlatforms = normalizePlatforms(config.ShopResearchPlatforms)
 }
 
@@ -180,7 +172,7 @@ const handleSave = async () => {
       DownloadUrl: form.DownloadUrl,
       BusinessContact: form.BusinessContact,
       ShopManagePlatforms: normalizePlatforms(form.ShopManagePlatforms),
-      ShopCopyPlatforms: normalizePlatforms(form.ShopCopyPlatforms),
+      ShopCopyPlatforms: [],
       ShopResearchPlatforms: normalizePlatforms(form.ShopResearchPlatforms),
     }
 

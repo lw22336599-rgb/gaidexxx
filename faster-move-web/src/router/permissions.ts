@@ -96,7 +96,6 @@ const getDefaultChildRouteName = (parentRouteName: string, router: Router): stri
     // 这个可以根据实际路由配置来调整，或者通过路由 store 来获取
     const defaultRouteNames: Record<string, string> = {
       'Shop': 'MtFeature', // 门店管理的默认子路由
-      'ShopCopy': 'MtShopCopy', // 店铺复制的默认子路由
       'Survey': 'MtSurvey', // 店铺调研的默认子路由
       'Shopwechat': 'Tswechat', // 门店推送的默认子路由
       'Team': 'Point', // 团队管理的默认子路由

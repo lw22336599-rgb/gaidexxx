@@ -9,7 +9,6 @@ import { setupPermissions } from '/@/router/permissions'
 import Layout from '/@vab/layouts/index.vue'
 
 import shopRouter from './modules/shop'
-import shopCopyRouter from './modules/shop-copy'
 import surveyRouter from './modules/survey'
 import shopwechatRouter from './modules/shopwechat'
 import teamRouter from './modules/team'
@@ -128,9 +127,6 @@ export const asyncRoutes: VabRouteRecord[] = [
 
   // 门店推送
   shopwechatRouter,
-
-  // 店铺复制
-  shopCopyRouter,
 
   // 店铺调研
   surveyRouter,

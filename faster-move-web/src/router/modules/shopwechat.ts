@@ -22,67 +22,6 @@ const routerConfig: VabRouteRecord = {
     //     type: 1
     //   },
     // },
-    // {
-    //   path: 'elm-shop-copy',
-    //   name: 'ElmShopCopy',
-    //   component: () => import('/@/views/shopCopy/ElmShopCopyIndex.vue'),
-    //   meta: {
-    //     title: '饿了么',
-    //     icon: 'elm',
-    //     levelHidden: true,
-    //     isCustomSvg: true,
-    //     type: 2
-    //   },
-    // },
-
-    // {
-    //   path: 'mt-medicine-shop-copy',
-    //   name: 'MtMedicineShopCopy',
-    //   component: () => import('/@/views/shopCopy/MtMedicineShopCopyIndex.vue'),
-    //   meta: {
-    //     title: '美团医药',
-    //     icon: 'mt-medicine',
-    //     levelHidden: true,
-    //     isCustomSvg: true,
-    //     type: 4
-    //   },
-    // },
-    // {
-    //   path: 'elm-retail-shop-copy',
-    //   name: 'ElmRetailShopCopy',
-    //   component: () => import('/@/views/shopCopy/ElmRetailShopCopyIndex.vue'),
-    //   meta: {
-    //     title: '饿百零售',
-    //     icon: 'elm-retail',
-    //     levelHidden: true,
-    //     isCustomSvg: true,
-    //     type: 5
-    //   },
-    // },
-    // {
-    //   path: 'jd-distribution-shop-copy',
-    //   name: 'JdDistributionShopCopy',
-    //   component: () => import('/@/views/shopCopy/JdDistributionShopCopyIndex.vue'),
-    //   meta: {
-    //     title: '京东到家',
-    //     icon: 'jd-home',
-    //     levelHidden: true,
-    //     isCustomSvg: true,
-    //     type: 6
-    //   },
-    // },
-    // {
-    //   path: 'dy-retail-shop-copy',
-    //   name: 'DyRetailShopCopy',
-    //   component: () => import('/@/views/shopCopy/DyRetailShopCopyIndex.vue'),
-    //   meta: {
-    //     title: '抖音即时零售',
-    //     icon: 'dy-retail',
-    //     levelHidden: true,
-    //     isCustomSvg: true,
-    //     type: 7
-    //   },
-    // },
     {
       path: 'tswechat',
       name: 'Tswechat',

@@ -88,10 +88,6 @@
             <span class="status-unit">家店铺</span>
           </div>
         </div>
-        <el-button v-if="currentShopType === ShopType.京东团购" :icon="Download" type="primary" @click="openImportFromJdLs"
-          style="margin-right: 8px;">
-          从京东到家导入
-        </el-button>
         <el-button :icon="Download" type="success" :loading="exportLoading" @click="openExportDialog"
           style="margin-right: 8px;">
           导出店铺
@@ -159,9 +155,6 @@
     <recycle v-if="recycleState" :recycle-state="recycleState" :shop-type="currentShopType"
       :shop-type-str="getShopTypeStr(currentShopType)" @close-recycle="closeRecycle"
       @shop-recovered="handleShopRecovered" />
-    <!-- 店铺选择器 -->
-    <vab-shop-selector v-model="importFromJdLsVisible" :shop-type="ShopType.京东到家" title="选择要导入的京东到家店铺"
-      @confirm="handleConfirmImport" />
     <!-- 添加店铺相关 -->
     <set-only-bind v-if="showShopMsgState" :add-shop-after-obj="showShopMsg" :add-shop-after-state="showShopMsgState"
       :is-bind="isBind" @close-shop-after="closeShopAfter" />
@@ -396,12 +389,8 @@ const shopTypeOptions = [
   { label: '美团闪购', value: ShopType.美团闪购 },
   { label: '美团医药', value: ShopType.美团医药 },
   { label: '饿了么餐饮', value: ShopType.饿了么 },
-  { label: '饿了么复制版', value: ShopType.饿了么官方 },
   { label: '饿百零售', value: ShopType.饿百零售 },
   { label: '京东到家', value: ShopType.京东到家 },
-  { label: '抖音即时零售', value: ShopType.抖店即时零售 },
-  { label: '美团团购', value: ShopType.美团团购 },
-  { label: '京东团购', value: ShopType.京东团购 },
 ]
 
 /**
@@ -1189,28 +1178,6 @@ const generateExcel = async (shops: any[]) => {
   link.click()
   document.body.removeChild(link)
   URL.revokeObjectURL(url)
-}
-
-/**
- * 从京东到家导入店铺到京东团购
- */
-const importFromJdLsVisible = ref(false)
-const openImportFromJdLs = () => {
-  importFromJdLsVisible.value = true
-}
-
-const handleConfirmImport = async (shopIds: string[], shops: any[]) => {
-  try {
-    const loadingInstance = gp.$baseLoading('正在导入店铺，请稍候...')
-    const result = await apiManager.jdApisApi.ImportJdLsToJdTg(shopIds, {} as any)
-    loadingInstance.close()
-    gp.$baseMessage(`成功导入 ${shopIds.length} 个店铺`, 'success', 'hey')
-    importFromJdLsVisible.value = false
-    await getShopList(queryParams)
-  } catch (error: any) {
-    console.error('导入失败:', error)
-    gp.$baseMessage(error?.message || '导入失败，请重试', 'error', 'hey')
-  }
 }
 
 /**
