@@ -1,0 +1,1 @@
+需要调用后端API时，项目目录中:src\TsModel 中由后端生成的TypeScript类型和所有后端支持的Api方法，可以直接通过 ApiManager.ts 中声明的变量调用

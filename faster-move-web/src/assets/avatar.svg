@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" aria-hidden="true" role="img">
+  <defs>
+    <linearGradient id="foxGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffb830" />
+      <stop offset="50%" stop-color="#ff7c2a" />
+      <stop offset="100%" stop-color="#ff3b2f" />
+    </linearGradient>
+  </defs>
+
+  <!-- 背景圆 -->
+  <circle cx="128" cy="128" r="118" fill="url(#foxGradient)" />
+
+  <!-- 耳朵 -->
+  <path
+    d="M64 70 L96 26 L120 80"
+    fill="#ffffff"
+    fill-opacity="0.9"
+  />
+  <path
+    d="M192 70 L160 26 L136 80"
+    fill="#ffffff"
+    fill-opacity="0.9"
+  />
+
+  <!-- 面部白色轮廓，模仿你提供图片中的狐脸线条 -->
+  <path
+    d="M64 92
+       Q128 126 192 92
+       Q188 146 160 178
+       Q142 198 128 224
+       Q114 198 96 178
+       Q68 146 64 92
+       Z"
+    fill="#ffffff"
+    fill-opacity="0.95"
+  />
+
+  <!-- 内部橙色脸型 -->
+  <path
+    d="M80 104
+       Q128 132 176 104
+       Q172 144 152 166
+       Q140 180 128 200
+       Q116 180 104 166
+       Q84 144 80 104
+       Z"
+    fill="url(#foxGradient)"
+  />
+
+  <!-- 眼部线条 -->
+  <path
+    d="M92 142
+       Q104 134 116 140"
+    stroke="#ffffff"
+    stroke-width="6"
+    stroke-linecap="round"
+    fill="none"
+  />
+  <path
+    d="M140 140
+       Q152 134 164 142"
+    stroke="#ffffff"
+    stroke-width="6"
+    stroke-linecap="round"
+    fill="none"
+  />
+
+  <!-- 鼻子 -->
+  <circle cx="128" cy="156" r="6" fill="#ffffff" />
+</svg>

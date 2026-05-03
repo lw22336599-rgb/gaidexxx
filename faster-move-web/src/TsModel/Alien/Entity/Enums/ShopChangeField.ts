@@ -1,0 +1,23 @@
+	/** 店铺变更字段枚举*/
+	export enum ShopChangeField {
+		Name = 1,
+		Address = 2,
+		Phone = 3,
+		BusinessHours = 4,
+		Description = 5,
+		ShopCategory = 6,
+		DeliveryRange = 7,
+		Images = 8,
+		Status = 9,
+		ShopAddress = 10,
+		ShopPhone = 11,
+		ShopNotice = 12,
+		ShopQrCode = 13,
+		Category = 14,
+		WorkTime = 15,
+		WeekWork = 16,
+		Score = 17,
+		Province = 18,
+		City = 19,
+		Other = 99,
+	}

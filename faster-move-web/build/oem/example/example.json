@@ -1,0 +1,40 @@
+{
+  "productName": "example",
+  "appId": "com.wmzdb.admin.test",
+  "copyright": "com.wmzdb.admin © 2025",
+  "compression": "maximum",
+  "asar": true,
+	"directories": {
+    "output": "release/example"
+  },
+  "nsis": {
+    "oneClick": false,
+    "guid": "极狐助手-测试版",
+    "perMachine": true,
+    "allowElevation": true,
+    "allowToChangeInstallationDirectory": true,
+    "installerIcon": "./build/oem/example/public/logo.ico",
+    "uninstallerIcon": "./build/oem/example/public/logo.ico",
+    "installerHeaderIcon": "./build/oem/example/public/logo.ico",
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "极狐助手-测试版"
+  },
+  "win": {
+    "icon": "./build/oem/example/public/logo.ico",
+    "target": [
+      {
+        "target": "nsis",
+        "arch": ["x64", "ia32"]
+      }
+    ]
+  },
+  "mac": {
+    "icon": "./build/oem/example/public/logo.png",
+    "target": ["dmg"],
+    "artifactName": "${name}-test-${version}.${ext}"
+  },
+	"linux": {
+		"icon": "./build/oem/example/public/logo.ico"
+	}
+}

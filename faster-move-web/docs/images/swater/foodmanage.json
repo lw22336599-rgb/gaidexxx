@@ -1,0 +1,3466 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "FoodManage",
+    "version": "1.0.0"
+  },
+  "paths": {
+    "/foodmanage/pullshopfoods": {
+      "post": {
+        "tags": [
+          "foodmanage"
+        ],
+        "summary": "从平台拉取商品数据并存储到数据库",
+        "operationId": "foodmanage-pullshopfoods-Post",
+        "parameters": [
+          {
+            "name": "taskid",
+            "in": "query",
+            "description": "任务ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/foodmanage/getgroups": {
+      "post": {
+        "tags": [
+          "foodmanage"
+        ],
+        "summary": "获取 分组列表",
+        "operationId": "foodmanage-getgroups-Post",
+        "parameters": [
+          {
+            "name": "taskid",
+            "in": "query",
+            "description": "",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_List_FoodGroupVoItem"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_List_FoodGroupVoItem"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_List_FoodGroupVoItem"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/foodmanage/queryfoodspage": {
+      "post": {
+        "tags": [
+          "foodmanage"
+        ],
+        "summary": "分页查询商品列表",
+        "operationId": "foodmanage-queryfoodspage-Post",
+        "requestBody": {
+          "description": "查询参数，包含以下筛选条件：\r\n            - TaskId: 任务ID\r\n            - ProductName: 商品名称（模糊匹配）\r\n            - MinPrice: 最低价格\r\n            - MaxPrice: 最高价格\r\n            - IsDiscount: 是否仅显示折扣商品\r\n            - IsOnSale: 是否仅显示上架商品\r\n            - TabType: 商品标签类型（上架/售罄/下架/多规格）\r\n            - Page: 页码",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/QueryFoodsParms"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QueryFoodsParms"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/QueryFoodsParms"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/QueryFoodsParms"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/QueryFoodsParms"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_PageResultVo_FoodItemVo"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_PageResultVo_FoodItemVo"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_PageResultVo_FoodItemVo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/foodmanage/updatefoodname": {
+      "post": {
+        "tags": [
+          "foodmanage"
+        ],
+        "summary": "批量更新商品名称",
+        "operationId": "foodmanage-updatefoodname-Post",
+        "requestBody": {
+          "description": "更新参数，包含任务ID、商品ID列表、更新模式等信息",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodNameParms"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodNameParms"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodNameParms"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodNameParms"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodNameParms"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/foodmanage/updatefooddiscount": {
+      "post": {
+        "tags": [
+          "foodmanage"
+        ],
+        "summary": "更新商品折扣信息",
+        "operationId": "foodmanage-updatefooddiscount-Post",
+        "requestBody": {
+          "description": "折扣更新参数，包含任务ID、目标商品、折扣类型、折扣率等信息",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodDiscountParms"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodDiscountParms"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodDiscountParms"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodDiscountParms"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodDiscountParms"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/foodmanage/updatefoodprice": {
+      "post": {
+        "tags": [
+          "foodmanage"
+        ],
+        "summary": "批量更新商品价格",
+        "operationId": "foodmanage-updatefoodprice-Post",
+        "requestBody": {
+          "description": "价格更新参数，包含任务ID、商品ID列表、价格调整值等信息",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodSpuPrice"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodSpuPrice"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodSpuPrice"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodSpuPrice"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodSpuPrice"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/foodmanage/updatefoodstate": {
+      "post": {
+        "tags": [
+          "foodmanage"
+        ],
+        "summary": "更新商品上下架状态",
+        "operationId": "foodmanage-updatefoodstate-Post",
+        "requestBody": {
+          "description": "状态更新参数，包含任务ID、商品ID列表、是否上架等信息",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodStateParms"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodStateParms"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodStateParms"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodStateParms"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodStateParms"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/foodmanage/updatefoodstock": {
+      "post": {
+        "tags": [
+          "foodmanage"
+        ],
+        "summary": "更新商品库存",
+        "operationId": "foodmanage-updatefoodstock-Post",
+        "requestBody": {
+          "description": "库存更新参数，包含任务ID、目标商品列表、调整类型、调整数量等信息",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodStockParms"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodStockParms"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodStockParms"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodStockParms"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodStockParms"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/foodmanage/updatefoodimageborder": {
+      "post": {
+        "tags": [
+          "foodmanage"
+        ],
+        "summary": "更新商品图片边框",
+        "operationId": "foodmanage-updatefoodimageborder-Post",
+        "requestBody": {
+          "description": "边框更新参数，包含任务ID、商品ID列表、边框图片URL等信息",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodImageBorderParms"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodImageBorderParms"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodImageBorderParms"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodImageBorderParms"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateFoodImageBorderParms"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/foodmanage/deletefoods": {
+      "post": {
+        "tags": [
+          "foodmanage"
+        ],
+        "summary": "批量删除商品",
+        "operationId": "foodmanage-deletefoods-Post",
+        "requestBody": {
+          "description": "删除参数，包含任务ID、商品ID列表等信息",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteFoodsParms"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteFoodsParms"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteFoodsParms"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteFoodsParms"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteFoodsParms"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/foodmanage/offlinediscount": {
+      "post": {
+        "tags": [
+          "foodmanage"
+        ],
+        "summary": "下架商品折扣",
+        "operationId": "foodmanage-offlinediscount-Post",
+        "requestBody": {
+          "description": "下架参数，包含任务ID、目标商品列表等信息",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/OfflineDiscountParms"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OfflineDiscountParms"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OfflineDiscountParms"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/OfflineDiscountParms"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/OfflineDiscountParms"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/foodmanage/updatefoodminbuy": {
+      "post": {
+        "tags": [
+          "foodmanage"
+        ],
+        "summary": "批量更新最小购买数",
+        "operationId": "foodmanage-updatefoodminbuy-Post",
+        "requestBody": {
+          "description": "更新参数，包含任务ID、商品ID列表、最小购买数等信息",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMinBuyParms"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMinBuyParms"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMinBuyParms"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMinBuyParms"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMinBuyParms"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/foodmanage/deletefirstfoodimage": {
+      "post": {
+        "tags": [
+          "foodmanage"
+        ],
+        "summary": "删除第一张主图,如果图片只有一张,将跳过",
+        "operationId": "foodmanage-deletefirstfoodimage-Post",
+        "requestBody": {
+          "description": "删除参数，包含任务ID、商品ID列表等信息",
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteFirstFoodImageParms"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteFirstFoodImageParms"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteFirstFoodImageParms"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteFirstFoodImageParms"
+              }
+            },
+            "text/plain": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteFirstFoodImageParms"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RestResult_ProgressInfo"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ActivityType": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10
+        ],
+        "type": "integer",
+        "description": "活动类型<br />&nbsp; None = 0<br />&nbsp; 满减活动 = 1<br />&nbsp; 减配送费 = 2<br />&nbsp; 折扣活动 = 3<br />&nbsp; 门店新客立减 = 4<br />&nbsp; 买赠活动 = 5<br />&nbsp; 收藏有礼 = 6<br />&nbsp; 集点返卷 = 7<br />&nbsp; 下单返卷 = 8<br />&nbsp; 店内领卷 = 9<br />&nbsp; 超值换购 = 10<br />",
+        "format": "int32"
+      },
+      "ActivityType_ZheKou": {
+        "type": "object",
+        "properties": {
+          "ActType": {
+            "$ref": "#/components/schemas/ActivityType"
+          },
+          "ForUserType": {
+            "$ref": "#/components/schemas/UserVistType"
+          },
+          "OffId": {
+            "type": "string",
+            "description": "活动官方id",
+            "nullable": true
+          },
+          "TimeScope": {
+            "$ref": "#/components/schemas/DateTimeScope"
+          },
+          "DayTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DayType"
+            },
+            "description": "活动在哪些天有效",
+            "nullable": true
+          },
+          "Period": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TimeSpanScope"
+            },
+            "description": "时段 在一天中这些时段活动有效",
+            "nullable": true
+          },
+          "AuToMonth": {
+            "type": "boolean",
+            "description": "活动到期自动延时30天"
+          },
+          "OtherValues": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "其他参数,如饿了么可能会有多个id等情况",
+            "nullable": true
+          },
+          "OverConf": {
+            "type": "boolean",
+            "description": "美团提示的是否覆盖原有活动配置,直接为true好了"
+          },
+          "PickType": {
+            "$ref": "#/components/schemas/PickType"
+          },
+          "FoodItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ActivityType_ZheKou_Item"
+            },
+            "description": "折扣商品",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "折扣活动"
+      },
+      "ActivityType_ZheKou_Item": {
+        "type": "object",
+        "properties": {
+          "SpuId": {
+            "type": "string",
+            "description": "商品id",
+            "nullable": true
+          },
+          "SkuId": {
+            "type": "string",
+            "description": "商品规格属性id",
+            "nullable": true
+          },
+          "SettingType": {
+            "$ref": "#/components/schemas/ActivityType_ZheKou_SetType"
+          },
+          "OrderLimit": {
+            "type": "integer",
+            "description": "限购份数",
+            "format": "int32"
+          },
+          "DayLimit": {
+            "type": "integer",
+            "description": "库存份数",
+            "format": "int32"
+          },
+          "Stock": {
+            "type": "integer",
+            "description": "零售可能有 活动期间，该活动商品每个门店总共可售卖的数量",
+            "format": "int32",
+            "nullable": true
+          },
+          "Discount": {
+            "type": "number",
+            "description": "折扣 如 9.8折 就是 9.8",
+            "format": "double"
+          },
+          "OriginPrice": {
+            "type": "number",
+            "description": "原价",
+            "format": "double"
+          },
+          "ActPrice": {
+            "type": "number",
+            "description": "拆后价格。 如果以 Discount 去算会有精度问题，要尽量以这个来设置 设置时会优先以这个为准",
+            "format": "double",
+            "nullable": true
+          },
+          "PoiCharge": {
+            "type": "number",
+            "description": "商家承担 可能没有值 ，美团有",
+            "format": "double",
+            "nullable": true
+          },
+          "SkuName": {
+            "type": "string",
+            "description": "sku 名称 也就是选项名称",
+            "nullable": true
+          },
+          "SpecPath": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "选项路径",
+            "nullable": true
+          },
+          "OtherValues": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "其他参数,如饿了么可能会有多个id等情况",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ActivityType_ZheKou_SetType": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "description": "<br />&nbsp; None = 0<br />&nbsp; 按折扣 = 1<br />&nbsp; 按折后价 = 2<br />",
+        "format": "int32"
+      },
+      "AdjustType": {
+        "enum": [
+          0,
+          1
+        ],
+        "type": "integer",
+        "description": "<br />&nbsp; 上下浮动 = 0<br />&nbsp; 固定数量 = 1<br />",
+        "format": "int32"
+      },
+      "AdjustTypeEnum": {
+        "enum": [
+          0,
+          1
+        ],
+        "type": "integer",
+        "description": "调整方式<br />&nbsp; 上下浮动 = 0<br />&nbsp; 一口价 = 1<br />",
+        "format": "int32"
+      },
+      "CategoryFromType": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "type": "integer",
+        "description": "<br />&nbsp; None = 0<br />&nbsp; 原始类目 = 1<br />&nbsp; 映射类目 = 2<br />&nbsp; 推荐类目 = 3<br />&nbsp; 指定新店类目 = 4<br />",
+        "format": "int32"
+      },
+      "CharacterType": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "type": "integer",
+        "description": "<br />&nbsp; 任意类型 = 0<br />&nbsp; 中文 = 1<br />&nbsp; 字母 = 2<br />&nbsp; 数字 = 3<br />&nbsp; 标点符号 = 4<br />",
+        "format": "int32"
+      },
+      "CombineCustomFoodItem": {
+        "type": "object",
+        "properties": {
+          "FoodName": {
+            "type": "string",
+            "description": "商品名 自定义的",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "自定义套餐内容项"
+      },
+      "CombineFoodItem": {
+        "type": "object",
+        "properties": {
+          "Count": {
+            "type": "integer",
+            "description": "份数 可能没有",
+            "format": "int32",
+            "nullable": true
+          },
+          "FoodName": {
+            "type": "string",
+            "description": "商品名",
+            "nullable": true
+          },
+          "SpuId": {
+            "type": "string",
+            "description": "spu id",
+            "nullable": true
+          },
+          "SkuName": {
+            "type": "string",
+            "description": "sku名",
+            "nullable": true
+          },
+          "SkuId": {
+            "type": "string",
+            "description": "skuid",
+            "nullable": true
+          },
+          "SkuNamePath": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "表明sku的 层级 比如 小份->重->自定义->规格3的1 美团是按规格排列的。而饿了么不同 只有一层 就是份量",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "套餐商品"
+      },
+      "CombineGroupFood": {
+        "type": "object",
+        "properties": {
+          "GroupName": {
+            "type": "string",
+            "description": "设置分组名",
+            "nullable": true
+          },
+          "GroupType": {
+            "$ref": "#/components/schemas/CombineGroupType"
+          },
+          "FoodItems": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CombineGroupFoodItem"
+            },
+            "description": "分组商品. 一样的一个商品只允许一个sku",
+            "nullable": true
+          },
+          "GroupRule": {
+            "$ref": "#/components/schemas/CombineGroupRule"
+          }
+        },
+        "additionalProperties": false,
+        "description": "分组可选套餐"
+      },
+      "CombineGroupFoodItem": {
+        "type": "object",
+        "properties": {
+          "Food": {
+            "$ref": "#/components/schemas/CombineFoodItem"
+          },
+          "DefaultSelected": {
+            "type": "boolean",
+            "description": "默认选择"
+          },
+          "AppendPrice": {
+            "type": "number",
+            "description": "需要加价",
+            "format": "double"
+          },
+          "RequiredSelected": {
+            "type": "boolean",
+            "description": "必选"
+          }
+        },
+        "additionalProperties": false,
+        "description": "分组套餐内的单个商品"
+      },
+      "CombineGroupRule": {
+        "type": "object",
+        "properties": {
+          "CanBeReSelected": {
+            "type": "boolean",
+            "description": "可重复选择商品"
+          },
+          "MaxOptionalQuantity": {
+            "type": "integer",
+            "description": "最大可选商品数量",
+            "format": "int32"
+          },
+          "MinOptionalQuantity": {
+            "type": "integer",
+            "description": "最小可选择商品数量",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CombineGroupType": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "description": "<br />&nbsp; None = 0<br />&nbsp; 固定商品 = 1<br />&nbsp; 可选商品 = 2<br />",
+        "format": "int32"
+      },
+      "DateTimeScope": {
+        "type": "object",
+        "properties": {
+          "Start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "End": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "description": "时间日期范围"
+      },
+      "DayType": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "type": "integer",
+        "description": "定义天的类型 , 比如周,节假日<br />&nbsp; None = 0<br />&nbsp; 周一 = 1<br />&nbsp; 周二 = 2<br />&nbsp; 周三 = 3<br />&nbsp; 周四 = 4<br />&nbsp; 周五 = 5<br />&nbsp; 周六 = 6<br />&nbsp; 周日 = 7<br />&nbsp; 节假日 = 8<br />",
+        "format": "int32"
+      },
+      "DeleteFirstFoodImageParms": {
+        "type": "object",
+        "properties": {
+          "SyncSite": {
+            "type": "boolean",
+            "description": "此操作只针对数据库 操作完后统一更新到平台"
+          },
+          "GroupOffids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "限制分组如为空代表所有分组",
+            "nullable": true
+          },
+          "TaskId": {
+            "type": "string",
+            "description": "任务id",
+            "nullable": true
+          },
+          "FoodIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "要删除的商品id列表. 不传则删除全部商品的第一张主图",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "删除第一张主图,只有一张将跳过"
+      },
+      "DeleteFoodsParms": {
+        "type": "object",
+        "properties": {
+          "SyncSite": {
+            "type": "boolean",
+            "description": "此操作只针对数据库 操作完后统一更新到平台"
+          },
+          "GroupOffids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "限制分组如为空代表所有分组",
+            "nullable": true
+          },
+          "TaskId": {
+            "type": "string",
+            "description": "任务id",
+            "nullable": true
+          },
+          "Page": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "FoodIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "删除商品的参数 将强制从平台删除,SyncSite 参数将无效"
+      },
+      "DiscountTypeEnum": {
+        "enum": [
+          0,
+          1
+        ],
+        "type": "integer",
+        "description": "<br />&nbsp; 折扣率 = 0<br />&nbsp; 折扣价 = 1<br />",
+        "format": "int32"
+      },
+      "FoodAfterSaleConf": {
+        "type": "object",
+        "properties": {
+          "ReturnType": {
+            "$ref": "#/components/schemas/SaleReturnType"
+          }
+        },
+        "additionalProperties": false,
+        "description": "售后支持"
+      },
+      "FoodCategory": {
+        "type": "object",
+        "properties": {
+          "CategoryName": {
+            "type": "string",
+            "description": "类目名称，可能为空",
+            "nullable": true
+          },
+          "CategoryId": {
+            "type": "string",
+            "description": "商品类目id(官方id)",
+            "nullable": true
+          },
+          "Path": {
+            "type": "string",
+            "description": "类目名称路径 可能没有",
+            "nullable": true
+          },
+          "FromType": {
+            "$ref": "#/components/schemas/CategoryFromType"
+          }
+        },
+        "additionalProperties": false,
+        "description": "商品类目"
+      },
+      "FoodGroupItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "t_wmt_fc_fdmv_group.id",
+            "nullable": true
+          },
+          "OfficeId": {
+            "type": "string",
+            "description": "平台分组id",
+            "nullable": true
+          },
+          "Code": {
+            "type": "string",
+            "description": "分组code 零售类有",
+            "nullable": true
+          },
+          "Index": {
+            "type": "integer",
+            "description": "排序",
+            "format": "int32"
+          },
+          "Name": {
+            "type": "string",
+            "description": "分组名称",
+            "nullable": true
+          },
+          "Icon": {
+            "type": "string",
+            "description": "分组图片",
+            "nullable": true
+          },
+          "Description": {
+            "type": "string",
+            "description": "分组描述",
+            "nullable": true
+          },
+          "FoodCount": {
+            "type": "integer",
+            "description": "商品个数",
+            "format": "int32"
+          },
+          "GroupType": {
+            "$ref": "#/components/schemas/FoodGroupType"
+          },
+          "TopConf": {
+            "$ref": "#/components/schemas/GroupTopConf"
+          },
+          "Children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FoodGroupItem"
+            },
+            "description": "子分组",
+            "nullable": true
+          },
+          "OtherValues": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "其他值",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "菜单分组"
+      },
+      "FoodGroupType": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "description": "<br />&nbsp; 普通分类 = 0<br />&nbsp; 必点分类 = 1<br />&nbsp; 可单独下单分类 = 2<br />",
+        "format": "int32"
+      },
+      "FoodGroupVoItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "主键Id",
+            "nullable": true,
+            "example": ""
+          },
+          "crtim": {
+            "type": "string",
+            "description": "创建时间",
+            "format": "date-time",
+            "nullable": true
+          },
+          "uptim": {
+            "type": "string",
+            "description": "更新时间",
+            "format": "date-time",
+            "nullable": true
+          },
+          "avtag": {
+            "type": "boolean",
+            "description": "是否可用，1可用，0不可用"
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "ExTime": {
+            "type": "string",
+            "description": "数据过期时间,超过这个时间后，就删除",
+            "format": "date-time"
+          },
+          "Parent": {
+            "type": "string",
+            "nullable": true
+          },
+          "AllParent": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "shop": {
+            "type": "string",
+            "description": "所属店铺 竞对店铺可能没有",
+            "nullable": true
+          },
+          "shop_offid": {
+            "type": "string",
+            "description": "如果是竞对店铺,就是由前端指定 如果是老到新就是新店id",
+            "nullable": true
+          },
+          "office_id": {
+            "type": "string",
+            "description": "分类官方id",
+            "nullable": true
+          },
+          "Group": {
+            "$ref": "#/components/schemas/FoodGroupItem"
+          },
+          "spu_count": {
+            "type": "integer",
+            "description": "（真实在数据库中的-商品数量",
+            "format": "int32"
+          },
+          "ParentOffId": {
+            "type": "string",
+            "description": "上级官方id",
+            "nullable": true
+          },
+          "Children": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FoodGroupVoItem"
+            },
+            "description": "子分组",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FoodImage": {
+        "type": "object",
+        "properties": {
+          "Img": {
+            "type": "string",
+            "description": "图片地址",
+            "nullable": true
+          },
+          "IsMaster": {
+            "type": "boolean",
+            "description": "是否为主图"
+          },
+          "Index": {
+            "type": "integer",
+            "description": "排序 从 0开始",
+            "format": "int32"
+          },
+          "OtherValues": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "其他信息 比如饿了么还有图片的哈希等",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "记录商品图片的对像,千万别记录大数据,因为要返回给前端"
+      },
+      "FoodItem": {
+        "type": "object",
+        "properties": {
+          "SpuId": {
+            "type": "string",
+            "description": "官方平台的商品id 也就是spuid",
+            "nullable": true
+          },
+          "Status": {
+            "$ref": "#/components/schemas/FoodStatusType"
+          },
+          "Name": {
+            "type": "string",
+            "nullable": true
+          },
+          "Description": {
+            "type": "string",
+            "description": "商品描述",
+            "nullable": true
+          },
+          "SellingPoint": {
+            "type": "string",
+            "description": "卖点零售有(在大多数平台中被当成副标题来展示)",
+            "nullable": true
+          },
+          "ImageUrls": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FoodImage"
+            },
+            "description": "商品图片，第一张代表主图，其他顺序代表次图",
+            "nullable": true
+          },
+          "FoodVideos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FoodVideo"
+            },
+            "description": "商品视频",
+            "nullable": true
+          },
+          "PicContent": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FoodImage"
+            },
+            "description": "图片内容 针对零售",
+            "nullable": true
+          },
+          "Category": {
+            "$ref": "#/components/schemas/FoodCategory"
+          },
+          "MinBuyCount": {
+            "type": "integer",
+            "description": "最少起售数量(最少购买多少份) 套餐可能没",
+            "format": "int32",
+            "nullable": true
+          },
+          "MaxBuyCount": {
+            "type": "integer",
+            "description": "最多能买多少",
+            "format": "int32",
+            "nullable": true
+          },
+          "Index": {
+            "type": "integer",
+            "description": "商品排序",
+            "format": "int32"
+          },
+          "MasterSpec": {
+            "type": "string",
+            "description": "最顶层的哪个规格组名称",
+            "nullable": true
+          },
+          "SpecPrice": {
+            "type": "boolean",
+            "description": "表示平台以每个规格选项来定价 目前饿了么和美团都是这种形式"
+          },
+          "Specifications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FoodSpecification"
+            },
+            "description": "规格",
+            "nullable": true
+          },
+          "SkuList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FoodSkuItem"
+            },
+            "description": "这里应该叫skus 本质上这里应该统一存所有 Specifications 的排列路径\r\n这里本质上存的就是经过排列的选项 批晌具体的库存 价格等",
+            "nullable": true
+          },
+          "SellDayScope": {
+            "$ref": "#/components/schemas/DateTimeScope"
+          },
+          "SellTime": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FoodSellTimeDay"
+            },
+            "description": "售卖时间 如果为空就是全时段",
+            "nullable": true
+          },
+          "FoodLables": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FoodLableItem"
+            },
+            "description": "标签 如店内招牌,单点不送,仅套餐可售卖",
+            "nullable": true
+          },
+          "CombineFood": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CombineFoodItem"
+            },
+            "description": "套餐搭配- 固定商品",
+            "nullable": true
+          },
+          "CombineGroupFood": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CombineGroupFood"
+            },
+            "description": "套餐搭配- 分组可选套餐",
+            "nullable": true
+          },
+          "CombineCustomFood": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CombineCustomFoodItem"
+            },
+            "description": "自定义套餐内容",
+            "nullable": true
+          },
+          "FoodType": {
+            "$ref": "#/components/schemas/FoodType"
+          },
+          "OtherValues": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "其他值,比如饿了么会有 vfoodId 商品id有两个",
+            "nullable": true
+          },
+          "AfterSale": {
+            "$ref": "#/components/schemas/FoodAfterSaleConf"
+          },
+          "BrandPrty": {
+            "$ref": "#/components/schemas/PropertySubValueItem"
+          },
+          "SpecialAttrs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ParsePropertiesParms"
+            },
+            "description": "特殊属性 零售可能有",
+            "nullable": true
+          },
+          "MyProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ParsePropertiesParms"
+            },
+            "description": "商品自定义的属性 可以乱输入的",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "description": "由系统分配给此对像的id 非双方平台的",
+            "nullable": true
+          },
+          "OuterId": {
+            "type": "string",
+            "description": "为方便商家管理商品,用于库存管理、多渠道销售分析等;商家可输入erp编码、库存编号、标准条码等",
+            "nullable": true
+          },
+          "Properties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FoodProperty"
+            },
+            "description": "商品类目属性列表",
+            "nullable": true
+          },
+          "GroupMulti": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FoodGroupItem"
+            },
+            "description": "多分组表示这个商品属性多个分组 零售时多用",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "老到新 也是最终向平台提交的最终数据结构类型"
+      },
+      "FoodItemVo": {
+        "type": "object",
+        "properties": {
+          "SpuId": {
+            "type": "string",
+            "description": "官方平台的商品id 也就是spuid",
+            "nullable": true
+          },
+          "Status": {
+            "$ref": "#/components/schemas/FoodStatusType"
+          },
+          "Name": {
+            "type": "string",
+            "nullable": true
+          },
+          "Description": {
+            "type": "string",
+            "description": "商品描述",
+            "nullable": true
+          },
+          "SellingPoint": {
+            "type": "string",
+            "description": "卖点零售有(在大多数平台中被当成副标题来展示)",
+            "nullable": true
+          },
+          "ImageUrls": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FoodImage"
+            },
+            "description": "商品图片，第一张代表主图，其他顺序代表次图",
+            "nullable": true
+          },
+          "FoodVideos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FoodVideo"
+            },
+            "description": "商品视频",
+            "nullable": true
+          },
+          "PicContent": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FoodImage"
+            },
+            "description": "图片内容 针对零售",
+            "nullable": true
+          },
+          "Category": {
+            "$ref": "#/components/schemas/FoodCategory"
+          },
+          "MinBuyCount": {
+            "type": "integer",
+            "description": "最少起售数量(最少购买多少份) 套餐可能没",
+            "format": "int32",
+            "nullable": true
+          },
+          "MaxBuyCount": {
+            "type": "integer",
+            "description": "最多能买多少",
+            "format": "int32",
+            "nullable": true
+          },
+          "Index": {
+            "type": "integer",
+            "description": "商品排序",
+            "format": "int32"
+          },
+          "MasterSpec": {
+            "type": "string",
+            "description": "最顶层的哪个规格组名称",
+            "nullable": true
+          },
+          "SpecPrice": {
+            "type": "boolean",
+            "description": "表示平台以每个规格选项来定价 目前饿了么和美团都是这种形式"
+          },
+          "Specifications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FoodSpecification"
+            },
+            "description": "规格",
+            "nullable": true
+          },
+          "SkuList": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FoodSkuItem"
+            },
+            "description": "这里应该叫skus 本质上这里应该统一存所有 Specifications 的排列路径\r\n这里本质上存的就是经过排列的选项 批晌具体的库存 价格等",
+            "nullable": true
+          },
+          "SellDayScope": {
+            "$ref": "#/components/schemas/DateTimeScope"
+          },
+          "SellTime": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FoodSellTimeDay"
+            },
+            "description": "售卖时间 如果为空就是全时段",
+            "nullable": true
+          },
+          "FoodLables": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FoodLableItem"
+            },
+            "description": "标签 如店内招牌,单点不送,仅套餐可售卖",
+            "nullable": true
+          },
+          "CombineFood": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CombineFoodItem"
+            },
+            "description": "套餐搭配- 固定商品",
+            "nullable": true
+          },
+          "CombineGroupFood": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CombineGroupFood"
+            },
+            "description": "套餐搭配- 分组可选套餐",
+            "nullable": true
+          },
+          "CombineCustomFood": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CombineCustomFoodItem"
+            },
+            "description": "自定义套餐内容",
+            "nullable": true
+          },
+          "FoodType": {
+            "$ref": "#/components/schemas/FoodType"
+          },
+          "OtherValues": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "其他值,比如饿了么会有 vfoodId 商品id有两个",
+            "nullable": true
+          },
+          "AfterSale": {
+            "$ref": "#/components/schemas/FoodAfterSaleConf"
+          },
+          "BrandPrty": {
+            "$ref": "#/components/schemas/PropertySubValueItem"
+          },
+          "SpecialAttrs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ParsePropertiesParms"
+            },
+            "description": "特殊属性 零售可能有",
+            "nullable": true
+          },
+          "MyProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ParsePropertiesParms"
+            },
+            "description": "商品自定义的属性 可以乱输入的",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "description": "id",
+            "nullable": true
+          },
+          "GroupOffId": {
+            "type": "string",
+            "description": "此商品的分类官方id",
+            "nullable": true,
+            "deprecated": true
+          },
+          "GroupMultipOffId": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "多分组官方id",
+            "nullable": true
+          },
+          "Properties1": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ParsePropertiesParms"
+            },
+            "description": "商品属性 如:主料,辅料 Properties1 与 Properties2 任何一样指定属性",
+            "nullable": true
+          },
+          "Properties2": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ParsePropertiesXParms"
+            },
+            "description": "商品属性 如:主料,辅料 等 属性是NamePath 模式 饿了么就这样的",
+            "nullable": true
+          },
+          "CopyTask": {
+            "$ref": "#/components/schemas/t_wmt_fc_fdmv_task_fdcopy"
+          }
+        },
+        "additionalProperties": false,
+        "description": "竞对模式前端向后端传的单个商品结构"
+      },
+      "FoodLableItem": {
+        "type": "object",
+        "properties": {
+          "FoodLable": {
+            "$ref": "#/components/schemas/FoodLableType"
+          }
+        },
+        "additionalProperties": false,
+        "description": "针对商品的标签"
+      },
+      "FoodLableType": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "type": "integer",
+        "description": "<br />&nbsp; None = 0<br />&nbsp; 店内招牌 = 1<br />&nbsp; 单点不送 = 2<br />&nbsp; 仅套餐可售卖 = 3<br />&nbsp; 新品标签 = 4<br />&nbsp; 可展示到热销分组中 = 5<br />",
+        "format": "int32"
+      },
+      "FoodProperty": {
+        "type": "object",
+        "properties": {
+          "PropertyTree": {
+            "$ref": "#/components/schemas/ModelSingleTree_t_fdmv_prty"
+          },
+          "Values": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/t_fdmv_prty"
+            },
+            "description": "会根据值是否可以多值来决定只取一个",
+            "nullable": true
+          },
+          "OtherValues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/OtherPropertyVal"
+            },
+            "description": "不在数据库中存在的属性",
+            "nullable": true
+          },
+          "LastOne": {
+            "$ref": "#/components/schemas/Lazy_t_fdmv_prty"
+          }
+        },
+        "additionalProperties": false,
+        "description": "商品属性"
+      },
+      "FoodSellStatusType": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "description": "商品销售状态<br />&nbsp; None = 0<br />&nbsp; 可售 = 1<br />&nbsp; 售罄 = 2<br />",
+        "format": "int32"
+      },
+      "FoodSellTimeDay": {
+        "type": "object",
+        "properties": {
+          "DayType": {
+            "$ref": "#/components/schemas/DayType"
+          },
+          "Ranges": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HourMinuteRange"
+            },
+            "description": "一天中的售卖时段",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "表示在一个天内的售卖时间"
+      },
+      "FoodSkuItem": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "由本系统为此sku创建的id",
+            "nullable": true
+          },
+          "Price": {
+            "type": "number",
+            "description": "sku价格. 餐饮可能没有",
+            "format": "double"
+          },
+          "Sequence": {
+            "type": "integer",
+            "description": "序号(从0开始)",
+            "format": "int32"
+          },
+          "BoxPrice": {
+            "type": "number",
+            "description": "打包费",
+            "format": "double"
+          },
+          "Stock": {
+            "type": "integer",
+            "description": "剩余库存 -1 无限库存",
+            "format": "int32"
+          },
+          "MaxStock": {
+            "type": "integer",
+            "description": "最大库存 -1 无限库存",
+            "format": "int32"
+          },
+          "AutoRefresh": {
+            "type": "boolean",
+            "description": "自动补足"
+          },
+          "Status": {
+            "$ref": "#/components/schemas/FoodSellStatusType"
+          },
+          "BoxNum": {
+            "type": "integer",
+            "description": "每多少个 Stock 用一个包装( 每多少份 )",
+            "format": "int32"
+          },
+          "SkuPath": {
+            "type": "string",
+            "description": "sku 如 大份,加料.. 只做为比对用 默认是以逗号连接的",
+            "nullable": true
+          },
+          "SkuId": {
+            "type": "string",
+            "description": "sku id 其实在 ForSpec 中的所有skuid 都是一样的",
+            "nullable": true
+          },
+          "OuterId": {
+            "type": "string",
+            "description": "商家系统中自己定义的ID，常用于openAPI开放平台",
+            "nullable": true
+          },
+          "Weight": {
+            "type": "integer",
+            "description": "重量值",
+            "format": "int32"
+          },
+          "WeightType": {
+            "$ref": "#/components/schemas/UintType"
+          },
+          "Barcode": {
+            "type": "string",
+            "description": "条形码",
+            "nullable": true
+          },
+          "ShelfNum": {
+            "type": "string",
+            "description": "货架码/位置 一般由商家自定义",
+            "nullable": true
+          },
+          "SkuImages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FoodImage"
+            },
+            "description": "sku图片.如果为空将使用 FoodItem.Images",
+            "nullable": true
+          },
+          "OtherValues": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "sku的其他值",
+            "nullable": true
+          },
+          "MinBuy": {
+            "type": "integer",
+            "description": "起购数, 针对sku",
+            "format": "int32",
+            "nullable": true
+          },
+          "ForSpec": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FoodSkuItemForSpecification"
+            },
+            "description": "针对的规格名和属性等 附值时注意排序：第一层一直往最后一层",
+            "nullable": true
+          },
+          "Discount": {
+            "$ref": "#/components/schemas/ActivityType_ZheKou"
+          }
+        },
+        "additionalProperties": false,
+        "description": "库存和打包费"
+      },
+      "FoodSkuItemForSpecification": {
+        "type": "object",
+        "properties": {
+          "SpecId": {
+            "type": "string",
+            "description": "这是规格组id 由系统生成的.可以反向去查找",
+            "nullable": true
+          },
+          "SpecName": {
+            "type": "string",
+            "description": "规格组名",
+            "nullable": true
+          },
+          "OptId": {
+            "type": "string",
+            "description": "这是选项id 由系统生成,可以反向查找层级",
+            "nullable": true
+          },
+          "OptionName": {
+            "type": "string",
+            "description": "规格选项名",
+            "nullable": true
+          },
+          "SkuId": {
+            "type": "string",
+            "description": "skuid 其实这里skuid 在同一ForSpec 都会一样",
+            "nullable": true,
+            "deprecated": true
+          },
+          "Weight": {
+            "type": "integer",
+            "description": "值",
+            "format": "int32",
+            "deprecated": true
+          },
+          "WeightType": {
+            "$ref": "#/components/schemas/UintType"
+          },
+          "Level": {
+            "type": "integer",
+            "description": "在规格第几层",
+            "format": "int32"
+          },
+          "OtherValues": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "对像的其他值",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "打包费针对的规格和属性"
+      },
+      "FoodSpecification": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "规格组id 注意这是自己生成的,用于让sku 对应",
+            "nullable": true
+          },
+          "SpecType": {
+            "$ref": "#/components/schemas/SpecificationType"
+          },
+          "Name": {
+            "type": "string",
+            "description": "规格名称，如：份量",
+            "nullable": true
+          },
+          "Index": {
+            "type": "integer",
+            "description": "顺序",
+            "format": "int32"
+          },
+          "Options": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FoodSpecificationOption"
+            },
+            "description": "选项 如 大份，小份",
+            "nullable": true
+          },
+          "OtherValues": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "其他信息 比如饿了么可能还会储存其他id",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "商品规格"
+      },
+      "FoodSpecificationOption": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "规格选项id 注意这是自己生成的,主要是为了让sku 中的id能对应上",
+            "nullable": true
+          },
+          "SpecName": {
+            "type": "string",
+            "description": "规格组名",
+            "nullable": true
+          },
+          "Price": {
+            "type": "number",
+            "description": "价格",
+            "format": "double"
+          },
+          "Name": {
+            "type": "string",
+            "description": "选项名称",
+            "nullable": true
+          },
+          "Status": {
+            "$ref": "#/components/schemas/FoodSellStatusType"
+          },
+          "Weight": {
+            "type": "number",
+            "description": "计量值",
+            "format": "double"
+          },
+          "WeightType": {
+            "$ref": "#/components/schemas/UintType"
+          },
+          "SkuId": {
+            "type": "string",
+            "description": "每一个选项都有一个skuid的 sku id是不应该出现在这里的. 在美团中是根据份量向下排 在最底层 应所有都在最低层",
+            "nullable": true
+          },
+          "Index": {
+            "type": "integer",
+            "description": "顺序 从0开始",
+            "format": "int32"
+          },
+          "OtherValues": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "其他信息 比如饿了么可能还会储存其他id",
+            "nullable": true
+          },
+          "SkuInfo": {
+            "$ref": "#/components/schemas/FoodSkuItem"
+          },
+          "MinBuy": {
+            "type": "integer",
+            "description": "针对规格选项的最小购买数",
+            "format": "int32",
+            "nullable": true
+          },
+          "UpcCode": {
+            "type": "string",
+            "description": "upc 条形码",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FoodStatusType": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "description": "商品状态<br />&nbsp; None = 0<br />&nbsp; 已上架 = 1<br />&nbsp; 已下架 = 2<br />",
+        "format": "int32"
+      },
+      "FoodType": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "description": "<br />&nbsp; None = 0<br />&nbsp; 普通商品 = 1<br />&nbsp; 套餐商品 = 2<br />",
+        "format": "int32"
+      },
+      "FoodVideo": {
+        "type": "object",
+        "properties": {
+          "Img": {
+            "type": "string",
+            "description": "视频图片地址",
+            "nullable": true
+          },
+          "VideoUrl": {
+            "type": "string",
+            "description": "视频地址",
+            "nullable": true
+          },
+          "Index": {
+            "type": "integer",
+            "description": "排序 从 0开始",
+            "format": "int32"
+          },
+          "OtherValues": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "其他信息 比如饿了么还有图片的哈希等",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "商品视频"
+      },
+      "GroupTopConf": {
+        "type": "object",
+        "properties": {
+          "IsTop": {
+            "type": "boolean",
+            "description": "限时置顶 true 开启，false 关闭"
+          },
+          "TopTimeRange": {
+            "$ref": "#/components/schemas/DateTimeScope"
+          },
+          "TopTimeScopes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FoodSellTimeDay"
+            },
+            "description": "置顶时间段 为空就代表全天",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "分组置顶设置"
+      },
+      "HourMinute": {
+        "type": "object",
+        "properties": {
+          "Hour": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "Minute": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "表示时和分"
+      },
+      "HourMinuteRange": {
+        "type": "object",
+        "properties": {
+          "StartTime": {
+            "$ref": "#/components/schemas/HourMinute"
+          },
+          "EndTime": {
+            "$ref": "#/components/schemas/HourMinute"
+          },
+          "Start": {
+            "type": "string",
+            "format": "time",
+            "readOnly": true
+          },
+          "End": {
+            "type": "string",
+            "format": "time",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Lazy_t_fdmv_prty": {
+        "type": "object",
+        "properties": {
+          "IsValueCreated": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "Value": {
+            "$ref": "#/components/schemas/t_fdmv_prty"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LimitTypeEnum": {
+        "enum": [
+          0,
+          1
+        ],
+        "type": "integer",
+        "description": "限购类型<br />&nbsp; 不限 = 0<br />&nbsp; 限购 = 1<br />",
+        "format": "int32"
+      },
+      "ModelSingleTree_t_fdmv_prty": {
+        "type": "object",
+        "properties": {
+          "Model": {
+            "$ref": "#/components/schemas/t_fdmv_prty"
+          },
+          "Children": {
+            "$ref": "#/components/schemas/ModelSingleTree_t_fdmv_prty"
+          }
+        },
+        "additionalProperties": false
+      },
+      "OfflineDiscountParms": {
+        "type": "object",
+        "properties": {
+          "SyncSite": {
+            "type": "boolean",
+            "description": "此操作只针对数据库 操作完后统一更新到平台"
+          },
+          "GroupOffids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "限制分组如为空代表所有分组",
+            "nullable": true
+          },
+          "TaskId": {
+            "type": "string",
+            "description": "任务id",
+            "nullable": true
+          },
+          "Targets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UpdateSpuInSkuItem"
+            },
+            "description": "要更新的 商品和sku 如果Targets 为空则更新全部商品",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "从平台下线折扣活动, 参数SyncSite 将无效,将马上去平台执行"
+      },
+      "OtherPropertyVal": {
+        "type": "object",
+        "properties": {
+          "Name": {
+            "type": "string",
+            "description": "属性名称",
+            "nullable": true
+          },
+          "Office_Id": {
+            "type": "string",
+            "description": "平台给出的id",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "针对不存在与数据库中的属性名 如有些属性是靠搜索来检索"
+      },
+      "PageResultVo_FoodItemVo": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "total": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "rows": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FoodItemVo"
+            },
+            "description": "行数据",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ParsePropertiesParms": {
+        "type": "object",
+        "properties": {
+          "index": {
+            "type": "integer",
+            "description": "索引 从0开始",
+            "format": "int32"
+          },
+          "off_id": {
+            "type": "string",
+            "description": "属性id 可能没有",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "description": "属性名称",
+            "nullable": true
+          },
+          "SubValues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PropertySubValueItem"
+            },
+            "description": "子项 也就是属性值了",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "支持树型的属性转换"
+      },
+      "ParsePropertiesXParms": {
+        "type": "object",
+        "properties": {
+          "OffidPath": {
+            "type": "string",
+            "description": "格式为 a.b.c",
+            "nullable": true
+          },
+          "NamePath": {
+            "type": "string",
+            "description": "格式为 a.b.c 要与KeyPath",
+            "nullable": true
+          },
+          "SubValues": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PropertySubValueItem"
+            },
+            "description": "子项",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "支持树型的属性转换"
+      },
+      "PickType": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "description": "取货方式<br />&nbsp; None = 0<br />&nbsp; 外卖和到店自取 = 1<br />&nbsp; 仅到店自取 = 2<br />",
+        "format": "int32"
+      },
+      "ProductTabType": {
+        "enum": [
+          "All",
+          "OnSale",
+          "SoldOut",
+          "OffShelf",
+          "MultiSpec"
+        ],
+        "type": "string",
+        "description": "<br />&nbsp; All = 0<br />&nbsp; OnSale = 1<br />&nbsp; SoldOut = 2<br />&nbsp; OffShelf = 3<br />&nbsp; MultiSpec = 4<br />"
+      },
+      "ProgressInfo": {
+        "type": "object",
+        "properties": {
+          "Item": {
+            "type": "string",
+            "description": "如果是每一步代表一个任务项完成,这里会返回任务项信息,可以是 id也可以是对像信息(json)",
+            "nullable": true
+          },
+          "IsFinished": {
+            "type": "boolean",
+            "description": "已经完成"
+          },
+          "ExceptionMsg": {
+            "type": "string",
+            "description": "IsFinished 为true 此项不为空表明任务执行失败了 且附加了信息 前端需要弹出来",
+            "nullable": true
+          },
+          "Total": {
+            "type": "integer",
+            "description": "总数",
+            "format": "int32"
+          },
+          "Progress": {
+            "type": "integer",
+            "description": "进度",
+            "format": "int32"
+          },
+          "ErrMsg": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "错误消息",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "进度信息"
+      },
+      "PropertySubValueItem": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "属性名称",
+            "nullable": true
+          },
+          "officeId": {
+            "type": "string",
+            "description": "属性id",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "子项"
+      },
+      "QueryFoodsParms": {
+        "type": "object",
+        "properties": {
+          "SyncSite": {
+            "type": "boolean",
+            "description": "此操作只针对数据库 操作完后统一更新到平台"
+          },
+          "GroupOffids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "限制分组如为空代表所有分组",
+            "nullable": true
+          },
+          "TaskId": {
+            "type": "string",
+            "description": "任务id",
+            "nullable": true
+          },
+          "Page": {
+            "type": "integer",
+            "description": "页数",
+            "format": "int32"
+          },
+          "FoodIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "商品ID列表 如果为空就不限制",
+            "nullable": true
+          },
+          "ProductName": {
+            "type": "string",
+            "description": "商品名",
+            "nullable": true
+          },
+          "MinPrice": {
+            "type": "number",
+            "description": "最低价",
+            "format": "double",
+            "nullable": true
+          },
+          "MaxPrice": {
+            "type": "number",
+            "description": "最高价",
+            "format": "double",
+            "nullable": true
+          },
+          "IsDiscount": {
+            "type": "boolean",
+            "description": "是否折扣",
+            "nullable": true
+          },
+          "IsOnSale": {
+            "type": "boolean",
+            "description": "是否上架",
+            "nullable": true
+          },
+          "TabType": {
+            "$ref": "#/components/schemas/ProductTabType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RestResult_List_FoodGroupVoItem": {
+        "type": "object",
+        "properties": {
+          "Success": {
+            "type": "boolean",
+            "description": "执行成功"
+          },
+          "code": {
+            "type": "integer",
+            "description": "状态码",
+            "format": "int32",
+            "nullable": true
+          },
+          "message": {
+            "additionalProperties": false,
+            "description": "错误信息",
+            "nullable": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FoodGroupVoItem"
+            },
+            "description": "数据",
+            "nullable": true
+          },
+          "Extras": {
+            "additionalProperties": false,
+            "description": "附加数据",
+            "nullable": true
+          },
+          "Timestamp": {
+            "type": "integer",
+            "description": "时间戳",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false,
+        "description": "RESTful风格---XIAONUO返回格式"
+      },
+      "RestResult_PageResultVo_FoodItemVo": {
+        "type": "object",
+        "properties": {
+          "Success": {
+            "type": "boolean",
+            "description": "执行成功"
+          },
+          "code": {
+            "type": "integer",
+            "description": "状态码",
+            "format": "int32",
+            "nullable": true
+          },
+          "message": {
+            "additionalProperties": false,
+            "description": "错误信息",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/PageResultVo_FoodItemVo"
+          },
+          "Extras": {
+            "additionalProperties": false,
+            "description": "附加数据",
+            "nullable": true
+          },
+          "Timestamp": {
+            "type": "integer",
+            "description": "时间戳",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false,
+        "description": "RESTful风格---XIAONUO返回格式"
+      },
+      "RestResult_ProgressInfo": {
+        "type": "object",
+        "properties": {
+          "Success": {
+            "type": "boolean",
+            "description": "执行成功"
+          },
+          "code": {
+            "type": "integer",
+            "description": "状态码",
+            "format": "int32",
+            "nullable": true
+          },
+          "message": {
+            "additionalProperties": false,
+            "description": "错误信息",
+            "nullable": true
+          },
+          "data": {
+            "$ref": "#/components/schemas/ProgressInfo"
+          },
+          "Extras": {
+            "additionalProperties": false,
+            "description": "附加数据",
+            "nullable": true
+          },
+          "Timestamp": {
+            "type": "integer",
+            "description": "时间戳",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false,
+        "description": "RESTful风格---XIAONUO返回格式"
+      },
+      "RoundTypeEnum": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "description": "取整方式<br />&nbsp; 不改变 = 0<br />&nbsp; 向上取整 = 1<br />&nbsp; 向下取整 = 2<br />",
+        "format": "int32"
+      },
+      "SaleReturnType": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "type": "integer",
+        "description": "<br />&nbsp; None = 0<br />&nbsp; 七天无理由退货_包装无破损 = 1<br />&nbsp; 七天无理由退货_包装破损不支持 = 2<br />&nbsp; 七天无理由退货_使用后不支持 = 3<br />&nbsp; 七天无理由退货_任何条件 = 4<br />&nbsp; 支持15天无理由退货_任何条件 = 5<br />&nbsp; 支持30天无理由退货 = 6<br />&nbsp; 七天无理由退货_定制类不支持 = 7<br />",
+        "format": "int32"
+      },
+      "ShopType": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          100
+        ],
+        "type": "integer",
+        "description": "店铺类型<br />&nbsp; None = 0<br />&nbsp; 美团 = 1<br />&nbsp; 饿了么 = 2<br />&nbsp; 美团闪购 = 3<br />&nbsp; 美团医药 = 4<br />&nbsp; 饿百零售 = 5<br />&nbsp; 京东到家 = 6<br />&nbsp; 抖店即时零售 = 7<br />&nbsp; 饿了么官方 = 8<br />&nbsp; 测试餐饮 = 100<br />",
+        "format": "int32"
+      },
+      "SpecificationType": {
+        "enum": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "type": "integer",
+        "description": "<br />&nbsp; None = 0<br />&nbsp; 普通规格组 = 1<br />&nbsp; 属性规格组 = 2<br />&nbsp; 加料规格组 = 3<br />",
+        "format": "int32"
+      },
+      "TimeSpanScope": {
+        "type": "object",
+        "properties": {
+          "Start": {
+            "type": "string",
+            "format": "date-span"
+          },
+          "End": {
+            "type": "string",
+            "format": "date-span"
+          }
+        },
+        "additionalProperties": false,
+        "description": "时间范围"
+      },
+      "UintType": {
+        "enum": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36,
+          37,
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48,
+          49
+        ],
+        "type": "integer",
+        "description": "单位<br />&nbsp; 克 = 1<br />&nbsp; 千克 = 2<br />&nbsp; 两 = 3<br />&nbsp; 斤 = 4<br />&nbsp; 磅 = 5<br />&nbsp; 盎司 = 6<br />&nbsp; 毫升 = 7<br />&nbsp; 升 = 8<br />&nbsp; 寸 = 9<br />&nbsp; 厘米 = 10<br />&nbsp; 英寸 = 11<br />&nbsp; 个 = 12<br />&nbsp; 串 = 13<br />&nbsp; 枚 = 14<br />&nbsp; 粒 = 15<br />&nbsp; 块 = 16<br />&nbsp; 只 = 17<br />&nbsp; 副 = 18<br />&nbsp; 卷 = 19<br />&nbsp; 片 = 20<br />&nbsp; 贯 = 21<br />&nbsp; 碗 = 22<br />&nbsp; 杯 = 23<br />&nbsp; 袋 = 24<br />&nbsp; 瓶 = 25<br />&nbsp; 盒 = 26<br />&nbsp; 包 = 27<br />&nbsp; 锅 = 28<br />&nbsp; 罐 = 29<br />&nbsp; 扎 = 30<br />&nbsp; 条 = 31<br />&nbsp; 壶 = 32<br />&nbsp; 打 = 33<br />&nbsp; 盘 = 34<br />&nbsp; _1人份 = 35<br />&nbsp; _2人份 = 36<br />&nbsp; _3人份 = 37<br />&nbsp; _4人份 = 38<br />&nbsp; _5人份 = 39<br />&nbsp; _6人份 = 40<br />&nbsp; _7人份 = 41<br />&nbsp; _8人份 = 42<br />&nbsp; _9人份 = 43<br />&nbsp; _10人份 = 44<br />&nbsp; 米 = 45<br />&nbsp; 毫克 = 46<br />&nbsp; 毫米 = 47<br />&nbsp; 千米 = 48<br />&nbsp; 吨 = 49<br />",
+        "format": "int32"
+      },
+      "UpdateFoodDiscountParms": {
+        "type": "object",
+        "properties": {
+          "SyncSite": {
+            "type": "boolean",
+            "description": "此操作只针对数据库 操作完后统一更新到平台"
+          },
+          "GroupOffids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "限制分组如为空代表所有分组",
+            "nullable": true
+          },
+          "TaskId": {
+            "type": "string",
+            "description": "任务id",
+            "nullable": true
+          },
+          "Targets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UpdateSpuInSkuItem"
+            },
+            "description": "要更新的 商品和sku 如果Targets 为空则更新全部商品",
+            "nullable": true
+          },
+          "DiscountType": {
+            "$ref": "#/components/schemas/DiscountTypeEnum"
+          },
+          "AdjustType": {
+            "$ref": "#/components/schemas/AdjustTypeEnum"
+          },
+          "DiscountPrice": {
+            "type": "number",
+            "description": "折扣价",
+            "format": "double",
+            "nullable": true
+          },
+          "DiscountRate": {
+            "type": "number",
+            "description": "折扣率",
+            "format": "double",
+            "nullable": true
+          },
+          "DailyStockLimitType": {
+            "$ref": "#/components/schemas/LimitTypeEnum"
+          },
+          "DailyStockLimitCount": {
+            "type": "integer",
+            "description": "每日库存限购数量",
+            "format": "int32",
+            "nullable": true
+          },
+          "OrderLimitType": {
+            "$ref": "#/components/schemas/LimitTypeEnum"
+          },
+          "OrderLimitCount": {
+            "type": "integer",
+            "description": "每单限购数量",
+            "format": "int32",
+            "nullable": true
+          },
+          "ActivityName": {
+            "type": "string",
+            "description": "活动名称",
+            "nullable": true
+          },
+          "StartTime": {
+            "type": "string",
+            "description": "活动开始时间",
+            "format": "date-time"
+          },
+          "EndTime": {
+            "type": "string",
+            "description": "活动结束时间",
+            "format": "date-time"
+          },
+          "RoundType": {
+            "$ref": "#/components/schemas/RoundTypeEnum"
+          }
+        },
+        "additionalProperties": false,
+        "description": "更新商品折扣的参数"
+      },
+      "UpdateFoodImageBorderParms": {
+        "type": "object",
+        "properties": {
+          "SyncSite": {
+            "type": "boolean",
+            "description": "此操作只针对数据库 操作完后统一更新到平台"
+          },
+          "GroupOffids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "限制分组如为空代表所有分组",
+            "nullable": true
+          },
+          "TaskId": {
+            "type": "string",
+            "description": "任务id",
+            "nullable": true
+          },
+          "FoodIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "商品ID列表，为空则处理所有商品",
+            "nullable": true
+          },
+          "BorderImageUrl": {
+            "type": "string",
+            "description": "图片边框链接",
+            "nullable": true
+          },
+          "OnlyMainImage": {
+            "type": "boolean",
+            "description": "是否只设置主图（第一张图片）\r\ntrue: 只设置主图\r\nfalse: 设置所有图片"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateFoodNameMode": {
+        "enum": [
+          "AddPrefix",
+          "AddSuffix",
+          "ReplaceText",
+          "Rename"
+        ],
+        "type": "string",
+        "description": "商品名称批量修改模式<br />&nbsp; AddPrefix = 1<br />&nbsp; AddSuffix = 2<br />&nbsp; ReplaceText = 3<br />&nbsp; Rename = 4<br />"
+      },
+      "UpdateFoodNameParms": {
+        "type": "object",
+        "properties": {
+          "SyncSite": {
+            "type": "boolean",
+            "description": "此操作只针对数据库 操作完后统一更新到平台"
+          },
+          "GroupOffids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "限制分组如为空代表所有分组",
+            "nullable": true
+          },
+          "TaskId": {
+            "type": "string",
+            "description": "任务id",
+            "nullable": true
+          },
+          "Mode": {
+            "$ref": "#/components/schemas/UpdateFoodNameMode"
+          },
+          "FoodIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "数据库中的商品id 非offid",
+            "nullable": true
+          },
+          "Prefix": {
+            "type": "string",
+            "description": "前辍",
+            "nullable": true
+          },
+          "Suffix": {
+            "type": "string",
+            "description": "后辍",
+            "nullable": true
+          },
+          "OriginalText": {
+            "type": "string",
+            "description": "原文字",
+            "nullable": true
+          },
+          "ReplacementText": {
+            "type": "string",
+            "description": "替换文字 如果是完全重命名则是新的商品名",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateFoodSpuPrice": {
+        "type": "object",
+        "properties": {
+          "SyncSite": {
+            "type": "boolean",
+            "description": "此操作只针对数据库 操作完后统一更新到平台"
+          },
+          "GroupOffids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "限制分组如为空代表所有分组",
+            "nullable": true
+          },
+          "TaskId": {
+            "type": "string",
+            "description": "任务id",
+            "nullable": true
+          },
+          "task": {
+            "type": "string",
+            "nullable": true,
+            "deprecated": true
+          },
+          "food_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "规格id 如果不选择代表全部",
+            "nullable": true
+          },
+          "mark_up": {
+            "type": "boolean",
+            "description": "设置为涨,如果为false 就是降"
+          },
+          "change_mode": {
+            "$ref": "#/components/schemas/UpdateValueType"
+          },
+          "value": {
+            "type": "number",
+            "description": "改变值",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false,
+        "description": "把所有商品id的sku值改成指定的金额"
+      },
+      "UpdateFoodStateParms": {
+        "type": "object",
+        "properties": {
+          "SyncSite": {
+            "type": "boolean",
+            "description": "此操作只针对数据库 操作完后统一更新到平台"
+          },
+          "GroupOffids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "限制分组如为空代表所有分组",
+            "nullable": true
+          },
+          "TaskId": {
+            "type": "string",
+            "description": "任务id",
+            "nullable": true
+          },
+          "FoodIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "商品ID列表",
+            "nullable": true
+          },
+          "IsOnSale": {
+            "$ref": "#/components/schemas/FoodStatusType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateFoodStockParms": {
+        "type": "object",
+        "properties": {
+          "SyncSite": {
+            "type": "boolean",
+            "description": "此操作只针对数据库 操作完后统一更新到平台"
+          },
+          "GroupOffids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "限制分组如为空代表所有分组",
+            "nullable": true
+          },
+          "TaskId": {
+            "type": "string",
+            "description": "任务id",
+            "nullable": true
+          },
+          "Targets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UpdateSpuInSkuItem"
+            },
+            "description": "要更新的商品和sku列表，如果为空则更新全部商品",
+            "nullable": true
+          },
+          "AdjustType": {
+            "$ref": "#/components/schemas/AdjustType"
+          },
+          "AdjustStock": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateMinBuyParms": {
+        "type": "object",
+        "properties": {
+          "SyncSite": {
+            "type": "boolean",
+            "description": "此操作只针对数据库 操作完后统一更新到平台"
+          },
+          "GroupOffids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "限制分组如为空代表所有分组",
+            "nullable": true
+          },
+          "TaskId": {
+            "type": "string",
+            "description": "任务id",
+            "nullable": true
+          },
+          "Targets": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UpdateSpuInSkuItem"
+            },
+            "description": "要更新的商品和sku列表，如果为空则更新全部商品",
+            "nullable": true
+          },
+          "AdjustType": {
+            "$ref": "#/components/schemas/AdjustType"
+          },
+          "AdjustMinBuy": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "更新商品的最小购买数"
+      },
+      "UpdateSpuInSkuItem": {
+        "type": "object",
+        "properties": {
+          "Spu": {
+            "type": "string",
+            "nullable": true
+          },
+          "SkuIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "UpdateValueType": {
+        "enum": [
+          0,
+          1,
+          2
+        ],
+        "type": "integer",
+        "description": "更新方式<br />&nbsp; None = 0<br />&nbsp; 百分比 = 1<br />&nbsp; 固定值 = 2<br />",
+        "format": "int32"
+      },
+      "UserVistType": {
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "type": "integer",
+        "description": "门店访客类型<br />&nbsp; 全部客户 = 0<br />&nbsp; 门店新客 = 1<br />&nbsp; 门店老客 = 2<br />&nbsp; 超级吃货 = 3<br />&nbsp; 门店会员 = 4<br />&nbsp; 医药新客 = 5<br />",
+        "format": "int32"
+      },
+      "t_fdmv_prty": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "主键Id",
+            "nullable": true,
+            "example": ""
+          },
+          "crtim": {
+            "type": "string",
+            "description": "创建时间",
+            "format": "date-time",
+            "nullable": true
+          },
+          "uptim": {
+            "type": "string",
+            "description": "更新时间",
+            "format": "date-time",
+            "nullable": true
+          },
+          "avtag": {
+            "type": "boolean",
+            "description": "是否可用，1可用，0不可用"
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "Parent": {
+            "type": "string",
+            "nullable": true
+          },
+          "AllParent": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "shop_type": {
+            "$ref": "#/components/schemas/ShopType"
+          },
+          "off_id": {
+            "type": "string",
+            "description": "平台绑住出此属性的id",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "description": "属性名称",
+            "nullable": true
+          },
+          "multi_select": {
+            "type": "boolean",
+            "description": "是否可多选(针对有子项的属性)",
+            "nullable": true
+          },
+          "multi_max": {
+            "type": "integer",
+            "description": "多选情况下,最多能选择多少个值",
+            "format": "int32",
+            "nullable": true
+          },
+          "required": {
+            "type": "boolean",
+            "description": "是否必填(针对有子项的属性)",
+            "nullable": true
+          },
+          "decision_property": {
+            "type": "boolean",
+            "description": "未知 饿了么返回 先保留 (针对有子项的属性)",
+            "nullable": true
+          },
+          "need_query": {
+            "type": "boolean",
+            "description": "表示这个属性需要查相关关键词决定",
+            "nullable": true
+          },
+          "has_child": {
+            "type": "boolean",
+            "description": "是否有子项"
+          },
+          "name_path": {
+            "type": "string",
+            "description": "从父级一直到当前级的名称如 a>b>c>d",
+            "nullable": true
+          },
+          "CharTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CharacterType"
+            },
+            "description": "支持字符类型",
+            "nullable": true
+          },
+          "max_length": {
+            "type": "integer",
+            "description": "如果是自由输入的话。最大长度是多少",
+            "format": "int32",
+            "nullable": true
+          },
+          "free_val": {
+            "type": "boolean",
+            "description": "是否支持自定义输入",
+            "nullable": true
+          },
+          "def_val": {
+            "type": "boolean",
+            "description": "如果为true 代表 针对此上级是默认值",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "商品属性表"
+      },
+      "t_wmt_fc_fdmv_task_fdcopy": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "主键Id",
+            "nullable": true,
+            "example": ""
+          },
+          "crtim": {
+            "type": "string",
+            "description": "创建时间",
+            "format": "date-time",
+            "nullable": true
+          },
+          "uptim": {
+            "type": "string",
+            "description": "更新时间",
+            "format": "date-time",
+            "nullable": true
+          },
+          "avtag": {
+            "type": "boolean",
+            "description": "是否可用，1可用，0不可用"
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "ExTime": {
+            "type": "string",
+            "description": "数据过期时间,超过这个时间后，就删除",
+            "format": "date-time"
+          },
+          "task": {
+            "type": "string",
+            "description": "任务id",
+            "nullable": true
+          },
+          "food_id": {
+            "type": "string",
+            "description": "商品在数据库中的id t_wmt_fc_fdmv_food.id",
+            "nullable": true
+          },
+          "old_spu": {
+            "type": "string",
+            "description": "老店中的商品spuid",
+            "nullable": true
+          },
+          "new_spu": {
+            "type": "string",
+            "description": "复制成功后。 这里显示新的spuid",
+            "nullable": true
+          },
+          "succeed": {
+            "type": "boolean",
+            "description": "复制是否成功"
+          },
+          "err_msg": {
+            "type": "string",
+            "nullable": true
+          },
+          "NewFood": {
+            "$ref": "#/components/schemas/FoodItem"
+          },
+          "try_count": {
+            "type": "integer",
+            "description": "表示已经尝试复制的次数",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "商品复制任务列表"
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "description": "JWT Authorization header using the Bearer scheme.",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "security": [
+    {
+      "Bearer": [ ]
+    }
+  ],
+  "tags": [
+    {
+      "name": "foodmanage",
+      "description": "食品管理控制器"
+    }
+  ]
+}

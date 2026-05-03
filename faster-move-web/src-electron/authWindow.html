@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>店铺授权</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    /* 导航工具栏 */
+    .toolbar {
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+      background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+      border-bottom: 1px solid #dee2e6;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    /* 授权按钮 */
+    .auth-btn {
+      height: 32px;
+      padding: 0 20px;
+      border: none;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .auth-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    }
+    .auth-btn:active {
+      transform: translateY(0);
+    }
+    .auth-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .auth-btn svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+    /* 刷新按钮 */
+    .refresh-btn {
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 6px;
+      background: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+    }
+    .refresh-btn:hover {
+      background: #e9ecef;
+    }
+    .refresh-btn:active {
+      transform: scale(0.95);
+    }
+    .refresh-btn svg {
+      width: 16px;
+      height: 16px;
+      fill: #495057;
+    }
+    /* 状态文本 */
+    .status-text {
+      margin-left: 12px;
+      font-size: 13px;
+      color: #6c757d;
+    }
+    /* 分隔线 */
+    .divider {
+      width: 1px;
+      height: 24px;
+      background: #ced4da;
+      margin: 0 4px;
+    }
+    /* 地址栏 */
+    .address-bar {
+      flex: 1;
+      height: 32px;
+      padding: 0 12px;
+      border: 1px solid #ced4da;
+      border-radius: 6px;
+      background: #fff;
+      font-size: 13px;
+      color: #495057;
+    }
+    .address-bar:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+    /* webview容器 */
+    .webview-container {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+    webview {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    /* 加载提示 */
+    .loading {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: #6c757d;
+    }
+    .spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid #e9ecef;
+      border-top-color: #667eea;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 12px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <button class="auth-btn" id="authBtn" title="点击完成店铺授权">
+      <svg viewBox="0 0 24 24">
+        <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/>
+      </svg>
+      授权店铺
+    </button>
+    <div class="divider"></div>
+    <button class="refresh-btn" id="refreshBtn" title="刷新页面">
+      <svg viewBox="0 0 24 24">
+        <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+      </svg>
+    </button>
+    <input type="text" class="address-bar" id="addressBar" readonly />
+    <span class="status-text" id="statusText">请登录店铺后台</span>
+  </div>
+  <div class="webview-container">
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <div>页面加载中...</div>
+    </div>
+    <webview id="webview" partition="" allowpopups></webview>
+  </div>
+
+  <script>
+    const { ipcRenderer } = require('electron');
+    const webview = document.getElementById('webview');
+    const authBtn = document.getElementById('authBtn');
+    const refreshBtn = document.getElementById('refreshBtn');
+    const addressBar = document.getElementById('addressBar');
+    const statusText = document.getElementById('statusText');
+    const loading = document.getElementById('loading');
+
+    let shopType = null;
+    let partition = null;
+    let isAuthorizing = false;
+    let isJdGroupBuy = false; // 是否为京东团购（自动授权模式）
+
+    // 接收初始化参数
+    ipcRenderer.on('init-auth-window', (event, data) => {
+      shopType = data.shopType;
+      partition = data.partition;
+      const url = data.url;
+
+      webview.partition = partition;
+
+      // 京东团购：覆盖 UA 去掉 Electron 标识，避免 JD 页面走异常代码分支
+      if (shopType === 1001) {
+        isJdGroupBuy = true;
+        webview.useragent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0';
+        authBtn.style.display = 'none';
+        statusText.textContent = '请登录京东店铺，点击"确认授权"后将自动完成添加';
+      }
+
+      webview.src = url;
+      addressBar.value = url;
+    });
+
+    // 监听京东团购自动授权事件
+    ipcRenderer.on('jd-group-auto-auth-detected', () => {
+      statusText.textContent = '🔍 检测到授权请求，正在获取授权信息...';
+      statusText.style.color = '#667eea';
+    });
+
+    ipcRenderer.on('jd-group-auto-auth-success', (event, result) => {
+      const shopName = result?.data?.name || '未知';
+      statusText.textContent = '✅ 店铺添加成功！（' + shopName + '）窗口即将关闭...';
+      statusText.style.color = '#28a745';
+    });
+
+    ipcRenderer.on('jd-group-auto-auth-failed', (event, message) => {
+      statusText.textContent = '❌ ' + (message || '自动授权失败');
+      statusText.style.color = '#dc3545';
+      // 失败时显示手动按钮作为备用
+      authBtn.style.display = 'flex';
+      authBtn.disabled = false;
+      isAuthorizing = false;
+    });
+
+    // webview加载完成
+    webview.addEventListener('did-start-loading', () => {
+      loading.style.display = 'flex';
+      if (!isJdGroupBuy) {
+        statusText.textContent = '页面加载中...';
+      }
+    });
+
+    webview.addEventListener('did-stop-loading', () => {
+      loading.style.display = 'none';
+      if (!isJdGroupBuy) {
+        statusText.textContent = '请登录店铺后台';
+      }
+    });
+
+    // 更新地址栏
+    webview.addEventListener('did-navigate', (e) => {
+      addressBar.value = e.url;
+    });
+
+    webview.addEventListener('did-navigate-in-page', (e) => {
+      addressBar.value = e.url;
+    });
+
+    // 刷新按钮
+    refreshBtn.addEventListener('click', () => {
+      webview.reload();
+    });
+
+    // 授权按钮 - 手动授权（非京东团购平台使用，或京东团购授权失败时备用）
+    authBtn.addEventListener('click', async () => {
+      if (isAuthorizing) {
+        alert('正在处理授权，请稍候...');
+        return;
+      }
+
+      // 检查初始化状态
+      if (!partition || !shopType) {
+        alert('授权窗口未正确初始化，请关闭后重试\n\npartition: ' + partition + '\nshopType: ' + shopType);
+        return;
+      }
+
+      isAuthorizing = true;
+      authBtn.disabled = true;
+      statusText.textContent = '正在获取授权信息...';
+      console.log('[授权] 开始获取cookies, partition:', partition, 'shopType:', shopType);
+
+      try {
+        // 通知主进程获取完整cookies
+        const result = await ipcRenderer.invoke('get-auth-cookies', partition, shopType);
+        console.log('[授权] 获取cookies结果:', result);
+
+        if (result.success) {
+          statusText.textContent = '授权成功，正在添加店铺...';
+          console.log('[授权] cookies长度:', result.cookies?.length);
+
+          // 调用addShop
+          const addShopResult = await ipcRenderer.invoke('add-shop-from-auth', {
+            shop_type: shopType,
+            cookies: result.cookies,
+            shop_user: '',
+            shop_pwd: ''
+          });
+          console.log('[授权] 添加店铺结果:', addShopResult);
+
+          if (addShopResult.success) {
+            statusText.textContent = '✅ 店铺添加成功！';
+            alert('店铺添加成功！\n\n店铺名称: ' + (addShopResult.data?.name || '未知'));
+            // 延迟关闭窗口，让用户看到成功提示
+            setTimeout(() => {
+              ipcRenderer.send('close-auth-window');
+            }, 1500);
+          } else {
+            const errorMsg = '添加店铺失败: ' + (addShopResult.message || '未知错误');
+            statusText.textContent = '❌ ' + errorMsg;
+            alert(errorMsg);
+            authBtn.disabled = false;
+            isAuthorizing = false;
+          }
+        } else {
+          const errorMsg = '获取授权信息失败: ' + (result.message || '未知错误');
+          statusText.textContent = '❌ ' + errorMsg;
+          alert(errorMsg + '\n\n请确保已经登录店铺后台');
+          authBtn.disabled = false;
+          isAuthorizing = false;
+        }
+      } catch (error) {
+        console.error('[授权] 错误:', error);
+        const errorMsg = '授权异常: ' + (error.message || String(error));
+        statusText.textContent = '❌ ' + errorMsg;
+        alert(errorMsg + '\n\n请查看控制台获取更多信息');
+        authBtn.disabled = false;
+        isAuthorizing = false;
+      }
+    });
+
+    // 处理窗口关闭
+    window.addEventListener('beforeunload', () => {
+      webview.stop();
+    });
+  </script>
+</body>
+</html>

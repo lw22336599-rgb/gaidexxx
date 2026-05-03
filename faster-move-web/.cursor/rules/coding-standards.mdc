@@ -1,0 +1,75 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+# 编码规范指南
+
+## TypeScript 规范
+
+1. 使用 TypeScript 严格模式
+2. 为所有变量和函数参数定义类型
+3. 使用接口（Interface）定义对象结构
+4. 使用类型别名（Type）定义联合类型
+5. 避免使用 `any` 类型
+6. 参考C#源码或json生成TypeScript类型时,严格按照大小写,如果C#源码中的成员类型是类非值类型时,应深入分析这个类型的源码
+
+## 生成TypeScript类型定义 规范
+
+严格保持与C#源码相同的大小写
+不应该自动转换为camelCase
+如果C#中的成员类型是类（非值类型），还需要深入分析该类型的源码
+
+## Vue 组件规范
+
+1. 使用组合式 API（Composition API）
+2. 组件名使用 PascalCase
+3. Props 必须指定类型
+4. 使用 `defineProps` 和 `defineEmits` 声明属性和事件
+5. 组件文件结构：
+   ```vue
+   <script setup lang="ts">
+   // 导入
+   // Props 定义
+   // 响应式数据
+   // 计算属性
+   // 方法
+   // 生命周期钩子
+   </script>
+
+   <template>
+     <!-- 模板内容 -->
+   </template>
+
+   <style scoped>
+   /* 样式 */
+   </style>
+   ```
+
+## 样式规范
+
+1. 使用 SCSS 预处理器
+2. 组件样式使用 `scoped` 属性
+3. 使用 BEM 命名规范
+4. 颜色值使用变量定义
+5. 响应式设计使用媒体查询
+
+## Git 提交规范
+
+1. 提交信息格式：`<type>(<scope>): <subject>`
+2. type 类型：
+   - feat: 新功能
+   - fix: 修复
+   - docs: 文档
+   - style: 格式
+   - refactor: 重构
+   - test: 测试
+   - chore: 构建过程或辅助工具的变动
+
+## 代码质量
+
+1. 使用 ESLint 进行代码检查
+2. 使用 Prettier 进行代码格式化
+3. 编写单元测试
+4. 保持代码简洁，遵循 DRY 原则
+5. 及时处理 TODO 和 FIXME 注释

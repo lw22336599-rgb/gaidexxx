@@ -1,0 +1,4 @@
+provider: generic
+url: 'http://update.wmzdb.shop/windows'
+updaterCacheDirName: alien-updater
+useMultipleRangeRequest: false

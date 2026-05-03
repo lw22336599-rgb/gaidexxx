@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>店铺后台</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+    /* 导航工具栏 */
+    .toolbar {
+      display: flex;
+      align-items: center;
+      padding: 6px 10px;
+      background: linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%);
+      border-bottom: 1px solid #dee2e6;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    /* 导航按钮 */
+    .nav-btn {
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 6px;
+      background: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s ease;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+    }
+    .nav-btn:hover {
+      background: #e9ecef;
+    }
+    .nav-btn:active {
+      transform: scale(0.95);
+    }
+    .nav-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+    .nav-btn:disabled:hover {
+      background: #fff;
+    }
+    .nav-btn svg {
+      width: 16px;
+      height: 16px;
+      fill: #495057;
+    }
+    /* 快捷入口按钮 */
+    .shortcut-btn {
+      height: 28px;
+      padding: 0 12px;
+      border: none;
+      border-radius: 4px;
+      background: #4a90d9;
+      color: #fff;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .shortcut-btn:hover {
+      background: #357abd;
+    }
+    .shortcut-btn:active {
+      transform: scale(0.97);
+    }
+    .shortcut-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .shortcut-btn:disabled:hover {
+      background: #4a90d9;
+    }
+    /* 分隔线 */
+    .divider {
+      width: 1px;
+      height: 24px;
+      background: #ced4da;
+      margin: 0 4px;
+    }
+    /* 地址栏 */
+    .address-bar {
+      flex: 1;
+      height: 32px;
+      padding: 0 12px;
+      border: 1px solid #ced4da;
+      border-radius: 6px;
+      background: #fff;
+      font-size: 13px;
+      color: #495057;
+      outline: none;
+      cursor: text;
+    }
+    .address-bar:focus {
+      border-color: #80bdff;
+      box-shadow: 0 0 0 2px rgba(0,123,255,0.15);
+    }
+    /* Webview 容器 */
+    .webview-container {
+      flex: 1;
+      position: relative;
+    }
+    webview {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <!-- 后退按钮 -->
+    <button class="nav-btn" id="btn-back" title="后退 (Alt+Left)">
+      <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+    </button>
+    <!-- 前进按钮 -->
+    <button class="nav-btn" id="btn-forward" title="前进 (Alt+Right)">
+      <svg viewBox="0 0 24 24"><path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/></svg>
+    </button>
+    <!-- 刷新按钮 -->
+    <button class="nav-btn" id="btn-refresh" title="刷新 (F5)">
+      <svg viewBox="0 0 24 24"><path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+    </button>
+    <!-- 分隔线 -->
+    <div class="divider"></div>
+    <!-- 快捷入口按钮 -->
+    <button class="shortcut-btn" id="btn-product" title="商品管理">商品管理</button>
+    <button class="shortcut-btn" id="btn-activity" title="活动列表">活动列表</button>
+    <button class="shortcut-btn" id="btn-order" title="订单管理">订单管理</button>
+    <button class="shortcut-btn" id="btn-promote" title="推广管理">推广管理</button>
+    <!-- 地址栏 -->
+    <input type="text" class="address-bar" id="address-bar" readonly>
+  </div>
+  <div class="webview-container">
+    <webview id="shop-webview" allowpopups></webview>
+  </div>
+
+  <script>
+    const { ipcRenderer } = require('electron');
+    const webview = document.getElementById('shop-webview');
+    const addressBar = document.getElementById('address-bar');
+    const btnBack = document.getElementById('btn-back');
+    const btnForward = document.getElementById('btn-forward');
+    const btnRefresh = document.getElementById('btn-refresh');
+
+    // 从 URL 参数获取目标地址、partition、shopType 和 officeId
+    const params = new URLSearchParams(window.location.search);
+    const targetUrl = decodeURIComponent(params.get('url') || '');
+    const partition = params.get('partition') || '';
+    const shopType = parseInt(params.get('shopType') || '0');
+    const officeId = decodeURIComponent(params.get('officeId') || '');
+
+    // 快捷入口按钮
+    const btnProduct = document.getElementById('btn-product');
+    const btnActivity = document.getElementById('btn-activity');
+    const btnOrder = document.getElementById('btn-order');
+    const btnPromote = document.getElementById('btn-promote');
+
+    // 各平台快捷入口配置
+    // shopType: 1=美团外卖, 2=饿了么外卖, 3=美团闪购, 4=美团医药, 5=饿百零售, 6=京东到家, 7=抖店即时零售
+    const shortcutUrls = {
+      // 美团外卖
+      1: {
+        product: 'https://e.waimai.meituan.com/#/gw/static_resource/product#/listView',
+        activity: 'https://e.waimai.meituan.com/#https://waimaieapp.meituan.com/igate/wmactpc/my',
+        order: 'https://e.waimai.meituan.com/#/new_fe/orderbusiness#/order/history',
+        promote: 'https://e.waimai.meituan.com/#https://waimaieapp.meituan.com/ad/v1/rpc'
+      },
+      // 饿了么外卖 (需要替换 {officeId})
+      2: {
+        product: `https://melody.shop.ele.me/app/shop/${officeId}/food#app.shop.food?path=management`,
+        activity: `https://melody.shop.ele.me/app/shop/${officeId}/activity__myActivity#app.shop.activity.myActivity`,
+        order: `https://melody.shop.ele.me/app/shop/${officeId}/order__querying#app.shop.order.querying`,
+        promote: `https://melody.shop.ele.me/app/shop/${officeId}/vas#app.shop.vas`
+      },
+      // 美团闪购
+      3: {
+        product: 'https://shangoue.meituan.com/#/reuse/sc/product/views/product/list',
+        activity: 'https://shangoue.meituan.com/#https://waimaieapp.meituan.com/marketing/shangou/activity/pc/merchant/myActivity',
+        order: 'https://shangoue.meituan.com/#/page/orderbusiness#/order/history',
+        promote: 'https://shangoue.meituan.com/#https://waimaieapp.meituan.com/ad/v1/rpc'
+      },
+      // 美团医药
+      4: {
+        product: 'https://yiyao.meituan.com/main/frame#/page/product/list/single',
+        activity: 'https://yiyao.meituan.com/main/frame#/pages/health/marketing/activity-manage/manage',
+        order: 'https://yiyao.meituan.com/main/frame#/page/orderbusiness#/order/history',
+        promote: 'https://yiyao.meituan.com/main/frame#https://waimaieapp.meituan.com/ad/v1/pc'
+      },
+      // 饿百零售
+      5: {
+        product: 'https://nr.ele.me/app/eleme-nr-bfe-newretail/common-next#/pc/storeCommodityManagementPc/',
+        activity: 'https://nr.ele.me/app/eleme-nr-bfe-newretail/common-next#/pc/shopActivitiesNextPc/batchManage?activityType=101&defaultTab=activityList',
+        order: 'https://nr.ele.me/app/eleme-nr-bfe-newretail/common-next#/pc/orderRecordPc/record',
+        promote: 'https://nr.ele.me/app/eleme-nr-bfe-newretail/common-next#/pc/newShopPromotionPc/'
+      },
+      // 京东到家
+      6: {
+        product: 'https://store.jddj.com/product/sku/index',
+        activity: 'https://store.jddj.com/plus/promotion/myActivities/index',
+        order: 'https://store.jddj.com/plus/order/all',
+        promote: null // 不支持
+      },
+      // 抖店即时零售 - 暂不支持
+      7: {
+        product: null,
+        activity: null,
+        order: null,
+        promote: null
+      }
+    };
+
+    // 获取当前平台的快捷入口
+    const currentShortcuts = shortcutUrls[shopType] || {};
+
+    // 设置按钮状态和点击事件
+    function setupShortcutButton(btn, url) {
+      if (!url) {
+        btn.disabled = true;
+        btn.title = '当前平台不支持此功能';
+      } else {
+        btn.addEventListener('click', () => {
+          webview.loadURL(url);
+        });
+      }
+    }
+
+    setupShortcutButton(btnProduct, currentShortcuts.product);
+    setupShortcutButton(btnActivity, currentShortcuts.activity);
+    setupShortcutButton(btnOrder, currentShortcuts.order);
+    setupShortcutButton(btnPromote, currentShortcuts.promote);
+
+    // 设置 webview 属性
+    if (partition) {
+      webview.setAttribute('partition', partition);
+    }
+    webview.setAttribute('src', targetUrl);
+    webview.setAttribute('useragent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+    webview.setAttribute('webpreferences', 'contextIsolation=no');
+
+    // 更新地址栏和按钮状态
+    function updateUI() {
+      addressBar.value = webview.getURL() || targetUrl;
+      btnBack.disabled = !webview.canGoBack();
+      btnForward.disabled = !webview.canGoForward();
+    }
+
+    // webview 事件监听
+    webview.addEventListener('did-navigate', updateUI);
+    webview.addEventListener('did-navigate-in-page', updateUI);
+    webview.addEventListener('dom-ready', () => {
+      updateUI();
+      // 注入脚本启用右键复制和文本选择，并禁止警告弹窗
+      webview.executeJavaScript(`
+        (function() {
+          // 移除禁止选择的 CSS
+          const style = document.createElement('style');
+          style.textContent = '* { -webkit-user-select: text !important; user-select: text !important; }';
+          document.head.appendChild(style);
+          // 移除右键菜单禁用
+          document.oncontextmenu = null;
+          document.body.oncontextmenu = null;
+          // 移除选择禁用事件
+          document.onselectstart = null;
+          document.body.onselectstart = null;
+          // 移除复制禁用
+          document.oncopy = null;
+          document.body.oncopy = null;
+
+          // 禁止警告弹窗：阻止美团外卖商家中心的警告弹窗
+          const blockWarningDialog = () => {
+            // 方法1: 拦截 alert/confirm 等原生弹窗
+            const originalAlert = window.alert;
+            const originalConfirm = window.confirm;
+            window.alert = function() { return true; };
+            window.confirm = function() { return true; };
+
+            // 方法2: 查找并关闭可能的警告弹窗（Element UI / Ant Design 等）
+            const closeWarningDialogs = () => {
+              // 查找包含警告文本的弹窗
+              const warningTexts = ['另一个', '美团外卖商家中心', '在线联系消息', '回复率'];
+              const allDialogs = document.querySelectorAll('.el-dialog, .el-message-box, .ant-modal, [class*="dialog"], [class*="modal"]');
+
+              allDialogs.forEach(dialog => {
+                const text = dialog.textContent || '';
+                if (warningTexts.some(warningText => text.includes(warningText))) {
+                  // 查找关闭按钮并点击
+                  const closeBtn = dialog.querySelector('.el-dialog__closebtn, .el-message-box__close, .ant-modal-close, [class*="close"]');
+                  if (closeBtn) {
+                    closeBtn.click();
+                  } else {
+                    // 如果没有关闭按钮，直接隐藏或移除
+                    dialog.style.display = 'none';
+                  }
+                }
+              });
+            };
+
+            // 立即执行一次
+            closeWarningDialogs();
+
+            // 使用 MutationObserver 监听 DOM 变化，自动关闭新出现的警告弹窗
+            const observer = new MutationObserver((mutations) => {
+              closeWarningDialogs();
+            });
+
+            observer.observe(document.body, {
+              childList: true,
+              subtree: true
+            });
+
+            // 定期检查（作为备用方案）
+            setInterval(closeWarningDialogs, 500);
+          };
+
+          // 页面加载完成后执行
+          if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', blockWarningDialog);
+          } else {
+            blockWarningDialog();
+          }
+        })();
+      `);
+    });
+
+    // 监听 webview 的右键菜单事件，发送选中文本到主进程弹出原生菜单
+    webview.addEventListener('context-menu', (e) => {
+      e.preventDefault();
+      const params = e.params;
+      ipcRenderer.send('show-context-menu', {
+        x: params.x,
+        y: params.y,
+        selectionText: params.selectionText,
+        isEditable: params.isEditable,
+        webContentsId: webview.getWebContentsId()
+      });
+    });
+
+    // 监听主进程发来的打开 webview DevTools 消息
+    ipcRenderer.on('open-webview-devtools', () => {
+      webview.openDevTools();
+    });
+
+    // 导航按钮事件
+    btnBack.addEventListener('click', () => {
+      if (webview.canGoBack()) webview.goBack();
+    });
+    btnForward.addEventListener('click', () => {
+      if (webview.canGoForward()) webview.goForward();
+    });
+    btnRefresh.addEventListener('click', () => {
+      webview.reload();
+    });
+
+    // 地址栏点击全选方便复制
+    addressBar.addEventListener('click', () => {
+      addressBar.select();
+    });
+
+    // 快捷键支持
+    document.addEventListener('keydown', (e) => {
+      // Alt+Left 后退
+      if (e.altKey && e.key === 'ArrowLeft') {
+        e.preventDefault();
+        if (webview.canGoBack()) webview.goBack();
+      }
+      // Alt+Right 前进
+      if (e.altKey && e.key === 'ArrowRight') {
+        e.preventDefault();
+        if (webview.canGoForward()) webview.goForward();
+      }
+      // F5 刷新
+      if (e.key === 'F5') {
+        e.preventDefault();
+        webview.reload();
+      }
+      // Ctrl+R 刷新
+      if (e.ctrlKey && e.key === 'r') {
+        e.preventDefault();
+        webview.reload();
+      }
+      // Ctrl+Shift+I 打开 webview 的开发者工具
+      if (e.ctrlKey && e.shiftKey && e.key === 'I') {
+        e.preventDefault();
+        webview.openDevTools();
+      }
+      // F12 也打开 webview 的开发者工具
+      if (e.key === 'F12') {
+        e.preventDefault();
+        webview.openDevTools();
+      }
+    });
+  </script>
+</body>
+</html>

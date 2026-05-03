@@ -1,0 +1,8 @@
+﻿e36b0f80b2a75ea84301fb00aa6e0000f88c4230|Merge branch 'main' of https://github.com/hardtry2025/faster-move-web
+b9b1e984f87210ff4ad64230cd6b16f5abda3c40|feat: 娴兼ê瀵查幍褰掑櫤娣囶喗鏁兼禒閿嬬壐閵嗕礁鑴婄粣妤佹▔缁€鍝勬嫲妤楄法娅ㄩ梿璺烘暛閸掑棛绮嶉弫浼村櫤鐠侊紕鐣?4e4c6d304bdfcd58df5b6b887b76de01cf6bfe45|feat: enhance customer service management with new API and UI improvements
+f436b029176b6c0f726c92af991c5503d3664534|feat: enhance customer service management with shop assignment features
+9f890638f9abc5d098cf70500f90943d0a2f6887|feat: complete IM management and customer service system
+c2740eb214f2c06d9a3d5855a92b004adb638def|feat: add ElCard component to Vue type definitions
+79bd86cf324edf874d29526e93110129befade1d|merge: merge remote code and keep local features
+7d0ad85fdbd51dea8722dfd8bb06274e8d318586|feat: 娴兼ê瀵叉惔妤呮懙婢跺秴鍩楅崝鐔诲厴閸滃I娴ｆ捇鐛?17238cec8f9d11075eca7fb354bc1643b234ca59|ggg
+fd3a6ef8022a78dd1691cd0e3df5b01e5383f9af|Merge branch 'main' of https://github.com/hardtry2025/faster-move-web

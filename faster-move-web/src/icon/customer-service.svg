@@ -1,0 +1,20 @@
+<svg width="128" height="128" xmlns="http://www.w3.org/2000/svg">
+  <g>
+    <!-- 头部 -->
+    <circle cx="64" cy="40" r="20" fill="currentColor"/>
+
+    <!-- 身体 -->
+    <path d="M 35 65 Q 35 55 45 55 L 83 55 Q 93 55 93 65 L 93 90 Q 93 100 83 100 L 45 100 Q 35 100 35 90 Z" fill="currentColor"/>
+
+    <!-- 耳机左侧 -->
+    <path d="M 30 45 Q 25 45 25 50 L 25 65 Q 25 70 30 70 L 35 70 L 35 45 Z" fill="currentColor"/>
+
+    <!-- 耳机右侧 -->
+    <path d="M 98 45 Q 103 45 103 50 L 103 65 Q 103 70 98 70 L 93 70 L 93 45 Z" fill="currentColor"/>
+
+    <!-- 话筒 -->
+    <ellipse cx="72" cy="85" rx="8" ry="12" fill="currentColor" opacity="0.7"/>
+    <line x1="72" y1="97" x2="72" y2="105" stroke="currentColor" stroke-width="3"/>
+    <line x1="65" y1="105" x2="79" y2="105" stroke="currentColor" stroke-width="3"/>
+  </g>
+</svg>
