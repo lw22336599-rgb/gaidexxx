@@ -44,6 +44,29 @@ const server = http.createServer((req, res) => {
       );
       return;
     }
+    if (url.startsWith("/homedata/v2/gethomedata") && req.method === "GET") {
+      res.end(
+        JSON.stringify({
+          code: 200,
+          data: {
+            top_data: {
+              demo_mt: { title: "美团店铺", count: 0, prefix: "", suffix: "" },
+              demo_elm: { title: "饿了么店铺", count: 0, prefix: "", suffix: "" },
+            },
+            weather: { describe: "（Mock 服务占位，接入真实后端后自动为实况）", uptime: Date.now() },
+            calendar_count: { done: 0, undone: 0 },
+            last_week: {},
+            month_pay_member: [],
+            month_member_count: [],
+            month_shop_count: [],
+            BalanceTop: [],
+            update_top10: [],
+          },
+          msg: "mock-home",
+        })
+      );
+      return;
+    }
     res.statusCode = 404;
     res.end(JSON.stringify({ code: 404, msg: "not found", data: null }));
   });

@@ -110,7 +110,7 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'Notice',
+  name: 'Notice'
 })
 
 const open1 = () => {

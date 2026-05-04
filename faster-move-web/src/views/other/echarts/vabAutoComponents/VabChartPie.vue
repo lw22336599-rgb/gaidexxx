@@ -11,14 +11,14 @@ import { random } from 'lodash-es'
 import { useSettingsStore } from '/@/store/modules/settings'
 
 defineOptions({
-  name: 'VabChartPie',
+  name: 'VabChartPie'
 })
 
 defineProps({
   title: {
     type: String,
-    default: '',
-  },
+    default: ''
+  }
 })
 
 const settingsStore = useSettingsStore()
@@ -30,10 +30,10 @@ const option = reactive<any>({
     top: 20,
     right: 20,
     bottom: 40,
-    left: 40,
+    left: 40
   },
   tooltip: {
-    trigger: 'item',
+    trigger: 'item'
   },
   series: {
     name: '访问来源',
@@ -42,16 +42,16 @@ const option = reactive<any>({
     itemStyle: {
       borderRadius: 10,
       borderColor: '#fff',
-      borderWidth: 2,
+      borderWidth: 2
     },
     data: [
       { value: random(0, 100), name: '搜索引擎' },
       { value: random(0, 100), name: '直接访问' },
       { value: random(0, 100), name: '邮件营销' },
       { value: random(0, 100), name: '联盟广告' },
-      { value: random(0, 100), name: '视频广告' },
-    ],
-  },
+      { value: random(0, 100), name: '视频广告' }
+    ]
+  }
 })
 
 watch(
@@ -69,7 +69,7 @@ onMounted(() => {
       { value: random(0, 100), name: '直接访问' },
       { value: random(0, 100), name: '邮件营销' },
       { value: random(0, 100), name: '联盟广告' },
-      { value: random(0, 100), name: '视频广告' },
+      { value: random(0, 100), name: '视频广告' }
     ]
   }, 3000)
 })

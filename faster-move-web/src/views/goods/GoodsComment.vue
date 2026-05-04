@@ -10,7 +10,9 @@
             <el-input v-model="queryForm.name" clearable placeholder="请输入商品名称" />
           </el-form-item>
           <el-form-item>
-            <el-button :icon="Search" :loading="listLoading" native-type="submit" type="primary" @click="queryData">查询</el-button>
+            <el-button :icon="Search" :loading="listLoading" native-type="submit" type="primary" @click="queryData"
+              >查询</el-button
+            >
           </el-form-item>
         </el-form>
       </vab-query-form-right-panel>
@@ -44,7 +46,10 @@
       <el-table-column align="center" label="回复内容" min-width="200" prop="reply" show-overflow-tooltip />
       <el-table-column align="center" label="回复状态" min-width="100">
         <template #default="{ row }">
-          <el-tag effect="dark" :type="row.replyStatus == '已回复' ? 'success' : row.replyStatus == '未回复' ? 'warning' : 'info'">
+          <el-tag
+            effect="dark"
+            :type="row.replyStatus == '已回复' ? 'success' : row.replyStatus == '未回复' ? 'warning' : 'info'"
+          >
             {{ row.replyStatus }}
           </el-tag>
         </template>
@@ -77,7 +82,7 @@ import type { TableInstance } from 'element-plus'
 import { doDelete, getList } from '/@/api/goodsComment'
 
 defineOptions({
-  name: 'GoodsComment',
+  name: 'GoodsComment'
 })
 
 const editRef = ref<any>(null)
@@ -88,7 +93,7 @@ const total = ref<number>(0)
 const selectRows = ref<any>([])
 const queryForm = reactive<any>({
   pageNo: 1,
-  pageSize: 20,
+  pageSize: 20
 })
 
 const fetchData = async () => {

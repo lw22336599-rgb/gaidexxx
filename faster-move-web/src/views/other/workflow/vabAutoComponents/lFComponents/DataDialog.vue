@@ -12,12 +12,12 @@ export default defineComponent({
   props: {
     graphData: {
       type: Object,
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   data() {
     return {
-      data: [],
+      data: []
     }
   },
   created() {
@@ -25,10 +25,10 @@ export default defineComponent({
       JSON.stringify([
         {
           edges: this.graphData.edges,
-          nodes: this.graphData.nodes,
-        },
+          nodes: this.graphData.nodes
+        }
       ])
     )
-  },
+  }
 })
 </script>

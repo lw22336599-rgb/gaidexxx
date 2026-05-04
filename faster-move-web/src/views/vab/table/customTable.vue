@@ -10,7 +10,12 @@
             <el-input v-model="queryForm.author" clearable placeholder="请输入作者" />
           </el-form-item>
           <el-form-item v-show="!fold" label="时间">
-            <el-date-picker v-model="queryForm.datetime" format="YYYY/MM/DD HH:mm:ss" placeholder="请选择时间" type="datetime" />
+            <el-date-picker
+              v-model="queryForm.datetime"
+              format="YYYY/MM/DD HH:mm:ss"
+              placeholder="请选择时间"
+              type="datetime"
+            />
           </el-form-item>
           <el-form-item v-show="!fold" label="状态">
             <el-select v-model="queryForm.status" placeholder="请选择状态">
@@ -20,7 +25,9 @@
             </el-select>
           </el-form-item>
           <el-form-item>
-            <el-button :icon="Search" :loading="listLoading" native-type="submit" type="primary" @click="queryData">查询</el-button>
+            <el-button :icon="Search" :loading="listLoading" native-type="submit" type="primary" @click="queryData"
+              >查询</el-button
+            >
             <el-button class="hidden-xs-only" text type="primary" @click="handleFold">
               <span v-if="fold">展开</span>
               <span v-else>合并</span>
@@ -161,7 +168,7 @@ import { useTabsStore } from '/@/store/modules/tabs'
 import { handleMatched, handleTabs } from '/@/utils/routes'
 
 defineOptions({
-  name: 'CustomTable',
+  name: 'CustomTable'
 })
 
 const router = useRouter()
@@ -186,7 +193,7 @@ const columns = ref<any>([
     prop: 'id',
     sortable: true,
     checked: true,
-    minWidth: 200,
+    minWidth: 200
   },
   {
     label: '标题',
@@ -194,55 +201,55 @@ const columns = ref<any>([
     sortable: true,
     disableCheck: true,
     checked: true,
-    minWidth: 200,
+    minWidth: 200
   },
   {
     label: '图片',
     prop: 'title',
     checked: true,
-    minWidth: 100,
+    minWidth: 100
   },
   {
     label: '作者',
     prop: 'author',
     sortable: true,
     checked: true,
-    minWidth: 100,
+    minWidth: 100
   },
   {
     label: '评级',
     prop: 'rate',
     sortable: true,
     checked: true,
-    minWidth: 200,
+    minWidth: 200
   },
   {
     label: '数量',
     prop: 'count',
     sortable: true,
     checked: true,
-    minWidth: 100,
+    minWidth: 100
   },
   {
     label: '时间',
     prop: 'datetime',
     sortable: true,
     checked: true,
-    minWidth: 160,
+    minWidth: 160
   },
   {
     label: '描述',
     prop: 'description',
     sortable: true,
     checked: true,
-    minWidth: 400,
-  },
+    minWidth: 400
+  }
 ])
 const checkList = ref<any>([])
 const queryForm = reactive<any>({
   pageNo: 1,
   pageSize: 20,
-  title: '',
+  title: ''
 })
 const fixed = ref<string>('right')
 const { exit, enter, isFullscreen: _isFullscreen } = useFullscreen()
@@ -321,15 +328,15 @@ const handleDetailStayTable = async () => {
       const matched = handleMatched(allRoutes.value, '/vab/table/defaultTableDetail')
       const tab = handleTabs({
         ...matched.at(-1),
-        query: selectRows.value[i],
+        query: selectRows.value[i]
       })
       if (tab) {
         await addVisitedRoute(tab)
         await changeTabsMeta({
           title: '详情页',
           meta: {
-            title: `${tab.query.title} 详情页`,
-          },
+            title: `${tab.query.title} 详情页`
+          }
         })
       }
     }
@@ -342,8 +349,8 @@ const handleDetail = (row: any) => {
       path: '/vab/table/defaultTableDetail',
       query: {
         ...row,
-        timestamp: Date.now(), //允许同一个详情页同时打开多次，否则会触发路由被缓存下次无法刷新的bug
-      },
+        timestamp: Date.now() //允许同一个详情页同时打开多次，否则会触发路由被缓存下次无法刷新的bug
+      }
     })
   else {
     if (selectRows.value.length === 1)
@@ -351,8 +358,8 @@ const handleDetail = (row: any) => {
         path: '/vab/table/defaultTableDetail',
         query: {
           ...selectRows.value[0],
-          timestamp: Date.now(), //允许同一个详情页同时打开多次，否则会触发路由被缓存下次无法刷新的bug
-        },
+          timestamp: Date.now() //允许同一个详情页同时打开多次，否则会触发路由被缓存下次无法刷新的bug
+        }
       })
     else $baseMessage('请选择一行进行详情页跳转', 'warning', 'hey')
   }

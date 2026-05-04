@@ -5,7 +5,7 @@
         <el-col :lg="9" :md="24" :sm="24" :xl="9" :xs="24">
           <vab-card
             :body-style="{
-              height: '222px',
+              height: '222px'
             }"
           >
             <vab-link target="_blank" to="/portal">
@@ -20,7 +20,7 @@
         <el-col :lg="5" :md="24" :sm="24" :xl="5" :xs="24">
           <vab-card
             :body-style="{
-              height: '100px',
+              height: '100px'
             }"
           >
             <vab-link target="_blank" to="/dataScreen">
@@ -36,7 +36,7 @@
 
           <vab-card
             :body-style="{
-              height: '100px',
+              height: '100px'
             }"
           >
             <vab-link target="_blank" to="/other/video">
@@ -53,7 +53,7 @@
         <el-col :lg="5" :md="24" :sm="24" :xl="5" :xs="24">
           <vab-card
             :body-style="{
-              height: '100px',
+              height: '100px'
             }"
           >
             <vab-link target="_blank" to="/vab/table/customTable">
@@ -68,7 +68,7 @@
           </vab-card>
           <vab-card
             :body-style="{
-              height: '100px',
+              height: '100px'
             }"
           >
             <vab-link target="_blank" to="/other/echarts">
@@ -85,7 +85,7 @@
         <el-col :lg="5" :md="24" :sm="24" :xl="5" :xs="24">
           <vab-card
             :body-style="{
-              height: '100px',
+              height: '100px'
             }"
           >
             <vab-link target="_blank" to="/other/gantt">
@@ -100,7 +100,7 @@
           </vab-card>
           <vab-card
             :body-style="{
-              height: '100px',
+              height: '100px'
             }"
           >
             <vab-link target="_blank" to="/other/workflow">
@@ -117,7 +117,7 @@
         <el-col :lg="8" :md="24" :sm="24" :xl="8" :xs="24">
           <vab-card
             :body-style="{
-              height: '100px',
+              height: '100px'
             }"
           >
             <vab-link target="_blank" to="/operate/randomTheme">
@@ -134,7 +134,7 @@
         <el-col :lg="8" :md="24" :sm="24" :xl="8" :xs="24">
           <vab-card
             :body-style="{
-              height: '100px',
+              height: '100px'
             }"
           >
             <vab-link target="_blank" to="/operate/permission">
@@ -151,7 +151,7 @@
         <el-col :lg="8" :md="24" :sm="24" :xl="8" :xs="24">
           <vab-card
             :body-style="{
-              height: '100px',
+              height: '100px'
             }"
           >
             <vab-link target="_blank" to="/chat/chatGPT">
@@ -172,7 +172,7 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'Tile',
+  name: 'Tile'
 })
 </script>
 

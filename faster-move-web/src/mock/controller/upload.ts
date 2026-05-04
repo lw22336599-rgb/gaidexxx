@@ -7,8 +7,8 @@ export default [
     response: () => {
       return {
         code: 200,
-        msg: '模拟上传成功',
+        msg: '模拟上传成功'
       }
-    },
-  },
+    }
+  }
 ] as MockMethod[]

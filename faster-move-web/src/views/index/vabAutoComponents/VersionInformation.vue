@@ -61,7 +61,13 @@
           <vab-icon icon="vip-diamond-line" />
           <span>shop-vite ￥1899</span>
         </el-button>
-        <el-button href="https://vuejs-core.cn/admin-plus" rel="noopener noreferrer" tag="a" target="_blank" type="warning">
+        <el-button
+          href="https://vuejs-core.cn/admin-plus"
+          rel="noopener noreferrer"
+          tag="a"
+          target="_blank"
+          type="warning"
+        >
           <vab-icon icon="vip-diamond-line" />
           <span>admin-plus ￥799</span>
         </el-button>

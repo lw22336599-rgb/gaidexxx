@@ -11,7 +11,7 @@ import githubTheme from '@kangc/v-md-editor/lib/theme/github'
 import '@kangc/v-md-editor/lib/theme/style/github.css'
 
 defineOptions({
-  name: 'MdEditor',
+  name: 'MdEditor'
 })
 
 const markdownContent = ref<any>(`<div align="center">

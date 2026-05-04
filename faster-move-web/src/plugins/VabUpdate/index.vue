@@ -1,6 +1,13 @@
 <template>
-  <vab-dialog v-model="show" append-to-body class="vab-update" :show-close="false" :show-fullscreen="false" width="410px">
-    <template #header></template>
+  <vab-dialog
+    v-model="show"
+    append-to-body
+    class="vab-update"
+    :show-close="false"
+    :show-fullscreen="false"
+    width="410px"
+  >
+    <template #header />
     <div class="vab-update-icon">
       <vab-icon icon="upload-cloud-2-fill" />
     </div>
@@ -27,7 +34,7 @@ import { translate } from '/@/i18n'
 import { useSettingsStore } from '/@/store/modules/settings'
 
 defineOptions({
-  name: 'VabUpdate',
+  name: 'VabUpdate'
 })
 
 const { getTitle: title } = useSettingsStore()
@@ -74,7 +81,7 @@ watch(
     handleShow()
   },
   {
-    immediate: true,
+    immediate: true
   }
 )
 

@@ -10,7 +10,9 @@
             <el-input v-model="queryForm.title" clearable placeholder="请输入工单标题" />
           </el-form-item>
           <el-form-item>
-            <el-button :icon="Search" :loading="listLoading" native-type="submit" type="primary" @click="queryData">查询</el-button>
+            <el-button :icon="Search" :loading="listLoading" native-type="submit" type="primary" @click="queryData"
+              >查询</el-button
+            >
           </el-form-item>
         </el-form>
       </vab-query-form-right-panel>
@@ -34,7 +36,10 @@
       <el-table-column align="center" label="受理人员" min-width="90" prop="accept" show-overflow-tooltip />
       <el-table-column align="center" label="工单状态" min-width="90">
         <template #default="{ row }">
-          <el-tag effect="dark" :type="row.status == '处理中' ? 'warning' : row.status == '已处理' ? 'success' : 'primary'">
+          <el-tag
+            effect="dark"
+            :type="row.status == '处理中' ? 'warning' : row.status == '已处理' ? 'success' : 'primary'"
+          >
             {{ row.status }}
           </el-tag>
         </template>
@@ -64,7 +69,7 @@ import type { TableInstance } from 'element-plus'
 import { doDelete, getList } from '/@/api/workOrder'
 
 defineOptions({
-  name: 'WorkOrder',
+  name: 'WorkOrder'
 })
 
 const tableRef = ref<TableInstance>()
@@ -74,7 +79,7 @@ const total = ref<number>(0)
 const selectRows = ref<any>([])
 const queryForm = reactive<any>({
   pageNo: 1,
-  pageSize: 20,
+  pageSize: 20
 })
 
 onActivated(() => {

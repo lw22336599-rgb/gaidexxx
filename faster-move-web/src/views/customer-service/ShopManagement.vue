@@ -4,17 +4,28 @@
       <!-- 店铺类型导航栏 -->
       <div class="shop-type-nav">
         <div class="shop-type-list">
-          <el-dropdown v-for="option in shopTypeOptions" :key="option.value" trigger="hover" placement="bottom-start"
-            @command="handleDropdownCommand">
-            <div class="shop-type-item" :class="{ active: queryForm.shopType === option.value }"
-              @click.stop="handleShopTypeChange(option.value)">
+          <el-dropdown
+            v-for="option in shopTypeOptions"
+            :key="option.value"
+            trigger="hover"
+            placement="bottom-start"
+            @command="handleDropdownCommand"
+          >
+            <div
+              class="shop-type-item"
+              :class="{ active: queryForm.shopType === option.value }"
+              @click.stop="handleShopTypeChange(option.value)"
+            >
               <PlatformIcon :shop-type="option.value" :size="20" />
               <span class="shop-type-label">{{ option.label }}</span>
             </div>
             <template #dropdown>
               <el-dropdown-menu class="shop-type-dropdown-menu">
-                <el-dropdown-item v-if="isElectron" :command="{ action: 'auth', shopType: option.value }"
-                  class="dropdown-item-auth">
+                <el-dropdown-item
+                  v-if="isElectron"
+                  :command="{ action: 'auth', shopType: option.value }"
+                  class="dropdown-item-auth"
+                >
                   <el-button type="success" plain size="small" class="dropdown-button">
                     <el-icon style="margin-right: 6px">
                       <Key />
@@ -35,8 +46,13 @@
 
         <!-- 搜索框移动到京东到家后面，并与店铺类型选择器同一行 -->
         <div class="shop-type-search">
-          <el-input v-model="queryForm.searchText" clearable placeholder="搜索门店名称或ID或备注" style="width: 220px"
-            @change="handleSearch" />
+          <el-input
+            v-model="queryForm.searchText"
+            clearable
+            placeholder="搜索门店名称或ID或备注"
+            style="width: 220px"
+            @change="handleSearch"
+          />
         </div>
       </div>
     </div>
@@ -83,8 +99,12 @@
           <template #header>
             <div class="shop-status-header">
               <span class="header-label">店铺状态</span>
-              <el-dropdown trigger="hover" placement="bottom" class="header-filter-dropdown"
-                @command="handleChangeOnline">
+              <el-dropdown
+                trigger="hover"
+                placement="bottom"
+                class="header-filter-dropdown"
+                @command="handleChangeOnline"
+              >
                 <el-button type="primary" size="small" text class="filter-button">
                   <el-icon style="margin-right: 4px">
                     <Filter />
@@ -117,13 +137,13 @@
             </div>
             <div style="display: flex; align-items: center; justify-content: center; margin: 6px 0">
               <div class="state-text">
-                <span class="suc-dot" :class="{ 'err-dot': row.state == 3 }"></span>
+                <span class="suc-dot" :class="{ 'err-dot': row.state == 3 }" />
                 {{ row.state == 3 ? '授权异常' : '授权正常' }}
               </div>
             </div>
             <div style="margin-top: 6px">
               <el-button type="primary" size="small" plain @click="handleShowBindList(row)">
-                {{ (Array.isArray(row.MgAgencys) ? row.MgAgencys.length : 0) }}人绑定
+                {{ Array.isArray(row.MgAgencys) ? row.MgAgencys.length : 0 }}人绑定
               </el-button>
             </div>
           </template>
@@ -143,8 +163,12 @@
           <template #header>
             <div class="shop-status-header">
               <span class="header-label">IM客服</span>
-              <el-dropdown trigger="hover" placement="bottom" class="header-filter-dropdown"
-                @command="handleChangeKefuStatus">
+              <el-dropdown
+                trigger="hover"
+                placement="bottom"
+                class="header-filter-dropdown"
+                @command="handleChangeKefuStatus"
+              >
                 <el-button type="primary" size="small" text class="filter-button">
                   <el-icon style="margin-right: 4px">
                     <Filter />
@@ -156,24 +180,34 @@
                     <el-dropdown-item :command="'全部'" :class="{ 'is-selected': !queryForm.kefuStatus }">
                       全部
                     </el-dropdown-item>
-                    <el-dropdown-item :command="Filter_FuncState.未到期"
-                      :class="{ 'is-selected': queryForm.kefuStatus === Filter_FuncState.未到期 }">
+                    <el-dropdown-item
+                      :command="Filter_FuncState.未到期"
+                      :class="{ 'is-selected': queryForm.kefuStatus === Filter_FuncState.未到期 }"
+                    >
                       未到期
                     </el-dropdown-item>
-                    <el-dropdown-item :command="Filter_FuncState.即将到期"
-                      :class="{ 'is-selected': queryForm.kefuStatus === Filter_FuncState.即将到期 }">
+                    <el-dropdown-item
+                      :command="Filter_FuncState.即将到期"
+                      :class="{ 'is-selected': queryForm.kefuStatus === Filter_FuncState.即将到期 }"
+                    >
                       即将到期
                     </el-dropdown-item>
-                    <el-dropdown-item :command="Filter_FuncState.已经到期"
-                      :class="{ 'is-selected': queryForm.kefuStatus === Filter_FuncState.已经到期 }">
+                    <el-dropdown-item
+                      :command="Filter_FuncState.已经到期"
+                      :class="{ 'is-selected': queryForm.kefuStatus === Filter_FuncState.已经到期 }"
+                    >
                       已到期
                     </el-dropdown-item>
-                    <el-dropdown-item :command="Filter_FuncState.功能已开启"
-                      :class="{ 'is-selected': queryForm.kefuStatus === Filter_FuncState.功能已开启 }">
+                    <el-dropdown-item
+                      :command="Filter_FuncState.功能已开启"
+                      :class="{ 'is-selected': queryForm.kefuStatus === Filter_FuncState.功能已开启 }"
+                    >
                       已开启
                     </el-dropdown-item>
-                    <el-dropdown-item :command="Filter_FuncState.功能已关闭"
-                      :class="{ 'is-selected': queryForm.kefuStatus === Filter_FuncState.功能已关闭 }">
+                    <el-dropdown-item
+                      :command="Filter_FuncState.功能已关闭"
+                      :class="{ 'is-selected': queryForm.kefuStatus === Filter_FuncState.功能已关闭 }"
+                    >
                       已关闭
                     </el-dropdown-item>
                   </el-dropdown-menu>
@@ -183,27 +217,43 @@
           </template>
           <template #default="{ row }">
             <template v-if="getKefuFunc(row)">
-              <el-switch v-model="row.KEFU" active-color="var(--el-color-primary)" inactive-color="#D8D8D8"
-                @change="handleKefuSwitchChange(row)" />
+              <el-switch
+                v-model="row.KEFU"
+                active-color="var(--el-color-primary)"
+                inactive-color="#D8D8D8"
+                @change="handleKefuSwitchChange(row)"
+              />
               <div style="font-size: 12px; margin-top: 6px">功能剩余：{{ getExpireTime(row) }}</div>
-              <span class="pointer" style="font-size: 14px; color: var(--el-color-primary); margin-top: 6px"
-                @click="handleRenew(row)">续费</span>
+              <span
+                class="pointer"
+                style="font-size: 14px; color: var(--el-color-primary); margin-top: 6px"
+                @click="handleRenew(row)"
+                >续费</span
+              >
             </template>
             <template v-else>
               <div style="color: #999; font-size: 14px; margin-bottom: 6px">未购买</div>
-              <span class="pointer" style="font-size: 14px; color: var(--el-color-primary)"
-                @click="handleRenew(row)">续费</span>
+              <span class="pointer" style="font-size: 14px; color: var(--el-color-primary)" @click="handleRenew(row)"
+                >续费</span
+              >
             </template>
           </template>
         </el-table-column>
         <el-table-column align="center" label="IM自动回复" min-width="140">
           <template #default="{ row }">
             <template v-if="getImzdHfFunc(row)">
-              <el-switch v-model="row.IMZDHF" active-color="var(--el-color-primary)" inactive-color="#D8D8D8"
-                @change="handleImzdhfSwitchChange(row)" />
+              <el-switch
+                v-model="row.IMZDHF"
+                active-color="var(--el-color-primary)"
+                inactive-color="#D8D8D8"
+                @change="handleImzdhfSwitchChange(row)"
+              />
               <div style="font-size: 12px; margin-top: 6px">功能剩余：{{ getImzdhfExpireTime(row) }}</div>
-              <div class="pointer" style="font-size: 12px; margin-top: 4px; color: var(--el-color-primary)"
-                @click="openImAutoReplySetting(row)">
+              <div
+                class="pointer"
+                style="font-size: 12px; margin-top: 4px; color: var(--el-color-primary)"
+                @click="openImAutoReplySetting(row)"
+              >
                 回复设置
               </div>
             </template>
@@ -217,18 +267,41 @@
           <el-empty class="vab-data-empty" description="暂无店铺数据" />
         </template>
       </el-table>
-      <vab-pagination :current-page="queryForm.page" :page-size="queryForm.pageSize" :total="total"
-        @current-change="handleCurrentChange" @size-change="handleSizeChange" :class="{ 'demo-mode': demoMode }" />
+      <vab-pagination
+        :current-page="queryForm.page"
+        :page-size="queryForm.pageSize"
+        :total="total"
+        :class="{ 'demo-mode': demoMode }"
+        @current-change="handleCurrentChange"
+        @size-change="handleSizeChange"
+      />
     </div>
     <!-- 支付对话框 -->
-    <pay-dialog v-if="payDialogState" :pay-dialog-state="payDialogState" :pay-type-text="payTypeText"
-      :shop-data="shopData" @close-dialog="closePayDialog" @pay-success="paySuccess" />
+    <pay-dialog
+      v-if="payDialogState"
+      :pay-dialog-state="payDialogState"
+      :pay-type-text="payTypeText"
+      :shop-data="shopData"
+      @close-dialog="closePayDialog"
+      @pay-success="paySuccess"
+    />
     <!-- 功能设置抽屉（IM 自动回复设置等） -->
-    <all-func-setting v-if="drawerState" :current-row="currentRow" :drawer-fun="drawerFun" :drawer-state="drawerState"
-      :icon="icon" @close-drawer="closeDrawer" />
+    <all-func-setting
+      v-if="drawerState"
+      :current-row="currentRow"
+      :drawer-fun="drawerFun"
+      :drawer-state="drawerState"
+      :icon="icon"
+      @close-drawer="closeDrawer"
+    />
     <!-- 绑定店铺成功对话框 -->
-    <set-only-bind v-if="showShopMsgState" :add-shop-after-obj="showShopMsg" :add-shop-after-state="showShopMsgState"
-      :is-bind="isBind" @close-shop-after="closeShopAfter" />
+    <set-only-bind
+      v-if="showShopMsgState"
+      :add-shop-after-obj="showShopMsg"
+      :add-shop-after-state="showShopMsgState"
+      :is-bind="isBind"
+      @close-shop-after="closeShopAfter"
+    />
     <!-- 绑定用户列表对话框 -->
     <el-dialog v-model="bindListDialogVisible" title="绑定用户列表" width="800px" :close-on-click-modal="false">
       <el-table v-loading="bindListLoading" :data="bindListData" stripe max-height="500px">
@@ -286,7 +359,7 @@ import PlatformIcon from '/@/components/PlatformIcon/index.vue'
 import { useSettingsStore } from '/@/store/modules/settings'
 
 // 检查是否在Electron环境中
-const isElectron = !!((globalThis as any).electron)
+const isElectron = !!(globalThis as any).electron
 
 // 演示模式状态
 const settingsStore = useSettingsStore()
@@ -335,7 +408,7 @@ const shopTypeOptions = [
   { label: '美团闪购', value: ShopType.美团闪购 },
   { label: '美团医药', value: ShopType.美团医药 },
   { label: '饿百零售', value: ShopType.饿百零售 },
-  { label: '京东到家', value: ShopType.京东到家 },
+  { label: '京东到家', value: ShopType.京东到家 }
 ]
 
 // 查询表单
@@ -347,7 +420,7 @@ const queryForm = reactive({
   ckOnline: undefined as boolean | undefined,
   state: undefined as number | undefined,
   page: 1,
-  pageSize: 20,
+  pageSize: 20
 })
 
 // 列表数据
@@ -474,8 +547,8 @@ const fetchShopList = async (keepOldData = false) => {
         func_code: 'KEFU',
         func_state: queryForm.kefuStatus,
         ck_online: queryForm.ckOnline,
-        state: queryForm.state,
-      },
+        state: queryForm.state
+      }
     })
 
     // 初始化功能开关状态
@@ -684,7 +757,7 @@ const bindShopCode = (shopType?: ShopType) => {
         })
       }
     })
-    .catch(() => { })
+    .catch(() => {})
 }
 
 /**
@@ -921,15 +994,11 @@ const handleRemoveBind = async (bindItem: ShopUserBindItem) => {
   if (!currentShopRow.value) return
 
   try {
-    await ElMessageBox.confirm(
-      `确定要移除用户"${bindItem.user_name}"的绑定吗？`,
-      '提示',
-      {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning',
-      }
-    )
+    await ElMessageBox.confirm(`确定要移除用户"${bindItem.user_name}"的绑定吗？`, '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    })
 
     bindListLoading.value = true
     await apiManager.shopmgApi.UnShopBind(currentShopRow.value.id, bindItem.id)
@@ -1307,7 +1376,6 @@ onMounted(() => {
 // 分页组件数字模糊效果（仅在演示模式下生效）
 :deep(.vab-pagination) {
   &.demo-mode {
-
     // 总数
     .el-pagination__total {
       filter: blur(3px);

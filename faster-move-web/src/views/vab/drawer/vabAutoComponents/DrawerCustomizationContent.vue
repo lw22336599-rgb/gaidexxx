@@ -58,30 +58,30 @@ const form = reactive({
   delivery: false,
   type: [],
   resource: '',
-  desc: '',
+  desc: ''
 })
 
 const gridData = [
   {
     date: '2016-05-02',
     name: 'Peter Parker',
-    address: 'Queens, New York City',
+    address: 'Queens, New York City'
   },
   {
     date: '2016-05-04',
     name: 'Peter Parker',
-    address: 'Queens, New York City',
+    address: 'Queens, New York City'
   },
   {
     date: '2016-05-01',
     name: 'Peter Parker',
-    address: 'Queens, New York City',
+    address: 'Queens, New York City'
   },
   {
     date: '2016-05-03',
     name: 'Peter Parker',
-    address: 'Queens, New York City',
-  },
+    address: 'Queens, New York City'
+  }
 ]
 
 const drawerRef = ref<any>()
@@ -94,7 +94,7 @@ const handleClose = (done: () => void) => {
     return
   }
   ElMessageBox.confirm('您确定要提交吗？', {
-    draggable: true,
+    draggable: true
   })
     .then(() => {
       loading.value = true

@@ -26,7 +26,6 @@ function interceptNavigate(method: "navigateTo" | "redirectTo" | "reLaunch" | "s
       const url = (options as { url?: string }).url;
       if (!url) return true;
       if (shouldBlock(url)) {
-        uni.showToast({ title: "请先登录", icon: "none" });
         uni.redirectTo({ url: "/pages/login/login" });
         return false;
       }

@@ -5,7 +5,7 @@ import { getList } from '/@/api/router'
 import { authentication, rolesControl } from '/@/config'
 import { asyncRoutes, constantRoutes, resetRouter } from '/@/router'
 import type { SystemConfigAllDto } from '/@/TsModel/Alien/Entity/Function/SystemConfig/SystemConfigAllDto'
-import { ShopType } from '/@/TsModel/Alien/Entity/Enums/ShopType'
+import type { ShopType } from '/@/TsModel/Alien/Entity/Enums/ShopType'
 import { convertRouter, filterRoutes } from '/@/utils/routes'
 import { isArray } from '/@/utils/validate'
 import { gp } from '/@vab/plugins/vab'
@@ -48,8 +48,7 @@ const filterByPlatformConfig = (routes: VabRouteRecord[], config: SystemConfigAl
 
       // 若指定模块过滤后无可用子路由，则隐藏父级
       const shouldHideChildren =
-        (clone.name === 'Shop' || clone.name === 'Survey') &&
-        (!clone.children || clone.children.length === 0)
+        (clone.name === 'Shop' || clone.name === 'Survey') && (!clone.children || clone.children.length === 0)
       if (shouldHideChildren) return null
       return clone
     })
@@ -59,28 +58,29 @@ const filterByPlatformConfig = (routes: VabRouteRecord[], config: SystemConfigAl
 export const useRoutesStore = defineStore('routes', {
   state: (): RoutesModuleType => ({
     tab: {
-      data: undefined,
+      data: undefined
     },
     tabMenu: undefined,
     activeMenu: {
-      data: undefined,
+      data: undefined
     },
     routes: [],
     allRoutes: [],
-    breadcrumbRoutes: [],
+    breadcrumbRoutes: []
   }),
   getters: {
-    getTab: (state) => state.tab,
-    getTabMenu: (state) => (state.tab.data ? state.routes.find((route) => route.name === state.tab.data) : { meta: { title: '' } }),
-    getActiveMenu: (state) => state.activeMenu,
-    getRoutes: (state) => state.routes.filter((_route) => _route.meta && _route.meta.hidden !== true),
-    getAllRoutes: (state) => state.allRoutes.filter((_route) => _route.meta && _route.meta.hidden !== true),
-    getBreadcrumbRoutes: (state) => state.breadcrumbRoutes.filter((_route) => _route.meta && _route.meta.hidden !== true),
-    getPartialRoutes: (state) =>
+    getTab: state => state.tab,
+    getTabMenu: state =>
+      state.tab.data ? state.routes.find(route => route.name === state.tab.data) : { meta: { title: '' } },
+    getActiveMenu: state => state.activeMenu,
+    getRoutes: state => state.routes.filter(_route => _route.meta && _route.meta.hidden !== true),
+    getAllRoutes: state => state.allRoutes.filter(_route => _route.meta && _route.meta.hidden !== true),
+    getBreadcrumbRoutes: state => state.breadcrumbRoutes.filter(_route => _route.meta && _route.meta.hidden !== true),
+    getPartialRoutes: state =>
       state.tab.data
-        ? state.routes.find((route) => route.name === state.tab.data) &&
-        state.routes.find((route) => route.name === state.tab.data).children
-        : [],
+        ? state.routes.find(route => route.name === state.tab.data) &&
+          state.routes.find(route => route.name === state.tab.data).children
+        : []
   },
   actions: {
     /**
@@ -96,7 +96,7 @@ export const useRoutesStore = defineStore('routes', {
       // 设置后端路由(不需要可以删除)
       if (authentication === 'all') {
         const {
-          data: { list },
+          data: { list }
         } = await getList()
         if (!isArray(list)) gp.$baseMessage('路由格式返回有误！', 'error', 'hey')
         if (list.at(-1).path !== '/:pathMatch(.*)*')
@@ -104,7 +104,7 @@ export const useRoutesStore = defineStore('routes', {
             path: '/:pathMatch(.*)*',
             redirect: '/404',
             name: 'NotFound',
-            meta: { hidden: true },
+            meta: { hidden: true }
           })
         routes = convertRouter(list)
       }
@@ -122,7 +122,7 @@ export const useRoutesStore = defineStore('routes', {
     },
     changeMenuMeta(options: any) {
       function handleRoutes(routes: any[]) {
-        return routes.map((route) => {
+        return routes.map(route => {
           if (route.name === options.name) Object.assign(route.meta, options.meta)
           if (route.children && route.children.length > 0) route.children = handleRoutes(route.children)
           return route
@@ -137,6 +137,6 @@ export const useRoutesStore = defineStore('routes', {
      */
     changeActiveMenu(activeMenu: string) {
       this.activeMenu.data = activeMenu
-    },
-  },
+    }
+  }
 })

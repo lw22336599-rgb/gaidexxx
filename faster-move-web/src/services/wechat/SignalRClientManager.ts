@@ -4,17 +4,12 @@
  * 管理与后端SignalR Hub的连接和通信
  */
 
-import {
-  HubConnection,
-  HubConnectionBuilder,
-  HubConnectionState,
-  LogLevel,
-} from '@microsoft/signalr'
-import { ChatInfo } from '@/TsModel/Alien/Entity/Function/CHATPUSH/ChatInfo'
-import { ChatMemberItem } from '@/TsModel/Alien/Entity/Function/CHATPUSH/ChatMemberItem'
-import { ChatMemberPageRequest } from '@/TsModel/Alien/Entity/Function/CHATPUSH/ChatMemberPageRequest'
-import { ChatMemberPageResult } from '@/TsModel/Alien/Entity/Function/CHATPUSH/ChatMemberPageResult'
-import { t_chat_push_list } from '@/TsModel/Alien/Entity/Tables/function/chat_push/t_chat_push_list'
+import { type HubConnection, HubConnectionBuilder, HubConnectionState, LogLevel } from '@microsoft/signalr'
+import type { ChatInfo } from '@/TsModel/Alien/Entity/Function/CHATPUSH/ChatInfo'
+import type { ChatMemberItem } from '@/TsModel/Alien/Entity/Function/CHATPUSH/ChatMemberItem'
+import type { ChatMemberPageRequest } from '@/TsModel/Alien/Entity/Function/CHATPUSH/ChatMemberPageRequest'
+import type { ChatMemberPageResult } from '@/TsModel/Alien/Entity/Function/CHATPUSH/ChatMemberPageResult'
+import type { t_chat_push_list } from '@/TsModel/Alien/Entity/Tables/function/chat_push/t_chat_push_list'
 import { SignalRConnectionState } from '@/types/wechat'
 import type { WxHttpService } from './WxHttpService'
 
@@ -46,15 +41,11 @@ export class SignalRClientManager {
    * @param wxHttpService 微信HTTP服务实例
    * @param chatInfo 聊天账号信息
    */
-  constructor(
-    config: SignalRConfig,
-    wxHttpService: WxHttpService,
-    chatInfo: t_chat_push_list
-  ) {
+  constructor(config: SignalRConfig, wxHttpService: WxHttpService, chatInfo: t_chat_push_list) {
     this.config = {
       reconnectDelays: [0, 2000, 5000, 10000],
       logLevel: LogLevel.Information,
-      ...config,
+      ...config
     }
     this.wxHttpService = wxHttpService
     this.chatInfo = chatInfo
@@ -115,11 +106,7 @@ export class SignalRClientManager {
       const chatId = this.chatInfo.id
       const key = this.chatInfo.key
 
-      const success = await this.connection.invoke<boolean>(
-        'JoinChatClient',
-        chatId,
-        key
-      )
+      const success = await this.connection.invoke<boolean>('JoinChatClient', chatId, key)
 
       if (success) {
         console.log('SignalR身份验证成功')
@@ -153,84 +140,68 @@ export class SignalRClientManager {
     })
 
     // GetFriendList - 获取好友列表（支持分页和关键词过滤）
-    this.connection.on(
-      'GetFriendList',
-      async (request: ChatMemberPageRequest): Promise<ChatMemberPageResult> => {
-        try {
-          console.log('收到GetFriendList请求', request)
-          const result = await this.wxHttpService.getFriendListWithPagination(request)
-          console.log(
-            `返回好友列表：第${result.PageIndex}页，共${result.Total}个好友，当前页${result.Items.length}个`
-          )
-          return result
-        } catch (error) {
-          console.error('GetFriendList失败:', error)
-          // 返回空结果而不是抛出异常
-          return {
-            Total: 0,
-            PageIndex: request.PageIndex,
-            PageSize: request.PageSize,
-            TotalPages: 0,
-            Items: [],
-          }
+    this.connection.on('GetFriendList', async (request: ChatMemberPageRequest): Promise<ChatMemberPageResult> => {
+      try {
+        console.log('收到GetFriendList请求', request)
+        const result = await this.wxHttpService.getFriendListWithPagination(request)
+        console.log(`返回好友列表：第${result.PageIndex}页，共${result.Total}个好友，当前页${result.Items.length}个`)
+        return result
+      } catch (error) {
+        console.error('GetFriendList失败:', error)
+        // 返回空结果而不是抛出异常
+        return {
+          Total: 0,
+          PageIndex: request.PageIndex,
+          PageSize: request.PageSize,
+          TotalPages: 0,
+          Items: []
         }
       }
-    )
+    })
 
     // GetGroupList - 获取群列表（支持分页和关键词过滤）
-    this.connection.on(
-      'GetGroupList',
-      async (request: ChatMemberPageRequest): Promise<ChatMemberPageResult> => {
-        try {
-          console.log('收到GetGroupList请求', request)
-          const result = await this.wxHttpService.getGroupListWithPagination(request)
-          console.log(
-            `返回群列表：第${result.PageIndex}页，共${result.Total}个群，当前页${result.Items.length}个`
-          )
-          return result
-        } catch (error) {
-          console.error('GetGroupList失败:', error)
-          // 返回空结果而不是抛出异常
-          return {
-            Total: 0,
-            PageIndex: request.PageIndex,
-            PageSize: request.PageSize,
-            TotalPages: 0,
-            Items: [],
-          }
+    this.connection.on('GetGroupList', async (request: ChatMemberPageRequest): Promise<ChatMemberPageResult> => {
+      try {
+        console.log('收到GetGroupList请求', request)
+        const result = await this.wxHttpService.getGroupListWithPagination(request)
+        console.log(`返回群列表：第${result.PageIndex}页，共${result.Total}个群，当前页${result.Items.length}个`)
+        return result
+      } catch (error) {
+        console.error('GetGroupList失败:', error)
+        // 返回空结果而不是抛出异常
+        return {
+          Total: 0,
+          PageIndex: request.PageIndex,
+          PageSize: request.PageSize,
+          TotalPages: 0,
+          Items: []
         }
       }
-    )
+    })
 
     // GetMemberList - 获取指定成员列表
-    this.connection.on(
-      'GetMemberList',
-      async (offIds: string[]): Promise<ChatMemberItem[]> => {
-        try {
-          console.log(`收到GetMemberList请求，offIds数量: ${offIds.length}`)
-          const members = await this.wxHttpService.getMemberListByIds(offIds)
-          return members
-        } catch (error) {
-          console.error('GetMemberList失败:', error)
-          throw error
-        }
+    this.connection.on('GetMemberList', async (offIds: string[]): Promise<ChatMemberItem[]> => {
+      try {
+        console.log(`收到GetMemberList请求，offIds数量: ${offIds.length}`)
+        const members = await this.wxHttpService.getMemberListByIds(offIds)
+        return members
+      } catch (error) {
+        console.error('GetMemberList失败:', error)
+        throw error
       }
-    )
+    })
 
     // PushChatMsg - 推送消息
-    this.connection.on(
-      'PushChatMsg',
-      async (memberOffId: string, message: string): Promise<boolean> => {
-        try {
-          console.log(`收到PushChatMsg请求: ${memberOffId} - ${message}`)
-          const success = await this.wxHttpService.sendMsg(memberOffId, message)
-          return success
-        } catch (error) {
-          console.error('PushChatMsg失败:', error)
-          return false
-        }
+    this.connection.on('PushChatMsg', async (memberOffId: string, message: string): Promise<boolean> => {
+      try {
+        console.log(`收到PushChatMsg请求: ${memberOffId} - ${message}`)
+        const success = await this.wxHttpService.sendMsg(memberOffId, message)
+        return success
+      } catch (error) {
+        console.error('PushChatMsg失败:', error)
+        return false
       }
-    )
+    })
 
     // ForceDisconnect - 强制断开通知
     this.connection.on('ForceDisconnect', (reason: string): void => {
@@ -247,19 +218,19 @@ export class SignalRClientManager {
     if (!this.connection) return
 
     // 连接断开
-    this.connection.onclose((error) => {
+    this.connection.onclose(error => {
       console.log('SignalR连接已断开', error)
       this.state = SignalRConnectionState.Disconnected
     })
 
     // 开始重连
-    this.connection.onreconnecting((error) => {
+    this.connection.onreconnecting(error => {
       console.log('SignalR开始重连', error)
       this.state = SignalRConnectionState.Reconnecting
     })
 
     // 重连成功
-    this.connection.onreconnected(async (connectionId) => {
+    this.connection.onreconnected(async connectionId => {
       console.log(`SignalR重连成功: ${connectionId}`)
       try {
         // 重新认证

@@ -48,11 +48,9 @@ const props = defineProps({
   },
   // 流式请求方法
   streamMethod: {
-    type: Function as PropType<(
-      params: any,
-      onProgress?: (progress: FoodManageApi.ProgressInfo) => void,
-      requestId?: string
-    ) => Promise<any>>,
+    type: Function as PropType<
+      (params: any, onProgress?: (progress: FoodManageApi.ProgressInfo) => void, requestId?: string) => Promise<any>
+    >,
     required: true
   },
   // 请求参数
@@ -85,17 +83,29 @@ const format = (percentage: number) => {
 }
 
 // 监听属性变化
-watch(() => props.requestParams, (newVal) => {
-  console.log('requestParams changed:', newVal)
-}, { immediate: true })
+watch(
+  () => props.requestParams,
+  newVal => {
+    console.log('requestParams changed:', newVal)
+  },
+  { immediate: true }
+)
 
-watch(() => props.taskId, (newVal) => {
-  console.log('taskId changed:', newVal)
-}, { immediate: true })
+watch(
+  () => props.taskId,
+  newVal => {
+    console.log('taskId changed:', newVal)
+  },
+  { immediate: true }
+)
 
-watch(() => props.requestId, (newVal) => {
-  console.log('requestId changed:', newVal)
-}, { immediate: true })
+watch(
+  () => props.requestId,
+  newVal => {
+    console.log('requestId changed:', newVal)
+  },
+  { immediate: true }
+)
 
 // 开始任务
 const startTask = async () => {

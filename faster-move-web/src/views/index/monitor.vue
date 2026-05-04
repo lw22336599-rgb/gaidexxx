@@ -172,7 +172,7 @@
 import { uniqueId } from 'lodash-es'
 
 defineOptions({
-  name: 'Monitor',
+  name: 'Monitor'
 })
 
 const configHls = reactive<any>({
@@ -184,15 +184,15 @@ const configHls = reactive<any>({
   screenShot: true,
   playbackRate: [0.5, 0.75, 1, 1.5, 2],
   width: '100%',
-  height: '100%',
+  height: '100%'
 })
 const value = ref<string>('1')
 const form = reactive<any>({})
 const options = [
   {
     value: '1',
-    label: '全部',
-  },
+    label: '全部'
+  }
 ]
 const radio = ref('普通直播')
 

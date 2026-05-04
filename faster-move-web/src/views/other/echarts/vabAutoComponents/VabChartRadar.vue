@@ -11,14 +11,14 @@ import { random } from 'lodash-es'
 import { useSettingsStore } from '/@/store/modules/settings'
 
 defineOptions({
-  name: 'VabChartRadar',
+  name: 'VabChartRadar'
 })
 
 defineProps({
   title: {
     type: String,
-    default: '',
-  },
+    default: ''
+  }
 })
 
 const settingsStore = useSettingsStore()
@@ -30,13 +30,13 @@ const option = reactive<any>({
     top: 20,
     right: 20,
     bottom: 40,
-    left: 40,
+    left: 40
   },
   tooltip: {
-    trigger: 'item',
+    trigger: 'item'
   },
   radar: {
-    indicator: [{ name: '销售' }, { name: '管理' }, { name: '信息技术' }, { name: '客服' }, { name: '研发' }],
+    indicator: [{ name: '销售' }, { name: '管理' }, { name: '信息技术' }, { name: '客服' }, { name: '研发' }]
   },
   series: {
     name: '预算分配',
@@ -44,10 +44,10 @@ const option = reactive<any>({
     data: [
       {
         value: [random(50, 1000), random(50, 1000), random(50, 1000), random(50, 1000), random(50, 1000)],
-        name: '预算分配',
-      },
-    ],
-  },
+        name: '预算分配'
+      }
+    ]
+  }
 })
 
 watch(
@@ -63,8 +63,8 @@ onMounted(() => {
     option.series.data = [
       {
         value: [random(50, 1000), random(50, 1000), random(50, 1000), random(50, 1000), random(50, 1000)],
-        name: '预算分配',
-      },
+        name: '预算分配'
+      }
     ]
   }, 3000)
 })

@@ -1,4 +1,4 @@
-	export enum AuthType {
-		Cookies = 0,
-		OAuth = 1,
-	}
+export enum AuthType {
+  Cookies = 0,
+  OAuth = 1
+}

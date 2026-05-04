@@ -1,6 +1,12 @@
 <template>
   <div class="gantt-container no-transition-container">
-    <gantt :data="data" :date-range-list="dateRangeList" date-text="日期" item-text="项目" @schedule-click="scheduleClick" />
+    <gantt
+      :data="data"
+      :date-range-list="dateRangeList"
+      date-text="日期"
+      item-text="项目"
+      @schedule-click="scheduleClick"
+    />
   </div>
 </template>
 
@@ -10,7 +16,7 @@ import 'vue3-gantt/dist/style.css'
 import { uuid } from '/@/utils'
 
 defineOptions({
-  name: 'Gantt',
+  name: 'Gantt'
 })
 
 const dateRangeList = ref(['2023-01-01', '2023-02-28'])
@@ -26,9 +32,9 @@ const data = ref([
         desc: 'test1',
         backgroundColor: '#e6a23c',
         textColor: 'var(--el-color-white)',
-        days: ['2023-01-01', '2023-01-05'],
-      },
-    ],
+        days: ['2023-01-01', '2023-01-05']
+      }
+    ]
   },
   {
     type: 'normal',
@@ -41,9 +47,9 @@ const data = ref([
         desc: 'test2',
         backgroundColor: '#13ce66',
         textColor: 'var(--el-color-white)',
-        days: ['2023-01-05', '2023-01-10'],
-      },
-    ],
+        days: ['2023-01-05', '2023-01-10']
+      }
+    ]
   },
   {
     type: 'normal',
@@ -56,9 +62,9 @@ const data = ref([
         desc: 'test3',
         backgroundColor: '#4e88f3',
         textColor: 'var(--el-color-white)',
-        days: ['2023-01-02', '2023-01-20'],
-      },
-    ],
+        days: ['2023-01-02', '2023-01-20']
+      }
+    ]
   },
   {
     type: 'normal',
@@ -71,9 +77,9 @@ const data = ref([
         desc: 'test4',
         backgroundColor: '#6954f0',
         textColor: 'var(--el-color-white)',
-        days: ['2023-01-08', '2023-01-31'],
-      },
-    ],
+        days: ['2023-01-08', '2023-01-31']
+      }
+    ]
   },
   {
     type: 'normal',
@@ -86,10 +92,10 @@ const data = ref([
         desc: 'test5',
         backgroundColor: '#fd4e4e',
         textColor: 'var(--el-color-white)',
-        days: ['2023-01-04', '2023-01-15'],
-      },
-    ],
-  },
+        days: ['2023-01-04', '2023-01-15']
+      }
+    ]
+  }
 ])
 
 const scheduleClick = (object: any) => {

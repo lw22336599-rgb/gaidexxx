@@ -26,7 +26,7 @@ const customColors = [
   { color: '#e6a23c', percentage: 40 },
   { color: '#5cb87a', percentage: 60 },
   { color: 'var(----el-color-primary)', percentage: 80 },
-  { color: '#6f7ad3', percentage: 100 },
+  { color: '#6f7ad3', percentage: 100 }
 ]
 
 const customColorMethod = (percentage: number) => {

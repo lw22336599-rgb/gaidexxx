@@ -11,7 +11,7 @@
         @touchend="onEventEnd"
         @touchmove.stop.prevent="onEventMove"
         @touchstart="onEventStart"
-      ></canvas>
+      />
       <img alt="" :src="catUrl" />
     </div>
     <el-button type="primary" @click="handleSaveImg">存为图片</el-button>
@@ -23,7 +23,7 @@
 import catUrl from '/@/assets/signature_images/cat.png'
 
 defineOptions({
-  name: 'Signature',
+  name: 'Signature'
 })
 
 const canvas = ref<any>()

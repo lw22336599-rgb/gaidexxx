@@ -1,7 +1,6 @@
-import { ref, computed } from 'vue';
+import { ref, computed } from 'vue'
 import { addShop, getShop } from '/@/api/shop.ts'
 import { gp } from '/@vab/plugins/vab.ts'
-
 
 export function useOpenApp() {
   const openApp = (name: any, shop_type: number) => {
@@ -16,7 +15,7 @@ export function useOpenApp() {
       8: 'open-elm-wm',
       1000: 'open-mt-groupbuy',
       1001: 'open-jd-home',
-      1002: 'open-dy-tuangou-capture',
+      1002: 'open-dy-tuangou-capture'
     }
     const params = {
       name: name || '',

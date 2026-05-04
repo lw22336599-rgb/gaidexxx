@@ -23,7 +23,7 @@
                       <span v-if="item.type == 'mine' || item.type == 'tips'">
                         {{ item.result }}
                       </span>
-                      <span v-if="item.type == 'he'" :id="item.id"></span>
+                      <span v-if="item.type == 'he'" :id="item.id" />
                     </div>
                   </li>
                 </template>
@@ -62,7 +62,7 @@ import avatarUrl from '/@/assets/chatGPT_images/chatGPT.png'
 import { useUserStore } from '/@/store/modules/user'
 
 defineOptions({
-  name: 'ChatGPT',
+  name: 'ChatGPT'
 })
 
 const userStore = useUserStore()
@@ -74,7 +74,9 @@ const scrollbarRef = ref<InstanceType<typeof ElScrollbar>>()
 const finish = ref<boolean>(true)
 
 const radio = ref<string>('GPT3.5')
-const url = ref<string>('https://fc-mp-851edf02-46eb-43e6-828d-64c7e483ea41.next.bspapp.com/chatGPT?version=gpt-3.5-turbo&text=')
+const url = ref<string>(
+  'https://fc-mp-851edf02-46eb-43e6-828d-64c7e483ea41.next.bspapp.com/chatGPT?version=gpt-3.5-turbo&text='
+)
 
 const loading = ref<boolean>(false)
 let timer: ReturnType<typeof setInterval>
@@ -84,7 +86,8 @@ const result =
 const changeGPT = (value: any) => {
   if (value == 'GPT3.5')
     url.value = 'https://fc-mp-851edf02-46eb-43e6-828d-64c7e483ea41.next.bspapp.com/chatGPT?version=gpt-3.5-turbo&text='
-  if (value == 'GPT4.0') url.value = 'https://fc-mp-851edf02-46eb-43e6-828d-64c7e483ea41.next.bspapp.com/chatGPT?version=gpt-4&text='
+  if (value == 'GPT4.0')
+    url.value = 'https://fc-mp-851edf02-46eb-43e6-828d-64c7e483ea41.next.bspapp.com/chatGPT?version=gpt-4&text='
   $baseMessage(`切换${value}成功！`, 'success', 'hey')
 }
 
@@ -95,8 +98,8 @@ const list = ref<any>([
     result,
     avatar: avatarUrl,
     username: 'ChatGPT',
-    time: dayjs().format('YYYY-MM-DD HH:mm:ss'),
-  },
+    time: dayjs().format('YYYY-MM-DD HH:mm:ss')
+  }
 ])
 
 const send = () => {
@@ -121,14 +124,14 @@ const send = () => {
         result: value.value,
         avatar,
         username,
-        time: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+        time: dayjs().format('YYYY-MM-DD HH:mm:ss')
       },
       {
         type: 'tips',
         result: `${radio.value} AI 内` + `容生成中，请稍后。。。`,
         avatar: avatarUrl,
         username: 'ChatGPT',
-        time: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+        time: dayjs().format('YYYY-MM-DD HH:mm:ss')
       }
     )
     axios
@@ -142,7 +145,7 @@ const send = () => {
           result: result.displayText,
           avatar: avatarUrl,
           username: 'ChatGPT',
-          time: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+          time: dayjs().format('YYYY-MM-DD HH:mm:ss')
         })
         await typeWriting(id, result.displayText)
         finish.value = true
@@ -165,7 +168,7 @@ const typeWriting = (id: string, answer: string) => {
       lifeLike: true, // 使打字速度不规则
       cursor: false, //在字符串末尾显示闪烁的光标
       breakLines: false, // 控制是将多个字符串打印在彼此之上，还是删除这些字符串并相互替换
-      loop: false, //是否循环
+      loop: false //是否循环
     }).go()
   }, 0)
 }

@@ -7,7 +7,7 @@ import { graphic } from 'echarts/core'
 import { random } from 'lodash-es'
 
 defineOptions({
-  name: 'DataScreenRight2',
+  name: 'DataScreenRight2'
 })
 
 const option = reactive<any>({
@@ -16,10 +16,10 @@ const option = reactive<any>({
     right: '0',
     bottom: '20px',
     top: '40px',
-    containLabel: true,
+    containLabel: true
   },
   tooltip: {
-    trigger: 'axis',
+    trigger: 'axis'
   },
   xAxis: [
     {
@@ -27,18 +27,18 @@ const option = reactive<any>({
       axisLine: {
         show: true,
         lineStyle: {
-          color: '#00a1ff',
-        },
+          color: '#00a1ff'
+        }
       },
       boundaryGap: false,
       splitLine: {
-        show: false,
+        show: false
       },
       axisLabel: {
-        color: '#eee',
+        color: '#eee'
       },
-      data: ['一月', '二月', '三月', '四月', '五月', '六月'],
-    },
+      data: ['一月', '二月', '三月', '四月', '五月', '六月']
+    }
   ],
   yAxis: [
     {
@@ -46,17 +46,17 @@ const option = reactive<any>({
       name: '销售额',
       axisLabel: {
         formatter: '{value} 万元',
-        color: '#eee',
+        color: '#eee'
       },
       axisLine: {
         show: true,
         lineStyle: {
-          color: '#00a1ff',
-        },
+          color: '#00a1ff'
+        }
       },
       splitLine: {
-        show: false,
-      },
+        show: false
+      }
     },
     {
       type: 'value',
@@ -67,18 +67,18 @@ const option = reactive<any>({
       symbolSize: 2,
       axisLabel: {
         formatter: '{value} %',
-        color: '#eee',
+        color: '#eee'
       },
       axisLine: {
         show: true,
         lineStyle: {
-          color: '#00a1ff',
-        },
+          color: '#00a1ff'
+        }
       },
       splitLine: {
-        show: false,
-      },
-    },
+        show: false
+      }
+    }
   ],
   series: [
     {
@@ -90,15 +90,15 @@ const option = reactive<any>({
         color: new graphic.LinearGradient(0, 0, 1, 0, [
           {
             offset: 0,
-            color: 'rgb(57,89,255,1)',
+            color: 'rgb(57,89,255,1)'
           },
           {
             offset: 1,
-            color: 'rgb(46,200,207,1)',
-          },
-        ]),
+            color: 'rgb(46,200,207,1)'
+          }
+        ])
       },
-      barWidth: 15,
+      barWidth: 15
     },
     {
       name: '增长率',
@@ -109,13 +109,13 @@ const option = reactive<any>({
       symbol: 'circle',
       symbolSize: 2,
       lineStyle: {
-        color: '#00b3f4',
+        color: '#00b3f4'
       },
       itemStyle: {
-        color: '#00b3f4',
+        color: '#00b3f4'
       },
       tooltip: {
-        show: true,
+        show: true
       },
       areaStyle: {
         color: new graphic.LinearGradient(
@@ -126,25 +126,39 @@ const option = reactive<any>({
           [
             {
               offset: 0,
-              color: 'rgba(0,179,244,0.3)',
+              color: 'rgba(0,179,244,0.3)'
             },
             {
               offset: 1,
-              color: 'rgba(0,179,244,0)',
-            },
+              color: 'rgba(0,179,244,0)'
+            }
           ],
           false
         ),
         shadowColor: 'rgba(0,179,244, 0.9)',
-        shadowBlur: 20,
+        shadowBlur: 20
       },
-      data: [random(0, 100), random(0, 100), random(0, 100), random(0, 100), random(0, 100), random(0, 100)],
-    },
-  ],
+      data: [random(0, 100), random(0, 100), random(0, 100), random(0, 100), random(0, 100), random(0, 100)]
+    }
+  ]
 })
 
 setInterval(() => {
-  option.series[0].data = [random(20, 50), random(20, 50), random(20, 50), random(20, 50), random(20, 50), random(20, 50)]
-  option.series[1].data = [random(0, 100), random(0, 100), random(0, 100), random(0, 100), random(0, 100), random(0, 100)]
+  option.series[0].data = [
+    random(20, 50),
+    random(20, 50),
+    random(20, 50),
+    random(20, 50),
+    random(20, 50),
+    random(20, 50)
+  ]
+  option.series[1].data = [
+    random(0, 100),
+    random(0, 100),
+    random(0, 100),
+    random(0, 100),
+    random(0, 100),
+    random(0, 100)
+  ]
 }, 1000 * 5)
 </script>

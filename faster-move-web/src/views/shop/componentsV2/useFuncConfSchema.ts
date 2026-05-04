@@ -103,7 +103,7 @@ export function isSimpleObjectProperty(field: SchemaProperty, root: ParsedSchema
   const itemSchema = getObjectItemSchema(field, root)
   if (!itemSchema?.properties) return false
   const props = getObjectItemProperties(field, root)
-  return Object.values(props).every((p) => isSimpleSchemaType(p))
+  return Object.values(props).every(p => isSimpleSchemaType(p))
 }
 
 function getObjectItemSchema(field: SchemaProperty, root: ParsedSchema): SchemaProperty | null {
@@ -215,19 +215,23 @@ export function clearSchemaCache() {
   schemaCache.clear()
 }
 
-export function initDefaultConfFromSchema(
-  schema: FuncConfSchemaResult | null,
-  conf: Record<string, any>
-) {
+export function initDefaultConfFromSchema(schema: FuncConfSchemaResult | null, conf: Record<string, any>) {
   const root = getRootSchema(schema)
   const props_ = getParsedProperties(schema)
   for (const [k, field] of Object.entries(props_)) {
     if (field.default !== undefined && conf[k] === undefined) conf[k] = field.default
     else if (field.type === 'array' && conf[k] === undefined)
-      conf[k] = Array.isArray(field.default) && field.default.length > 0
-        ? field.default
-        : (root ? getDefaultValueForField(field, root) : [])
-    else if (root && isObjectProperty(field, root) && (conf[k] === undefined || typeof conf[k] !== 'object' || Array.isArray(conf[k]))) {
+      conf[k] =
+        Array.isArray(field.default) && field.default.length > 0
+          ? field.default
+          : root
+            ? getDefaultValueForField(field, root)
+            : []
+    else if (
+      root &&
+      isObjectProperty(field, root) &&
+      (conf[k] === undefined || typeof conf[k] !== 'object' || Array.isArray(conf[k]))
+    ) {
       conf[k] = getDefaultObjectItem(getObjectItemProperties(field, root), root)
     }
   }

@@ -1,4 +1,4 @@
 export interface SetCookieDomanItemInfo {
-		Doman: string;
-		Url: string;
+  Doman: string
+  Url: string
 }

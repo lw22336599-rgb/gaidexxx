@@ -3,7 +3,7 @@
     <vab-alert class="hidden-sm-and-up" title="手机端不支持工作流演示" type="warning" />
     <control v-if="lf" class="vab-control hidden-xs-only" :lf="lf" @cat-data="catData" />
     <node-panel class="hidden-xs-only" :lf="lf" />
-    <div id="container" ref="container" class="hidden-xs-only"></div>
+    <div id="container" ref="container" class="hidden-xs-only" />
     <add-panel
       v-if="showAddPanel"
       class="add-panel hidden-xs-only"
@@ -32,7 +32,7 @@ import {
   registerPolyline,
   registerPush,
   registerStart,
-  registerUser,
+  registerUser
 } from './vabAutoComponents/registerNode'
 import { getList } from '/@/api/workflow'
 import { gp } from '/@vab/plugins/vab'
@@ -46,13 +46,13 @@ export default defineComponent({
       showAddPanel: false,
       addPanelStyle: {
         top: 0,
-        left: 0,
+        left: 0
       },
       addClickNode: null,
       clickNode: null,
       dialogVisible: false,
       graphData: null,
-      dataVisible: false,
+      dataVisible: false
     }
   },
   created() {
@@ -69,14 +69,14 @@ export default defineComponent({
       const config = {
         container: this.$refs.container,
         background: {
-          backgroundColor: 'var(--el-color-white)',
+          backgroundColor: 'var(--el-color-white)'
         },
         grid: {
           size: 10,
-          visible: false,
+          visible: false
         },
         keyboard: {
-          enabled: true,
+          enabled: true
         },
         edgeTextDraggable: true,
         guards: {
@@ -85,8 +85,8 @@ export default defineComponent({
           },
           beforeDelete() {
             return true
-          },
-        },
+          }
+        }
       }
       LogicFlow.use(Menu)
       LogicFlow.use(Snapshot)
@@ -94,7 +94,7 @@ export default defineComponent({
 
       this.lf.setMenuConfig({
         nodeMenu: [],
-        edgeMenu: [],
+        edgeMenu: []
       })
       this.lf.addMenuConfig({
         nodeMenu: [
@@ -102,7 +102,7 @@ export default defineComponent({
             text: '分享',
             callback() {
               alert('分享成功！')
-            },
+            }
           },
           {
             text: '属性',
@@ -111,8 +111,8 @@ export default defineComponent({
                   节点id：${node.id}
                   节点类型：${node.type}
                   节点坐标：(x: ${node.x}, y: ${node.y})`)
-            },
-          },
+            }
+          }
         ],
         edgeMenu: [
           {
@@ -124,53 +124,53 @@ export default defineComponent({
                   边坐标：(x: ${edge.x}, y: ${edge.y})
                   源节点id：${edge.sourceNodeId}
                   目标节点id：${edge.targetNodeId}`)
-            },
-          },
-        ],
+            }
+          }
+        ]
       })
       this.lf.setTheme({
         circle: {
           r: 20,
           fill: 'var(--el-color-white)',
           stroke: 'var(--el-color-grey)',
-          strokeWidth: 1,
+          strokeWidth: 1
         },
         rect: {
           fill: 'var(--el-color-white)',
           stroke: 'var(--el-color-grey)',
-          strokeWidth: 1,
+          strokeWidth: 1
         },
         diamond: {
           fill: 'var(--el-color-white)',
           stroke: 'var(--el-color-grey)',
-          strokeWidth: 1,
+          strokeWidth: 1
         },
         ellipse: {
           fill: 'var(--el-color-white)',
           stroke: 'var(--el-color-grey)',
-          strokeWidth: 1,
+          strokeWidth: 1
         },
         polygon: {
           fill: 'var(--el-color-white)',
           stroke: 'var(--el-color-grey)',
-          strokeWidth: 1,
+          strokeWidth: 1
         },
         polyline: {
           stroke: 'var(--el-color-grey)',
           hoverStroke: 'var(--el-color-grey)',
           selectedStroke: 'var(--el-color-grey)',
 
-          strokeWidth: 1,
+          strokeWidth: 1
         },
         nodeText: {
-          color: 'var(--el-color-grey)',
+          color: 'var(--el-color-grey)'
         },
         edgeText: {
           color: 'var(--el-color-grey)',
           background: {
-            fill: 'var(--el-color-white)',
-          },
-        },
+            fill: 'var(--el-color-white)'
+          }
+        }
       })
       this.registerNode()
     },
@@ -205,7 +205,7 @@ export default defineComponent({
       this.lf.on('blank:click', () => {
         this.hideAddPanel()
       })
-      this.lf.on('connection:not-allowed', (data) => {
+      this.lf.on('connection:not-allowed', data => {
         gp.$baseMessage(data.msg, 'error', 'hey')
       })
       this.lf.on('node:mousemove', () => {})
@@ -233,8 +233,8 @@ export default defineComponent({
     catData() {
       this.graphData = this.lf.getGraphData()
       this.dataVisible = true
-    },
-  },
+    }
+  }
 })
 </script>
 

@@ -2,15 +2,15 @@ import request from '../utils/request'
 
 const Apis = {
   home: {
-    metadata: '/homedata/gethomedata', //首页信息
+    metadata: '/homedata/gethomedata' //首页信息
   },
   user: {
     login: '/admin/agencylogin', //登录
-    register: '/admin/agencyreg',//注册
+    register: '/admin/agencyreg', //注册
     agencyforget: '/admin/agencyforget' //忘记密码
   },
   agent: {
-    info: '/admin/getagencyinfo',  // 代理信息
+    info: '/admin/getagencyinfo', // 代理信息
     balance: '/admin/giveintegral', // 分配积分
     update: '/admin/updateagency', // 更新代理信息,
     group: {
@@ -19,26 +19,26 @@ const Apis = {
   },
   shop: {
     get: {
-      'list': '/shopmg/getshoplist', // 店铺列表
-      "v2list": "/shopmg/v2/getshoplist",//运营版
-      'list_by_group': '/shopusergroup/getshoplist', // 获取分组门店列表
-      'group': '/group/getgroups',   // 店铺分组,
-      'related': '/shopusergroup/getshoplisthas', // 分组关联门店列表
-      'function': '/functionuser/getfuncinfo', // 获取功能信息
-      'function_config': '/functionuser/getconf_func', // 获取功能配置
-      'function_log': '/functionuser/getlog',
-      'function_price': '/functionprice/getfunctionprices', // 获取功能价格
-      'goods': '/functionuser/call',
-      'gif': '/foodgif/getgiflist',
-      'getfunccount': '/shopmg/getfunccount'
+      list: '/shopmg/getshoplist', // 店铺列表
+      v2list: '/shopmg/v2/getshoplist', //运营版
+      list_by_group: '/shopusergroup/getshoplist', // 获取分组门店列表
+      group: '/group/getgroups', // 店铺分组,
+      related: '/shopusergroup/getshoplisthas', // 分组关联门店列表
+      function: '/functionuser/getfuncinfo', // 获取功能信息
+      function_config: '/functionuser/getconf_func', // 获取功能配置
+      function_log: '/functionuser/getlog',
+      function_price: '/functionprice/getfunctionprices', // 获取功能价格
+      goods: '/functionuser/call',
+      gif: '/foodgif/getgiflist',
+      getfunccount: '/shopmg/getfunccount'
     },
     set: {
-      'group': '/group/addgroup',
-      'group_update': '/group/updategroup',
-      'relate': '/shopusergroup/connectgroup',
-      'related': '/admingroup/linkshopgroup',
-      'function_config': '/functionuser/setconf_func',
-      'function_enable': '/functionuser/enable_func',
+      group: '/group/addgroup',
+      group_update: '/group/updategroup',
+      relate: '/shopusergroup/connectgroup',
+      related: '/admingroup/linkshopgroup',
+      function_config: '/functionuser/setconf_func',
+      function_enable: '/functionuser/enable_func'
     },
     remove: {
       group: '/group/deletegroup', //移除分组
@@ -51,7 +51,7 @@ const Apis = {
     bind_query: '/shopmg/createbindingcode', // 店铺绑定查询
     add: '/shopmg/loginshop',
     update: '/shopmg/updateshop', // 更新店铺信息
-    addshop: "/shopmg/addshop",
+    addshop: '/shopmg/addshop',
     team: {
       member: '/admingroup/getadminlist' // 获取团队成员
     },
@@ -76,7 +76,7 @@ const Apis = {
     update: '/feedback/setread'
   },
   file: {
-    upload: '/system/method/file/upload',
+    upload: '/system/method/file/upload'
   },
   team: {
     info: '/teaminfo/getteaminfo',
@@ -91,70 +91,69 @@ const Apis = {
   log: {
     balance: '/logcontrolller/getlogbalance' // 获取余额变动日志
   }
-};
+}
 export function getAccessToken() {
   if (window.electron.getCfg('token')) {
-    return "Bearer " + window.electron.getCfg('token');
+    return 'Bearer ' + window.electron.getCfg('token')
   }
 }
 export function getApi(name) {
-  let uri = 'Apis.' + name;
-  let url = null;
+  let uri = 'Apis.' + name
+  let url = null
   if (name) {
     try {
-      url = eval(uri);
-    } catch (error) {
-    }
+      url = eval(uri)
+    } catch (error) {}
   }
-  return url;
+  return url
 }
 // 通用 （登录√）
 export function allrequest(data) {
   return request({
     url: '/admin/agencylogin',
     method: 'post',
-    data,
+    data
   })
 }
 export function apis(method, uri, data = null, params = null, headers = {}) {
-  method = method == 'POST' ? 'POST' : 'GET';
-  const isGet = method == 'GET';
+  method = method == 'POST' ? 'POST' : 'GET'
+  const isGet = method == 'GET'
 
   // 使用对象路径获取 URL
-  const getUrlFromPath = (path) => {
-    const parts = path.split('.');
-    let current = Apis;
+  const getUrlFromPath = path => {
+    const parts = path.split('.')
+    let current = Apis
     for (const part of parts) {
       if (current && typeof current === 'object') {
-        current = current[part];
+        current = current[part]
       } else {
-        return null;
+        return null
       }
     }
-    return current;
-  };
+    return current
+  }
 
-  const url = uri ? getUrlFromPath(uri) : null;
+  const url = uri ? getUrlFromPath(uri) : null
 
   if (!url) {
-    console.error(`API endpoint not found for uri: ${uri}`);
-    return Promise.reject(new Error(`API endpoint not found for uri: ${uri}`));
+    console.error(`API endpoint not found for uri: ${uri}`)
+    return Promise.reject(new Error(`API endpoint not found for uri: ${uri}`))
   }
 
   const options = {
     url,
     method: method.toLowerCase(),
-    headers,
-  };
-
-  if (isGet) {
-    options.params = data || params;
-  } else {
-    options.params = params;
-    options.data = data;
+    headers
   }
 
-  return request(options);
+  if (isGet) {
+    options.params = data || params
+  } else {
+    options.params = params
+    options.data = data
+  }
+
+  return request(options)
 }
 // pc端接口
 // 1获取已完成和未完成数量√
@@ -167,7 +166,7 @@ export function apis(method, uri, data = null, params = null, headers = {}) {
 export function pcrequest() {
   return request({
     url: '/homedata/gethomedata',
-    method: 'get',
+    method: 'get'
     // data,
   })
 }
@@ -177,14 +176,14 @@ export function updateShopExtra(data) {
   return request({
     url: '/shopmg/updateshopextra',
     method: 'post',
-    data,
+    data
   })
 }
 
 export function pcrequestv2() {
   return request({
     url: '/homedata/v2/gethomedata',
-    method: 'get',
+    method: 'get'
     // data,
   })
 }
@@ -193,7 +192,7 @@ export function pcrequestv2() {
 export function getshare(storeId) {
   return request({
     url: `/system/service/wmt/shop/share/getshareinfo?shopid=${storeId}`,
-    method: 'get',
+    method: 'get'
   })
 }
 //保存分享配置
@@ -201,7 +200,7 @@ export function createShare(data) {
   return request({
     url: '/system/service/wmt/shop/share/saveshareinfo',
     method: 'post',
-    data,
+    data
   })
 }
 
@@ -218,7 +217,7 @@ export function addcalendar(data) {
   return request({
     url: '/system/business/calendar/add',
     method: 'post',
-    data,
+    data
   })
 }
 //  更改事项√
@@ -226,14 +225,14 @@ export function editcalendar(data) {
   return request({
     url: '/system/business/calendar/update',
     method: 'post',
-    data,
+    data
   })
 }
 //  删除√
 export function deletecalendar(id) {
   return request({
     url: `/system/business/calendar/delete?id=${id}`,
-    method: 'post',
+    method: 'post'
   })
 }
 //  城市列表
@@ -257,7 +256,7 @@ export function addtag(data) {
   return request({
     url: `/system/service/wmt/tag/addtag`,
     method: 'post',
-    data,
+    data
   })
 }
 //  编辑分组
@@ -265,14 +264,14 @@ export function updatetag(data) {
   return request({
     url: `/system/service/wmt/tag/updatetag`,
     method: 'post',
-    data,
+    data
   })
 }
 //  删除
 export function deletetag(id) {
   return request({
     url: `/system/service/wmt/tag/deletetag?id=${id}`,
-    method: 'post',
+    method: 'post'
   })
 }
 //  标签门店
@@ -294,13 +293,13 @@ export function getshoplist(params) {
 export function unbindshoptag(tetx) {
   return request({
     url: `/system/service/wmt/shop/tag/unbindshoptag?${tetx}`,
-    method: 'post',
+    method: 'post'
   })
 }
 export function bindshoptag(tetx) {
   return request({
     url: `/system/service/wmt/shop/tag/bindshoptag?${tetx}`,
-    method: 'post',
+    method: 'post'
   })
 }
 // 图片上传
@@ -309,7 +308,7 @@ export function filerequ(data) {
     url: '/system/method/file/upload',
     method: 'post',
     headers: {
-      "Content-Type": "multipart/form-data"
+      'Content-Type': 'multipart/form-data'
     },
     data
   })
@@ -327,7 +326,7 @@ export function addgroup(data) {
   return request({
     url: `/system/service/wmt/group/addgroup`,
     method: 'post',
-    data,
+    data
   })
 }
 //  更新组
@@ -335,7 +334,7 @@ export function updategroup(data) {
   return request({
     url: `/system/service/wmt/group/updategroup`,
     method: 'post',
-    data,
+    data
   })
 }
 //  删除分组
@@ -343,7 +342,7 @@ export function updategroup(data) {
 export function deletegroup(tetx) {
   return request({
     url: `/system/service/wmt/group/deletegroup?id=${tetx}`,
-    method: 'post',
+    method: 'post'
   })
 }
 //  获取分组下的子账号列表
@@ -364,32 +363,32 @@ export function getlist(params) {
 export function changegroup({ admin, group }) {
   return request({
     url: `/system/service/wmt/admin/group/changegroup?admin=${admin}&tag=${group}`,
-    method: 'post',
+    method: 'post'
   })
 }
 export function updateadmintag(text) {
   return request({
     url: `/system/service/wmt/admin/tag/updateadmintag?${text}`,
-    method: 'post',
+    method: 'post'
   })
 }
 export function addchild(data) {
   return request({
     url: `/system/service/wmt/admin/group/addchild`,
     method: 'post',
-    data,
+    data
   })
 }
 export function groupdelete({ admin, group }) {
   return request({
     url: `/system/service/wmt/admin/group/deletegroup?group=${group}&admin=${admin}`,
-    method: 'post',
+    method: 'post'
   })
 }
 export function deleteadmintag(text) {
   return request({
     url: `/system/service/wmt/admin/tag/deleteadmintag?${text}`,
-    method: 'post',
+    method: 'post'
   })
 }
 export function GetNoGroupAdminList(params) {
@@ -402,13 +401,13 @@ export function GetNoGroupAdminList(params) {
 export function adminaddgroup(text) {
   return request({
     url: `/system/service/wmt/admin/group/addgroup?${text}`,
-    method: 'post',
+    method: 'post'
   })
 }
 export function addlist(text) {
   return request({
     url: `/system/service/wmt/admin/tag/addlist?${text}`,
-    method: 'post',
+    method: 'post'
   })
 }
 export function addShop(parms) {
@@ -419,7 +418,7 @@ export function addShop(parms) {
   })
 }
 export function addUser(data) {
-  const {is_boss, phone} = data
+  const { is_boss, phone } = data
   return request({
     url: `/admin/adduser?phone=${phone}&is_boss=${is_boss}`,
     method: 'post'
@@ -447,8 +446,8 @@ export function getShopFuncConf(funcCode, shopId) {
     url: `/functionuser/getconf_func`,
     method: 'post',
     data: {
-      "code": funcCode,
-      "shop": shopId
+      code: funcCode,
+      shop: shopId
     }
   })
 }
@@ -459,9 +458,9 @@ export function enableFunc(funcCode, enableVal, shopid) {
     url: `/functionuser/enable_func`,
     method: 'post',
     data: {
-      "code": funcCode,
-      "enable": enableVal,
-      "shop": shopid
+      code: funcCode,
+      enable: enableVal,
+      shop: shopid
     }
   })
 }

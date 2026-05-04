@@ -2,15 +2,15 @@ export const useAclStore = defineStore('acl', {
   state: (): AclModuleType => ({
     admin: false,
     role: [],
-    permission: [],
+    permission: []
   }),
   getters: {
-    getAdmin: (state) => state.admin,
-    getRole: (state) => state.role,
-    getPermission: (state) => state.permission,
-    roleIncludeKA: (state) => {
+    getAdmin: state => state.admin,
+    getRole: state => state.role,
+    getPermission: state => state.permission,
+    roleIncludeKA: state => {
       return state.role.includes('KA')
-    },
+    }
   },
   actions: {
     setFull(admin: boolean) {
@@ -21,6 +21,6 @@ export const useAclStore = defineStore('acl', {
     },
     setPermission(permission: string[]) {
       this.permission = permission
-    },
-  },
+    }
+  }
 })

@@ -25,7 +25,7 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'Anchor',
+  name: 'Anchor'
 })
 
 const containerRef = ref<any>(null)

@@ -190,7 +190,7 @@ export function useTableScroll(options: UseTableScrollOptions) {
 
     // 如果还在加载中，等待加载完成
     if (isLoading.value) {
-      const unwatch = watch(isLoading, (loading) => {
+      const unwatch = watch(isLoading, loading => {
         if (!loading) {
           unwatch()
           setTimeout(() => tryRestoreScrollPosition(maxRetries, initialDelay), 100)

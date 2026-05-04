@@ -17,7 +17,7 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'Rate',
+  name: 'Rate'
 })
 
 const value1 = ref<any>(null)

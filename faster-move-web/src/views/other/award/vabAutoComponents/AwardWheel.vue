@@ -25,11 +25,11 @@ const blocks = [
     imgs: [
       {
         src: blockImg,
-        width: '100%',
-      },
+        width: '100%'
+      }
     ],
-    rotate: true,
-  },
+    rotate: true
+  }
 ]
 const prizes = [
   {
@@ -39,9 +39,9 @@ const prizes = [
       {
         src: award_2,
         width: '20px',
-        top: '35px',
-      },
-    ],
+        top: '35px'
+      }
+    ]
   },
   {
     fonts: [{ text: '0.1元', top: '10%', fontColor: '#ff6642', fontSize: 12 }],
@@ -50,9 +50,9 @@ const prizes = [
       {
         src: award_1,
         width: '20px',
-        top: '35px',
-      },
-    ],
+        top: '35px'
+      }
+    ]
   },
   {
     fonts: [{ text: '20金币', top: '10%', fontColor: '#ff6642', fontSize: 12 }],
@@ -61,9 +61,9 @@ const prizes = [
       {
         src: award_2,
         width: '20px',
-        top: '35px',
-      },
-    ],
+        top: '35px'
+      }
+    ]
   },
   {
     fonts: [{ text: '0.2元', top: '10%', fontColor: '#ff6642', fontSize: 12 }],
@@ -72,9 +72,9 @@ const prizes = [
       {
         src: award_1,
         width: '20px',
-        top: '35px',
-      },
-    ],
+        top: '35px'
+      }
+    ]
   },
   {
     fonts: [{ text: '30金币', top: '10%', fontColor: '#ff6642', fontSize: 12 }],
@@ -83,9 +83,9 @@ const prizes = [
       {
         src: award_2,
         width: '20px',
-        top: '35px',
-      },
-    ],
+        top: '35px'
+      }
+    ]
   },
   {
     fonts: [{ text: '0.3元', top: '10%', fontColor: '#ff6642', fontSize: 12 }],
@@ -94,10 +94,10 @@ const prizes = [
       {
         src: award_1,
         width: '20px',
-        top: '35px',
-      },
-    ],
-  },
+        top: '35px'
+      }
+    ]
+  }
 ]
 const buttons = [
   {
@@ -106,10 +106,10 @@ const buttons = [
       {
         src: buttonImg,
         width: '100%',
-        top: '-46px',
-      },
-    ],
-  },
+        top: '-46px'
+      }
+    ]
+  }
 ]
 
 const awardWheelRef = ref<any>(null)

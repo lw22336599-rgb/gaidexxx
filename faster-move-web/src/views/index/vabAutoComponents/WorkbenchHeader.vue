@@ -58,7 +58,7 @@
     }
   }
 
-      span {
+  span {
     position: relative;
     font-size: 30px;
     font-weight: bold;
@@ -67,24 +67,26 @@
     background-clip: text;
     -webkit-text-fill-color: transparent;
 
-      &::before {
+    &::before {
       position: absolute;
       left: 0;
       display: block;
       width: 100%;
       color: #fff;
       content: 'Vue Shop Vite 工作台';
-      background-image: linear-gradient(65deg,
-          transparent 10%,
-          rgba(255, 255, 255, 1) 20%,
-          rgba(255, 255, 255, 1) 27.5%,
-          transparent 30%,
-          transparent 100%);
+      background-image: linear-gradient(
+        65deg,
+        transparent 10%,
+        rgba(255, 255, 255, 1) 20%,
+        rgba(255, 255, 255, 1) 27.5%,
+        transparent 30%,
+        transparent 100%
+      );
       background-clip: text;
       animation: flare 3s infinite;
     }
 
-      &::after {
+    &::after {
       position: absolute;
       top: 0;
       z-index: -1;
@@ -93,7 +95,7 @@
       content: 'Vue Shop Vite 工作台';
     }
 
-      @keyframes flare {
+    @keyframes flare {
       0% {
         background-position: -400px;
       }

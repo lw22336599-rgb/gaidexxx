@@ -35,7 +35,7 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'Checkbox',
+  name: 'Checkbox'
 })
 
 const checked = ref<boolean>(true)

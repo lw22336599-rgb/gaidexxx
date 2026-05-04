@@ -14,24 +14,24 @@ export const constantRoutes: VabRouteRecord[] = [
     name: 'Login',
     component: () => import('/@/views/login/Login.vue'),
     meta: {
-      hidden: true,
-    },
+      hidden: true
+    }
   },
   {
     path: '/register',
     name: 'Register',
     component: () => import('/@/views/login/Register.vue'),
     meta: {
-      hidden: true,
-    },
+      hidden: true
+    }
   },
   {
     path: '/password',
     name: 'Password',
     component: () => import('/@/views/login/Password.vue'),
     meta: {
-      hidden: true,
-    },
+      hidden: true
+    }
   },
   {
     path: '/userAgreement',
@@ -39,33 +39,33 @@ export const constantRoutes: VabRouteRecord[] = [
     component: () => import('/@/views/login/UserAgreement.vue'),
     meta: {
       title: '“极狐助手”SAAS软件用户服务协议',
-      hidden: true,
-    },
+      hidden: true
+    }
   },
   {
     path: '/redirect',
     name: 'Redirect',
     component: () => import('/@/views/redirect/Redirect.vue'),
     meta: {
-      hidden: true,
-    },
+      hidden: true
+    }
   },
   {
     path: '/403',
     name: '403',
     component: () => import('/@/views/error/403.vue'),
     meta: {
-      hidden: true,
-    },
+      hidden: true
+    }
   },
   {
     path: '/404',
     name: '404',
     component: () => import('/@/views/error/404.vue'),
     meta: {
-      hidden: true,
-    },
-  },
+      hidden: true
+    }
+  }
 ]
 
 export const asyncRoutes: VabRouteRecord[] = [
@@ -75,7 +75,7 @@ export const asyncRoutes: VabRouteRecord[] = [
     component: Layout,
     meta: {
       title: '首页',
-      icon: 'home-2-line',
+      icon: 'home-2-line'
     },
     children: [
       {
@@ -85,9 +85,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '首页',
           icon: 'home-2-line',
-          noClosable: true,
-
-        },
+          noClosable: true
+        }
       },
       {
         path: 'dashboard',
@@ -96,8 +95,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '看板',
           icon: 'dashboard-2-line',
-          guard: ['ADMIN'],
-        },
+          guard: ['ADMIN']
+        }
       },
       {
         path: 'creativeCenter',
@@ -106,8 +105,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '创作中心',
           icon: 'ancient-gate-line',
-          guard: ['ADMIN'],
-        },
+          guard: ['ADMIN']
+        }
       },
       {
         path: 'monitor',
@@ -117,8 +116,8 @@ export const asyncRoutes: VabRouteRecord[] = [
           title: '实时监控',
           icon: 'vidicon-2-line',
           dot: 'success',
-          guard: ['ADMIN'],
-        },
+          guard: ['ADMIN']
+        }
       },
       {
         path: 'tile',
@@ -127,8 +126,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '磁贴',
           icon: 'collage-line',
-          guard: ['ADMIN'],
-        },
+          guard: ['ADMIN']
+        }
       },
       {
         path: 'separateLayout',
@@ -137,8 +136,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '独立布局',
           icon: 'layout-masonry-line',
-          guard: ['ADMIN'],
-        },
+          guard: ['ADMIN']
+        }
       },
       {
         path: 'dataScreen',
@@ -149,8 +148,8 @@ export const asyncRoutes: VabRouteRecord[] = [
           icon: 'database-2-line',
           target: '_blank',
           badge: 'Hot',
-          guard: ['ADMIN'],
-        },
+          guard: ['ADMIN']
+        }
       },
       // {
       //   path: 'workbench',
@@ -171,8 +170,8 @@ export const asyncRoutes: VabRouteRecord[] = [
           icon: 'apps-2-line',
 
           dot: true,
-          guard: ['ADMIN'],
-        },
+          guard: ['ADMIN']
+        }
       },
       {
         path: 'changeLog',
@@ -183,10 +182,10 @@ export const asyncRoutes: VabRouteRecord[] = [
           icon: 'file-word-line',
 
           badge: '99+',
-          guard: ['ADMIN'],
-        },
-      },
-    ],
+          guard: ['ADMIN']
+        }
+      }
+    ]
   },
   {
     path: '/vab',
@@ -195,7 +194,7 @@ export const asyncRoutes: VabRouteRecord[] = [
     meta: {
       title: '组件',
       icon: 'code-box-line',
-      guard: ['ADMIN'],
+      guard: ['ADMIN']
     },
     children: [
       {
@@ -203,7 +202,7 @@ export const asyncRoutes: VabRouteRecord[] = [
         name: 'Icon',
         meta: {
           title: '图标',
-          icon: 'remixicon-line',
+          icon: 'remixicon-line'
         },
         children: [
           {
@@ -211,16 +210,16 @@ export const asyncRoutes: VabRouteRecord[] = [
             name: 'DefaultIcon',
             component: () => import('/@/views/vab/icon/defaultIcon.vue'),
             meta: {
-              title: '默认图标',
-            },
+              title: '默认图标'
+            }
           },
           {
             path: 'iconSelector',
             name: 'IconSelector',
             component: () => import('/@/views/vab/icon/iconSelector.vue'),
             meta: {
-              title: '图标选择器',
-            },
+              title: '图标选择器'
+            }
           },
           {
             path: 'customSvg',
@@ -229,10 +228,10 @@ export const asyncRoutes: VabRouteRecord[] = [
             meta: {
               title: '自定义图标',
               icon: 'vite',
-              isCustomSvg: true,
-            },
-          },
-        ],
+              isCustomSvg: true
+            }
+          }
+        ]
       },
       {
         path: 'table',
@@ -242,9 +241,9 @@ export const asyncRoutes: VabRouteRecord[] = [
           // 非editor角色的用户可见
           guard: {
             role: ['Editor'],
-            mode: 'except',
+            mode: 'except'
           },
-          icon: 'table-2',
+          icon: 'table-2'
         },
         children: [
           {
@@ -252,16 +251,16 @@ export const asyncRoutes: VabRouteRecord[] = [
             name: 'DefaultTable',
             component: () => import('/@/views/vab/table/defaultTable.vue'),
             meta: {
-              title: '默认表格',
-            },
+              title: '默认表格'
+            }
           },
           {
             path: 'columnTable',
             name: 'ColumnTable',
             component: () => import('/@/views/vab/table/columnTable.vue'),
             meta: {
-              title: '左树右表',
-            },
+              title: '左树右表'
+            }
           },
           {
             path: 'tabsTable',
@@ -269,16 +268,16 @@ export const asyncRoutes: VabRouteRecord[] = [
             component: () => import('/@/views/vab/table/tabsTable.vue'),
             meta: {
               title: '分类表格',
-              dot: 'primary',
-            },
+              dot: 'primary'
+            }
           },
           {
             path: 'inlineEditTable',
             name: 'InlineEditTable',
             component: () => import('/@/views/vab/table/inlineEditTable.vue'),
             meta: {
-              title: '行内编辑表格',
-            },
+              title: '行内编辑表格'
+            }
           },
           {
             path: 'customTable',
@@ -286,24 +285,24 @@ export const asyncRoutes: VabRouteRecord[] = [
             component: () => import('/@/views/vab/table/customTable.vue'),
             meta: {
               title: '自定义表格',
-              badge: 'Hot',
-            },
+              badge: 'Hot'
+            }
           },
           {
             path: 'splitTable',
             name: 'SplitTable',
             component: () => import('/@/views/vab/table/splitTable.vue'),
             meta: {
-              title: '分割表格',
-            },
+              title: '分割表格'
+            }
           },
           {
             path: 'bigDataTable',
             name: 'BigDataTable',
             component: () => import('/@/views/vab/table/bigDataTable.vue'),
             meta: {
-              title: '大数据表格',
-            },
+              title: '大数据表格'
+            }
           },
           {
             path: 'defaultTableDetail',
@@ -313,10 +312,10 @@ export const asyncRoutes: VabRouteRecord[] = [
               hidden: true,
               title: '详情页',
               activeMenu: '/vab/table/defaultTable',
-              dynamicNewTab: true, //详情页根据id传参不同可打开多个
-            },
-          },
-        ],
+              dynamicNewTab: true //详情页根据id传参不同可打开多个
+            }
+          }
+        ]
       },
       {
         path: 'list',
@@ -325,8 +324,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '列表',
           guard: ['ADMIN'],
-          icon: 'list-check-2',
-        },
+          icon: 'list-check-2'
+        }
       },
       {
         path: 'editor',
@@ -335,7 +334,7 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '编辑器',
           icon: 'edit-box-line',
-          guard: ['ADMIN'],
+          guard: ['ADMIN']
         },
         children: [
           {
@@ -344,8 +343,8 @@ export const asyncRoutes: VabRouteRecord[] = [
             component: () => import('/@/views/vab/editor/wangEditor.vue'),
             meta: {
               title: '富文本',
-              guard: ['ADMIN'],
-            },
+              guard: ['ADMIN']
+            }
           },
           {
             path: 'mdEditor',
@@ -353,10 +352,10 @@ export const asyncRoutes: VabRouteRecord[] = [
             component: () => import('/@/views/vab/editor/mdEditor.vue'),
             meta: {
               title: 'Markdown',
-              guard: ['ADMIN'],
-            },
-          },
-        ],
+              guard: ['ADMIN']
+            }
+          }
+        ]
       },
       {
         path: 'form',
@@ -364,7 +363,7 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '表单',
           guard: ['ADMIN'],
-          icon: 'file-list-2-line',
+          icon: 'file-list-2-line'
         },
         children: [
           {
@@ -372,64 +371,64 @@ export const asyncRoutes: VabRouteRecord[] = [
             name: 'ComprehensiveForm',
             component: () => import('/@/views/vab/form/comprehensiveForm.vue'),
             meta: {
-              title: '综合表单',
-            },
+              title: '综合表单'
+            }
           },
           {
             path: 'stepForm',
             name: 'StepForm',
             component: () => import('/@/views/vab/form/stepForm.vue'),
             meta: {
-              title: '分步表单',
-            },
+              title: '分步表单'
+            }
           },
           {
             path: 'button',
             name: 'Button',
             component: () => import('/@/views/vab/form/button.vue'),
             meta: {
-              title: '按钮',
-            },
+              title: '按钮'
+            }
           },
           {
             path: 'link',
             name: 'Link',
             component: () => import('/@/views/vab/form/link.vue'),
             meta: {
-              title: '文字链接',
-            },
+              title: '文字链接'
+            }
           },
           {
             path: 'radio',
             name: 'Radio',
             component: () => import('/@/views/vab/form/radio.vue'),
             meta: {
-              title: '单选框',
-            },
+              title: '单选框'
+            }
           },
           {
             path: 'checkbox',
             name: 'Checkbox',
             component: () => import('/@/views/vab/form/checkbox.vue'),
             meta: {
-              title: '多选框',
-            },
+              title: '多选框'
+            }
           },
           {
             path: 'input',
             name: 'Input',
             component: () => import('/@/views/vab/form/input.vue'),
             meta: {
-              title: '输入框',
-            },
+              title: '输入框'
+            }
           },
           {
             path: 'inputNumber',
             name: 'InputNumber',
             component: () => import('/@/views/vab/form/inputNumber.vue'),
             meta: {
-              title: '计数器',
-            },
+              title: '计数器'
+            }
           },
           {
             path: 'select',
@@ -437,8 +436,8 @@ export const asyncRoutes: VabRouteRecord[] = [
             component: () => import('/@/views/vab/form/select.vue'),
             meta: {
               title: '选择器',
-              dot: true,
-            },
+              dot: true
+            }
           },
           {
             path: 'city',
@@ -446,56 +445,56 @@ export const asyncRoutes: VabRouteRecord[] = [
             component: () => import('/@/views/vab/form/city.vue'),
             meta: {
               title: '城市选择器',
-              badge: 'Hot',
-            },
+              badge: 'Hot'
+            }
           },
           {
             path: 'switch',
             name: 'Switch',
             component: () => import('/@/views/vab/form/switch.vue'),
             meta: {
-              title: '开关',
-            },
+              title: '开关'
+            }
           },
           {
             path: 'slider',
             name: 'Slider',
             component: () => import('/@/views/vab/form/slider.vue'),
             meta: {
-              title: '滑块',
-            },
+              title: '滑块'
+            }
           },
           {
             path: 'timePicker',
             name: 'TimePicker',
             component: () => import('/@/views/vab/form/timePicker.vue'),
             meta: {
-              title: '时间选择器',
-            },
+              title: '时间选择器'
+            }
           },
           {
             path: 'datePicker',
             name: 'DatePicker',
             component: () => import('/@/views/vab/form/datePicker.vue'),
             meta: {
-              title: '日期选择器',
-            },
+              title: '日期选择器'
+            }
           },
           {
             path: 'dateTimePicker',
             name: 'DateTimePicker',
             component: () => import('/@/views/vab/form/dateTimePicker.vue'),
             meta: {
-              title: '日期时间选择器',
-            },
+              title: '日期时间选择器'
+            }
           },
           {
             path: 'rate',
             name: 'Rate',
             component: () => import('/@/views/vab/form/rate.vue'),
             meta: {
-              title: '评分',
-            },
+              title: '评分'
+            }
           },
           {
             path: 'transfer',
@@ -503,10 +502,10 @@ export const asyncRoutes: VabRouteRecord[] = [
             component: () => import('/@/views/vab/form/transfer.vue'),
             meta: {
               title: '穿梭框',
-              dot: true,
-            },
-          },
-        ],
+              dot: true
+            }
+          }
+        ]
       },
       {
         path: 'description',
@@ -515,8 +514,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '描述',
           guard: ['ADMIN'],
-          icon: 'slideshow-line',
-        },
+          icon: 'slideshow-line'
+        }
       },
       {
         path: 'tree',
@@ -525,8 +524,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '树',
           guard: ['ADMIN'],
-          icon: 'node-tree',
-        },
+          icon: 'node-tree'
+        }
       },
       {
         path: 'upload',
@@ -536,8 +535,8 @@ export const asyncRoutes: VabRouteRecord[] = [
           title: '上传',
           icon: 'upload-cloud-2-line',
           guard: ['ADMIN'],
-          dot: true,
-        },
+          dot: true
+        }
       },
       {
         path: 'notice',
@@ -546,8 +545,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '通知',
           guard: ['ADMIN'],
-          icon: 'message-2-line',
-        },
+          icon: 'message-2-line'
+        }
       },
       {
         path: 'progress',
@@ -556,8 +555,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '进度条',
           guard: ['ADMIN'],
-          icon: 'footprint-line',
-        },
+          icon: 'footprint-line'
+        }
       },
       {
         path: 'timeline',
@@ -566,8 +565,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '时间线',
           guard: ['ADMIN'],
-          icon: 'time-line',
-        },
+          icon: 'time-line'
+        }
       },
       {
         path: 'statistic',
@@ -576,8 +575,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '统计',
           guard: ['ADMIN'],
-          icon: 'bar-chart-2-line',
-        },
+          icon: 'bar-chart-2-line'
+        }
       },
       {
         path: 'segmented',
@@ -587,8 +586,8 @@ export const asyncRoutes: VabRouteRecord[] = [
           title: '分段控制器',
           guard: ['ADMIN'],
           icon: 'carousel-view',
-          dot: true,
-        },
+          dot: true
+        }
       },
       {
         path: 'image',
@@ -597,8 +596,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '图片',
           guard: ['ADMIN'],
-          icon: 'image-2-line',
-        },
+          icon: 'image-2-line'
+        }
       },
       {
         path: 'infiniteScroll',
@@ -607,8 +606,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '无限滚动',
           guard: ['ADMIN'],
-          icon: 'align-vertically',
-        },
+          icon: 'align-vertically'
+        }
       },
       {
         path: 'drawer',
@@ -617,8 +616,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '抽屉',
           guard: ['ADMIN'],
-          icon: 'archive-drawer-line',
-        },
+          icon: 'archive-drawer-line'
+        }
       },
       {
         path: 'carousel',
@@ -627,8 +626,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '走马灯',
           guard: ['ADMIN'],
-          icon: 'switch-fill',
-        },
+          icon: 'switch-fill'
+        }
       },
       {
         path: 'transition',
@@ -636,8 +635,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         component: () => import('/@/views/vab/transition/index.vue'),
         meta: {
           title: '过渡动画',
-          icon: 'hand-heart-line',
-        },
+          icon: 'hand-heart-line'
+        }
       },
       {
         path: 'divider',
@@ -645,10 +644,10 @@ export const asyncRoutes: VabRouteRecord[] = [
         component: () => import('/@/views/vab/divider/index.vue'),
         meta: {
           title: '分割线',
-          icon: 'equal-line',
-        },
-      },
-    ],
+          icon: 'equal-line'
+        }
+      }
+    ]
   },
   {
     path: '/other',
@@ -657,7 +656,7 @@ export const asyncRoutes: VabRouteRecord[] = [
     meta: {
       title: '其他',
       icon: 'archive-line',
-      guard: ['ADMIN'],
+      guard: ['ADMIN']
     },
     children: [
       {
@@ -668,8 +667,8 @@ export const asyncRoutes: VabRouteRecord[] = [
           title: '图表',
           guard: ['ADMIN'],
           icon: 'bubble-chart-line',
-          noKeepAlive: true,
-        },
+          noKeepAlive: true
+        }
       },
       {
         path: 'gantt',
@@ -678,8 +677,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '甘特图',
           guard: ['ADMIN'],
-          icon: 'organization-chart',
-        },
+          icon: 'organization-chart'
+        }
       },
       {
         path: 'video',
@@ -689,8 +688,8 @@ export const asyncRoutes: VabRouteRecord[] = [
           title: '视频播放器',
           guard: ['ADMIN'],
           icon: 'video-line',
-          dot: 'warning',
-        },
+          dot: 'warning'
+        }
       },
       {
         path: 'workflow',
@@ -699,8 +698,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '工作流',
           guard: ['ADMIN'],
-          icon: 'flow-chart',
-        },
+          icon: 'flow-chart'
+        }
       },
       {
         path: 'sliderVerify',
@@ -709,8 +708,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '滑块验证码',
           guard: ['ADMIN'],
-          icon: 'shield-check-line',
-        },
+          icon: 'shield-check-line'
+        }
       },
       {
         path: 'pdf',
@@ -719,8 +718,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: 'Pdf',
           guard: ['ADMIN'],
-          icon: 'file-pdf-line',
-        },
+          icon: 'file-pdf-line'
+        }
       },
       {
         path: 'print',
@@ -729,8 +728,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '打印',
           guard: ['ADMIN'],
-          icon: 'printer-line',
-        },
+          icon: 'printer-line'
+        }
       },
       {
         path: 'crop',
@@ -740,8 +739,8 @@ export const asyncRoutes: VabRouteRecord[] = [
           title: '裁剪',
           guard: ['ADMIN'],
           icon: 'crop-line',
-          badge: 'New',
-        },
+          badge: 'New'
+        }
       },
       {
         path: 'award',
@@ -750,8 +749,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '抽奖',
           icon: 'award-line',
-          dot: 'danger',
-        },
+          dot: 'danger'
+        }
       },
       {
         path: 'count',
@@ -760,8 +759,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '数字自增长',
           guard: ['ADMIN'],
-          icon: 'number-0',
-        },
+          icon: 'number-0'
+        }
       },
       {
         path: 'magnifier',
@@ -770,8 +769,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '放大镜',
           guard: ['ADMIN'],
-          icon: 'search-2-line',
-        },
+          icon: 'search-2-line'
+        }
       },
       {
         path: 'signature',
@@ -780,8 +779,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '签名',
           icon: 'edit-2-line',
-          guard: ['ADMIN'],
-        },
+          guard: ['ADMIN']
+        }
       },
       {
         path: 'watermark',
@@ -792,8 +791,8 @@ export const asyncRoutes: VabRouteRecord[] = [
           guard: ['ADMIN'],
           icon: 'water-flash-line',
           badge: 'New',
-          badgeType: 'warning',
-        },
+          badgeType: 'warning'
+        }
       },
       {
         path: 'share',
@@ -803,8 +802,8 @@ export const asyncRoutes: VabRouteRecord[] = [
           title: '分享',
           guard: ['ADMIN'],
           icon: 'share-line',
-          dot: true,
-        },
+          dot: true
+        }
       },
       {
         path: 'paneSplit',
@@ -813,8 +812,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '面板分割',
           guard: ['ADMIN'],
-          icon: 'split-cells-horizontal',
-        },
+          icon: 'split-cells-horizontal'
+        }
       },
       {
         path: 'drag',
@@ -822,8 +821,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         component: () => import('/@/views/other/drag/index.vue'),
         meta: {
           title: '拖拽',
-          icon: 'drag-drop-line',
-        },
+          icon: 'drag-drop-line'
+        }
       },
       {
         path: 'scrollText',
@@ -831,8 +830,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         component: () => import('/@/views/other/scrollText/index.vue'),
         meta: {
           title: '文字滚动',
-          icon: 'exchange-line',
-        },
+          icon: 'exchange-line'
+        }
       },
       {
         path: 'milestone',
@@ -840,8 +839,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         component: () => import('/@/views/other/milestone/index.vue'),
         meta: {
           title: '里程碑',
-          icon: 'presentation-line',
-        },
+          icon: 'presentation-line'
+        }
       },
       {
         path: 'noLayout',
@@ -852,8 +851,8 @@ export const asyncRoutes: VabRouteRecord[] = [
           guard: ['ADMIN'],
           icon: 'aspect-ratio-line',
           dot: true,
-          fullscreen: true,
-        },
+          fullscreen: true
+        }
       },
       {
         path: 'fixedWidth',
@@ -863,8 +862,8 @@ export const asyncRoutes: VabRouteRecord[] = [
           title: '定宽',
           guard: ['ADMIN'],
           icon: 'picture-in-picture-fill',
-          dot: true,
-        },
+          dot: true
+        }
       },
       {
         path: '//github.com/zxwk1998/vue-ADMIN-better',
@@ -873,8 +872,8 @@ export const asyncRoutes: VabRouteRecord[] = [
           title: '外链',
           target: '_blank',
           guard: ['ADMIN', 'Editor'],
-          icon: 'external-link-line',
-        },
+          icon: 'external-link-line'
+        }
       },
       {
         path: 'iframe',
@@ -882,7 +881,7 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '内嵌网页',
           guard: ['ADMIN'],
-          icon: 'window-line',
+          icon: 'window-line'
         },
         children: [
           {
@@ -893,19 +892,19 @@ export const asyncRoutes: VabRouteRecord[] = [
               title: 'Iframe',
               icon: 'window-line',
               dynamicNewTab: true,
-              hidden: true,
-            },
+              hidden: true
+            }
           },
           {
             path: 'iframeView?url=nodejs.org/en&title=Node',
             name: 'Node',
             meta: {
-              title: 'Node',
-            },
-          },
-        ],
-      },
-    ],
+              title: 'Node'
+            }
+          }
+        ]
+      }
+    ]
   },
   {
     path: '/operate',
@@ -913,7 +912,7 @@ export const asyncRoutes: VabRouteRecord[] = [
     component: Layout,
     meta: {
       title: '操作',
-      icon: 'microscope-line',
+      icon: 'microscope-line'
     },
     children: [
       {
@@ -923,8 +922,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '角色权限',
           icon: 'user-3-line',
-          badge: 'Hot',
-        },
+          badge: 'Hot'
+        }
       },
       {
         path: 'tabs',
@@ -933,8 +932,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '多标签',
           guard: ['ADMIN'],
-          icon: 'bank-card-line',
-        },
+          icon: 'bank-card-line'
+        }
       },
       {
         path: 'dynamicMeta',
@@ -945,8 +944,8 @@ export const asyncRoutes: VabRouteRecord[] = [
           guard: ['ADMIN'],
           icon: 'notification-badge-line',
           badge: '0',
-          badgeType: 'success',
-        },
+          badgeType: 'success'
+        }
       },
       {
         path: 'guide',
@@ -956,8 +955,8 @@ export const asyncRoutes: VabRouteRecord[] = [
           title: '页面引导',
           guard: ['ADMIN'],
           icon: 'guide-line',
-          dot: true,
-        },
+          dot: true
+        }
       },
       {
         path: 'contextMenu',
@@ -967,8 +966,8 @@ export const asyncRoutes: VabRouteRecord[] = [
           title: '右键菜单',
           guard: ['ADMIN'],
           icon: 'align-right',
-          dot: true,
-        },
+          dot: true
+        }
       },
       {
         path: 'scrollTop',
@@ -978,8 +977,8 @@ export const asyncRoutes: VabRouteRecord[] = [
           title: '滚动条位置记录',
           guard: ['ADMIN'],
           icon: 'scroll-to-bottom-line',
-          dot: true,
-        },
+          dot: true
+        }
       },
 
       {
@@ -990,8 +989,8 @@ export const asyncRoutes: VabRouteRecord[] = [
           title: '弹窗',
           guard: ['ADMIN'],
           icon: 'airplay-line',
-          badge: 'Hot',
-        },
+          badge: 'Hot'
+        }
       },
       {
         path: 'anchor',
@@ -1000,8 +999,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '锚点',
           guard: ['ADMIN'],
-          icon: 'anchor-line',
-        },
+          icon: 'anchor-line'
+        }
       },
       {
         path: 'randomTheme',
@@ -1010,8 +1009,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '随机换肤',
           guard: ['ADMIN'],
-          icon: 'ai-generate',
-        },
+          icon: 'ai-generate'
+        }
       },
       {
         path: 'throttleDebounce',
@@ -1020,8 +1019,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '节流防抖',
           guard: ['ADMIN'],
-          icon: 'water-percent-line',
-        },
+          icon: 'water-percent-line'
+        }
       },
       {
         path: 'webSocket',
@@ -1031,8 +1030,8 @@ export const asyncRoutes: VabRouteRecord[] = [
           title: 'WebSocket',
           guard: ['ADMIN'],
           icon: 'microsoft-loop-line',
-          badge: 'New',
-        },
+          badge: 'New'
+        }
       },
       {
         path: 'log',
@@ -1041,8 +1040,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '错误日志',
           guard: ['ADMIN'],
-          icon: 'error-warning-line',
-        },
+          icon: 'error-warning-line'
+        }
       },
       {
         path: 'dynamicSegment',
@@ -1050,7 +1049,7 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '动态传参',
           guard: ['ADMIN'],
-          icon: 'arrow-left-right-line',
+          icon: 'arrow-left-right-line'
         },
         children: [
           {
@@ -1060,20 +1059,20 @@ export const asyncRoutes: VabRouteRecord[] = [
             meta: {
               hidden: true,
               title: 'Params',
-              dynamicNewTab: true,
-            },
+              dynamicNewTab: true
+            }
           },
           {
             path: 'params/1',
             name: 'Params/1',
             component: () => import('/@/views/operate/dynamicSegment/params.vue'),
-            meta: { title: 'Params id=1' },
+            meta: { title: 'Params id=1' }
           },
           {
             path: 'params/2',
             name: 'Params/2',
             component: () => import('/@/views/operate/dynamicSegment/params.vue'),
-            meta: { title: 'Params id=2' },
+            meta: { title: 'Params id=2' }
           },
           {
             path: 'query',
@@ -1082,22 +1081,22 @@ export const asyncRoutes: VabRouteRecord[] = [
             meta: {
               hidden: true,
               title: 'Query',
-              dynamicNewTab: true,
-            },
+              dynamicNewTab: true
+            }
           },
           {
             path: 'query?id=1',
             name: 'Query?id=1',
             component: () => import('/@/views/operate/dynamicSegment/query.vue'),
-            meta: { title: 'Query id=1' },
+            meta: { title: 'Query id=1' }
           },
           {
             path: 'query?id=2',
             name: 'Query?id=2',
             component: () => import('/@/views/operate/dynamicSegment/query.vue'),
-            meta: { title: 'Query id=2' },
-          },
-        ],
+            meta: { title: 'Query id=2' }
+          }
+        ]
       },
       {
         path: 'menu1',
@@ -1105,38 +1104,38 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '多级路由缓存',
           guard: ['ADMIN'],
-          icon: 'route-line',
+          icon: 'route-line'
         },
         children: [
           {
             path: 'menu11',
             name: 'Menu11',
             meta: {
-              title: '路由1.1',
+              title: '路由1.1'
             },
             children: [
               {
                 path: 'menu111',
                 name: 'Menu111',
                 meta: {
-                  title: '路由1.1.1',
+                  title: '路由1.1.1'
                 },
                 children: [
                   {
                     path: 'menu1111',
                     name: 'Menu1111',
                     meta: {
-                      title: '路由1.1.1.1',
+                      title: '路由1.1.1.1'
                     },
-                    component: () => import('/@/views/operate/nested/menu1/menu11/menu111/menu1111/index.vue'),
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-    ],
+                    component: () => import('/@/views/operate/nested/menu1/menu11/menu111/menu1111/index.vue')
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
   },
   {
     path: '/template',
@@ -1145,7 +1144,7 @@ export const asyncRoutes: VabRouteRecord[] = [
     meta: {
       title: '模板',
       icon: 'clipboard-line',
-      guard: ['ADMIN'],
+      guard: ['ADMIN']
     },
     children: [
       {
@@ -1155,8 +1154,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '新闻',
           icon: 'newspaper-line',
-          badge: 'New',
-        },
+          badge: 'New'
+        }
       },
       {
         path: 'newsDetail',
@@ -1165,8 +1164,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '详情页',
           icon: 'newspaper-line',
-          hidden: true,
-        },
+          hidden: true
+        }
       },
       {
         path: 'blog',
@@ -1175,8 +1174,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '博客',
           icon: 'ball-pen-line',
-          badge: 'New',
-        },
+          badge: 'New'
+        }
       },
       {
         path: 'lllustration',
@@ -1185,8 +1184,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '插画',
           icon: 'brush-3-line',
-          dot: true,
-        },
+          dot: true
+        }
       },
       {
         path: 'qRLogin',
@@ -1194,8 +1193,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         component: () => import('/@/views/template/QRLogin.vue'),
         meta: {
           title: '扫码登录',
-          icon: 'qr-scan-2-line',
-        },
+          icon: 'qr-scan-2-line'
+        }
       },
       {
         path: 'resume',
@@ -1203,8 +1202,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         component: () => import('/@/views/template/Resume.vue'),
         meta: {
           title: '简历',
-          icon: 'folder-user-line',
-        },
+          icon: 'folder-user-line'
+        }
       },
       {
         path: 'Iot',
@@ -1215,8 +1214,8 @@ export const asyncRoutes: VabRouteRecord[] = [
           icon: 'earthquake-line',
           target: '_blank',
           badge: 'Hot',
-          badgeType: 'primary',
-        },
+          badgeType: 'primary'
+        }
       },
       {
         path: 'passwordGenerator',
@@ -1225,8 +1224,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '密码生成器',
           guard: ['ADMIN'],
-          icon: 'lock-password-line',
-        },
+          icon: 'lock-password-line'
+        }
       },
       {
         path: 'regularExpression',
@@ -1235,8 +1234,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '正则校验',
           guard: ['ADMIN'],
-          icon: 'file-copy-2-line',
-        },
+          icon: 'file-copy-2-line'
+        }
       },
       {
         path: '403',
@@ -1244,8 +1243,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         component: () => import('/@/views/error/403.vue'),
         meta: {
           title: '403',
-          icon: 'error-warning-line',
-        },
+          icon: 'error-warning-line'
+        }
       },
       {
         path: '404',
@@ -1253,8 +1252,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         component: () => import('/@/views/error/404.vue'),
         meta: {
           title: '404',
-          icon: 'error-warning-line',
-        },
+          icon: 'error-warning-line'
+        }
       },
       {
         path: '500',
@@ -1262,8 +1261,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         component: () => import('/@/views/error/500.vue'),
         meta: {
           title: '500',
-          icon: 'error-warning-line',
-        },
+          icon: 'error-warning-line'
+        }
       },
       {
         path: '503',
@@ -1271,10 +1270,10 @@ export const asyncRoutes: VabRouteRecord[] = [
         component: () => import('/@/views/error/503.vue'),
         meta: {
           title: '503',
-          icon: 'error-warning-line',
-        },
-      },
-    ],
+          icon: 'error-warning-line'
+        }
+      }
+    ]
   },
   {
     path: '/setting',
@@ -1283,7 +1282,7 @@ export const asyncRoutes: VabRouteRecord[] = [
     meta: {
       title: '配置',
       icon: 'user-settings-line',
-      guard: ['ADMIN'],
+      guard: ['ADMIN']
     },
     children: [
       {
@@ -1292,8 +1291,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         component: () => import('/@/views/setting/personalCenter/index.vue'),
         meta: {
           title: '个人中心',
-          icon: 'user-follow-line',
-        },
+          icon: 'user-follow-line'
+        }
       },
       {
         path: 'userManagement',
@@ -1301,8 +1300,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         component: () => import('/@/views/setting/userManagement/index.vue'),
         meta: {
           title: '用户管理',
-          icon: 'user-3-line',
-        },
+          icon: 'user-3-line'
+        }
       },
       {
         path: 'roleManagement',
@@ -1310,8 +1309,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         component: () => import('/@/views/setting/roleManagement/index.vue'),
         meta: {
           title: '角色管理',
-          icon: 'ADMIN-line',
-        },
+          icon: 'ADMIN-line'
+        }
       },
       {
         path: 'departmentManagement',
@@ -1319,8 +1318,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         component: () => import('/@/views/setting/departmentManagement/index.vue'),
         meta: {
           title: '部门管理',
-          icon: 'group-line',
-        },
+          icon: 'group-line'
+        }
       },
       {
         path: 'menuManagement',
@@ -1328,8 +1327,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         component: () => import('/@/views/setting/menuManagement/index.vue'),
         meta: {
           title: '菜单管理',
-          icon: 'menu-2-fill',
-        },
+          icon: 'menu-2-fill'
+        }
       },
       {
         path: 'dictionaryManagement',
@@ -1338,8 +1337,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '字典管理',
           icon: 'book-2-line',
-          dot: true,
-        },
+          dot: true
+        }
       },
       {
         path: 'taskManagement',
@@ -1348,8 +1347,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '任务管理',
           icon: 'task-line',
-          badge: 'New',
-        },
+          badge: 'New'
+        }
       },
       {
         path: 'iotManagement',
@@ -1358,8 +1357,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '物联网管理',
           icon: 'mastercard-line',
-          badge: 'New',
-        },
+          badge: 'New'
+        }
       },
       {
         path: 'serverManagement',
@@ -1368,8 +1367,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '服务器管理',
           icon: 'server-line',
-          dot: true,
-        },
+          dot: true
+        }
       },
       {
         path: 'systemLog',
@@ -1377,8 +1376,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         component: () => import('/@/views/setting/systemLog/index.vue'),
         meta: {
           title: '系统日志',
-          icon: 'file-shield-2-line',
-        },
+          icon: 'file-shield-2-line'
+        }
       },
       {
         path: 'websiteSetting',
@@ -1386,10 +1385,10 @@ export const asyncRoutes: VabRouteRecord[] = [
         component: () => import('/@/views/setting/websiteSetting/index.vue'),
         meta: {
           title: '网站设置',
-          icon: 'global-line',
-        },
-      },
-    ],
+          icon: 'global-line'
+        }
+      }
+    ]
   },
   {
     path: '/noColumn',
@@ -1400,7 +1399,7 @@ export const asyncRoutes: VabRouteRecord[] = [
       icon: 'delete-column',
       guard: ['ADMIN'],
       levelHidden: true,
-      breadcrumbHidden: true,
+      breadcrumbHidden: true
     },
     children: [
       {
@@ -1410,10 +1409,10 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '单栏',
           icon: 'delete-column',
-          noColumn: true,
-        },
-      },
-    ],
+          noColumn: true
+        }
+      }
+    ]
   },
   {
     path: '/goods',
@@ -1422,7 +1421,7 @@ export const asyncRoutes: VabRouteRecord[] = [
     meta: {
       title: '商品',
       icon: 'shopping-bag-3-line',
-      guard: ['ADMIN'],
+      guard: ['ADMIN']
     },
     children: [
       {
@@ -1431,8 +1430,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         component: () => import('/@/views/goods/GoodsManagement.vue'),
         meta: {
           title: '商品管理',
-          icon: 'shopping-basket-line',
-        },
+          icon: 'shopping-basket-line'
+        }
       },
       {
         path: 'goodsStatistics',
@@ -1441,8 +1440,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '商品统计',
           icon: 'line-chart-line',
-          dot: true,
-        },
+          dot: true
+        }
       },
       {
         path: 'goodsList',
@@ -1450,8 +1449,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         component: () => import('/@/views/goods/GoodsList.vue'),
         meta: {
           title: '商品列表',
-          icon: 'list-check-3',
-        },
+          icon: 'list-check-3'
+        }
       },
       {
         path: 'goodsComment',
@@ -1459,8 +1458,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         component: () => import('/@/views/goods/GoodsComment.vue'),
         meta: {
           title: '商品评论',
-          icon: 'chat-smile-2-line',
-        },
+          icon: 'chat-smile-2-line'
+        }
       },
       {
         path: 'workOrder',
@@ -1468,8 +1467,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         component: () => import('/@/views/goods/WorkOrder.vue'),
         meta: {
           title: '工单管理',
-          icon: 'list-ordered-2',
-        },
+          icon: 'list-ordered-2'
+        }
       },
       {
         path: 'trade',
@@ -1477,8 +1476,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         component: () => import('/@/views/goods/Trade.vue'),
         meta: {
           title: '交易订单',
-          icon: 'archive-2-line',
-        },
+          icon: 'archive-2-line'
+        }
       },
       {
         path: 'orderNotice',
@@ -1487,8 +1486,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '订单提醒',
           icon: 'bell-line',
-          badge: 'New',
-        },
+          badge: 'New'
+        }
       },
       {
         path: 'cashier',
@@ -1496,8 +1495,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         component: () => import('/@/views/goods/Cashier.vue'),
         meta: {
           title: '收银台',
-          icon: 'copper-diamond-line',
-        },
+          icon: 'copper-diamond-line'
+        }
       },
       {
         path: 'productCenter',
@@ -1505,8 +1504,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         component: () => import('/@/views/goods/ProductCenter.vue'),
         meta: {
           title: '产品中心',
-          icon: 'presentation-line',
-        },
+          icon: 'presentation-line'
+        }
       },
       {
         path: 'posterDesign',
@@ -1516,10 +1515,10 @@ export const asyncRoutes: VabRouteRecord[] = [
           title: '海报设计',
           icon: 'image-2-line',
           badge: '全屏',
-          fullscreen: true,
-        },
+          fullscreen: true
+        }
       }
-    ],
+    ]
   },
   {
     path: '/chat',
@@ -1528,7 +1527,7 @@ export const asyncRoutes: VabRouteRecord[] = [
     meta: {
       title: 'GPT',
       icon: 'chat-1-line',
-      guard: ['ADMIN'],
+      guard: ['ADMIN']
     },
     children: [
       {
@@ -1538,8 +1537,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: 'ChatGPT',
           icon: 'openai-line',
-          dot: true,
-        },
+          dot: true
+        }
       },
       {
         path: 'speechSynthesis',
@@ -1547,8 +1546,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         component: () => import('/@/views/chatGPT/SpeechSynthesis.vue'),
         meta: {
           title: '语音合成',
-          icon: 'customer-service-line',
-        },
+          icon: 'customer-service-line'
+        }
       },
       {
         path: '//bard.google.com/chat',
@@ -1556,8 +1555,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: 'Bard',
           target: '_blank',
-          icon: 'bard-line',
-        },
+          icon: 'bard-line'
+        }
       },
       {
         path: '//copilot.microsoft.com',
@@ -1565,8 +1564,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: 'Copilot',
           target: '_blank',
-          icon: 'copilot-line',
-        },
+          icon: 'copilot-line'
+        }
       },
       {
         path: '//claude.ai/chat',
@@ -1574,8 +1573,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: 'Claude',
           target: '_blank',
-          icon: 'brain-line',
-        },
+          icon: 'brain-line'
+        }
       },
       {
         path: '//yiyan.baidu.com',
@@ -1583,8 +1582,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '文心一言',
           target: '_blank',
-          icon: 'baidu-line',
-        },
+          icon: 'baidu-line'
+        }
       },
       {
         path: '//xinghuo.xfyun.cn/desk',
@@ -1592,8 +1591,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '讯飞星火',
           target: '_blank',
-          icon: 'fire-line',
-        },
+          icon: 'fire-line'
+        }
       },
       {
         path: '//qianwen.aliyun.com/chat',
@@ -1601,8 +1600,8 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '通义千问',
           target: '_blank',
-          icon: 'taobao-line',
-        },
+          icon: 'taobao-line'
+        }
       },
       {
         path: '//www.doubao.com/chat/',
@@ -1610,10 +1609,10 @@ export const asyncRoutes: VabRouteRecord[] = [
         meta: {
           title: '豆包',
           target: '_blank',
-          icon: 'tiktok-line',
-        },
-      },
-    ],
+          icon: 'tiktok-line'
+        }
+      }
+    ]
   },
   {
     path: '/portal',
@@ -1623,8 +1622,8 @@ export const asyncRoutes: VabRouteRecord[] = [
       title: '门户',
       icon: 'building-line',
       target: '_blank',
-      guard: ['ADMIN'],
-    },
+      guard: ['ADMIN']
+    }
   },
   {
     path: '/product',
@@ -1632,8 +1631,8 @@ export const asyncRoutes: VabRouteRecord[] = [
     component: () => import('/@/views/portal/Product.vue'),
     meta: {
       title: '产品简介',
-      hidden: true,
-    },
+      hidden: true
+    }
   },
   {
     path: '/partner',
@@ -1641,8 +1640,8 @@ export const asyncRoutes: VabRouteRecord[] = [
     component: () => import('/@/views/portal/Partner.vue'),
     meta: {
       title: '合作伙伴',
-      hidden: true,
-    },
+      hidden: true
+    }
   },
   {
     path: '//vuejs-core.cn/authorization/shop-vite.html',
@@ -1651,8 +1650,8 @@ export const asyncRoutes: VabRouteRecord[] = [
       title: '外链',
       target: '_blank',
       guard: ['ADMIN'],
-      icon: 'external-link-line',
-    },
+      icon: 'external-link-line'
+    }
   },
   {
     path: '/:pathMatch(.*)*',
@@ -1660,18 +1659,18 @@ export const asyncRoutes: VabRouteRecord[] = [
     name: 'NotFound',
     meta: {
       title: '404',
-      hidden: true,
-    },
-  },
+      hidden: true
+    }
+  }
 ]
 
 const router = createRouter({
   history: isHashRouterMode ? createWebHashHistory(base) : createWebHistory(base),
-  routes: constantRoutes as RouteRecordRaw[],
+  routes: constantRoutes as RouteRecordRaw[]
 })
 
 const fatteningRoutes = (routes: VabRouteRecord[]): VabRouteRecord[] => {
-  return routes.flatMap((route) => {
+  return routes.flatMap(route => {
     return route.children ? fatteningRoutes(route.children) : route
   })
 }
@@ -1687,7 +1686,7 @@ export const resetRouter = (routes: VabRouteRecord[] = constantRoutes) => {
   routes.map((route: VabRouteRecord) => {
     if (route.children) route.children = fatteningRoutes(route.children)
   })
-  router.getRoutes().forEach((route) => {
+  router.getRoutes().forEach(route => {
     if (route.name) {
       const routeName: RouteRecordName = route.name
       router.hasRoute(routeName) && router.removeRoute(routeName)
@@ -1705,7 +1704,7 @@ export const setupRouter = (app: App<Element>) => {
   if (disableRouterWarning)
     router.addRoute({
       path: '/:pathMatch(.*)*',
-      component: () => { },
+      component: () => {}
     })
 
   if (authentication === 'intelligence') addRouter(asyncRoutes)

@@ -63,27 +63,27 @@ import bottom_03 from '/@/assets/data_screen_images/bottom_03.png'
 import bottom_04 from '/@/assets/data_screen_images/bottom_04.png'
 
 defineOptions({
-  name: 'DataScreenBottom',
+  name: 'DataScreenBottom'
 })
 
 const countConfig1 = reactive({
   startValue: 0,
-  endValue: random(1000, 2000),
+  endValue: random(1000, 2000)
 })
 
 const countConfig2 = reactive({
   startValue: 0,
-  endValue: random(1000, 2000),
+  endValue: random(1000, 2000)
 })
 
 const countConfig3 = reactive({
   startValue: 0,
-  endValue: random(1000, 2000),
+  endValue: random(1000, 2000)
 })
 
 const countConfig4 = reactive({
   startValue: 0,
-  endValue: random(1000, 2000),
+  endValue: random(1000, 2000)
 })
 
 const timer = setInterval(() => {

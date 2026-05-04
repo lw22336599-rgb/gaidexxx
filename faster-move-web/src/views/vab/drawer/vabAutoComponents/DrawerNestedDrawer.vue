@@ -17,7 +17,7 @@ const innerDrawer = ref<boolean>(false)
 
 const handleClose = (done: () => void) => {
   ElMessageBox.confirm('您还有未保存的数据，确定要继续吗？', {
-    draggable: true,
+    draggable: true
   })
     .then(() => {
       done()

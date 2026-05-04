@@ -16,38 +16,38 @@ const { theme } = storeToRefs(settingsStore)
 const option = reactive<any>({
   tooltip: {
     trigger: 'axis',
-    extraCssText: 'z-index:1',
+    extraCssText: 'z-index:1'
   },
   grid: {
     top: '0%',
     left: '2%',
     right: '20%',
     bottom: '0%',
-    containLabel: true,
+    containLabel: true
   },
   xAxis: [
     {
       splitLine: {
-        show: false,
+        show: false
       },
       type: 'value',
-      show: false,
-    },
+      show: false
+    }
   ],
   yAxis: [
     {
       splitLine: {
-        show: false,
+        show: false
       },
       axisLine: {
-        show: false,
+        show: false
       },
       type: 'category',
       axisTick: {
-        show: false,
+        show: false
       },
-      data: ['曲丽丽', '付小小', '林东东', '周星星', '朱偏右'],
-    },
+      data: ['曲丽丽', '付小小', '林东东', '周星星', '朱偏右']
+    }
   ],
   series: [
     {
@@ -60,15 +60,15 @@ const option = reactive<any>({
         fontSize: 12,
         formatter: ({ data }: any) => {
           return `${data}万元`
-        },
+        }
       },
       itemStyle: {
         borderRadius: 10,
-        borderWidth: 2,
+        borderWidth: 2
       },
-      data: [23, 54, 68, 76, 87],
-    },
-  ],
+      data: [23, 54, 68, 76, 87]
+    }
+  ]
 })
 
 watch(

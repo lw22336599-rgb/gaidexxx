@@ -4,28 +4,27 @@
  * 自动生成，请勿手动修改
  */
 
-import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 
-import {IUserManager} from "@/TsModel/Alien/Entity/Interfaces/IUserManager";
+import type { IUserManager } from '@/TsModel/Alien/Entity/Interfaces/IUserManager'
 
 export class JdApisApi {
-	private baseUrl: string;
-	private axiosInstance: AxiosInstance;
+  private baseUrl: string
+  private axiosInstance: AxiosInstance
 
-	constructor(axiosInstance: AxiosInstance, baseUrl: string = '') {
-		this.axiosInstance = axiosInstance;
-		this.baseUrl = baseUrl;
-	}
+  constructor(axiosInstance: AxiosInstance, baseUrl: string = '') {
+    this.axiosInstance = axiosInstance
+    this.baseUrl = baseUrl
+  }
 
-	async ImportJdLsToJdTg(jdLsShopIds: string[], call: IUserManager): Promise<any> {
-		const config: AxiosRequestConfig = {
-			method: 'POST',
-			url: `${this.baseUrl}/jdapi/import-jdls-to-jdtg`,
-			data: jdLsShopIds,
-		};
+  async ImportJdLsToJdTg(jdLsShopIds: string[], call: IUserManager): Promise<any> {
+    const config: AxiosRequestConfig = {
+      method: 'POST',
+      url: `${this.baseUrl}/jdapi/import-jdls-to-jdtg`,
+      data: jdLsShopIds
+    }
 
-		const response: AxiosResponse<any> = await this.axiosInstance(config);
-		return response.data;
-	}
-
+    const response: AxiosResponse<any> = await this.axiosInstance(config)
+    return response.data
+  }
 }

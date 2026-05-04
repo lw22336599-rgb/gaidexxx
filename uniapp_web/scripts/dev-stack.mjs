@@ -1,5 +1,5 @@
 /**
- * 先启动 api-dev-bridge（5265），再启动 uni H5；Ctrl+C 结束子进程。
+ * 先启动 api-dev-bridge（端口见环境变量 API_BRIDGE_PORT，默认 5265），再启动 uni H5；Ctrl+C 结束子进程。
  */
 import { spawn } from "node:child_process";
 import { createConnection } from "node:net";

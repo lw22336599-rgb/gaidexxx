@@ -1,6 +1,6 @@
 <template>
   <div class="iframe-container">
-    <iframe :src="url"></iframe>
+    <iframe :src="url" />
   </div>
 </template>
 
@@ -12,7 +12,7 @@ const { changeTabsMeta } = tabsStore
 const route = useRoute()
 
 defineOptions({
-  name: 'Iframe',
+  name: 'Iframe'
 })
 
 const url = ref<any>('')
@@ -23,7 +23,7 @@ const handleIframe = () => {
   nextTick(() => {
     changeTabsMeta({
       title: 'Iframe',
-      meta,
+      meta
     })
   })
 }

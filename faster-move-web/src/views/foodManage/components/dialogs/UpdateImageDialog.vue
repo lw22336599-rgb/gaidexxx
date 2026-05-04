@@ -1,10 +1,21 @@
 <template>
-  <el-dialog v-model="dialogVisible" title="主图批量边框修改" width="600px" :close-on-click-modal="false" @close="handleClose">
+  <el-dialog
+    v-model="dialogVisible"
+    title="主图批量边框修改"
+    width="600px"
+    :close-on-click-modal="false"
+    @close="handleClose"
+  >
     <div class="image-combine-container">
       <!-- 左侧：上传边框 -->
       <div class="border-upload">
-        <el-upload class="upload-block" :show-file-list="false" :http-request="customUpload"
-          :before-upload="beforeUpload" accept="image/png,image/gif">
+        <el-upload
+          class="upload-block"
+          :show-file-list="false"
+          :http-request="customUpload"
+          :before-upload="beforeUpload"
+          accept="image/png,image/gif"
+        >
           <template #default>
             <div class="upload-content">
               <img v-if="borderUrl" :src="borderUrl" class="border-preview" />
@@ -55,12 +66,12 @@ const emit = defineEmits<{
 
 const dialogVisible = computed({
   get: () => props.modelValue,
-  set: (val) => emit('update:modelValue', val),
+  set: val => emit('update:modelValue', val)
 })
 
 const onlyMainImage = computed({
-  get: () => props.onlyMainImage !== undefined ? props.onlyMainImage : true,
-  set: (val) => emit('update:onlyMainImage', val),
+  get: () => (props.onlyMainImage !== undefined ? props.onlyMainImage : true),
+  set: val => emit('update:onlyMainImage', val)
 })
 
 const borderUrl = ref<string>('')
@@ -97,7 +108,7 @@ const handleConfirm = () => {
     ...props.baseParams,
     FoodIds: props.foodIds,
     BorderImageUrl: borderUrl.value,
-    OnlyMainImage: onlyMainImage.value,
+    OnlyMainImage: onlyMainImage.value
   }
   emit('confirm', params)
   handleClose()

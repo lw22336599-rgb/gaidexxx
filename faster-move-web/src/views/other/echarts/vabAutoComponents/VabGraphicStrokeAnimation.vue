@@ -10,14 +10,14 @@
 import { useSettingsStore } from '/@/store/modules/settings'
 
 defineOptions({
-  name: 'VabGraphicStrokeAnimation',
+  name: 'VabGraphicStrokeAnimation'
 })
 
 defineProps({
   title: {
     type: String,
-    default: '',
-  },
+    default: ''
+  }
 })
 
 const settingsStore = useSettingsStore()
@@ -38,7 +38,7 @@ const option = reactive<any>({
           lineDashOffset: 0,
           fill: 'transparent',
           stroke: theme.value.color,
-          lineWidth: 1,
+          lineWidth: 1
         },
         keyframeAnimation: {
           duration: 3000,
@@ -49,26 +49,26 @@ const option = reactive<any>({
               style: {
                 fill: 'transparent',
                 lineDashOffset: 200,
-                lineDash: [200, 0],
-              },
+                lineDash: [200, 0]
+              }
             },
             {
               percent: 0.8,
               style: {
-                fill: 'transparent',
-              },
+                fill: 'transparent'
+              }
             },
             {
               percent: 1,
               style: {
-                fill: theme.value.color,
-              },
-            },
-          ],
-        },
-      },
-    ],
-  },
+                fill: theme.value.color
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
 })
 
 watch(

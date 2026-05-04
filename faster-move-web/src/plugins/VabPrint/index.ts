@@ -3,7 +3,7 @@ const Print: any = function (this: any, dom: any, options: any) {
 
   this.options = this.extend(
     {
-      noPrint: '.no-print',
+      noPrint: '.no-print'
     },
     options
   )
@@ -130,7 +130,7 @@ Print.prototype = {
         }
       : function (obj: { nodeType: number; nodeName: any }) {
           return obj && typeof obj === 'object' && obj.nodeType === 1 && typeof obj.nodeName === 'string'
-        },
+        }
 }
 
 export default Print

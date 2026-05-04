@@ -60,13 +60,34 @@ const openWindowShop = async (row: any) => {
     // 降级方案：使用原有的独立窗口方式
     if (row.shop_type === 1) {
       // 美团外卖
-      electronApi.openWin('https://e.waimai.meituan.com', row.office_id, row.cookies, row.name, undefined, row.shop_type)
+      electronApi.openWin(
+        'https://e.waimai.meituan.com',
+        row.office_id,
+        row.cookies,
+        row.name,
+        undefined,
+        row.shop_type
+      )
     } else if (row.shop_type === 3) {
       // 美团闪购
-      electronApi.openWin('https://shangoue.meituan.com', row.office_id, row.cookies, row.name, undefined, row.shop_type)
+      electronApi.openWin(
+        'https://shangoue.meituan.com',
+        row.office_id,
+        row.cookies,
+        row.name,
+        undefined,
+        row.shop_type
+      )
     } else if (row.shop_type === 4) {
       // 美团医药
-      electronApi.openWin('https://yiyao.meituan.com/main/frame', row.office_id, row.cookies, row.name, undefined, row.shop_type)
+      electronApi.openWin(
+        'https://yiyao.meituan.com/main/frame',
+        row.office_id,
+        row.cookies,
+        row.name,
+        undefined,
+        row.shop_type
+      )
     } else if (row.shop_type == 2) {
       // 饿了么外卖
       electronApi.openWin(

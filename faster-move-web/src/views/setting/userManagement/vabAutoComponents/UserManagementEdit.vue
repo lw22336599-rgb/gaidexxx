@@ -28,7 +28,7 @@ import type { FormInstance } from 'element-plus'
 import { doEdit } from '/@/api/userManagement'
 
 defineOptions({
-  name: 'UserManagementEdit',
+  name: 'UserManagementEdit'
 })
 
 const emit = defineEmits(['fetch-data'])
@@ -38,13 +38,13 @@ const form = reactive<any>({
   username: '',
   password: '',
   email: '',
-  roles: [],
+  roles: []
 })
 const rules = reactive<any>({
   username: [{ required: true, trigger: 'blur', message: '请输入用户名' }],
   password: [{ required: true, trigger: 'blur', message: '请输入密码' }],
   email: [{ required: true, trigger: 'blur', message: '请输入邮箱' }],
-  roles: [{ required: true, trigger: 'blur', message: '请选择角色' }],
+  roles: [{ required: true, trigger: 'blur', message: '请选择角色' }]
 })
 const title = ref<string>('')
 const dialogFormVisible = ref<boolean>(false)
@@ -62,7 +62,7 @@ const showEdit = (row: any) => {
 }
 
 defineExpose({
-  showEdit,
+  showEdit
 })
 
 const close = () => {

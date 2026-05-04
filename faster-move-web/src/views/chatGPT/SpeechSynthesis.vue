@@ -31,14 +31,14 @@
 import { getList } from '/@/api/description'
 
 defineOptions({
-  name: 'SpeechSynthesis',
+  name: 'SpeechSynthesis'
 })
 
 const voice = ref<SpeechSynthesisVoice>(undefined as unknown as SpeechSynthesisVoice)
 
 const text = ref<string>('')
 const speech = useSpeechSynthesis(text, {
-  voice,
+  voice
 })
 
 const fetchData = async () => {

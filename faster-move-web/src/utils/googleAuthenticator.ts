@@ -39,13 +39,7 @@ function base32Decode(base32: string): Uint8Array {
  * @returns Promise<ArrayBuffer>
  */
 async function hmacSha1(key: Uint8Array, message: Uint8Array): Promise<ArrayBuffer> {
-  const cryptoKey = await crypto.subtle.importKey(
-    'raw',
-    key,
-    { name: 'HMAC', hash: 'SHA-1' },
-    false,
-    ['sign']
-  )
+  const cryptoKey = await crypto.subtle.importKey('raw', key, { name: 'HMAC', hash: 'SHA-1' }, false, ['sign'])
   return await crypto.subtle.sign('HMAC', cryptoKey, message)
 }
 
@@ -70,11 +64,7 @@ function numToUint8Array(num: number): Uint8Array {
  * @param digits - 验证码位数，默认 6 位
  * @returns Promise<string> - 生成的验证码
  */
-export async function generateTOTP(
-  secret: string,
-  timeStep: number = 30,
-  digits: number = 6
-): Promise<string> {
+export async function generateTOTP(secret: string, timeStep: number = 30, digits: number = 6): Promise<string> {
   try {
     // 1. 解码 Base32 密钥
     const keyBytes = base32Decode(secret)
@@ -112,11 +102,7 @@ export async function generateTOTP(
  * @param window - 允许的时间窗口数量（前后各几个时间步）
  * @returns Promise<boolean> - 验证码是否正确
  */
-export async function verifyTOTP(
-  secret: string,
-  token: string,
-  window: number = 1
-): Promise<boolean> {
+export async function verifyTOTP(secret: string, token: string, window: number = 1): Promise<boolean> {
   try {
     const currentTime = Math.floor(Date.now() / 1000)
     const timeStep = 30

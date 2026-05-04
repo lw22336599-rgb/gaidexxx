@@ -11,12 +11,12 @@ export default defineComponent({
   props: {
     nodeData: {
       type: Object,
-      default: () => {},
+      default: () => {}
     },
     lf: {
       type: Object,
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   emits: ['setPropertiesFinish'],
   data() {
@@ -25,8 +25,8 @@ export default defineComponent({
   methods: {
     handleClose() {
       this.$emit('setPropertiesFinish')
-    },
-  },
+    }
+  }
 })
 </script>
 <style>

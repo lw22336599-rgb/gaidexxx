@@ -1,5 +1,5 @@
-import {FoodItemVo} from "@/TsModel/SiteType/Base/Models/FoodMove/FoodItemVo";
+import type { FoodItemVo } from '@/TsModel/SiteType/Base/Models/FoodMove/FoodItemVo'
 export interface AddFoodToTaskParms extends FoodItemVo {
-		/** 任务*/
-		task: string;
+  /** 任务*/
+  task: string
 }

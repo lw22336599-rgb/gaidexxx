@@ -40,7 +40,7 @@ import {
   SunburstChart,
   ThemeRiverChart,
   TreeChart,
-  TreemapChart,
+  TreemapChart
 } from 'echarts/charts'
 import {
   AriaComponent,
@@ -68,7 +68,7 @@ import {
   TransformComponent,
   VisualMapComponent,
   VisualMapContinuousComponent,
-  VisualMapPiecewiseComponent,
+  VisualMapPiecewiseComponent
 } from 'echarts/components'
 import { use } from 'echarts/core'
 import { CanvasRenderer, SVGRenderer } from 'echarts/renderers'
@@ -76,22 +76,22 @@ import VChart, { THEME_KEY } from 'vue-echarts'
 import theme from './theme/vab-echarts-theme.json'
 
 defineOptions({
-  name: 'VabChart',
+  name: 'VabChart'
 })
 
 const props = defineProps({
   option: {
     type: Object,
-    default: () => {},
+    default: () => {}
   },
   autoresize: {
     type: Boolean,
-    default: true,
+    default: true
   },
   renderer: {
     type: String,
-    default: 'SVGRenderer',
-  },
+    default: 'SVGRenderer'
+  }
 })
 
 const VChartRef = ref<any>(null)
@@ -145,12 +145,21 @@ use([
   VisualMapPiecewiseComponent,
   AriaComponent,
   DatasetComponent,
-  TransformComponent,
+  TransformComponent
 ])
 
 provide(THEME_KEY, theme)
 
-const emit = defineEmits(['click', 'contextmenu', 'dblclick', 'mousemove', 'mouseout', 'mouseover', 'mousedown', 'mouseup'])
+const emit = defineEmits([
+  'click',
+  'contextmenu',
+  'dblclick',
+  'mousemove',
+  'mouseout',
+  'mouseover',
+  'mousedown',
+  'mouseup'
+])
 
 const handleClick = (event: any) => {
   emit('click', event)

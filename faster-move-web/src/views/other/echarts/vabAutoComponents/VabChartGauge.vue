@@ -11,14 +11,14 @@ import { random } from 'lodash-es'
 import { useSettingsStore } from '/@/store/modules/settings'
 
 defineOptions({
-  name: 'VabChartGauge',
+  name: 'VabChartGauge'
 })
 
 defineProps({
   title: {
     type: String,
-    default: '',
-  },
+    default: ''
+  }
 })
 
 const settingsStore = useSettingsStore()
@@ -30,31 +30,31 @@ const option = reactive<any>({
     top: 20,
     right: 20,
     bottom: 20,
-    left: 20,
+    left: 20
   },
   tooltip: {
-    formatter: '{a} <br/>{b} : {c}%',
+    formatter: '{a} <br/>{b} : {c}%'
   },
   series: {
     name: 'Pressure',
     type: 'gauge',
     radius: '100%',
     progress: {
-      show: true,
+      show: true
     },
     detail: {
       formatter: '{value}',
       valueAnimation: true,
       fontSize: 14,
-      offsetCenter: [0, '70%'],
+      offsetCenter: [0, '70%']
     },
     data: [
       {
         value: random(0, 100),
-        name: 'SCORE',
-      },
-    ],
-  },
+        name: 'SCORE'
+      }
+    ]
+  }
 })
 
 watch(
@@ -70,8 +70,8 @@ onMounted(() => {
     option.series.data = [
       {
         value: random(0, 100),
-        name: 'SCORE',
-      },
+        name: 'SCORE'
+      }
     ]
   }, 3000)
 })

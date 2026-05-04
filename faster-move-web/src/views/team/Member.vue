@@ -1,6 +1,8 @@
 <template>
-  <div class="column-table-container no-background-container auto-height-container"
-    :class="{ 'fullscreen-container': isFullscreen }">
+  <div
+    class="column-table-container no-background-container auto-height-container"
+    :class="{ 'fullscreen-container': isFullscreen }"
+  >
     <el-row v-loading="listLoading" :gutter="20">
       <el-col :lg="5" :md="24" :sm="24" :xl="4" :xs="24">
         <vab-card class="auto-height-card">
@@ -8,14 +10,22 @@
           <div class="group-list">
             <el-menu default-active="1">
               <el-menu-item @click="getAllGroup">
-                <div>全部 <span v-if="currentIndex === 0 && total > 0" :class="{ 'blur-text': demoMode }">({{ total }})</span></div>
+                <div>
+                  全部
+                  <span v-if="currentIndex === 0 && total > 0" :class="{ 'blur-text': demoMode }">({{ total }})</span>
+                </div>
               </el-menu-item>
-              <el-menu-item v-for="(item, index) in groupList" :key="item.Member.id"
-                @click="getGroupForId(item.Member.id, index)">
+              <el-menu-item
+                v-for="(item, index) in groupList"
+                :key="item.Member.id"
+                @click="getGroupForId(item.Member.id, index)"
+              >
                 <div class="group-item">
                   <div class="item-right">
                     {{ item.Member.name }}
-                    <span v-if="currentIndex === (index + 1) && total > 0" :class="{ 'blur-text': demoMode }">({{ total }})</span>
+                    <span v-if="currentIndex === index + 1 && total > 0" :class="{ 'blur-text': demoMode }"
+                      >({{ total }})</span
+                    >
                   </div>
                   <div class="item-left" @click.stop>
                     <el-popover placement="right">
@@ -44,7 +54,12 @@
             <vab-query-form-top-panel :span="12">
               <el-form inline :model="queryForm" @submit.prevent>
                 <el-form-item>
-                  <el-input v-model="queryForm.word" clearable placeholder="请输入账号进行搜索" @change="getAdminListData" />
+                  <el-input
+                    v-model="queryForm.word"
+                    clearable
+                    placeholder="请输入账号进行搜索"
+                    @change="getAdminListData"
+                  />
                 </el-form-item>
                 <el-form-item>
                   <el-select v-model="queryForm.avtag" placeholder="请选择账号状态" @change="getAdminListData">
@@ -64,7 +79,7 @@
                 <div :class="{ 'blur-text': demoMode }">{{ row.user_name || '-' }}</div>
               </template>
             </el-table-column>
-            <el-table-column align="center" fixed v-if='tabmimashow' label="密码" prop="password" width="140">
+            <el-table-column v-if="tabmimashow" align="center" fixed label="密码" prop="password" width="140">
               <template #default="{ row }">
                 <div :class="{ 'blur-text': demoMode }">{{ row.password || '-' }}</div>
               </template>
@@ -126,24 +141,43 @@
               <template #default="{ row }">
                 <el-button type="text" @click="fpjf(row)">分配积分</el-button>
                 <el-button type="text" @click="editAccount(row)">编辑</el-button>
-                <el-button v-if="tabmimashow" type="text" @click="handleGetGoogleAuthCode(row)">获取谷歌验证码</el-button>
-                <el-button v-if="tabmimashow" type="text" style="color: #e6a23c;"
-                  @click="handleResetToken(row)">重置令牌</el-button>
+                <el-button v-if="tabmimashow" type="text" @click="handleGetGoogleAuthCode(row)"
+                  >获取谷歌验证码</el-button
+                >
+                <el-button v-if="tabmimashow" type="text" style="color: #e6a23c" @click="handleResetToken(row)"
+                  >重置令牌</el-button
+                >
               </template>
             </el-table-column>
             <template #empty>
               <el-empty class="vab-data-empty" description="暂无数据" />
             </template>
           </el-table>
-          <vab-pagination :current-page="queryForm.page" :page-size="queryForm.pageSize" :total="total"
-            @current-change="handleCurrentChange" @size-change="handleSizeChange" :class="{ 'demo-mode': demoMode }" />
+          <vab-pagination
+            :current-page="queryForm.page"
+            :page-size="queryForm.pageSize"
+            :total="total"
+            :class="{ 'demo-mode': demoMode }"
+            @current-change="handleCurrentChange"
+            @size-change="handleSizeChange"
+          />
         </vab-card>
       </el-col>
     </el-row>
-    <el-dialog v-model="adminDioal" :destroy-on-close="true" :title="currentForm.id ? '编辑子账号' : '添加子账号'" width="500px">
+    <el-dialog
+      v-model="adminDioal"
+      :destroy-on-close="true"
+      :title="currentForm.id ? '编辑子账号' : '添加子账号'"
+      width="500px"
+    >
       <div class="jifenbox">
-        <el-form ref="ruleFormRefAdmin" class="demo-ruleForm" label-width="100" :model="currentForm"
-          :rules="adminRules">
+        <el-form
+          ref="ruleFormRefAdmin"
+          class="demo-ruleForm"
+          label-width="100"
+          :model="currentForm"
+          :rules="adminRules"
+        >
           <el-form-item label="分组名称" prop="name">
             <el-input v-model="currentForm.name" />
           </el-form-item>
@@ -180,7 +214,9 @@
         <el-form-item label="手机号" prop="phone">
           <el-input v-model="userParams.phone" autocomplete="off" size="small" />
         </el-form-item>
-        <div style="font-size: 14px; color: #e02020">密码会自动以短信的形式下发到手机号，请确保填写的手机号能正常接收短信。</div>
+        <div style="font-size: 14px; color: #e02020">
+          密码会自动以短信的形式下发到手机号，请确保填写的手机号能正常接收短信。
+        </div>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
@@ -188,7 +224,13 @@
         </div>
       </template>
     </el-dialog>
-    <el-drawer v-model="editDrawer" v-if="editDrawer" :before-close="handleCloseDrawer" direction="rtl" title="编辑子账号">
+    <el-drawer
+      v-if="editDrawer"
+      v-model="editDrawer"
+      :before-close="handleCloseDrawer"
+      direction="rtl"
+      title="编辑子账号"
+    >
       <div class="edit-drawer">
         <el-form label-width="80px" :model="currentUserInfo">
           <el-form-item label="账户名称">
@@ -199,18 +241,29 @@
           </el-form-item>
           <el-form-item label="所属分组">
             <el-select v-model="currentUserInfo.group" placeholder="选择分组">
-              <el-option v-for="item in groupList" :key="item.Member.id" :label="item.Member.name"
-                :value="item.Member.id" />
+              <el-option
+                v-for="item in groupList"
+                :key="item.Member.id"
+                :label="item.Member.name"
+                :value="item.Member.id"
+              />
             </el-select>
           </el-form-item>
           <el-form-item label="备注信息">
             <el-input v-model="currentUserInfo.notes" placeholder="输入备注信息" :rows="3" type="textarea" />
           </el-form-item>
           <el-form-item label="分配门店" class="shop-tree-item">
-            <el-tree ref="shopGroupTree" :data="shopGroupList" :default-checked-keys="defaultChecked"
-              :default-expanded-keys="defaultExpanded" node-key="id" :props="defaultProps" show-checkbox>
+            <el-tree
+              ref="shopGroupTree"
+              :data="shopGroupList"
+              :default-checked-keys="defaultChecked"
+              :default-expanded-keys="defaultExpanded"
+              node-key="id"
+              :props="defaultProps"
+              show-checkbox
+            >
               <template #empty>
-                <div style="text-align: center; padding: 10px 0;">暂无数据</div>
+                <div style="text-align: center; padding: 10px 0">暂无数据</div>
               </template>
             </el-tree>
           </el-form-item>
@@ -238,7 +291,7 @@ import {
   linkShopGroup,
   updateAgency,
   updateGroup,
-  giveIntegral,
+  giveIntegral
 } from '/@/api/group.ts'
 import { gp } from '/@vab/plugins/vab.ts'
 import { isPhone } from '/@/utils/validate.ts'
@@ -253,7 +306,7 @@ const settingsStore = useSettingsStore()
 const { demoMode } = storeToRefs(settingsStore)
 
 defineOptions({
-  name: 'ColumnTable',
+  name: 'ColumnTable'
 })
 
 const adminDioal = ref(false)
@@ -271,16 +324,16 @@ const jfdioal = ref(false)
 const dialogFormVisible = ref(false)
 const userParams = reactive({
   phone: '',
-  is_boss: false,
+  is_boss: false
 })
 let form = reactive({
   id: '',
   balance: '',
-  code: '',
+  code: ''
 })
 const rules = {
   id: [{ required: true, message: '请输入对方用户ID', trigger: 'blur' }],
-  balance: [{ required: true, message: '请输入分配积分', trigger: 'blur' }],
+  balance: [{ required: true, message: '请输入分配积分', trigger: 'blur' }]
 }
 const validatePhone = (rule: any, value: any, callback: any) => {
   if (isPhone(value)) {
@@ -297,7 +350,7 @@ onMounted(() => {
     try {
       const adminInfo = JSON.parse(userinfor).admin
       // 判断 role 是否为数组且包含 "ADMIN"
-      if (Array.isArray(adminInfo.role) && adminInfo.role.includes("ADMIN")) {
+      if (Array.isArray(adminInfo.role) && adminInfo.role.includes('ADMIN')) {
         tabmimashow.value = true
       } else {
         tabmimashow.value = false
@@ -315,10 +368,10 @@ const userRule = {
     {
       required: true,
       trigger: 'blur',
-      message: translate('请输入手机号'),
+      message: translate('请输入手机号')
     },
-    { validator: validatePhone, trigger: 'blur' },
-  ],
+    { validator: validatePhone, trigger: 'blur' }
+  ]
 }
 const addAdmin = () => {
   if (ruleForm.value)
@@ -369,16 +422,16 @@ const queryForm = reactive<any>({
   word: '',
   avtag: true,
   groupId: '',
-  userType: 1,
+  userType: 1
 })
 let currentForm = reactive({
   type: 2,
   name: '',
-  notes: '',
+  notes: ''
 })
 const adminRules = {
   name: [{ required: true, message: '请输入分组名称', trigger: 'blur' }],
-  notes: [{ required: true, message: '请输入分组描述', trigger: 'blur' }],
+  notes: [{ required: true, message: '请输入分组描述', trigger: 'blur' }]
 }
 
 const sumAdmin = () => {
@@ -428,7 +481,7 @@ const fpjf = (row: any) => {
 const switchStatus = (row: any) => {
   updateAgency({
     id: row.id,
-    avtag: row.avtag,
+    avtag: row.avtag
   }).then((res: any) => {
     if (res.code === 200) {
       gp.$baseMessage(`账户已${row.avtag ? '启' : '停'}用`, 'success', 'hey')
@@ -441,7 +494,7 @@ const addMemberGroup = () => {
   currentForm = reactive({
     type: 2,
     name: '',
-    notes: '',
+    notes: ''
   })
 }
 const editGroup = (row: any) => {
@@ -453,7 +506,7 @@ const delGroupItem = (row: any) => {
   ElMessageBox.confirm('此操作将永久移除分组, 是否继续?', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
-    draggable: true,
+    draggable: true
   })
     .then(() => {
       delGroup(row.Member.id).then((res: any) => {
@@ -489,7 +542,7 @@ const fetchData = async () => {
   }
 }
 
-const setMemberId = (arr => {
+const setMemberId = arr => {
   if (arr && arr.length > 0) {
     arr.forEach(item => {
       item.id = item.Member.id
@@ -498,8 +551,7 @@ const setMemberId = (arr => {
       }
     })
   }
-})
-
+}
 
 const handleSizeChange = (value: number) => {
   queryForm.page = 1
@@ -517,7 +569,7 @@ const handleAdd = () => {
 }
 const groupParams = reactive({
   grouptype: 2,
-  recursionchild: true,
+  recursionchild: true
 })
 const getGroupData = () => {
   getGroup(groupParams).then((res: any) => {
@@ -549,7 +601,7 @@ const defaultProps = {
   children: 'children',
   label: (data: any) => {
     return data.Member.name
-  },
+  }
 }
 const editAccount = (row: any) => {
   currentUserInfo.value = JSON.parse(JSON.stringify(row))
@@ -616,7 +668,7 @@ const formatBalance = (value: number | string | null | undefined): string => {
 const handleGetGoogleAuthCode = async (row: any) => {
   try {
     const res = await apiManager.adminApi.GetUserGoogleAuthCode({
-      UserId: String(row.id),
+      UserId: String(row.id)
     })
     // 自动复制验证码到剪贴板
     try {
@@ -648,12 +700,12 @@ const handleResetToken = async (row: any) => {
       {
         confirmButtonText: '确定重置',
         cancelButtonText: '取消',
-        type: 'warning',
+        type: 'warning'
       }
     )
 
     const vo: ResetGoogleAuthenticatorVo = {
-      UserId: row.id,
+      UserId: row.id
     }
 
     await apiManager.adminApi.ResetGoogleAuthenticator(vo)

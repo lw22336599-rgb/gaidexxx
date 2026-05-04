@@ -11,14 +11,14 @@ import { random } from 'lodash-es'
 import { useSettingsStore } from '/@/store/modules/settings'
 
 defineOptions({
-  name: 'VabChartFunnel',
+  name: 'VabChartFunnel'
 })
 
 defineProps({
   title: {
     type: String,
-    default: '',
-  },
+    default: ''
+  }
 })
 
 const settingsStore = useSettingsStore()
@@ -30,11 +30,11 @@ const option = reactive<any>({
     top: 20,
     right: 20,
     bottom: 20,
-    left: 20,
+    left: 20
   },
   tooltip: {
     trigger: 'item',
-    formatter: '{a} <br/>{b} : {c}%',
+    formatter: '{a} <br/>{b} : {c}%'
   },
   series: {
     name: '漏斗图',
@@ -53,22 +53,22 @@ const option = reactive<any>({
       length: 10,
       lineStyle: {
         width: 1,
-        type: 'solid',
-      },
+        type: 'solid'
+      }
     },
     emphasis: {
       label: {
-        fontSize: 12,
-      },
+        fontSize: 12
+      }
     },
     data: [
       { value: random(0, 100), name: '访问' },
       { value: random(20, 100), name: '咨询' },
       { value: random(40, 100), name: '订单' },
       { value: random(60, 100), name: '点击' },
-      { value: random(80, 100), name: '展现' },
-    ],
-  },
+      { value: random(80, 100), name: '展现' }
+    ]
+  }
 })
 
 watch(
@@ -86,7 +86,7 @@ onMounted(() => {
       { value: random(20, 100), name: '咨询' },
       { value: random(40, 100), name: '订单' },
       { value: random(60, 100), name: '点击' },
-      { value: random(80, 100), name: '展现' },
+      { value: random(80, 100), name: '展现' }
     ]
   }, 3000)
 })

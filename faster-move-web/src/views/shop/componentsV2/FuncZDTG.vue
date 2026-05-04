@@ -4,28 +4,35 @@
       <el-collapse-item v-for="(item, index) in collapseList" :key="index" :name="index + '1'">
         <template #title>
           <div class="tg-item-title">
-            <div style="width: 140px;text-align: left"><span v-if="index < 10">0</span>{{ index }}:00-<span v-if="index < 9">0</span>{{index + 1}}:00</div><div>{{ getMaxPrice(item) }}</div>
+            <div style="width: 140px; text-align: left">
+              <span v-if="index < 10">0</span>{{ index }}:00-<span v-if="index < 9">0</span>{{ index + 1 }}:00
+            </div>
+            <div>{{ getMaxPrice(item) }}</div>
           </div>
         </template>
         <div class="tg-list">
           <div v-for="(_item, _index) in item" :key="_index" class="tg-item">
-            <div class="item-left">
-              {{ _item.TimeRange.Start }} - {{ _item.TimeRange.End }}
-            </div>
+            <div class="item-left">{{ _item.TimeRange.Start }} - {{ _item.TimeRange.End }}</div>
             <div class="item-right">
-              <el-input-number v-model="_item.end_offer" :min="0" :precision="1" :step="0.1"/>
+              <el-input-number v-model="_item.end_offer" :min="0" :precision="1" :step="0.1" />
             </div>
           </div>
         </div>
       </el-collapse-item>
     </el-collapse>
   </div>
-  <el-button :loading="saveLoading" style="margin-top: 20px" type="primary" @click="saveSetting">保存自动点金配置</el-button>
-  <el-table v-loading="tableLoading" :data="tableList" height="calc(100vh - 500px)" style="width: 100%; margin-top: 15px;">
-    <el-table-column label="出价时间" prop="bidding_time" width="180"/>
-    <el-table-column label="出价金额" prop="val" width="120" align="center">
-    </el-table-column>
-    <el-table-column label="出价原因" prop="why" width="180"/>
+  <el-button :loading="saveLoading" style="margin-top: 20px" type="primary" @click="saveSetting"
+    >保存自动点金配置</el-button
+  >
+  <el-table
+    v-loading="tableLoading"
+    :data="tableList"
+    height="calc(100vh - 500px)"
+    style="width: 100%; margin-top: 15px"
+  >
+    <el-table-column label="出价时间" prop="bidding_time" width="180" />
+    <el-table-column label="出价金额" prop="val" width="120" align="center" />
+    <el-table-column label="出价原因" prop="why" width="180" />
     <!-- <el-table-column label="评价分数" prop="score" width="80"/>
     <el-table-column label="回评结果" prop="pj_rep" width="220"/> -->
   </el-table>
@@ -40,10 +47,10 @@
 
 <script setup lang="ts">
 import { getConf, getConfLog, setConf } from '/@/api/shop.ts'
-import {gp} from "/@vab/plugins/vab.ts";
+import { gp } from '/@vab/plugins/vab.ts'
 
 const props = defineProps({
-  currentRow: Object,
+  currentRow: Object
 })
 const pageLoading = ref(false)
 const queryParams = {
@@ -57,8 +64,8 @@ const saveLoading = ref(false)
 const confData = ref({})
 const getConfData = async () => {
   try {
-    pageLoading.value = true;
-    const res = await getConf(queryParams);
+    pageLoading.value = true
+    const res = await getConf(queryParams)
     if (res.code === 200) {
       confData.value = res.data.conf
       planOffers.value = res.data.conf.AutoAdType_fool.Plan_Offers
@@ -69,37 +76,37 @@ const getConfData = async () => {
         dataList.value = updateSlotsWithLargeRanges(fullDaySlots, planOffers.value)
         collapseList.value = groupSlotsIntoHours(dataList.value)
       }
-      collapseList.value.forEach((group) => {
-        group.forEach((item) => {
-          let startParts = item.TimeRange.Start.split(':');
-          let endParts = item.TimeRange.End.split(':');
-          item.TimeRange.Start = `${startParts[0].padStart(2, '0')}:${startParts[1].padStart(2, '0')}`;
-          item.TimeRange.End = `${endParts[0].padStart(2, '0')}:${endParts[1].padStart(2, '0')}`;
-        });
-      });
+      collapseList.value.forEach(group => {
+        group.forEach(item => {
+          let startParts = item.TimeRange.Start.split(':')
+          let endParts = item.TimeRange.End.split(':')
+          item.TimeRange.Start = `${startParts[0].padStart(2, '0')}:${startParts[1].padStart(2, '0')}`
+          item.TimeRange.End = `${endParts[0].padStart(2, '0')}:${endParts[1].padStart(2, '0')}`
+        })
+      })
     }
   } finally {
-    pageLoading.value = false;
+    pageLoading.value = false
   }
 }
-const groupSlotsIntoHours = (slots) => {
-  const groupedSlots = [];
+const groupSlotsIntoHours = slots => {
+  const groupedSlots = []
   for (let i = 0; i < slots.length; i += 4) {
-    groupedSlots.push(slots.slice(i, i + 4));
+    groupedSlots.push(slots.slice(i, i + 4))
   }
-  return groupedSlots;
+  return groupedSlots
 }
 // 创建一个完整的 24 小时时间段数组
 const initializeFullDaySlots = () => {
-  const slots = [];
+  const slots = []
   for (let hour = 0; hour < 24; hour++) {
     for (let minute = 0; minute < 60; minute += 15) {
-      const startHour = hour;
-      const startMinute = minute;
-      const endHour = hour + Math.floor((minute + 15) / 60);
-      const endMinute = (minute + 15) % 60;
-      const startTimeStr = `${String(startHour).padStart(2, '0')}:${String(startMinute).padStart(2, '0')}:00`;
-      const endTimeStr = `${String(endHour).padStart(2, '0')}:${String(endMinute).padStart(2, '0')}:00`;
+      const startHour = hour
+      const startMinute = minute
+      const endHour = hour + Math.floor((minute + 15) / 60)
+      const endMinute = (minute + 15) % 60
+      const startTimeStr = `${String(startHour).padStart(2, '0')}:${String(startMinute).padStart(2, '0')}:00`
+      const endTimeStr = `${String(endHour).padStart(2, '0')}:${String(endMinute).padStart(2, '0')}:00`
       slots.push({
         TimeRange: {
           StartTime: { Hour: startHour, Minute: startMinute },
@@ -108,32 +115,36 @@ const initializeFullDaySlots = () => {
           End: endTimeStr
         },
         end_offer: 0 // 默认值
-      });
+      })
     }
   }
-  return slots;
+  return slots
 }
-const fullDaySlots = initializeFullDaySlots();
+const fullDaySlots = initializeFullDaySlots()
 // 更新细化时间段的 end_offer 值
 const updateSlotsWithLargeRanges = (slots, largeTimeRanges) => {
   slots.forEach(slot => {
-    slot.end_offer = 0;
+    slot.end_offer = 0
     largeTimeRanges.forEach(largeRange => {
-      const slotStartMinutes = slot.TimeRange.StartTime.Hour * 60 + slot.TimeRange.StartTime.Minute;
-      const slotEndMinutes = (slot.TimeRange.EndTime.Hour % 24) * 60 + slot.TimeRange.EndTime.Minute;
-      const largeStartMinutes = largeRange.TimeRange.StartTime.Hour * 60 + largeRange.TimeRange.StartTime.Minute;
-      const largeEndMinutes = largeRange.TimeRange.EndTime.Hour * 60 + largeRange.TimeRange.EndTime.Minute;
+      const slotStartMinutes = slot.TimeRange.StartTime.Hour * 60 + slot.TimeRange.StartTime.Minute
+      const slotEndMinutes = (slot.TimeRange.EndTime.Hour % 24) * 60 + slot.TimeRange.EndTime.Minute
+      const largeStartMinutes = largeRange.TimeRange.StartTime.Hour * 60 + largeRange.TimeRange.StartTime.Minute
+      const largeEndMinutes = largeRange.TimeRange.EndTime.Hour * 60 + largeRange.TimeRange.EndTime.Minute
       if (slotStartMinutes >= largeStartMinutes && slotEndMinutes <= largeEndMinutes) {
-        slot.end_offer = largeRange.end_offer;
+        slot.end_offer = largeRange.end_offer
       }
-      if (largeRange.TimeRange.EndTime.Hour === 23 && largeRange.TimeRange.EndTime.Minute >= 59 && slot.TimeRange.End === "24:00:00") {
-          slot.TimeRange.End = "23:59:59";
-          slot.TimeRange.EndTime.Hour = 23;
-          slot.TimeRange.EndTime.Minute = 59;
-        }
-    });
-  });
-  return slots;
+      if (
+        largeRange.TimeRange.EndTime.Hour === 23 &&
+        largeRange.TimeRange.EndTime.Minute >= 59 &&
+        slot.TimeRange.End === '24:00:00'
+      ) {
+        slot.TimeRange.End = '23:59:59'
+        slot.TimeRange.EndTime.Hour = 23
+        slot.TimeRange.EndTime.Minute = 59
+      }
+    })
+  })
+  return slots
 }
 const getMaxPrice = (row: any) => {
   return Math.max(...row.map(item => item.end_offer))
@@ -142,7 +153,7 @@ const saveSetting = () => {
   saveLoading.value = true
   const Plan_Offers = []
   collapseList.value.forEach(item => {
-    Plan_Offers.push(...item);
+    Plan_Offers.push(...item)
   })
   const params = {
     code: 'ZDTG',
@@ -155,14 +166,16 @@ const saveSetting = () => {
     }
   }
   console.log(params, '123456')
-  setConf(params).then((res: any) => {
-    if (res.code === 200) {
-      gp.$baseMessage('设置成功！', 'success', 'hey')
-      getConfData()
-    }
-  }).finally(() => {
-    saveLoading.value = false
-  })
+  setConf(params)
+    .then((res: any) => {
+      if (res.code === 200) {
+        gp.$baseMessage('设置成功！', 'success', 'hey')
+        getConfData()
+      }
+    })
+    .finally(() => {
+      saveLoading.value = false
+    })
 }
 getConfData()
 const tableLoading = ref(false)
@@ -172,18 +185,18 @@ const queryParamsLog = {
   PageIndex: 1,
   PageSize: 20,
   func_code: 'ZDTG',
-  shop: props.currentRow.id,
+  shop: props.currentRow.id
 }
 const getLogList = async () => {
   tableLoading.value = true
   try {
-    const res: any = await getConfLog(queryParamsLog);
+    const res: any = await getConfLog(queryParamsLog)
     if (res.code === 200) {
       tableList.value = res.data.rows
       total.value = res.data.total
     }
   } finally {
-    tableLoading.value = false;
+    tableLoading.value = false
   }
 }
 const handleCurrentChange = (value: number) => {
@@ -217,19 +230,19 @@ getLogList()
   z-index: 100;
 
   .btn-item {
-    background: #F81C3A;
+    background: #f81c3a;
     color: #ffffff;
   }
 
   .btn-item-back {
     background-color: #ffffff;
-    color: #F81C3A;
+    color: #f81c3a;
   }
 
   .save-btn {
     width: 100%;
     height: 80rpx;
-    background: #FACC05;
+    background: #facc05;
     border-radius: 14rpx;
     font-weight: 500;
     font-size: 34rpx;
@@ -239,7 +252,7 @@ getLogList()
   }
 
   .is-elm-btn {
-    background: #0492FA;
+    background: #0492fa;
     color: #fff;
   }
 }
@@ -260,7 +273,6 @@ getLogList()
       padding-left: 20px;
     }
     .item-right {
-
     }
   }
 }

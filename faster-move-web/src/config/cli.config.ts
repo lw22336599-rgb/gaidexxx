@@ -46,5 +46,5 @@ export const cliConfig: { [key: string]: string | number | boolean | Array<strin
   disableDebugger: false,
   // 是否关闭路由[Vue Router warn]: No match found for location with path "/*"报黄，
   // 注意事项一旦关闭，路由出错后将无法在控制台检查到原因
-  disableRouterWarning: false,
+  disableRouterWarning: false
 }

@@ -1,14 +1,14 @@
 <template>
   <div class="login-container" :style="{ background: background, backgroundSize: '100%' }">
     <div v-show="theme.showLanguage || theme.showColorPicker || theme.showDark" class="login-right-tools">
-<!--      <el-checkbox v-model="show" @change="handleShow">{{ translate('必应壁纸') }}</el-checkbox>-->
-<!--      <vab-language v-show="theme.showLanguage" />-->
+      <!--      <el-checkbox v-model="show" @change="handleShow">{{ translate('必应壁纸') }}</el-checkbox>-->
+      <!--      <vab-language v-show="theme.showLanguage" />-->
       <vab-color-picker v-show="theme.showColorPicker" />
       <vab-dark v-show="theme.showDark" />
     </div>
-    <slot></slot>
+    <slot />
     <vab-icon class="login-background" icon="background" is-custom-svg />
-<!--    <vab-footer />-->
+    <!--    <vab-footer />-->
   </div>
 </template>
 
@@ -18,7 +18,7 @@ import { useBingStore } from '/@/store/modules/bing'
 import { useSettingsStore } from '/@/store/modules/settings'
 
 defineOptions({
-  name: 'LoginContainer',
+  name: 'LoginContainer'
 })
 
 const settingsStore = useSettingsStore()
@@ -26,7 +26,9 @@ const { theme } = storeToRefs(settingsStore)
 // const show = ref<boolean>(false)
 // const bingStore = useBingStore()
 // const { backgroundList } = storeToRefs(bingStore)
-const background = ref<string | undefined>('linear-gradient(to top, var(--el-color-primary), var(--el-color-primary-light-3))')
+const background = ref<string | undefined>(
+  'linear-gradient(to top, var(--el-color-primary), var(--el-color-primary-light-3))'
+)
 
 // const handleShow = () => {
 //   if (show.value) background.value = `url(${backgroundList.value[0]})!important`

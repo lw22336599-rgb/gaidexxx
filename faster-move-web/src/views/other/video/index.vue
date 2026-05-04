@@ -19,18 +19,34 @@
         <vab-card title="直播推流">
           <el-row :gutter="1">
             <el-col :lg="12" :md="12" :sm="12" :xl="12" :xs="24">
-              <vab-player-hls :config="configHls1" style="background-color: rgba(0, 0, 0, 0.87)" @player="playerInstance1" />
+              <vab-player-hls
+                :config="configHls1"
+                style="background-color: rgba(0, 0, 0, 0.87)"
+                @player="playerInstance1"
+              />
             </el-col>
             <el-col :lg="12" :md="24" :sm="24" :xl="12" :xs="24">
-              <vab-player-hls :config="configHls2" style="background-color: rgba(0, 0, 0, 0.87)" @player="playerInstance2" />
+              <vab-player-hls
+                :config="configHls2"
+                style="background-color: rgba(0, 0, 0, 0.87)"
+                @player="playerInstance2"
+              />
             </el-col>
           </el-row>
           <el-row :gutter="1">
             <el-col :lg="12" :md="12" :sm="12" :xl="12" :xs="24">
-              <vab-player-hls :config="configHls3" style="background-color: rgba(0, 0, 0, 0.87)" @player="playerInstance3" />
+              <vab-player-hls
+                :config="configHls3"
+                style="background-color: rgba(0, 0, 0, 0.87)"
+                @player="playerInstance3"
+              />
             </el-col>
             <el-col :lg="12" :md="12" :sm="12" :xl="12" :xs="24">
-              <vab-player-hls :config="configHls4" style="background-color: rgba(0, 0, 0, 0.87)" @player="playerInstance4" />
+              <vab-player-hls
+                :config="configHls4"
+                style="background-color: rgba(0, 0, 0, 0.87)"
+                @player="playerInstance4"
+              />
             </el-col>
           </el-row>
         </vab-card>
@@ -43,7 +59,7 @@
 import { uniqueId } from 'lodash-es'
 
 defineOptions({
-  name: 'Video',
+  name: 'Video'
 })
 
 // const route = useRoute()
@@ -56,7 +72,7 @@ const configMp4 = reactive<any>({
   autoplay: true,
   screenShot: true,
   playbackRate: [0.5, 0.75, 1, 1.5, 2],
-  fluid: true,
+  fluid: true
 })
 
 const configHls1 = reactive<any>({
@@ -67,7 +83,7 @@ const configHls1 = reactive<any>({
   autoplay: true,
   screenShot: true,
   playbackRate: [0.5, 0.75, 1, 1.5, 2],
-  fluid: true,
+  fluid: true
 })
 
 const configHls2 = reactive<any>({
@@ -78,7 +94,7 @@ const configHls2 = reactive<any>({
   autoplay: true,
   screenShot: true,
   playbackRate: [0.5, 0.75, 1, 1.5, 2],
-  fluid: true,
+  fluid: true
 })
 
 const configHls3 = reactive<any>({
@@ -89,7 +105,7 @@ const configHls3 = reactive<any>({
   autoplay: true,
   screenShot: true,
   playbackRate: [0.5, 0.75, 1, 1.5, 2],
-  fluid: true,
+  fluid: true
 })
 
 const configHls4 = reactive<any>({
@@ -100,7 +116,7 @@ const configHls4 = reactive<any>({
   autoplay: true,
   screenShot: true,
   playbackRate: [0.5, 0.75, 1, 1.5, 2],
-  fluid: true,
+  fluid: true
 })
 
 let _Player0: any

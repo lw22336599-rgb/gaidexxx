@@ -13,7 +13,7 @@ interface Tree {
 
 const props = {
   label: 'name',
-  children: 'zones',
+  children: 'zones'
 }
 
 const loadNode = (node: Node, resolve: (data: Tree[]) => void) => {
@@ -36,11 +36,11 @@ const loadNode = (node: Node, resolve: (data: Tree[]) => void) => {
     if (hasChild) {
       data = [
         {
-          name: `zone${count++}`,
+          name: `zone${count++}`
         },
         {
-          name: `zone${count++}`,
-        },
+          name: `zone${count++}`
+        }
       ]
     } else {
       data = []

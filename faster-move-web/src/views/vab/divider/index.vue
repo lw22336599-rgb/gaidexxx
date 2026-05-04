@@ -61,6 +61,6 @@
 import { StarFilled } from '@element-plus/icons-vue'
 
 defineOptions({
-  name: 'Divider',
+  name: 'Divider'
 })
 </script>

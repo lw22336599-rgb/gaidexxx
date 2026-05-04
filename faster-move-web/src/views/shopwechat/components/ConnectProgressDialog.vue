@@ -1,6 +1,13 @@
 <template>
-  <el-dialog v-model="dialogVisible" title="连接微信机器人" :close-on-click-modal="false" :close-on-press-escape="false"
-    :show-close="canClose" width="600px" @close="handleClose">
+  <el-dialog
+    v-model="dialogVisible"
+    title="连接微信机器人"
+    :close-on-click-modal="false"
+    :close-on-press-escape="false"
+    :show-close="canClose"
+    width="600px"
+    @close="handleClose"
+  >
     <div class="progress-container">
       <el-steps :active="currentStep" direction="vertical" finish-status="success">
         <el-step title="准备工作包" />
@@ -8,8 +15,10 @@
         <el-step title="下载工作包">
           <template #description>
             <div v-if="currentStep === 1 && downloadProgress" class="download-progress">
-              <el-progress :percentage="downloadProgress.percentage"
-                :status="downloadProgress.percentage === 100 ? 'success' : undefined" />
+              <el-progress
+                :percentage="downloadProgress.percentage"
+                :status="downloadProgress.percentage === 100 ? 'success' : undefined"
+              />
               <div class="download-info">
                 <span class="info-item">
                   {{ formatSize(downloadProgress.loaded) }} / {{ formatSize(downloadProgress.total) }}
@@ -53,8 +62,14 @@
       </el-steps>
 
       <!-- 错误提示 -->
-      <el-alert v-if="errorMessage" type="error" :title="errorMessage" :closable="false" show-icon
-        style="margin-top: 20px" />
+      <el-alert
+        v-if="errorMessage"
+        type="error"
+        :title="errorMessage"
+        :closable="false"
+        show-icon
+        style="margin-top: 20px"
+      />
 
       <!-- 状态消息 -->
       <div v-if="statusMessage && !errorMessage" class="status-message">
@@ -107,7 +122,7 @@ const wechatRobotStore = useWechatRobotStore()
 
 const dialogVisible = computed({
   get: () => props.visible,
-  set: (value) => emit('update:visible', value),
+  set: value => emit('update:visible', value)
 })
 
 // 当前步骤

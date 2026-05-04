@@ -33,7 +33,11 @@
           <template #title>
             <div style="display: inline-flex; align-items: center">
               每月活跃用户
-              <el-tooltip content="Number of users who logged into the product in one month" effect="light" placement="top">
+              <el-tooltip
+                content="Number of users who logged into the product in one month"
+                effect="light"
+                placement="top"
+              >
                 <el-icon :size="12" style="margin-left: 4px">
                   <warning />
                 </el-icon>

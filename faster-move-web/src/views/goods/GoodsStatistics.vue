@@ -17,12 +17,12 @@
             prefix: '',
             suffix: '',
             separator: ',',
-            duration: 8000,
+            duration: 8000
           }"
           icon="numbers-line"
           :icon-style="{
             color: 'var(--el-color-primary)',
-            background: 'var(--el-color-primary-light-9)',
+            background: 'var(--el-color-primary-light-9)'
           }"
           percentage="24%"
           title="订单数量"
@@ -38,12 +38,12 @@
             prefix: '',
             suffix: '',
             separator: ',',
-            duration: 8000,
+            duration: 8000
           }"
           icon="money-cny-circle-line"
           :icon-style="{
             color: 'var(--el-color-success)',
-            background: 'var(--el-color-success-light-9)',
+            background: 'var(--el-color-success-light-9)'
           }"
           percentage="4%"
           title="销售额"
@@ -59,12 +59,12 @@
             prefix: '',
             suffix: '',
             separator: ',',
-            duration: 800,
+            duration: 800
           }"
           icon="numbers-line"
           :icon-style="{
             color: 'var(--el-color-warning)',
-            background: 'var(--el-color-warning-light-9)',
+            background: 'var(--el-color-warning-light-9)'
           }"
           percentage="1%"
           title="退单数量"
@@ -80,12 +80,12 @@
             prefix: '',
             suffix: '',
             separator: ',',
-            duration: 800,
+            duration: 800
           }"
           icon="money-cny-circle-line"
           :icon-style="{
             color: 'var(--el-color-danger)',
-            background: 'var(--el-color-danger-light-9)',
+            background: 'var(--el-color-danger-light-9)'
           }"
           percentage="1%"
           title="退单总额"
@@ -117,7 +117,7 @@
 import { random } from 'lodash-es'
 
 defineOptions({
-  name: 'GoodsStatistics',
+  name: 'GoodsStatistics'
 })
 
 const datetimerange = ref<[Date, Date]>()

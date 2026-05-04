@@ -3,11 +3,11 @@
  * 基于微信Hook的HTTP API，参考 docs/WxHttpFunctions.cs
  */
 
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios'
-import { ChatInfo } from '@/TsModel/Alien/Entity/Function/CHATPUSH/ChatInfo'
-import { ChatMemberItem } from '@/TsModel/Alien/Entity/Function/CHATPUSH/ChatMemberItem'
-import { ChatMemberPageRequest } from '@/TsModel/Alien/Entity/Function/CHATPUSH/ChatMemberPageRequest'
-import { ChatMemberPageResult } from '@/TsModel/Alien/Entity/Function/CHATPUSH/ChatMemberPageResult'
+import axios, { type AxiosInstance, AxiosRequestConfig } from 'axios'
+import type { ChatInfo } from '@/TsModel/Alien/Entity/Function/CHATPUSH/ChatInfo'
+import type { ChatMemberItem } from '@/TsModel/Alien/Entity/Function/CHATPUSH/ChatMemberItem'
+import type { ChatMemberPageRequest } from '@/TsModel/Alien/Entity/Function/CHATPUSH/ChatMemberPageRequest'
+import type { ChatMemberPageResult } from '@/TsModel/Alien/Entity/Function/CHATPUSH/ChatMemberPageResult'
 import { ChatType } from '@/TsModel/Alien/Entity/Function/CHATPUSH/ChatType'
 import { MemberType } from '@/TsModel/Alien/Entity/Function/CHATPUSH/MemberType'
 import type { WxHttpServiceConfig } from '@/types/wechat'
@@ -50,7 +50,7 @@ export class WxHttpService {
     const defaultConfig: WxHttpServiceConfig = {
       host: 'http://127.0.0.1:19088',
       port: 19088,
-      timeout: 30000,
+      timeout: 30000
     }
 
     const finalConfig = { ...defaultConfig, ...config }
@@ -61,11 +61,11 @@ export class WxHttpService {
       baseURL: this.host,
       timeout: finalConfig.timeout,
       headers: {
-        'Accept': '*/*',
-        'Content-Type': 'application/json',
+        Accept: '*/*',
+        'Content-Type': 'application/json'
         // 注意：User-Agent 和 Connection 在浏览器/Electron渲染进程中是受保护的header，
         // 浏览器会自动管理，无需手动设置
-      },
+      }
     })
   }
 
@@ -91,7 +91,7 @@ export class WxHttpService {
         ip: config?.ip || '127.0.0.1',
         url: config?.url || 'http://localhost:7014',
         timeout: config?.timeout || '/Chat/OnNewMsg',
-        enableHttp: 1//config?.enableHttp ?? 0,
+        enableHttp: 1 //config?.enableHttp ?? 0,
       }
 
       console.log('[WxHttpService] 启动聊天Hook服务:', postObj)
@@ -135,8 +135,7 @@ export class WxHttpService {
       const response = await this.client.post<WxHttpResponse>('/api/?type=1')
       const data = response.data.data
       const accountRaw = data.account
-      const accountEffective =
-        accountRaw != null && accountRaw !== '' ? String(accountRaw) : (data.wxid || '')
+      const accountEffective = accountRaw != null && accountRaw !== '' ? String(accountRaw) : data.wxid || ''
 
       this.myInfo = {
         ChatType: ChatType.WechatPc,
@@ -149,8 +148,8 @@ export class WxHttpService {
           city: data.city || '',
           country: data.country || '',
           province: data.province || '',
-          signature: data.signature || '',
-        },
+          signature: data.signature || ''
+        }
       }
 
       return this.myInfo
@@ -168,7 +167,7 @@ export class WxHttpService {
       const response = await this.client.post<WxHttpResponse>('/api/?type=46', {
         wxids: 'notify@all',
         chatRoomId: '123@chatroom',
-        msg: '你好啊',
+        msg: '你好啊'
       })
 
       const members = response.data.data.map((item: any) => {
@@ -183,8 +182,8 @@ export class WxHttpService {
           HeadImg: null,
           Offid: wxId,
           OtherValues: {
-            custom_account: item.customAccount || '',
-          },
+            custom_account: item.customAccount || ''
+          }
         } as ChatMemberItem
       })
 
@@ -202,7 +201,7 @@ export class WxHttpService {
    */
   async getFriendList(): Promise<ChatMemberItem[]> {
     const allMembers = await this.getMemberList()
-    return allMembers.filter((m) => m.MemType === MemberType.好友)
+    return allMembers.filter(m => m.MemType === MemberType.好友)
   }
 
   /**
@@ -210,16 +209,14 @@ export class WxHttpService {
    */
   async getGroupList(): Promise<ChatMemberItem[]> {
     const allMembers = await this.getMemberList()
-    return allMembers.filter((m) => m.MemType === MemberType.群)
+    return allMembers.filter(m => m.MemType === MemberType.群)
   }
 
   /**
    * 获取好友列表（支持分页和关键词过滤）
    * @param request 分页请求参数
    */
-  async getFriendListWithPagination(
-    request: ChatMemberPageRequest
-  ): Promise<ChatMemberPageResult> {
+  async getFriendListWithPagination(request: ChatMemberPageRequest): Promise<ChatMemberPageResult> {
     // 获取所有好友
     const allFriends = await this.getFriendList()
     return this.filterAndPaginate(allFriends, request)
@@ -229,9 +226,7 @@ export class WxHttpService {
    * 获取群列表（支持分页和关键词过滤）
    * @param request 分页请求参数
    */
-  async getGroupListWithPagination(
-    request: ChatMemberPageRequest
-  ): Promise<ChatMemberPageResult> {
+  async getGroupListWithPagination(request: ChatMemberPageRequest): Promise<ChatMemberPageResult> {
     // 获取所有群
     const allGroups = await this.getGroupList()
     return this.filterAndPaginate(allGroups, request)
@@ -242,29 +237,21 @@ export class WxHttpService {
    * @param list 成员列表
    * @param request 分页请求参数
    */
-  private filterAndPaginate(
-    list: ChatMemberItem[],
-    request: ChatMemberPageRequest
-  ): ChatMemberPageResult {
+  private filterAndPaginate(list: ChatMemberItem[], request: ChatMemberPageRequest): ChatMemberPageResult {
     let filteredList = list
 
     const reqAny = request as ChatMemberPageRequest & { onlyMemberOffIds?: string[] | null }
     const onlyRaw = request.OnlyMemberOffIds ?? reqAny.onlyMemberOffIds
     if (onlyRaw != null) {
-      const allow = new Set(
-        onlyRaw
-          .map((id) => this.normalizeString(id))
-          .filter((id) => id.length > 0)
-      )
-      filteredList =
-        allow.size === 0 ? [] : filteredList.filter((item) => allow.has(item.Offid))
+      const allow = new Set(onlyRaw.map(id => this.normalizeString(id)).filter(id => id.length > 0))
+      filteredList = allow.size === 0 ? [] : filteredList.filter(item => allow.has(item.Offid))
     }
 
     // 根据关键词过滤
     if (request.Keyword) {
       const keyword = request.Keyword.toLowerCase()
       filteredList = filteredList.filter(
-        (item) =>
+        item =>
           item.Name.toLowerCase().includes(keyword) ||
           item.Remark?.toLowerCase().includes(keyword) ||
           item.Offid.toLowerCase().includes(keyword)
@@ -283,7 +270,7 @@ export class WxHttpService {
       PageIndex: request.PageIndex,
       PageSize: request.PageSize,
       TotalPages: Math.ceil(total / request.PageSize),
-      Items: items,
+      Items: items
     }
   }
 
@@ -292,9 +279,9 @@ export class WxHttpService {
    */
   async getMemberListByIds(memberOffIds: string[]): Promise<ChatMemberItem[]> {
     const allMembers = await this.getMemberList()
-    return memberOffIds.map((offId) => {
+    return memberOffIds.map(offId => {
       const normalizedOffId = this.normalizeString(offId)
-      const member = allMembers.find((m) => m.Offid === normalizedOffId)
+      const member = allMembers.find(m => m.Offid === normalizedOffId)
       return (
         member || {
           ChatType: ChatType.WechatPc,
@@ -303,7 +290,7 @@ export class WxHttpService {
           Offid: normalizedOffId,
           Remark: null,
           HeadImg: null,
-          OtherValues: null,
+          OtherValues: null
         }
       )
     })
@@ -318,7 +305,7 @@ export class WxHttpService {
     try {
       const response = await this.client.post<WxHttpResponse>('/api/?type=2', {
         wxid: wxId,
-        msg: msgContent,
+        msg: msgContent
       })
 
       return response.data.result?.toLowerCase() === 'ok'
@@ -340,7 +327,7 @@ export class WxHttpService {
 
       const response = await this.client.post<WxHttpResponse>('/api/?type=34', {
         dbHandle,
-        sql,
+        sql
       })
 
       const rows = response.data.data as string[][]
@@ -362,9 +349,9 @@ export class WxHttpService {
       }
 
       // 填充备注
-      return members.map((member) => ({
+      return members.map(member => ({
         ...member,
-        Remark: remarkMap.get(member.Offid) || member.Remark,
+        Remark: remarkMap.get(member.Offid) || member.Remark
       }))
     } catch (error) {
       console.error('获取备注信息失败:', error)
@@ -382,7 +369,7 @@ export class WxHttpService {
       const response = await this.client.post<WxHttpResponse>('/api/?type=32')
       const databases = response.data.data as Array<{ databaseName: string; handle: string }>
 
-      const db = databases.find((d) => d.databaseName === dbName)
+      const db = databases.find(d => d.databaseName === dbName)
       if (!db) {
         throw new Error(`数据库 ${dbName} 未找到`)
       }

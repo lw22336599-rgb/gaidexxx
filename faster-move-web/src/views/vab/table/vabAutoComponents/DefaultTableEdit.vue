@@ -36,7 +36,7 @@ import type { FormInstance } from 'element-plus'
 import { doEdit } from '/@/api/tables'
 
 defineOptions({
-  name: 'DefaultTableEdit',
+  name: 'DefaultTableEdit'
 })
 
 const emit = defineEmits(['fetch-data'])
@@ -51,16 +51,16 @@ const form = reactive<any>({
   datetime: '',
   status: '',
   switch: false,
-  count: 0,
+  count: 0
 })
 const rules = reactive<any>({
   title: [{ required: true, trigger: 'blur', message: '请输入标题' }],
-  author: [{ required: true, trigger: 'blur', message: '请输入作者' }],
+  author: [{ required: true, trigger: 'blur', message: '请输入作者' }]
 })
 const options = ref<any>([
   { value: 'published', label: 'published' },
   { value: 'draft', label: 'draft' },
-  { value: 'deleted', label: 'deleted' },
+  { value: 'deleted', label: 'deleted' }
 ])
 
 const showEdit = (row: any) => {
@@ -76,7 +76,7 @@ const showEdit = (row: any) => {
 }
 
 defineExpose({
-  showEdit,
+  showEdit
 })
 
 const close = () => {

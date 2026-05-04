@@ -7,15 +7,15 @@ const CACHE_KEY = 'systemConfigAllDtoCache'
 export const useSystemConfigStore = defineStore('systemConfig', {
   state: (): { config: SystemConfigAllDto | null; fetched: boolean } => ({
     config: null,
-    fetched: false,
+    fetched: false
   }),
   getters: {
-    getConfig: (state) => state.config,
-    getShopManagePlatforms: (state) => state.config?.ShopManagePlatforms || [],
-    getShopResearchPlatforms: (state) => state.config?.ShopResearchPlatforms || [],
-    getCustomerServiceUrl: (state) => state.config?.CustomerServiceUrl || '',
-    getDownloadUrl: (state) => state.config?.DownloadUrl || '',
-    getBusinessContact: (state) => state.config?.BusinessContact || '',
+    getConfig: state => state.config,
+    getShopManagePlatforms: state => state.config?.ShopManagePlatforms || [],
+    getShopResearchPlatforms: state => state.config?.ShopResearchPlatforms || [],
+    getCustomerServiceUrl: state => state.config?.CustomerServiceUrl || '',
+    getDownloadUrl: state => state.config?.DownloadUrl || '',
+    getBusinessContact: state => state.config?.BusinessContact || ''
   },
   actions: {
     loadCache(): SystemConfigAllDto | null {
@@ -53,6 +53,6 @@ export const useSystemConfigStore = defineStore('systemConfig', {
       this.config = config
       this.fetched = true
       this.saveCache(config)
-    },
-  },
+    }
+  }
 })

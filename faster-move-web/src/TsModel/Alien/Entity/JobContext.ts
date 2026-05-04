@@ -1,5 +1,5 @@
 export interface JobContext {
-		UserId?: string | null;
-		TaskName: string;
-		CreateTime: Date;
+  UserId?: string | null
+  TaskName: string
+  CreateTime: Date
 }

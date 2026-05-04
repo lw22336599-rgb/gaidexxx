@@ -280,7 +280,7 @@ import { random } from 'lodash-es'
 import landscape from '/@/assets/common_images/landscape.jpg'
 
 defineOptions({
-  name: 'CreativeCenter',
+  name: 'CreativeCenter'
 })
 
 const handelImage = () => {

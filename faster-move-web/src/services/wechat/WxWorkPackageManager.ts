@@ -4,12 +4,7 @@
  * 通过 Electron IPC 与主进程通信
  */
 
-import type {
-  DownloadProgress,
-  ProgressCallback,
-  WorkPackageConfig,
-  WxProcessState,
-} from '@/types/wechat'
+import type { DownloadProgress, ProgressCallback, WorkPackageConfig, WxProcessState } from '@/types/wechat'
 
 // Electron IPC 通信
 const ipcRenderer = (window as any).electron?.ipcRenderer
@@ -39,7 +34,7 @@ export class WxWorkPackageManager {
     const defaultConfig: WorkPackageConfig = {
       downloadUrl: 'https://update.wmzdb.shop/windows/WeChat.zip',
       tempDir: '', // 将在主进程中生成
-      executableName: 'injector32.exe',
+      executableName: 'injector32.exe'
     }
 
     this.config = { ...defaultConfig, ...config }
@@ -79,7 +74,7 @@ export class WxWorkPackageManager {
       try {
         // 通过 IPC 调用主进程准备工作包
         const result = await ipcRenderer.invoke('wx-prepare-workpackage', {
-          downloadUrl: this.config.downloadUrl,
+          downloadUrl: this.config.downloadUrl
         })
 
         if (result.success) {
@@ -134,7 +129,7 @@ export class WxWorkPackageManager {
       console.log('手动导入工作包', zipPath)
 
       const result = await ipcRenderer.invoke('wx-import-workpackage', {
-        zipPath,
+        zipPath
       })
 
       if (result.success) {
@@ -178,7 +173,7 @@ export class WxWorkPackageManager {
 
       const result = await ipcRenderer.invoke('wx-start-process', {
         workDir: this.workDir,
-        executableName: this.config.executableName,
+        executableName: this.config.executableName
       })
 
       if (result.success) {
@@ -214,7 +209,7 @@ export class WxWorkPackageManager {
       console.log('停止微信进程')
 
       const result = await ipcRenderer.invoke('wx-stop-process', {
-        pid: this.process.pid,
+        pid: this.process.pid
       })
 
       if (result.success) {
@@ -275,7 +270,7 @@ export class WxWorkPackageManager {
     if (this.workDir) {
       try {
         await ipcRenderer.invoke('wx-cleanup', {
-          workDir: this.workDir,
+          workDir: this.workDir
         })
         console.log('临时目录已清理')
       } catch (error) {

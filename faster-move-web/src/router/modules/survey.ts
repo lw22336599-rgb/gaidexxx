@@ -20,8 +20,8 @@ const routerConfig: VabRouteRecord = {
         icon: 'mt',
         levelHidden: true,
         isCustomSvg: true,
-        type: 1,
-      },
+        type: 1
+      }
     },
     {
       path: 'elm-survey',
@@ -32,8 +32,8 @@ const routerConfig: VabRouteRecord = {
         icon: 'elm',
         levelHidden: true,
         isCustomSvg: true,
-        type: 2,
-      },
+        type: 2
+      }
     },
     {
       path: 'jd-survey',
@@ -44,9 +44,9 @@ const routerConfig: VabRouteRecord = {
         icon: 'jd-home',
         levelHidden: true,
         isCustomSvg: true,
-        type: 6,
-      },
-    },
+        type: 6
+      }
+    }
   ]
-};
-export default routerConfig;
+}
+export default routerConfig

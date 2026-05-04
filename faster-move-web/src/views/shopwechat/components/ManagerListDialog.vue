@@ -64,7 +64,7 @@ const emit = defineEmits<{
 
 const dialogVisible = computed({
   get: () => props.visible,
-  set: (value) => emit('update:visible', value),
+  set: value => emit('update:visible', value)
 })
 
 const loading = ref(false)
@@ -86,7 +86,7 @@ const getManagerIds = (robot: t_chat_push_list): string[] => {
   // 兼容小写开头的字段（后端序列化默认行为）
   if (Array.isArray(anyRobot.mannagerOffIds) && anyRobot.mannagerOffIds.length > 0) {
     // 同步一份到标准字段，方便后续使用
-    ; (robot as any).MannagerOffIds = anyRobot.mannagerOffIds
+    ;(robot as any).MannagerOffIds = anyRobot.mannagerOffIds
     return anyRobot.mannagerOffIds
   }
 
@@ -96,7 +96,7 @@ const getManagerIds = (robot: t_chat_push_list): string[] => {
 // 监听对话框打开，加载管理员列表
 watch(
   () => props.visible,
-  async (newValue) => {
+  async newValue => {
     if (newValue && props.robot) {
       await loadManagerList()
     }

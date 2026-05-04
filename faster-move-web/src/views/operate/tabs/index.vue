@@ -25,14 +25,15 @@ import { useTabsStore } from '/@/store/modules/tabs'
 import { handleActivePath } from '/@/utils/routes'
 
 defineOptions({
-  name: 'Tabs',
+  name: 'Tabs'
 })
 
 const route = useRoute()
 const router = useRouter()
 const tabStore = useTabsStore()
 const { getVisitedRoutes: visitedRoutes } = storeToRefs(tabStore)
-const { delVisitedRoute, delOthersVisitedRoutes, delLeftVisitedRoutes, delRightVisitedRoutes, delAllVisitedRoutes } = tabStore
+const { delVisitedRoute, delOthersVisitedRoutes, delLeftVisitedRoutes, delRightVisitedRoutes, delAllVisitedRoutes } =
+  tabStore
 const hoverRoute = ref<any>(null)
 
 const handleTabRemove = async (rawPath: string) => {
@@ -67,7 +68,7 @@ const closeAllTabs = async () => {
 }
 
 const toLastTab = async () => {
-  const latestView = visitedRoutes.value.findLast((item) => item.path !== handleActivePath(route, true))
+  const latestView = visitedRoutes.value.findLast(item => item.path !== handleActivePath(route, true))
   if (latestView) await router.push(latestView)
   else await router.push('/')
 }

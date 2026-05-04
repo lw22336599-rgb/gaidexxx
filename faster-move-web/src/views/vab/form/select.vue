@@ -16,7 +16,13 @@
     <vab-card>
       <template #header>有禁用选项</template>
       <el-select v-model="value2" placeholder="请选择">
-        <el-option v-for="item in options2" :key="item.value" :disabled="item.disabled" :label="item.label" :value="item.value" />
+        <el-option
+          v-for="item in options2"
+          :key="item.value"
+          :disabled="item.disabled"
+          :label="item.label"
+          :value="item.value"
+        />
       </el-select>
     </vab-card>
     <vab-card>
@@ -48,7 +54,7 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'Select',
+  name: 'Select'
 })
 
 const options1 = ref<any>([
@@ -56,7 +62,7 @@ const options1 = ref<any>([
   { value: '选项2', label: '双皮奶' },
   { value: '选项3', label: '蚵仔煎' },
   { value: '选项4', label: '龙须面' },
-  { value: '选项5', label: '北京烤鸭' },
+  { value: '选项5', label: '北京烤鸭' }
 ])
 const value1 = ref<string>('')
 const options2 = ref<any>([
@@ -64,7 +70,7 @@ const options2 = ref<any>([
   { value: '选项2', label: '双皮奶', disabled: true },
   { value: '选项3', label: '蚵仔煎' },
   { value: '选项4', label: '龙须面' },
-  { value: '选项5', label: '北京烤鸭' },
+  { value: '选项5', label: '北京烤鸭' }
 ])
 const value2 = ref<string>('')
 const value3 = ref<any>([])
@@ -80,11 +86,11 @@ const treeData = ref<any>([
         children: [
           {
             value: '1-1-1',
-            label: '三级 1-1-1',
-          },
-        ],
-      },
-    ],
+            label: '三级 1-1-1'
+          }
+        ]
+      }
+    ]
   },
   {
     value: '2',
@@ -96,9 +102,9 @@ const treeData = ref<any>([
         children: [
           {
             value: '2-1-1',
-            label: '三级 2-1-1',
-          },
-        ],
+            label: '三级 2-1-1'
+          }
+        ]
       },
       {
         value: '2-2',
@@ -106,11 +112,11 @@ const treeData = ref<any>([
         children: [
           {
             value: '2-2-1',
-            label: '三级 2-2-1',
-          },
-        ],
-      },
-    ],
+            label: '三级 2-2-1'
+          }
+        ]
+      }
+    ]
   },
   {
     value: '3',
@@ -122,9 +128,9 @@ const treeData = ref<any>([
         children: [
           {
             value: '3-1-1',
-            label: '三级 3-1-1',
-          },
-        ],
+            label: '三级 3-1-1'
+          }
+        ]
       },
       {
         value: '3-2',
@@ -132,11 +138,11 @@ const treeData = ref<any>([
         children: [
           {
             value: '3-2-1',
-            label: '三级 3-2-1',
-          },
-        ],
-      },
-    ],
-  },
+            label: '三级 3-2-1'
+          }
+        ]
+      }
+    ]
+  }
 ])
 </script>

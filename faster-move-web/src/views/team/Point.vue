@@ -2,16 +2,18 @@
   <div class="page-container">
     <div class="interbox">
       <div class="jfbox">
-        <img alt="" src="/@/assets/group_images/interimg.png">
+        <img alt="" src="/@/assets/group_images/interimg.png" />
         <div class="jfnum">
           <div>剩余积分</div>
-          <div :class="{ 'blur-text': demoMode }" style="font-size: 18px;font-weight: 600">{{ formatBalance(balance) }}</div>
+          <div :class="{ 'blur-text': demoMode }" style="font-size: 18px; font-weight: 600">
+            {{ formatBalance(balance) }}
+          </div>
         </div>
         <el-button type="primary" @click="distribution">分配积分</el-button>
         <!-- <el-button type="primary" @click="changefromold">从小叮当转入</el-button> -->
       </div>
     </div>
-    <div class="homecont" style="margin-top:10px;">
+    <div class="homecont" style="margin-top: 10px">
       <div class="contenbox">
         <el-table v-loading="tableLoading" :data="tableData" height="calc(100vh - 320px)">
           <el-table-column label="时间" prop="operate_time" width="200">
@@ -40,8 +42,13 @@
             </template>
           </el-table-column>
         </el-table>
-        <vab-pagination :current-page="queryParams.page" :page-size="queryParams.pageSize" :total="total"
-          @current-change="handleCurrentChange" @size-change="handleSizeChange" />
+        <vab-pagination
+          :current-page="queryParams.page"
+          :page-size="queryParams.pageSize"
+          :total="total"
+          @current-change="handleCurrentChange"
+          @size-change="handleSizeChange"
+        />
       </div>
     </div>
     <el-dialog v-model="jfdioal" :destroy-on-close="true" title="分配积分" width="500px">
@@ -54,7 +61,7 @@
             <el-input v-model="form.giveVal" />
           </el-form-item>
           <el-form-item>
-            <div style="width: 100%;display: flex;justify-content: flex-end">
+            <div style="width: 100%; display: flex; justify-content: flex-end">
               <el-button :loading="btnLoading" type="primary" @click="sumjfen">确认</el-button>
             </div>
           </el-form-item>
@@ -84,26 +91,21 @@ const tableLoading = ref(false)
 const btnLoading = ref(false)
 const ruleFormRef = ref<TableInstance>()
 const rules = {
-  userId: [
-    { required: true, message: '请输入对方用户ID', trigger: 'blur' },
-  ],
-  giveVal: [
-    { required: true, message: '请输入分配积分', trigger: 'blur' },
-  ],
+  userId: [{ required: true, message: '请输入对方用户ID', trigger: 'blur' }],
+  giveVal: [{ required: true, message: '请输入分配积分', trigger: 'blur' }]
 }
 const queryParams = reactive({
   page: 1,
-  pageSize: 20,
+  pageSize: 20
 })
 const form = reactive({
   userId: '',
-  giveVal: '',
+  giveVal: ''
 })
 const distribution = () => {
   jfdioal.value = true
 }
 const changefromold = () => {
-
   //changefromold
   ElMessageBox.confirm(
     '此操作将从您原来"小叮当"的积分转入到您当前账户下, 转入成功后,您在"小叮当" 中的余额将被清零,请确认是否继续操作?',
@@ -111,41 +113,43 @@ const changefromold = () => {
     {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
-      type: 'warning',
+      type: 'warning'
     }
-  )
-    .then(() => {
-      changefromold_http().then((res: any) => {
+  ).then(() => {
+    changefromold_http()
+      .then((res: any) => {
         if (res.code === 200) {
           ElMessage({
             type: 'success',
-            message: '转移成功',
+            message: '转移成功'
           })
           queryParams.page = 1
           getTableData()
           getPageData()
-          form.userId = '';
+          form.userId = ''
           form.giveVal = ''
         }
         btnLoading.value = false
         jfdioal.value = false
-      }).finally(() => {
+      })
+      .finally(() => {
         btnLoading.value = false
         jfdioal.value = false
-      });
-    })
-
+      })
+  })
 }
 const getTableData = () => {
   tableLoading.value = true
-  getLogBalance(queryParams).then((res: any) => {
-    if (res.code === 200) {
-      tableData.value = res.data.rows
-      total.value = res.data.total
-    }
-  }).finally(() => {
-    tableLoading.value = false
-  })
+  getLogBalance(queryParams)
+    .then((res: any) => {
+      if (res.code === 200) {
+        tableData.value = res.data.rows
+        total.value = res.data.total
+      }
+    })
+    .finally(() => {
+      tableLoading.value = false
+    })
 }
 const getPageData = async () => {
   try {
@@ -157,7 +161,7 @@ const getPageData = async () => {
     }
     const res1: any = await getUserInfo()
     if (res1.code === 200) {
-      balance.value = res1.data.admin && res1.data.admin.balance || 0;
+      balance.value = (res1.data.admin && res1.data.admin.balance) || 0
     }
   } finally {
     tableLoading.value = false
@@ -188,21 +192,23 @@ const sumjfen = () => {
     ruleFormRef.value?.validate(async (valid: any) => {
       if (valid) {
         btnLoading.value = true
-        giveIntegral(form).then((res: any) => {
-          if (res.code === 200) {
-            gp.$baseMessage('分配成功', 'success', 'hey')
-            queryParams.page = 1
-            getTableData()
-            getPageData()
-            form.userId = '';
-            form.giveVal = ''
-          }
-          btnLoading.value = false
-          jfdioal.value = false
-        }).finally(() => {
-          btnLoading.value = false
-          jfdioal.value = false
-        })
+        giveIntegral(form)
+          .then((res: any) => {
+            if (res.code === 200) {
+              gp.$baseMessage('分配成功', 'success', 'hey')
+              queryParams.page = 1
+              getTableData()
+              getPageData()
+              form.userId = ''
+              form.giveVal = ''
+            }
+            btnLoading.value = false
+            jfdioal.value = false
+          })
+          .finally(() => {
+            btnLoading.value = false
+            jfdioal.value = false
+          })
       }
     })
 }
@@ -220,7 +226,6 @@ getPageData()
   padding: 0 20px;
   box-sizing: border-box;
   justify-content: space-between;
-
 
   .jfbox {
     display: flex;
@@ -245,7 +250,7 @@ getPageData()
     .jfnum {
       margin: 0 20px;
 
-      >p:nth-of-type(2) {
+      > p:nth-of-type(2) {
         font-size: 16px;
         font-weight: 600;
       }

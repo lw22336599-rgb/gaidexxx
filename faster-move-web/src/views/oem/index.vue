@@ -15,7 +15,7 @@
       </div>
     </nav>
 
-    <main class="main-content" v-show="activeName === 0">
+    <main v-show="activeName === 0" class="main-content">
       <el-form :model="form" class="oem-form">
         <!-- 软件名称 -->
         <div class="form-field">
@@ -80,7 +80,7 @@
         </div>
 
         <!-- 插画上传区域 -->
-        <div class="illustrations-group" v-if="0">
+        <div v-if="0" class="illustrations-group">
           <div class="form-field">
             <div class="form-label">
               软件登录界面插画

@@ -4,8 +4,22 @@
       <el-time-select v-model="value" end="18:30" placeholder="选择时间" start="08:30" step="00:15" />
     </vab-card>
     <vab-card title="固定时间范围">
-      <el-time-select v-model="startTime" end="18:30" placeholder="开始时间" start="08:30" step="00:15" style="margin-right: 10px" />
-      <el-time-select v-model="endTime" end="18:30" :min-time="startTime" placeholder="结束时间" start="08:30" step="00:15" />
+      <el-time-select
+        v-model="startTime"
+        end="18:30"
+        placeholder="开始时间"
+        start="08:30"
+        step="00:15"
+        style="margin-right: 10px"
+      />
+      <el-time-select
+        v-model="endTime"
+        end="18:30"
+        :min-time="startTime"
+        placeholder="结束时间"
+        start="08:30"
+        step="00:15"
+      />
     </vab-card>
 
     <vab-card title="任意时间点">
@@ -16,7 +30,7 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'Timepicker',
+  name: 'Timepicker'
 })
 
 const value = ref<string>('')

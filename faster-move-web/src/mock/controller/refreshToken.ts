@@ -13,14 +13,14 @@ export default [
       if (Date.now() - tokenTime > 5000)
         return {
           code: 402,
-          msg: '令牌已过期',
+          msg: '令牌已过期'
         }
       else
         return {
           code: 200,
-          msg: '令牌未过期',
+          msg: '令牌未过期'
         }
-    },
+    }
   },
   {
     url: '/refreshToken',
@@ -35,8 +35,8 @@ export default [
       return {
         code: 200,
         msg: '刷新Token成功',
-        data: { token },
+        data: { token }
       }
-    },
-  },
+    }
+  }
 ] as MockMethod[]

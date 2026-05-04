@@ -16,7 +16,7 @@ import { ElCheckbox } from 'element-plus'
 import type { FunctionalComponent } from 'vue'
 
 defineOptions({
-  name: 'BigDataTable',
+  name: 'BigDataTable'
 })
 
 type SelectionCellProps = {
@@ -35,7 +35,7 @@ const generateColumns = (length = 10, prefix = 'column-', props?: any) =>
     key: `${prefix}${columnIndex}`,
     dataKey: `${prefix}${columnIndex}`,
     title: `Column ${columnIndex}`,
-    width: 150,
+    width: 150
   }))
 
 const generateData = (columns: ReturnType<typeof generateColumns>, length = 200, prefix = 'row-') =>
@@ -48,7 +48,7 @@ const generateData = (columns: ReturnType<typeof generateColumns>, length = 200,
       {
         id: `${prefix}${rowIndex}`,
         checked: false,
-        parentId: null,
+        parentId: null
       }
     )
   })
@@ -65,15 +65,15 @@ columns.unshift({
   headerCellRenderer: () => {
     const _data = unref(data)
     const onChange = (value: CheckboxValueType) =>
-      (data.value = _data.map((row) => {
+      (data.value = _data.map(row => {
         row.checked = value
         return row
       }))
-    const allSelected = _data.every((row) => row.checked)
-    const containsChecked = _data.some((row) => row.checked)
+    const allSelected = _data.every(row => row.checked)
+    const containsChecked = _data.some(row => row.checked)
 
     return <SelectionCell value={allSelected} intermediate={containsChecked && !allSelected} onChange={onChange} />
-  },
+  }
 })
 
 const data = ref(generateData(columns, 200))

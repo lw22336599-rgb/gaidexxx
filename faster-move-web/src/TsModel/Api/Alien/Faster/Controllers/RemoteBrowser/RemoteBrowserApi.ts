@@ -21,7 +21,7 @@ export class RemoteBrowserApi {
     const config: AxiosRequestConfig = {
       method: 'GET',
       url: `${this.baseUrl}/RemoteBrowser/GetConnectionKey`,
-      params: { shopId, shopType },
+      params: { shopId, shopType }
     }
     const response: AxiosResponse<RemoteBrowserKeyResult> = await this.axiosInstance(config)
     return response.data
@@ -32,7 +32,7 @@ export class RemoteBrowserApi {
     const config: AxiosRequestConfig = {
       method: 'POST',
       url: `${this.baseUrl}/RemoteBrowser/GetShopsForRemoteBrowser`,
-      data: request,
+      data: request
     }
     const response: AxiosResponse<RemoteBrowserShopItem[]> = await this.axiosInstance(config)
     return response.data ?? []

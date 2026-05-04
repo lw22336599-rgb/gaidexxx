@@ -7,7 +7,7 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'ThrottleDebounce',
+  name: 'ThrottleDebounce'
 })
 
 const throttleClick = () => {

@@ -16,7 +16,7 @@ export const imEventBus = {
   },
 
   emitMessage(message: ImMessage): void {
-    messageListeners.forEach((listener) => {
+    messageListeners.forEach(listener => {
       try {
         listener(message)
       } catch (error) {
@@ -33,12 +33,12 @@ export const imEventBus = {
   },
 
   emitSessionEvent(event: SessionEvent): void {
-    sessionEventListeners.forEach((listener) => {
+    sessionEventListeners.forEach(listener => {
       try {
         listener(event)
       } catch (error) {
         // 忽略监听器内部错误
       }
     })
-  },
+  }
 }

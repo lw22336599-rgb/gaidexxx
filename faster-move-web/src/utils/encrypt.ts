@@ -12,7 +12,7 @@ const privateKey =
  */
 export const encryptedData = async (data: string | object) => {
   const {
-    data: { publicKey },
+    data: { publicKey }
   } = await getPublicKey()
   if (typeof data === 'object') data = JSON.stringify(data)
   const encrypt = new JSEncrypt()

@@ -5,7 +5,7 @@
       <div class="page-header-tip-title">
         {{ handleTips() }}
       </div>
-      <div class="page-header-tip-description" v-html="description"></div>
+      <div class="page-header-tip-description" v-html="description" />
     </div>
   </vab-colorful-card>
 </template>
@@ -26,7 +26,7 @@ onBeforeMount(() => {
 const colorFrom = ref<string>('var(--el-color-primary-light-9)')
 const colorTo = ref<string>('var(--el-color-white)')
 const style = {
-  background: `${colorTo.value} linear-gradient(120deg, ${colorFrom.value} 10%, ${colorTo.value}) no-repeat`,
+  background: `${colorTo.value} linear-gradient(120deg, ${colorFrom.value} 10%, ${colorTo.value}) no-repeat`
 }
 </script>
 

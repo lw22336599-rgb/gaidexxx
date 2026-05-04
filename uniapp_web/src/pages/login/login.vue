@@ -1,34 +1,49 @@
 <template>
   <view class="page">
-    <view class="hero">
-      <text class="title">欢迎登录</text>
-      <text class="sub">{{ subText }}</text>
+    <view class="top">
+      <text class="brand">极狐</text>
+      <text class="tagline">账号登录</text>
     </view>
 
-    <view class="card">
+    <view class="sheet">
       <view class="field">
         <text class="label">账号</text>
-        <input v-model.trim="form.phone" class="input" type="text" placeholder="手机号或用户名" />
+        <input
+          v-model.trim="form.phone"
+          class="input"
+          type="text"
+          confirm-type="next"
+          placeholder="手机号或用户名"
+        />
       </view>
       <view class="field">
         <text class="label">密码</text>
-        <input v-model.trim="form.pwd" class="input" password placeholder="请输入密码" />
+        <input
+          v-model.trim="form.pwd"
+          class="input"
+          password
+          confirm-type="done"
+          placeholder="请输入密码"
+          @confirm="handleLogin"
+        />
+      </view>
+    </view>
+
+    <view class="foot">
+      <view class="opts">
+        <view class="opt" @tap="remember = !remember">
+          <view class="chk" :class="{ on: remember }" />
+          <text class="opt-t">记住密码</text>
+        </view>
+        <view class="opt" @tap="vlogin = !vlogin">
+          <view class="chk" :class="{ on: vlogin }" />
+          <text class="opt-t">自动登录</text>
+        </view>
       </view>
 
-      <view class="row switches">
-        <view class="sw">
-          <text class="sw-label">记住密码</text>
-          <switch :checked="remember" color="#2d6cdf" @change="onRememberChange" />
-        </view>
-        <view class="sw">
-          <text class="sw-label">自动登录</text>
-          <switch :checked="vlogin" color="#2d6cdf" @change="onVloginChange" />
-        </view>
-      </view>
-
-      <button class="btn primary" :loading="loading" @click="handleLogin">登录</button>
-      <button v-if="mockMode" class="btn outline" :loading="loading" @click="mockOneClick">
-        Mock 一键进首页（免接口）
+      <button class="btn primary" :loading="loading" @click="handleLogin">登 录</button>
+      <button v-if="mockMode" class="btn ghost" :loading="loading" :disabled="loading" @click="mockOneClick">
+        开发环境 · 免接口进首页
       </button>
     </view>
   </view>
@@ -37,6 +52,7 @@
 <script setup lang="ts">
 import { onLoad } from "@dcloudio/uni-app";
 import { computed, onMounted, reactive, ref } from "vue";
+import { ROUTE_BUSINESS_HOME } from "@/config/routes";
 import { AdmiPhoneResultType } from "@/constants/loginResult";
 import { isMockAuthEnabled, MOCK_DEFAULT_PHONE } from "@/config/mockAuth";
 import { useUserStore } from "@/stores/user";
@@ -44,11 +60,6 @@ import { applyMockSessionFromQuery, applyMockSharedLoginState } from "@/utils/mo
 import { getToken } from "@/utils/token";
 
 const mockMode = computed(() => isMockAuthEnabled());
-const subText = computed(() =>
-  mockMode.value
-    ? `Mock 已开启 · 默认号 ${MOCK_DEFAULT_PHONE}（密码可任意）· 与 H5 共用 shop-vite-token`
-    : "移动端 · 与 PC 端同一套接口"
-);
 
 /** H5：打开 `#/pages/login/login?clearStorage=1` 可一键清 Mock/旧 token；带 mock_token / mockBypass 可同步免登 */
 onLoad((opts) => {
@@ -72,15 +83,6 @@ const remember = ref(true);
 const vlogin = ref(true);
 const form = reactive({ phone: "", pwd: "" });
 
-function onRememberChange(e: Event) {
-  const d = (e as unknown as { detail?: { value?: boolean } }).detail;
-  remember.value = !!d?.value;
-}
-function onVloginChange(e: Event) {
-  const d = (e as unknown as { detail?: { value?: boolean } }).detail;
-  vlogin.value = !!d?.value;
-}
-
 function loadRemembered() {
   try {
     const raw = uni.getStorageSync("rememberuser") as string;
@@ -99,7 +101,7 @@ onMounted(() => {
   }
   loadRemembered();
   if (getToken()) {
-    uni.reLaunch({ url: "/pages/index/index" });
+    uni.reLaunch({ url: ROUTE_BUSINESS_HOME });
   }
 });
 
@@ -121,7 +123,7 @@ async function mockOneClick() {
   try {
     applyMockSharedLoginState();
     await userStore.getUserInfo();
-    uni.reLaunch({ url: "/pages/index/index" });
+    uni.reLaunch({ url: ROUTE_BUSINESS_HOME });
   } finally {
     loading.value = false;
   }
@@ -138,7 +140,7 @@ async function handleLogin() {
     const res = await userStore.login(
       { phone: form.phone, pwd: form.pwd },
       remember.value,
-      vlogin.value
+      vlogin.value,
     );
     const rt = res.ResultType;
     if (rt === AdmiPhoneResultType.验证成功 || rt === AdmiPhoneResultType.None) {
@@ -147,7 +149,7 @@ async function handleLogin() {
       } catch {
         /* getUserInfo 失败时仍进入首页，便于排查网络 */
       }
-      uni.reLaunch({ url: "/pages/index/index" });
+      uni.reLaunch({ url: ROUTE_BUSINESS_HOME });
       return;
     }
     uni.showToast({ title: describeResult(rt), icon: "none", duration: 2600 });
@@ -162,79 +164,111 @@ async function handleLogin() {
 <style scoped>
 .page {
   min-height: 100vh;
-  padding: 48rpx 40rpx 80rpx;
+  display: flex;
+  flex-direction: column;
+  padding: calc(24rpx + env(safe-area-inset-top)) 36rpx calc(28rpx + env(safe-area-inset-bottom));
   box-sizing: border-box;
-  background: linear-gradient(165deg, #e8f0ff 0%, #f6f7fb 42%, #ffffff 100%);
+  background: linear-gradient(180deg, #eef3fc 0%, #f7f8fb 28%, #ffffff 55%);
 }
-.hero {
-  margin-bottom: 56rpx;
+.top {
+  flex-shrink: 0;
+  padding: 56rpx 8rpx 40rpx;
 }
-.title {
+.brand {
   display: block;
-  font-size: 44rpx;
-  font-weight: 600;
+  font-size: 56rpx;
+  font-weight: 700;
   color: #1a1a2e;
+  letter-spacing: 4rpx;
 }
-.sub {
+.tagline {
   display: block;
   margin-top: 12rpx;
-  font-size: 26rpx;
-  color: #666;
+  font-size: 28rpx;
+  color: #606266;
 }
-.card {
-  background: #fff;
-  border-radius: 24rpx;
-  padding: 40rpx 32rpx 48rpx;
-  box-shadow: 0 12rpx 40rpx rgba(30, 60, 120, 0.08);
+.sheet {
+  flex: 1;
+  min-height: 0;
 }
 .field {
-  margin-bottom: 32rpx;
+  margin-bottom: 28rpx;
 }
 .label {
   display: block;
   font-size: 26rpx;
-  color: #444;
+  color: #303133;
   margin-bottom: 12rpx;
+  font-weight: 500;
 }
 .input {
   width: 100%;
-  height: 88rpx;
-  padding: 0 24rpx;
+  height: 96rpx;
+  padding: 0 28rpx;
   box-sizing: border-box;
-  border: 1rpx solid #e5e8ef;
-  border-radius: 16rpx;
-  font-size: 30rpx;
-  background: #fafbfe;
+  border: 1rpx solid #dcdfe6;
+  border-radius: 18rpx;
+  font-size: 32rpx;
+  background: #fff;
 }
-.row.switches {
-  flex-direction: column;
-  gap: 20rpx;
-  margin-bottom: 40rpx;
+.foot {
+  flex-shrink: 0;
+  padding-top: 8rpx;
 }
-.sw {
+.opts {
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  gap: 24rpx;
+  margin-bottom: 28rpx;
+  padding: 0 4rpx;
 }
-.sw-label {
+.opt {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12rpx;
+  padding: 16rpx 8rpx;
+  margin: -16rpx -8rpx;
+}
+.chk {
+  width: 32rpx;
+  height: 32rpx;
+  border-radius: 8rpx;
+  border: 2rpx solid #c0c4cc;
+  box-sizing: border-box;
+  background: #fff;
+}
+.chk.on {
+  border-color: #2d6cdf;
+  background: #2d6cdf;
+  box-shadow: inset 0 0 0 4rpx #fff;
+}
+.opt-t {
   font-size: 28rpx;
-  color: #444;
+  color: #606266;
 }
 .btn {
   width: 100%;
-  height: 92rpx;
-  line-height: 92rpx;
-  border-radius: 16rpx;
-  font-size: 32rpx;
+  height: 96rpx;
+  line-height: 96rpx;
+  border-radius: 18rpx;
+  font-size: 34rpx;
+  font-weight: 600;
 }
 .btn.primary {
   background: #2d6cdf;
   color: #fff;
 }
-.btn.outline {
-  margin-top: 24rpx;
-  background: #fff;
-  color: #2d6cdf;
-  border: 2rpx solid #2d6cdf;
+.btn.ghost {
+  margin-top: 20rpx;
+  background: transparent;
+  color: #909399;
+  border: 1rpx dashed #dcdfe6;
+  font-size: 26rpx;
+  font-weight: 400;
+  height: 80rpx;
+  line-height: 80rpx;
 }
 </style>

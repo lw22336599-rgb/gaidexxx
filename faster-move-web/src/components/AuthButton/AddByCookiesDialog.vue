@@ -1,6 +1,11 @@
 <template>
-  <el-dialog v-model="visible" title="通过Cookies添加门店" width="520px" :close-on-click-modal="false"
-    @closed="handleClosed">
+  <el-dialog
+    v-model="visible"
+    title="通过Cookies添加门店"
+    width="520px"
+    :close-on-click-modal="false"
+    @closed="handleClosed"
+  >
     <el-form :model="form" label-width="80px" label-position="top">
       <el-form-item label="平台类型">
         <el-select v-model="form.shopType" placeholder="请选择平台类型" style="width: 100%">
@@ -8,8 +13,13 @@
         </el-select>
       </el-form-item>
       <el-form-item label="Cookies">
-        <el-input v-model="form.cookies" type="textarea" :rows="8" placeholder="请粘贴Cookies内容（JSON格式或字符串格式均可）"
-          resize="none" />
+        <el-input
+          v-model="form.cookies"
+          type="textarea"
+          :rows="8"
+          placeholder="请粘贴Cookies内容（JSON格式或字符串格式均可）"
+          resize="none"
+        />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -50,7 +60,7 @@ const shopTypeOptions = [
   { label: '京东到家', value: ShopType.京东到家 },
   { label: '抖音即时零售', value: ShopType.抖店即时零售 },
   { label: '美团团购', value: ShopType.美团团购 },
-  { label: '京东团购', value: ShopType.京东团购 },
+  { label: '京东团购', value: ShopType.京东团购 }
 ]
 
 const visible = ref(false)
@@ -61,14 +71,17 @@ const form = ref({
   cookies: ''
 })
 
-watch(() => props.modelValue, (val) => {
-  visible.value = val
-  if (val && props.shopType !== undefined) {
-    form.value.shopType = props.shopType
+watch(
+  () => props.modelValue,
+  val => {
+    visible.value = val
+    if (val && props.shopType !== undefined) {
+      form.value.shopType = props.shopType
+    }
   }
-})
+)
 
-watch(visible, (val) => {
+watch(visible, val => {
   emit('update:modelValue', val)
 })
 

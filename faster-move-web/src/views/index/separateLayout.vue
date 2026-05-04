@@ -21,7 +21,7 @@ import { layout } from '/@/config/'
 import { useSettingsStore } from '/@/store/modules/settings'
 
 defineOptions({
-  name: 'SeparateLayout',
+  name: 'SeparateLayout'
 })
 
 const settingsStore = useSettingsStore()

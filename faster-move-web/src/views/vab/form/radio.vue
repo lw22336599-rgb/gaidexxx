@@ -34,7 +34,7 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'Radio',
+  name: 'Radio'
 })
 
 const radio = ref<string>('1')

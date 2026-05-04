@@ -2,8 +2,13 @@
   <div class="remote-browser">
     <div class="sidebar">
       <div class="sidebar-title">店铺列表</div>
-      <div v-for="shop in shopList" :key="shop.id" class="shop-item" :class="{ active: selectedShop?.id === shop.id }"
-        @click="selectShop(shop)">
+      <div
+        v-for="shop in shopList"
+        :key="shop.id"
+        class="shop-item"
+        :class="{ active: selectedShop?.id === shop.id }"
+        @click="selectShop(shop)"
+      >
         <PlatformIcon class="shop-icon" :shop-type="shop.shop_type" :size="18" />
         <span class="shop-name">{{ shop.name }}</span>
         <el-tag v-if="getShopState(shop.id)" :type="getShopStateTag(getShopState(shop.id))" size="small">
@@ -13,8 +18,13 @@
     </div>
     <div class="main">
       <div v-if="selectedShop" class="tabs-bar">
-        <div v-for="page in pages" :key="page.PageKey" class="tab-item"
-          :class="{ active: activePageKey === page.PageKey }" @click="activePageKey = page.PageKey">
+        <div
+          v-for="page in pages"
+          :key="page.PageKey"
+          class="tab-item"
+          :class="{ active: activePageKey === page.PageKey }"
+          @click="activePageKey = page.PageKey"
+        >
           {{ page.DisplayName }}
         </div>
       </div>
@@ -35,9 +45,7 @@
       </div>
     </div>
     <div v-show="contextMenuVisible" class="context-menu" :style="contextMenuStyle" @click.stop>
-      <div class="context-menu-item" @click="openInternalDevTools">
-        打开开发工具（调试内部网页）
-      </div>
+      <div class="context-menu-item" @click="openInternalDevTools">打开开发工具（调试内部网页）</div>
     </div>
   </div>
 </template>
@@ -97,7 +105,7 @@ function reportViewportBounds() {
       x: Math.round(rect.left),
       y: Math.round(rect.top),
       width: Math.round(rect.width),
-      height: Math.round(rect.height),
+      height: Math.round(rect.height)
     })
   })
 }
@@ -119,7 +127,7 @@ function getShopStateText(s: RemoteBrowserConnectionState): string {
     disconnected: '未连接',
     connecting: '连接中',
     connected: '已连接',
-    failed: '失败',
+    failed: '失败'
   }
   return map[s] ?? ''
 }
@@ -186,21 +194,26 @@ onMounted(async () => {
   })
 
   const shopIdsParam = route.query.shopIds as string | undefined
-  const shopIds = shopIdsParam ? shopIdsParam.split(',').map((s) => s.trim()).filter(Boolean) : []
+  const shopIds = shopIdsParam
+    ? shopIdsParam
+        .split(',')
+        .map(s => s.trim())
+        .filter(Boolean)
+    : []
 
   if (shopIds.length > 0) {
     const items = await apiManager.remoteBrowserApi.GetShopsForRemoteBrowser({ ShopIds: shopIds })
-    shopList.value = items.map((item) => ({
+    shopList.value = items.map(item => ({
       id: item.Id,
       name: item.Name,
       shop_type: item.ShopType,
-      office_id: item.OfficeId ?? '',
+      office_id: item.OfficeId ?? ''
     })) as ShopList_ResulItem[]
   } else {
     const res = await apiManager.shopmgApi.GetShopList({
       page: 1,
       pageSize: 100,
-      order_direction: OrderDirection.Desc,
+      order_direction: OrderDirection.Desc
     })
     shopList.value = res.rows ?? []
   }
@@ -222,7 +235,7 @@ onMounted(async () => {
     }
   }
 
-  offClosing = remoteBrowserManager.onClosing((dto) => {
+  offClosing = remoteBrowserManager.onClosing(dto => {
     const electron = (window as any).electron
     if (electron?.remoteBrowserCloseShop) {
       electron.remoteBrowserCloseShop(dto.ShopId)
@@ -236,16 +249,16 @@ onMounted(async () => {
     ElMessage.warning(dto.Message ?? '远程浏览器会话已结束')
   })
 
-  offNotify = remoteBrowserManager.onNotify((dto) => {
+  offNotify = remoteBrowserManager.onNotify(dto => {
     ElNotification({
       title: '远程浏览器通知',
       message: dto.Message,
-      type: (dto.Severity as 'success' | 'warning' | 'error' | 'info') ?? 'info',
+      type: (dto.Severity as 'success' | 'warning' | 'error' | 'info') ?? 'info'
     })
     if (dto.PlaySound) {
       try {
         const audio = new Audio('/sounds/notify.mp3')
-        audio.play().catch(() => { })
+        audio.play().catch(() => {})
       } catch {
         // ignore
       }
@@ -364,7 +377,9 @@ onUnmounted(() => {
     font-size: 14px;
     color: #666;
     border-radius: 6px;
-    transition: background 0.2s, color 0.2s;
+    transition:
+      background 0.2s,
+      color 0.2s;
 
     &:hover {
       background: #f0f0f0;

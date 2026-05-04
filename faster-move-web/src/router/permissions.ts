@@ -95,10 +95,10 @@ const getDefaultChildRouteName = (parentRouteName: string, router: Router): stri
     // 由于无法直接获取子路由，我们通过常见的默认路由名称来判断
     // 这个可以根据实际路由配置来调整，或者通过路由 store 来获取
     const defaultRouteNames: Record<string, string> = {
-      'Shop': 'MtFeature', // 门店管理的默认子路由
-      'Survey': 'MtSurvey', // 店铺调研的默认子路由
-      'Shopwechat': 'Tswechat', // 门店推送的默认子路由
-      'Team': 'Point', // 团队管理的默认子路由
+      Shop: 'MtFeature', // 门店管理的默认子路由
+      Survey: 'MtSurvey', // 店铺调研的默认子路由
+      Shopwechat: 'Tswechat', // 门店推送的默认子路由
+      Team: 'Point' // 团队管理的默认子路由
     }
     return defaultRouteNames[parentRouteName] || null
   } catch {
@@ -111,7 +111,7 @@ export const setupPermissions = (router: Router) => {
     easing: 'ease',
     speed: 500,
     trickleSpeed: 200,
-    showSpinner: false,
+    showSpinner: false
   })
   router.beforeEach(async (to, from, next) => {
     // 如果访问 /shop-v2 父路由，直接重定向到功能版页面，避免显示二级菜单
@@ -140,15 +140,15 @@ export const setupPermissions = (router: Router) => {
       // 调试输出
       if (isToParentRoute || isToDefaultChild) {
         console.log('🔍 [路由守卫] 通用路由记忆检查:', {
-          'parentRoute': parentRoute,
-          'fromParentRoute': fromParentRoute,
-          'isFromOtherRoute': isFromOtherRoute,
-          'isToParentRoute': isToParentRoute,
-          'isToDefaultChild': isToDefaultChild,
+          parentRoute: parentRoute,
+          fromParentRoute: fromParentRoute,
+          isFromOtherRoute: isFromOtherRoute,
+          isToParentRoute: isToParentRoute,
+          isToDefaultChild: isToDefaultChild,
           'to.path': to.path,
           'to.name': to.name,
           'from.path': from.path,
-          'from.name': from.name,
+          'from.name': from.name
         })
       }
 
@@ -156,10 +156,10 @@ export const setupPermissions = (router: Router) => {
       if (isFromOtherRoute && (isToParentRoute || isToDefaultChild)) {
         const lastChildRoute = getLastChildRoute(parentRoute.name)
         console.log('🔍 [路由守卫] 检查恢复子路由:', {
-          'parentRoute': parentRoute.name,
-          'lastChildRoute': lastChildRoute,
+          parentRoute: parentRoute.name,
+          lastChildRoute: lastChildRoute,
           'to.name': to.name,
-          '需要重定向': lastChildRoute && lastChildRoute !== to.name,
+          需要重定向: lastChildRoute && lastChildRoute !== to.name
         })
 
         // 如果记录的子路由存在，且不是当前路由，则重定向到记录的子路由
@@ -177,10 +177,10 @@ export const setupPermissions = (router: Router) => {
       else if (isToDefaultChild && from.name === parentRoute.name && from.path === parentRoute.path) {
         const lastChildRoute = getLastChildRoute(parentRoute.name)
         console.log('🔍 [路由守卫] 从父路由重定向检查:', {
-          'parentRoute': parentRoute.name,
-          'lastChildRoute': lastChildRoute,
+          parentRoute: parentRoute.name,
+          lastChildRoute: lastChildRoute,
           'to.name': to.name,
-          '需要重定向': lastChildRoute && lastChildRoute !== to.name,
+          需要重定向: lastChildRoute && lastChildRoute !== to.name
         })
 
         if (lastChildRoute && lastChildRoute !== to.name) {
@@ -198,8 +198,8 @@ export const setupPermissions = (router: Router) => {
       // 只有当不是访问父路由本身时才记录
       if (!isToParentRoute) {
         console.log('✅ [路由守卫] 记录子路由:', {
-          'parentRoute': parentRoute.name,
-          'childRoute': to.name,
+          parentRoute: parentRoute.name,
+          childRoute: to.name
         })
         saveLastChildRoute(parentRoute.name, to.name as string)
       }
@@ -232,7 +232,7 @@ export const setupPermissions = (router: Router) => {
     //   }
     // }
     const {
-      getTheme: { showProgressBar },
+      getTheme: { showProgressBar }
     } = useSettingsStore()
     const { routes, setRoutes } = useRoutesStore()
     const { token, getUserInfo, setVirtualRoles, resetAll } = useUserStore()
@@ -277,7 +277,7 @@ export const setupPermissions = (router: Router) => {
       } else next(toLoginRoute(to.fullPath))
     }
   })
-  router.afterEach((to) => {
+  router.afterEach(to => {
     if (typeof to.meta.title === 'string') {
       const title = getPageTitle(to.meta.title)
       document.title = `${title} 当前版本号：v${version}`

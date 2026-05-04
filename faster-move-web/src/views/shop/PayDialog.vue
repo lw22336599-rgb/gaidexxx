@@ -2,49 +2,69 @@
   <el-dialog v-model="payDialogStateCom" :before-close="handleClose" :title="shopData?.name || '续费'" width="850">
     <div class="shop">
       <div class="shoptop">
-        <img alt="" src="/@/assets/logo.png" style="width:140px;height:140px" />
-        <div style="flex: 1;box-sizing: border-box;padding: 15px;">
+        <img alt="" src="/@/assets/logo.png" style="width: 140px; height: 140px" />
+        <div style="flex: 1; box-sizing: border-box; padding: 15px">
           <!-- 全功能续费时显示单功能/全功能/运营版切换按钮（根据平台支持情况显示） -->
           <div v-if="payTypeText === '全功能' || payTypeText.includes('全功能')" class="function-mode-switch">
-            <el-button :type="functionMode === 'single' ? 'primary' : ''" :plain="functionMode !== 'single'"
-              @click="switchFunctionMode('single')">
+            <el-button
+              :type="functionMode === 'single' ? 'primary' : ''"
+              :plain="functionMode !== 'single'"
+              @click="switchFunctionMode('single')"
+            >
               单功能续费
             </el-button>
-            <el-button v-if="isSupportAllFunction" :type="functionMode === 'all' ? 'primary' : ''"
-              :plain="functionMode !== 'all'" @click="switchFunctionMode('all')">
+            <el-button
+              v-if="isSupportAllFunction"
+              :type="functionMode === 'all' ? 'primary' : ''"
+              :plain="functionMode !== 'all'"
+              @click="switchFunctionMode('all')"
+            >
               全功能续费
             </el-button>
-            <el-button v-if="isSupportOperateVersion" :type="functionMode === 'operate' ? 'primary' : ''"
-              :plain="functionMode !== 'operate'" @click="switchFunctionMode('operate')">
+            <el-button
+              v-if="isSupportOperateVersion"
+              :type="functionMode === 'operate' ? 'primary' : ''"
+              :plain="functionMode !== 'operate'"
+              @click="switchFunctionMode('operate')"
+            >
               运营版
             </el-button>
           </div>
           <div v-else class="title">{{ payTypeText || '续费' }}</div>
 
           <!-- 单功能模式：显示功能选择 -->
-          <div v-if="(payTypeText === '全功能' || payTypeText.includes('全功能')) && functionMode === 'single'"
-            class="single-function-selector">
+          <div
+            v-if="(payTypeText === '全功能' || payTypeText.includes('全功能')) && functionMode === 'single'"
+            class="single-function-selector"
+          >
             <div class="function-title">选择功能：</div>
             <div v-if="singleFunctionList.length > 0" class="function-grid">
-              <div v-for="func in singleFunctionList" :key="func.code" class="function-item"
-                :class="{ 'is-active': selectedSingleFunction === func.code }" @click="selectSingleFunction(func.code)">
+              <div
+                v-for="func in singleFunctionList"
+                :key="func.code"
+                class="function-item"
+                :class="{ 'is-active': selectedSingleFunction === func.code }"
+                @click="selectSingleFunction(func.code)"
+              >
                 {{ func.name }}
               </div>
             </div>
-            <div v-else style="color: #909399; font-size: 12px; padding: 6px 0;">
-              当前平台暂无可续费功能
-            </div>
+            <div v-else style="color: #909399; font-size: 12px; padding: 6px 0">当前平台暂无可续费功能</div>
           </div>
 
           <div class="guigebox">
             <!-- 全功能模式：显示功能包含 -->
-            <div v-if="(payTypeText === '全功能' || payTypeText.includes('全功能')) && functionMode === 'all'"
-              class="function-includes">
+            <div
+              v-if="(payTypeText === '全功能' || payTypeText.includes('全功能')) && functionMode === 'all'"
+              class="function-includes"
+            >
               功能包含：自动出餐 + 自动回复 + 自动回评 + 点金推广 + 店铺多开(防清除)
             </div>
             <!-- 运营版模式：显示运营版说明 -->
-            <div v-if="(payTypeText === '全功能' || payTypeText.includes('全功能')) && functionMode === 'operate'"
-              class="function-includes">
+            <div
+              v-if="(payTypeText === '全功能' || payTypeText.includes('全功能')) && functionMode === 'operate'"
+              class="function-includes"
+            >
               运营版：经营日报推送 + 实时经营数据 + 实时调控点金出价 + 实时复制经营数据
             </div>
 
@@ -65,12 +85,20 @@
             <div class="guigebox-header">
               <div class="guigebox-label">规格：</div>
               <div class="tipsbox">
-                <div v-for="item in kmList" :key="item.id" class="meal-item"
-                  :class="{ 'is-meal-item': currentId === item.price_id, 'widtbox': item.func_name === 'APP数据服务_月' }"
-                  @click="setActive(item)">
+                <div
+                  v-for="item in kmList"
+                  :key="item.id"
+                  class="meal-item"
+                  :class="{ 'is-meal-item': currentId === item.price_id, widtbox: item.func_name === 'APP数据服务_月' }"
+                  @click="setActive(item)"
+                >
                   <div>{{ item.showStr }}</div>
-                  <img v-show="currentId === item.price_id" alt="" class="postion"
-                    src="/@/assets/shop_images/icon_004a.png" />
+                  <img
+                    v-show="currentId === item.price_id"
+                    alt=""
+                    class="postion"
+                    src="/@/assets/shop_images/icon_004a.png"
+                  />
                 </div>
               </div>
             </div>
@@ -80,7 +108,7 @@
       </div>
     </div>
   </el-dialog>
-  <el-dialog v-if="payShow" v-model="payShow" center style="margin-top:300px" title="支付确认" width="400px">
+  <el-dialog v-if="payShow" v-model="payShow" center style="margin-top: 300px" title="支付确认" width="400px">
     <div class="pay-box">
       <div class="pay-con">
         <div class="pay-tips">订单信息</div>
@@ -101,7 +129,7 @@
           <div>{{ shopData.name }}</div>
         </div>
       </div>
-      <div style="width:100%;display:flex;justify-content:center;align-items: center;margin-top: 20px">
+      <div style="width: 100%; display: flex; justify-content: center; align-items: center; margin-top: 20px">
         <el-button :loading="loading" type="primary" @click="submit">立即订购</el-button>
       </div>
     </div>
@@ -109,10 +137,10 @@
 </template>
 <script setup lang="ts">
 import { watch, onMounted, nextTick } from 'vue'
-import { getFunctionPriceList, payForShopFunc } from "/@/api/shop.ts";
+import { getFunctionPriceList, payForShopFunc } from '/@/api/shop.ts'
 import { apiManager } from '@/TsModel/Api/ApiManager'
 import { BatchPayShopV2_Parm } from '@/TsModel/Alien/Controllers/Function/BatchPayShopV2_Parm'
-import { gp } from "/@vab/plugins/vab.ts";
+import { gp } from '/@vab/plugins/vab.ts'
 import { ShopType } from '@/TsModel/Alien/Entity/Enums/ShopType'
 import { getRenewFunctionList, getFunctionList } from '@/utils/functionCache'
 import { t_wmt_function } from '@/TsModel/Alien/Entity/Tables/function/t_wmt_function'
@@ -124,10 +152,10 @@ const props = defineProps<{
 }>()
 const payDialogStateCom = computed(() => props.payDialogState)
 
-const emit = defineEmits(['closeDialog', 'paySuccess']);
-const payShow = ref(false);
-const loading = ref(false);
-const kmList = ref<any>([]);
+const emit = defineEmits(['closeDialog', 'paySuccess'])
+const payShow = ref(false)
+const loading = ref(false)
+const kmList = ref<any>([])
 const currentId = ref('')
 const currentMeal = ref<any>({})
 
@@ -163,7 +191,12 @@ const singleFunctionList = computed(() => {
 // 是否支持全功能续费（只有支持多个功能且支持运营版的平台才显示全功能）
 const isSupportAllFunction = computed(() => {
   // 美团餐饮、饿了么餐饮、美团闪购、京东到家支持全功能和运营版
-  return props.shopData?.shop_type === ShopType.美团 || props.shopData?.shop_type === ShopType.饿了么 || props.shopData?.shop_type === ShopType.美团闪购 || props.shopData?.shop_type === ShopType.京东到家
+  return (
+    props.shopData?.shop_type === ShopType.美团 ||
+    props.shopData?.shop_type === ShopType.饿了么 ||
+    props.shopData?.shop_type === ShopType.美团闪购 ||
+    props.shopData?.shop_type === ShopType.京东到家
+  )
 })
 
 // 获取功能说明
@@ -182,7 +215,11 @@ const getFuncNotes = (codeOrName: string): string => {
 // 显示的功能列表（用于功能说明展示）
 const displayFunctions = computed(() => {
   // 单功能模式：显示选中的功能说明
-  if ((props.payTypeText === '全功能' || props.payTypeText.includes('全功能')) && functionMode.value === 'single' && selectedSingleFunction.value) {
+  if (
+    (props.payTypeText === '全功能' || props.payTypeText.includes('全功能')) &&
+    functionMode.value === 'single' &&
+    selectedSingleFunction.value
+  ) {
     const found = fullFuncList.value.find(f => f.code === selectedSingleFunction.value)
     return found ? [found] : []
   }
@@ -207,13 +244,13 @@ const displayFunctions = computed(() => {
 
   // 根据功能名称查找
   const nameMap: Record<string, string> = {
-    '店铺多开': 'OPENSHOP',
-    '自动出餐': 'ZDCC',
-    'IM自动回复': 'IMZDHF',
-    '自动回评': 'ZDHP',
-    '智能推广': 'ZDTG',
-    '点金推广': 'ZDTG',
-    '评价申诉': 'PJSS',
+    店铺多开: 'OPENSHOP',
+    自动出餐: 'ZDCC',
+    IM自动回复: 'IMZDHF',
+    自动回评: 'ZDHP',
+    智能推广: 'ZDTG',
+    点金推广: 'ZDTG',
+    评价申诉: 'PJSS'
   }
 
   const code = nameMap[props.payTypeText]
@@ -237,7 +274,8 @@ const loadPlatformFunctions = async () => {
     platformFunctionsLoaded.value = true
 
     // 检查是否支持运营版（美团餐饮、美团闪购、京东到家支持，饿了么无运营版）
-    isSupportOperateVersion.value = shopType === ShopType.美团 || shopType === ShopType.美团闪购 || shopType === ShopType.京东到家
+    isSupportOperateVersion.value =
+      shopType === ShopType.美团 || shopType === ShopType.美团闪购 || shopType === ShopType.京东到家
 
     // 如果当前选中的功能不在支持列表中，或者没有选中功能，重置为第一个支持的功能
     if (functionMode.value === 'single') {
@@ -261,9 +299,13 @@ const loadPlatformFunctions = async () => {
 }
 
 // 监听 shopData 变化，重新加载功能列表
-watch(() => props.shopData?.shop_type, () => {
-  loadPlatformFunctions()
-}, { immediate: true })
+watch(
+  () => props.shopData?.shop_type,
+  () => {
+    loadPlatformFunctions()
+  },
+  { immediate: true }
+)
 
 // 组件挂载时加载功能列表
 onMounted(() => {
@@ -299,9 +341,9 @@ const selectSingleFunction = (funcCode: string) => {
 }
 
 const setActive = (item: any) => {
-  currentId.value = item.price_id;
+  currentId.value = item.price_id
   currentMeal.value = item
-};
+}
 
 const submit = async () => {
   if (!currentId.value) {
@@ -313,7 +355,11 @@ const submit = async () => {
   try {
     // 运营版:使用批量续费接口 BatchPayForShopFunc（单店也走该接口）
     // 包括直接传入的APP数据服务，运营版模式，以及单功能模式中选择的运营版
-    if (props.payTypeText === 'APP数据服务' || functionMode.value === 'operate' || selectedSingleFunction.value === 'APP数据服务') {
+    if (
+      props.payTypeText === 'APP数据服务' ||
+      functionMode.value === 'operate' ||
+      selectedSingleFunction.value === 'APP数据服务'
+    ) {
       const parm: BatchPayShopV2_Parm = {
         shops: [props.shopData.id],
         func_price: currentId.value,
@@ -331,7 +377,7 @@ const submit = async () => {
       // 其它功能保持原有单店续费接口
       const params = {
         shop: props.shopData.id,
-        func_price: currentId.value,
+        func_price: currentId.value
       }
       const res: any = await payForShopFunc(params)
       if (res.code === 200) {
@@ -343,7 +389,7 @@ const submit = async () => {
   } finally {
     loading.value = false
   }
-};
+}
 
 // 获取运营版价格列表：后端 title 可能为「运营版」或「APP数据服务_月」等，优先用「运营版」查询，否则用「APP数据服务」
 const fetchOperateVersionPrices = async (shopType: number): Promise<any[]> => {
@@ -383,7 +429,11 @@ const getKmListData = async () => {
   }
 
   // 全功能续费 - 单功能模式：根据选择的功能获取价格
-  if ((props.payTypeText === '全功能' || props.payTypeText.includes('全功能')) && functionMode.value === 'single' && selectedSingleFunction.value) {
+  if (
+    (props.payTypeText === '全功能' || props.payTypeText.includes('全功能')) &&
+    functionMode.value === 'single' &&
+    selectedSingleFunction.value
+  ) {
     // 确保功能列表已加载
     if (fullFuncList.value.length === 0 && props.shopData?.shop_type) {
       try {
@@ -424,10 +474,20 @@ const getKmListData = async () => {
 
     // 其他功能：使用后端返回的功能名称直接查询价格
     // 从 fullFuncList 中查找对应的功能，使用其 name 作为 priceTitle
-    console.log('查找功能 - selectedSingleFunction:', selectedSingleFunction.value, 'fullFuncList长度:', fullFuncList.value.length)
+    console.log(
+      '查找功能 - selectedSingleFunction:',
+      selectedSingleFunction.value,
+      'fullFuncList长度:',
+      fullFuncList.value.length
+    )
     const currentFunc = fullFuncList.value.find(f => f.code === selectedSingleFunction.value)
     if (!currentFunc) {
-      console.error('未找到功能:', selectedSingleFunction.value, '可用的功能列表:', fullFuncList.value.map(f => ({ code: f.code, name: f.name })))
+      console.error(
+        '未找到功能:',
+        selectedSingleFunction.value,
+        '可用的功能列表:',
+        fullFuncList.value.map(f => ({ code: f.code, name: f.name }))
+      )
       kmList.value = []
       currentId.value = ''
       currentMeal.value = {}
@@ -435,13 +495,16 @@ const getKmListData = async () => {
     }
 
     const priceTitle = currentFunc.name
-    console.log('单功能模式 - selectedSingleFunction:', selectedSingleFunction.value, 'functionName:', currentFunc.name, 'priceTitle:', priceTitle)
+    console.log(
+      '单功能模式 - selectedSingleFunction:',
+      selectedSingleFunction.value,
+      'functionName:',
+      currentFunc.name,
+      'priceTitle:',
+      priceTitle
+    )
     try {
-      const result = await apiManager.functionpriceApi.GetFunctionPrices(
-        props.shopData.shop_type,
-        priceTitle,
-        true
-      )
+      const result = await apiManager.functionpriceApi.GetFunctionPrices(props.shopData.shop_type, priceTitle, true)
       kmList.value = result
       kmList.value.forEach((item: any) => {
         item.showStr = `${item.func_name}·${item.add_time}天·${item.cost}积分`
@@ -490,13 +553,16 @@ const getKmListData = async () => {
   if (priceTitle.includes('全功能|店铺多开')) {
     priceTitle = '店铺多开'
   }
-  console.log('其它功能 - payTypeText:', props.payTypeText, 'priceTitle:', priceTitle, 'shopType:', props.shopData.shop_type)
+  console.log(
+    '其它功能 - payTypeText:',
+    props.payTypeText,
+    'priceTitle:',
+    priceTitle,
+    'shopType:',
+    props.shopData.shop_type
+  )
   try {
-    const result = await apiManager.functionpriceApi.GetFunctionPrices(
-      props.shopData.shop_type,
-      priceTitle,
-      true
-    )
+    const result = await apiManager.functionpriceApi.GetFunctionPrices(props.shopData.shop_type, priceTitle, true)
     kmList.value = result
     kmList.value.forEach((item: any) => {
       item.showStr = `${item.func_name}·${item.add_time}天·${item.cost}积分`
@@ -508,7 +574,7 @@ const getKmListData = async () => {
   } catch (error) {
     console.error('获取功能价格列表失败:', error)
   }
-};
+}
 
 const handleClose = () => {
   // 重置状态（下次打开时默认单功能续费）
@@ -523,79 +589,97 @@ const handleClose = () => {
 }
 const payDialogStatus = () => {
   // 单功能模式需要选择功能
-  if ((props.payTypeText === '全功能' || props.payTypeText.includes('全功能')) && functionMode.value === 'single' && !selectedSingleFunction.value) {
+  if (
+    (props.payTypeText === '全功能' || props.payTypeText.includes('全功能')) &&
+    functionMode.value === 'single' &&
+    !selectedSingleFunction.value
+  ) {
     gp.$baseMessage('请先选择功能', 'warning', 'hey')
     return
   }
   // 运营版模式需要选择规格
-  if ((props.payTypeText === '全功能' || props.payTypeText.includes('全功能')) && functionMode.value === 'operate' && !currentId.value) {
+  if (
+    (props.payTypeText === '全功能' || props.payTypeText.includes('全功能')) &&
+    functionMode.value === 'operate' &&
+    !currentId.value
+  ) {
     gp.$baseMessage('请先选择规格', 'warning', 'hey')
     return
   }
-  payShow.value = true;
+  payShow.value = true
 }
 
 // 监听弹窗打开，默认选中第一个可激活的功能
-watch(() => props.payDialogState, async (newVal) => {
-  if (newVal) {
-    // 加载完整功能列表（包含 notes）
-    if (props.shopData?.shop_type && fullFuncList.value.length === 0) {
-      try {
-        fullFuncList.value = await getFunctionList(props.shopData.shop_type)
-        console.log('弹窗打开 - 已加载功能列表:', fullFuncList.value.length, '个功能')
-      } catch (error) {
-        console.error('获取功能列表失败:', error)
-      }
-    }
-
-    // 弹窗打开时，如果是全功能续费模式，默认选中第一个功能
-    if (props.payTypeText === '全功能' || props.payTypeText.includes('全功能')) {
-      functionMode.value = 'single' // 默认选择单功能模式
-      // 等待功能列表加载完成后，选中第一个功能
-      nextTick(() => {
-        if (singleFunctionList.value.length > 0) {
-          selectedSingleFunction.value = singleFunctionList.value[0].code
-          getKmListData()
+watch(
+  () => props.payDialogState,
+  async newVal => {
+    if (newVal) {
+      // 加载完整功能列表（包含 notes）
+      if (props.shopData?.shop_type && fullFuncList.value.length === 0) {
+        try {
+          fullFuncList.value = await getFunctionList(props.shopData.shop_type)
+          console.log('弹窗打开 - 已加载功能列表:', fullFuncList.value.length, '个功能')
+        } catch (error) {
+          console.error('获取功能列表失败:', error)
         }
-      })
+      }
+
+      // 弹窗打开时，如果是全功能续费模式，默认选中第一个功能
+      if (props.payTypeText === '全功能' || props.payTypeText.includes('全功能')) {
+        functionMode.value = 'single' // 默认选择单功能模式
+        // 等待功能列表加载完成后，选中第一个功能
+        nextTick(() => {
+          if (singleFunctionList.value.length > 0) {
+            selectedSingleFunction.value = singleFunctionList.value[0].code
+            getKmListData()
+          }
+        })
+      }
+    } else {
+      // 关闭时清理功能列表
+      fullFuncList.value = []
     }
-  } else {
-    // 关闭时清理功能列表
-    fullFuncList.value = []
   }
-})
+)
 
 // 监听功能列表变化，如果当前没有选中功能，自动选中第一个
-watch(singleFunctionList, (newList) => {
-  if (props.payDialogState && (props.payTypeText === '全功能' || props.payTypeText.includes('全功能'))) {
-    if (functionMode.value === 'single' && !selectedSingleFunction.value && newList.length > 0) {
-      selectedSingleFunction.value = newList[0].code
-      getKmListData()
+watch(
+  singleFunctionList,
+  newList => {
+    if (props.payDialogState && (props.payTypeText === '全功能' || props.payTypeText.includes('全功能'))) {
+      if (functionMode.value === 'single' && !selectedSingleFunction.value && newList.length > 0) {
+        selectedSingleFunction.value = newList[0].code
+        getKmListData()
+      }
     }
-  }
-}, { immediate: true })
+  },
+  { immediate: true }
+)
 
 // 监听payTypeText变化，重置状态（默认选择单功能续费）
-watch(() => props.payTypeText, () => {
-  if (props.payTypeText === '全功能' || props.payTypeText.includes('全功能')) {
-    // 如果平台不支持全功能和运营版，强制使用单功能模式
-    if (!isSupportAllFunction.value) {
-      functionMode.value = 'single'
+watch(
+  () => props.payTypeText,
+  () => {
+    if (props.payTypeText === '全功能' || props.payTypeText.includes('全功能')) {
+      // 如果平台不支持全功能和运营版，强制使用单功能模式
+      if (!isSupportAllFunction.value) {
+        functionMode.value = 'single'
+      } else {
+        functionMode.value = 'single' // 默认选择单功能模式
+      }
+      // 默认选择第一个功能
+      if (singleFunctionList.value.length > 0) {
+        selectedSingleFunction.value = singleFunctionList.value[0].code
+      } else {
+        selectedSingleFunction.value = ''
+      }
     } else {
-      functionMode.value = 'single' // 默认选择单功能模式
-    }
-    // 默认选择第一个功能
-    if (singleFunctionList.value.length > 0) {
-      selectedSingleFunction.value = singleFunctionList.value[0].code
-    } else {
+      functionMode.value = 'all'
       selectedSingleFunction.value = ''
     }
-  } else {
-    functionMode.value = 'all'
-    selectedSingleFunction.value = ''
+    getKmListData()
   }
-  getKmListData()
-})
+)
 
 // 监听平台功能列表变化，如果当前模式不支持，自动切换
 watch([platformRenewFunctions, isSupportAllFunction], () => {
@@ -641,7 +725,7 @@ if (props.payTypeText && props.payTypeText !== '全功能' && !props.payTypeText
     width: 100%;
     gap: 12px;
 
-    >img {
+    > img {
       width: 120px !important;
       height: 120px !important;
       flex: 0 0 auto;
@@ -654,7 +738,7 @@ if (props.payTypeText && props.payTypeText !== '全功能' && !props.payTypeText
     }
 
     .guigebox {
-      border-top: 1px solid #DFDFDF;
+      border-top: 1px solid #dfdfdf;
       padding-top: 10px;
       margin-top: 10px;
 
@@ -695,7 +779,7 @@ if (props.payTypeText && props.payTypeText !== '全功能' && !props.payTypeText
     .buton {
       width: 107px;
       height: 32px;
-      background: #FF9D0A;
+      background: #ff9d0a;
       border-radius: 4px;
       font-size: 16px;
       text-align: center;
@@ -722,7 +806,7 @@ if (props.payTypeText && props.payTypeText !== '全功能' && !props.payTypeText
   }
 
   .fuwuconten {
-    border-top: 1px solid #DFDFDF;
+    border-top: 1px solid #dfdfdf;
     padding: 10px 0 0;
     margin-top: 10px;
 
@@ -766,7 +850,7 @@ if (props.payTypeText && props.payTypeText !== '全功能' && !props.payTypeText
               margin-right: 10px;
             }
 
-            >div {
+            > div {
               font-size: 13px;
               flex: 1;
 
@@ -794,7 +878,6 @@ if (props.payTypeText && props.payTypeText !== '全功能' && !props.payTypeText
       }
     }
   }
-
 }
 
 .fuwuconten-inline {
@@ -841,7 +924,7 @@ if (props.payTypeText && props.payTypeText !== '全功能' && !props.payTypeText
             margin-right: 10px;
           }
 
-          >div {
+          > div {
             font-size: 13px;
             flex: 1;
 
@@ -910,7 +993,7 @@ if (props.payTypeText && props.payTypeText !== '全功能' && !props.payTypeText
 }
 
 .is-meal-item {
-  border: 1px solid #E02020;
+  border: 1px solid #e02020;
   position: relative;
 }
 
@@ -942,7 +1025,7 @@ if (props.payTypeText && props.payTypeText !== '全功能' && !props.payTypeText
       min-height: 40px;
       height: auto;
       padding: 8px 12px;
-      border: 1px solid #DCDFE6;
+      border: 1px solid #dcdfe6;
       border-radius: 4px;
       display: flex;
       align-items: center;
@@ -956,14 +1039,14 @@ if (props.payTypeText && props.payTypeText !== '全功能' && !props.payTypeText
       text-align: center;
 
       &:hover {
-        border-color: #409EFF;
-        color: #409EFF;
+        border-color: #409eff;
+        color: #409eff;
       }
 
       &.is-active {
-        border-color: #409EFF;
-        background: #ECF5FF;
-        color: #409EFF;
+        border-color: #409eff;
+        background: #ecf5ff;
+        color: #409eff;
         font-weight: 500;
       }
     }

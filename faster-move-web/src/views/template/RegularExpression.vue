@@ -40,7 +40,7 @@
 import { isChinese, isEmail, isEnglish, isIdCard, isNumber, isPhone, isUrl } from '/@/utils/validate'
 
 defineOptions({
-  name: 'RegularExpression',
+  name: 'RegularExpression'
 })
 
 const formRef: Ref<any> = ref(null)
@@ -51,7 +51,7 @@ const form = reactive<any>({
   number: '',
   english: '',
   chinese: '',
-  url: '',
+  url: ''
 })
 
 const validateEmail = (rule: any, value: any, callback: any) => {
@@ -113,32 +113,32 @@ const validateUrl = (rule: any, value: any, callback: any) => {
 const rules = reactive<any>({
   email: [
     { required: true, message: '请输入邮箱地址', trigger: 'blur' },
-    { validator: validateEmail, trigger: 'blur' },
+    { validator: validateEmail, trigger: 'blur' }
   ],
   phone: [
     { required: true, message: '请输入手机号码', trigger: 'blur' },
-    { validator: validatePhone, trigger: 'blur' },
+    { validator: validatePhone, trigger: 'blur' }
   ],
   idCard: [
     { required: true, message: '请输入身份证号码', trigger: 'blur' },
-    { validator: validateIdCard, trigger: 'blur' },
+    { validator: validateIdCard, trigger: 'blur' }
   ],
   number: [
     { required: true, message: '请输入数字', trigger: 'blur' },
-    { validator: validateNumber, trigger: 'blur' },
+    { validator: validateNumber, trigger: 'blur' }
   ],
   english: [
     { required: true, message: '请输入英文字符', trigger: 'blur' },
-    { validator: validateEnglish, trigger: 'blur' },
+    { validator: validateEnglish, trigger: 'blur' }
   ],
   chinese: [
     { required: true, message: '请输入中文字符', trigger: 'blur' },
-    { validator: validateChinese, trigger: 'blur' },
+    { validator: validateChinese, trigger: 'blur' }
   ],
   url: [
     { required: true, message: '请输入URL', trigger: 'blur' },
-    { validator: validateUrl, trigger: 'blur' },
-  ],
+    { validator: validateUrl, trigger: 'blur' }
+  ]
 })
 
 const submitForm = () => {

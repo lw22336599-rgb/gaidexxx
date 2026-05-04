@@ -41,11 +41,16 @@
           <div class="section-header">
             <h4>选择续费套餐</h4>
           </div>
-          <div class="price-list-wrapper" v-loading="priceLoading">
-            <div v-for="item in priceList" :key="item.price_id" class="price-card"
-              :class="{ 'selected': selectedPriceId === item.price_id }" @click="selectedPriceId = item.price_id">
+          <div v-loading="priceLoading" class="price-list-wrapper">
+            <div
+              v-for="item in priceList"
+              :key="item.price_id"
+              class="price-card"
+              :class="{ selected: selectedPriceId === item.price_id }"
+              @click="selectedPriceId = item.price_id"
+            >
               <div class="price-card-content">
-                <el-radio :label="item.price_id" v-model="selectedPriceId" style="margin-right: 8px">
+                <el-radio v-model="selectedPriceId" :label="item.price_id" style="margin-right: 8px">
                   {{ formatPriceLabel(item) }}
                 </el-radio>
               </div>
@@ -72,14 +77,14 @@
     </div>
 
     <!-- 下方独占一行：续费后自动执行（可折叠卡片） -->
-    <div v-if="hasAutoRunFuncs" class="auto-run-card" v-loading="schemaLoading">
+    <div v-if="hasAutoRunFuncs" v-loading="schemaLoading" class="auto-run-card">
       <div class="auto-run-card-header" @click="autoRunCardExpanded = !autoRunCardExpanded">
         <div class="auto-run-card-title">
           <el-icon class="collapse-arrow" :class="{ 'is-expanded': autoRunCardExpanded }">
             <ArrowRight />
           </el-icon>
           <span>续费后自动执行</span>
-          <el-tag size="small" type="success" style="margin-left:8px">{{ autoRunSchemas.length }} 个功能</el-tag>
+          <el-tag size="small" type="success" style="margin-left: 8px">{{ autoRunSchemas.length }} 个功能</el-tag>
         </div>
         <div class="auto-run-card-actions" @click.stop>
           <el-switch v-model="autoRunAfterPay" active-text="开启" inactive-text="关闭" />
@@ -95,28 +100,35 @@
           <template v-if="autoRunAfterPay">
             <div v-for="schema in autoRunSchemas" :key="schema.FuncCode" class="func-schema-block">
               <div class="func-schema-title">
-                <el-tag size="small" type="primary" style="margin-right:6px">{{ getFuncDisplayName(schema.FuncCode)
-                  }}</el-tag>
+                <el-tag size="small" type="primary" style="margin-right: 6px">{{
+                  getFuncDisplayName(schema.FuncCode)
+                }}</el-tag>
                 参数配置
               </div>
 
               <!-- 类目属性批量设置：使用独立配置组件 -->
-              <CategoryAttrConfigPanel v-if="schema.FuncCode === 'CTGYPRTYMG'" :shop-type="props.shopType"
-                :shop-list="localShopList" :first-shop-id="localShopList[0]?.id ?? ''"
-                :default-conf="getDefaultConf(schema.FuncCode)" :shop-conf-map="shopConfMap[schema.FuncCode] || {}" />
+              <CategoryAttrConfigPanel
+                v-if="schema.FuncCode === 'CTGYPRTYMG'"
+                :shop-type="props.shopType"
+                :shop-list="localShopList"
+                :first-shop-id="localShopList[0]?.id ?? ''"
+                :default-conf="getDefaultConf(schema.FuncCode)"
+                :shop-conf-map="shopConfMap[schema.FuncCode] || {}"
+              />
 
               <div v-else-if="Object.keys(getParsedProperties(schema)).length === 0" class="no-params-tip">
-                <el-icon style="margin-right:4px">
+                <el-icon style="margin-right: 4px">
                   <Check />
                 </el-icon>
                 无需配置参数，续费后将自动执行
               </div>
 
-              <FuncConfSchemaForm v-else
+              <FuncConfSchemaForm
+                v-else
                 :schema="schema"
                 :default-conf="getDefaultConf(schema.FuncCode)"
                 :shop-list="localShopList.map(s => ({ id: s.id, name: s.name }))"
-                :get-shop-conf="(sid) => getShopConf(schema.FuncCode, sid)"
+                :get-shop-conf="sid => getShopConf(schema.FuncCode, sid)"
                 :group-options="groupOptions"
                 :group-options-loading="groupOptionsLoading"
                 :get-shop-group-options="getShopGroupOptions"
@@ -150,15 +162,22 @@
     </template>
 
     <!-- 未到期店铺二次确认弹窗 -->
-    <el-dialog v-model="notExpiredConfirmVisible" title="发现未到期店铺" width="500px" append-to-body
-      :close-on-click-modal="false">
+    <el-dialog
+      v-model="notExpiredConfirmVisible"
+      title="发现未到期店铺"
+      width="500px"
+      append-to-body
+      :close-on-click-modal="false"
+    >
       <div class="not-expired-tip">
         <el-icon class="not-expired-icon">
           <WarningFilled />
         </el-icon>
-        <span>以下 <b>{{ notExpiredConfirmShops.length }}</b> 家店铺当前尚未到期，是否忽略这些店铺（不续费）？</span>
+        <span
+          >以下 <b>{{ notExpiredConfirmShops.length }}</b> 家店铺当前尚未到期，是否忽略这些店铺（不续费）？</span
+        >
       </div>
-      <el-table :data="notExpiredConfirmShops" border size="small" max-height="220px" style="margin-top:12px">
+      <el-table :data="notExpiredConfirmShops" border size="small" max-height="220px" style="margin-top: 12px">
         <el-table-column label="店铺名称" prop="name" min-width="160" show-overflow-tooltip>
           <template #default="{ row }">
             <span :class="{ 'blur-text': demoMode }">{{ row.name }}</span>
@@ -171,7 +190,7 @@
         </el-table-column>
         <el-table-column label="当前有效期" width="110" align="center">
           <template #default="{ row }">
-            <span style="color:var(--el-color-success)">{{ getFunctionEndTime(row) }}</span>
+            <span style="color: var(--el-color-success)">{{ getFunctionEndTime(row) }}</span>
           </template>
         </el-table-column>
       </el-table>
@@ -183,8 +202,12 @@
     </el-dialog>
 
     <!-- 导入门店弹窗 -->
-    <ImportShopsByOfficeIdsDialog v-model="importShopsDialogVisible" :shop-type="props.shopType"
-      :function-code="props.functionCode" @confirm="onImportShopsConfirm" />
+    <ImportShopsByOfficeIdsDialog
+      v-model="importShopsDialogVisible"
+      :shop-type="props.shopType"
+      :function-code="props.functionCode"
+      @confirm="onImportShopsConfirm"
+    />
   </el-dialog>
 </template>
 
@@ -218,12 +241,12 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
-  'renewSuccess': []
+  renewSuccess: []
 }>()
 
 const visible = computed({
   get: () => props.modelValue,
-  set: (val) => emit('update:modelValue', val)
+  set: val => emit('update:modelValue', val)
 })
 
 const settingsStore = useSettingsStore()
@@ -240,13 +263,20 @@ const onImportShopsConfirm = (shops: any[], notFoundOfficeIds: string[]) => {
   }
 }
 
-watch(() => props.shopList, (newList) => {
-  localShopList.value = [...newList]
-}, { immediate: true })
+watch(
+  () => props.shopList,
+  newList => {
+    localShopList.value = [...newList]
+  },
+  { immediate: true }
+)
 
-watch(() => props.modelValue, (isVisible) => {
-  if (isVisible) localShopList.value = [...props.shopList]
-})
+watch(
+  () => props.modelValue,
+  isVisible => {
+    if (isVisible) localShopList.value = [...props.shopList]
+  }
+)
 
 // ---------- 价格套餐 ----------
 const priceList = ref<GetFunctionPrices_result_itemV2[]>([])
@@ -306,9 +336,7 @@ const displayFunctions = computed(() => {
 const schemaLoading = ref(false)
 const allSchemaResults = ref<FuncConfSchemaResult[]>([])
 
-const autoRunSchemas = computed<FuncConfSchemaResult[]>(() =>
-  allSchemaResults.value.filter(s => s.AutoRenewRun)
-)
+const autoRunSchemas = computed<FuncConfSchemaResult[]>(() => allSchemaResults.value.filter(s => s.AutoRenewRun))
 
 const hasAutoRunFuncs = computed(() => autoRunSchemas.value.length > 0)
 
@@ -387,9 +415,7 @@ const getShopConf = (funcCode: string, shopId: string): Record<string, any> => {
 
 const loadSchemas = async (price: GetFunctionPrices_result_itemV2) => {
   const funcCodesFromPrice = price.functions?.map(f => f.code).filter(Boolean) ?? []
-  const funcCodes = funcCodesFromPrice.length > 0
-    ? funcCodesFromPrice
-    : (props.functionCode ? [props.functionCode] : [])
+  const funcCodes = funcCodesFromPrice.length > 0 ? funcCodesFromPrice : props.functionCode ? [props.functionCode] : []
 
   if (funcCodes.length === 0) {
     allSchemaResults.value = []
@@ -403,7 +429,7 @@ const loadSchemas = async (price: GetFunctionPrices_result_itemV2) => {
   try {
     const results = await apiManager.funcRunTaskApi.GetFuncConfSchemas({
       ShopType: props.shopType,
-      FuncCodes: funcCodes,
+      FuncCodes: funcCodes
     })
     allSchemaResults.value = results ?? []
     if (autoRunSchemas.value.length > 0) {
@@ -423,7 +449,7 @@ const loadSchemas = async (price: GetFunctionPrices_result_itemV2) => {
   }
 }
 
-watch(selectedPrice, (price) => {
+watch(selectedPrice, price => {
   if (price) {
     loadSchemas(price)
   } else {
@@ -525,7 +551,7 @@ const doRenew = async () => {
       func_price: selectedPriceId.value,
       AutoRunAfterPay: shouldAutoRun,
       DefaultConfValues: shouldAutoRun ? buildDefaultConfValues() : null,
-      ShopConfValues: shouldAutoRun ? buildShopConfValues() : null,
+      ShopConfValues: shouldAutoRun ? buildShopConfValues() : null
     }
     const result = await apiManager.functionpriceApi.BatchPayForShopFunc(parm)
     let msg = `续费成功！共 ${result.SuccessCount} 家店铺，消费 ${result.TotalSpent} 积分，续费 ${result.AddDays} 天`
@@ -590,7 +616,7 @@ const handleNotExpiredRenewAll = () => {
 }
 
 // ---------- 对话框生命周期 ----------
-watch(visible, (val) => {
+watch(visible, val => {
   if (val) {
     loadPriceList()
   } else {
@@ -608,9 +634,12 @@ watch(visible, (val) => {
   }
 })
 
-watch(() => props.functionCode, () => {
-  if (visible.value) loadPriceList()
-})
+watch(
+  () => props.functionCode,
+  () => {
+    if (visible.value) loadPriceList()
+  }
+)
 
 const handleClose = () => {
   visible.value = false

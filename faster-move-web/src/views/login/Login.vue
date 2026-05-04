@@ -11,14 +11,20 @@
           <el-tab-pane label="账号密码登录" name="password">
             <el-form ref="formRef" label-position="left" :model="form" :rules="rules" @submit.prevent>
               <el-form-item prop="phone">
-                <el-autocomplete v-model.trim="form.phone" clearable :placeholder="translate('请输入用户名')"
-                  :fetch-suggestions="queryAccountSuggestions" :trigger-on-focus="true" @select="handleAccountSelect"
-                  style="width: 100%">
+                <el-autocomplete
+                  v-model.trim="form.phone"
+                  clearable
+                  :placeholder="translate('请输入用户名')"
+                  :fetch-suggestions="queryAccountSuggestions"
+                  :trigger-on-focus="true"
+                  style="width: 100%"
+                  @select="handleAccountSelect"
+                >
                   <template #prefix>
                     <vab-icon icon="user-line" />
                   </template>
                   <template #default="{ item }">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; justify-content: space-between; align-items: center">
                       <span>{{ item.value }}</span>
                       <el-tag v-if="item.hasSecret" type="success" size="small">自动登录</el-tag>
                     </div>
@@ -26,16 +32,28 @@
                 </el-autocomplete>
               </el-form-item>
               <el-form-item prop="pwd">
-                <el-input ref="passwordRef" v-model.trim="form.pwd" clearable :placeholder="translate('请输入密码')"
-                  show-password :type="passwordType">
+                <el-input
+                  ref="passwordRef"
+                  v-model.trim="form.pwd"
+                  clearable
+                  :placeholder="translate('请输入密码')"
+                  show-password
+                  :type="passwordType"
+                >
                   <template #prefix>
                     <vab-icon icon="lock-line" />
                   </template>
                 </el-input>
               </el-form-item>
               <el-form-item v-if="isBindPhone" prop="bind_phone">
-                <el-input v-model.trim="form.bind_phone" clearable maxlength="11" :placeholder="translate('请绑定手机号')"
-                  show-word-limit type="text">
+                <el-input
+                  v-model.trim="form.bind_phone"
+                  clearable
+                  maxlength="11"
+                  :placeholder="translate('请绑定手机号')"
+                  show-word-limit
+                  type="text"
+                >
                   <template #prefix>
                     <vab-icon icon="smartphone-line" />
                   </template>
@@ -54,8 +72,13 @@
               </el-form-item>
               <el-form-item v-if="isRequireGaCode" prop="ga_code">
                 <div class="ga-code-input-wrapper">
-                  <el-input v-model.trim="form.ga_code" clearable maxlength="6" :placeholder="translate('请输入令牌验证码')"
-                    type="text">
+                  <el-input
+                    v-model.trim="form.ga_code"
+                    clearable
+                    maxlength="6"
+                    :placeholder="translate('请输入令牌验证码')"
+                    type="text"
+                  >
                     <template #prefix>
                       <vab-icon icon="shield-check-line" />
                     </template>
@@ -64,8 +87,8 @@
                 </div>
               </el-form-item>
               <div class="checkboxtip">
-                <el-checkbox style="margin-left: 10px" v-model="remember" label="记住密码" size="large" />
-                <el-checkbox style="margin-left: 10px" v-model="voluntarilylogin" label="自动登录" size="large" />
+                <el-checkbox v-model="remember" style="margin-left: 10px" label="记住密码" size="large" />
+                <el-checkbox v-model="voluntarilylogin" style="margin-left: 10px" label="自动登录" size="large" />
               </div>
               <!-- 验证码验证逻辑需自行开发，如不需要验证码功能建议注释 -->
               <!--        <el-form-item prop="verificationCode">-->
@@ -84,14 +107,20 @@
           <el-tab-pane label="令牌快捷登录" name="gaCode">
             <el-form ref="gaCodeFormRef" label-position="left" :model="gaCodeForm" :rules="gaCodeRules" @submit.prevent>
               <el-form-item prop="phone">
-                <el-autocomplete v-model.trim="gaCodeForm.phone" clearable :placeholder="translate('请输入手机号或用户名')"
-                  :fetch-suggestions="queryAccountSuggestions" :trigger-on-focus="true"
-                  @select="handleAccountSelectForGaCode" style="width: 100%">
+                <el-autocomplete
+                  v-model.trim="gaCodeForm.phone"
+                  clearable
+                  :placeholder="translate('请输入手机号或用户名')"
+                  :fetch-suggestions="queryAccountSuggestions"
+                  :trigger-on-focus="true"
+                  style="width: 100%"
+                  @select="handleAccountSelectForGaCode"
+                >
                   <template #prefix>
                     <vab-icon icon="smartphone-line" />
                   </template>
                   <template #default="{ item }">
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div style="display: flex; justify-content: space-between; align-items: center">
                       <span>{{ item.value }}</span>
                       <el-tag v-if="item.hasSecret" type="success" size="small">自动登录</el-tag>
                     </div>
@@ -100,8 +129,13 @@
               </el-form-item>
               <el-form-item prop="ga_code">
                 <div class="ga-code-input-wrapper">
-                  <el-input v-model.trim="gaCodeForm.ga_code" clearable maxlength="6"
-                    :placeholder="translate('请输入令牌验证码')" type="text">
+                  <el-input
+                    v-model.trim="gaCodeForm.ga_code"
+                    clearable
+                    maxlength="6"
+                    :placeholder="translate('请输入令牌验证码')"
+                    type="text"
+                  >
                     <template #prefix>
                       <vab-icon icon="shield-check-line" />
                     </template>
@@ -110,8 +144,8 @@
                 </div>
               </el-form-item>
               <div class="checkboxtip">
-                <el-checkbox style="margin-left: 10px" v-model="remember" label="记住密码" size="large" />
-                <el-checkbox style="margin-left: 10px" v-model="voluntarilylogin" label="自动登录" size="large" />
+                <el-checkbox v-model="remember" style="margin-left: 10px" label="记住密码" size="large" />
+                <el-checkbox v-model="voluntarilylogin" style="margin-left: 10px" label="自动登录" size="large" />
               </div>
               <el-button v-throttle="handleGaCodeLogin" class="login-btn" :loading="gaCodeLoading" type="primary">
                 {{ translate('登录') }}
@@ -141,8 +175,13 @@
         <el-button v-if="isBindPhone" style="margin-top: 20px" text type="primary" @click="backLogin">
           返回登录
         </el-button>
-        <el-button v-if="isRequireGaCode && loginType === 'password'" style="margin-top: 20px" text type="primary"
-          @click="backLogin">
+        <el-button
+          v-if="isRequireGaCode && loginType === 'password'"
+          style="margin-top: 20px"
+          text
+          type="primary"
+          @click="backLogin"
+        >
           返回登录
         </el-button>
         <div class="user-agreement">已阅读并同意<span @click="openUserAgreement">《极狐用户服务协议》</span></div>
@@ -166,7 +205,6 @@
       <!--          <vab-icon icon="weibo-fill" style="color: #df1e33" />-->
       <!--          <vab-icon icon="github-fill" style="color: #151515" />-->
       <!--        </div>-->
-
     </div>
     <el-dialog v-if="customState" v-model="customState" align-center title="自定义接口" width="30%">
       <el-form ref="formBaseUrlRef" label-position="left" :model="baseUrl" :rules="baseUrlRules" @submit.prevent>
@@ -184,7 +222,6 @@
             </template>
           </el-input>
         </el-form-item>
-
       </el-form>
       <template #footer>
         <div class="dialog-footer">
@@ -204,11 +241,11 @@
               {{ currentStepData.description || '' }}
             </div>
             <div class="step-image-wrapper">
-              <div class="nav-button nav-button-left" @click="prevStep" v-if="currentStepIndex > 0">
+              <div v-if="currentStepIndex > 0" class="nav-button nav-button-left" @click="prevStep">
                 <vab-icon icon="arrow-left-s-line" />
               </div>
               <img :src="currentStepData.image" :alt="`步骤 ${currentStepIndex + 1}`" class="ga-code-tip-image" />
-              <div class="nav-button nav-button-right" @click="nextStep" v-if="currentStepIndex < totalSteps - 1">
+              <div v-if="currentStepIndex < totalSteps - 1" class="nav-button nav-button-right" @click="nextStep">
                 <vab-icon icon="arrow-right-s-line" />
               </div>
             </div>
@@ -234,11 +271,19 @@
       </template>
     </el-dialog>
     <!-- 令牌验证器绑定对话框 -->
-    <el-dialog v-model="gaBindDialogVisible" align-center title="绑定令牌验证器" width="400px" :close-on-click-modal="false">
+    <el-dialog
+      v-model="gaBindDialogVisible"
+      align-center
+      title="绑定令牌验证器"
+      width="400px"
+      :close-on-click-modal="false"
+    >
       <div v-if="gaQrCodeData" class="ga-bind-content">
         <div class="ga-tips">
           <p>请使用 腾讯身份验证器小程序 或其他兼容应用扫描下方二维码</p>
-          <p>如果无法扫描，请手动输入密钥：<strong>{{ gaQrCodeData.Secret }}</strong></p>
+          <p>
+            如果无法扫描，请手动输入密钥：<strong>{{ gaQrCodeData.Secret }}</strong>
+          </p>
         </div>
         <div class="ga-qrcode">
           <img :src="gaQrCodeImage" alt="Google Authenticator QR Code" />
@@ -312,7 +357,7 @@ interface GaBindFormType {
 interface BaseType {
   default: string
   move: string
-  food_manage: string,
+  food_manage: string
   type: string
 }
 const remember = ref<boolean>(true)
@@ -513,10 +558,10 @@ onMounted(async () => {
     }
   }
   const urlTypeStr = localStorage.getItem('urlType')
-  var urlType = urlTypeStr ? JSON.parse(urlTypeStr) : null;
+  var urlType = urlTypeStr ? JSON.parse(urlTypeStr) : null
   // console.log("url模式：", urlType);
-  lineRadio.value = urlType ?? "acquiesce1";
-  getNewLine(urlType ?? "acquiesce1");
+  lineRadio.value = urlType ?? 'acquiesce1'
+  getNewLine(urlType ?? 'acquiesce1')
 })
 // onBeforeRouteUpdate((to, from, next) => {
 //       console.log('路由更新', to, from);
@@ -665,7 +710,7 @@ const getNewLine = (label: string | number | boolean | undefined) => {
         setBaseUrl(newBaseUrl)
       } else {
         // 如果没有保存过自定义 URL，则打开自定义对话框
-        openCustom();
+        openCustom()
       }
       break
     }
@@ -695,7 +740,7 @@ const confirmInterface = () => {
       if (valid) {
         baseUrl.value.type = 'custom'
         setBaseUrl(baseUrl.value)
-        localStorage.setItem("customUrl", JSON.stringify(baseUrl.value))
+        localStorage.setItem('customUrl', JSON.stringify(baseUrl.value))
         closeInterface()
       }
     })
@@ -797,7 +842,6 @@ const baseUrlRules = reactive<FormRules<BaseType>>({
   ],
   move: [
     {
-
       trigger: 'blur',
       message: translate('请输入搬菜接口地址\n')
     }
@@ -839,7 +883,9 @@ const handleLoginTypeChange = (name: string | number) => {
 const openChat = () => {
   // console.log(123);
   if (typeof (globalThis as any).electron !== 'undefined' && (globalThis as any).electron?.openNewWindowUrl) {
-    (globalThis as any).electron.openNewWindowUrl('https://chatbot.aliyuncs.com/intl/index.htm?locale=zh-CN&from=yvdyPWy4f3')
+    ;(globalThis as any).electron.openNewWindowUrl(
+      'https://chatbot.aliyuncs.com/intl/index.htm?locale=zh-CN&from=yvdyPWy4f3'
+    )
   }
 }
 const handleLogin = async () => {
@@ -889,7 +935,10 @@ const handleLogin = async () => {
               }
 
               // 处理需要输入 Google Authenticator 验证码
-              if (res.ResultType === AdmiPhoneResultType.请输入GoogleAuthenticator验证码 || res.RequireGoogleAuthenticator) {
+              if (
+                res.ResultType === AdmiPhoneResultType.请输入GoogleAuthenticator验证码 ||
+                res.RequireGoogleAuthenticator
+              ) {
                 isRequireGaCode.value = true
                 isBindPhone.value = false
                 gp.$baseMessage(getResultDescription(res.ResultType), 'warning', 'hey')
@@ -918,7 +967,7 @@ const handleLogin = async () => {
                   savedAccounts.value = await getSavedAccounts()
                 }
 
-                router.push('/index').then(() => { })
+                router.push('/index').then(() => {})
                 return
               }
 
@@ -956,10 +1005,11 @@ const handleGaCodeLogin = async () => {
 
     const { phone, ga_code } = gaCodeForm
 
-    apiManager.adminApi.AgencyLoginByPhoneAndGaCode({
-      phone,
-      ga_code
-    })
+    apiManager.adminApi
+      .AgencyLoginByPhoneAndGaCode({
+        phone,
+        ga_code
+      })
       .then(async (res: any) => {
         // 登录成功处理
         if (res.ResultType === AdmiPhoneResultType.验证成功 || res.ResultType === AdmiPhoneResultType.None) {
@@ -993,14 +1043,14 @@ const handleGaCodeLogin = async () => {
             savedAccounts.value = await getSavedAccounts()
           }
 
-          router.push('/index').then(() => { })
+          router.push('/index').then(() => {})
         } else {
           // 其他错误情况
           const resultDescription = getResultDescription(res.ResultType)
           gp.$baseMessage(resultDescription, 'error', 'hey')
         }
       })
-      .catch((err) => {
+      .catch(err => {
         gp.$baseMessage('登录失败，请检查手机号和验证码', 'error', 'hey')
         // console.error('令牌验证码登录失败:', err)
       })
@@ -1131,14 +1181,11 @@ const handleAccountSelectForGaCode = async (item: any) => {
 
     // 显示提示并自动登录
 
-
     // 等待一小段时间让用户看到提示，然后自动登录
     setTimeout(() => {
-
       handleGaCodeLogin()
     }, 500)
   } catch (error) {
-
     gp.$baseMessage('验证失败，请手动输入', 'error', 'hey')
   } finally {
     autoFillingGaCode.value = false
@@ -1148,58 +1195,64 @@ const handleAccountSelectForGaCode = async (item: any) => {
 /**
  * 监听用户名输入变化，如果选择了已保存的账号，自动填充验证码
  */
-watch(() => form.phone, async (newPhone, oldPhone) => {
-  // 避免重复触发
-  if (!newPhone || autoFillingGaCode.value || newPhone === oldPhone) return
+watch(
+  () => form.phone,
+  async (newPhone, oldPhone) => {
+    // 避免重复触发
+    if (!newPhone || autoFillingGaCode.value || newPhone === oldPhone) return
 
-  // console.log('监听到用户名变化:', newPhone)
+    // console.log('监听到用户名变化:', newPhone)
 
-  const account = await getAccountByUsername(newPhone)
-  if (!account || !account.gaSecret) {
-    // console.log('watch: 没有找到账号或没有密钥')
-    return
-  }
+    const account = await getAccountByUsername(newPhone)
+    if (!account || !account.gaSecret) {
+      // console.log('watch: 没有找到账号或没有密钥')
+      return
+    }
 
-  // 如果需要验证码且当前验证码为空，自动填充
-  if (isRequireGaCode.value && !form.ga_code) {
-    try {
-      // console.log('watch: 自动填充验证码')
-      const gaCode = await generateTOTP(account.gaSecret)
-      form.ga_code = gaCode
-    } catch (error) {
-      // console.error('watch: 自动填充验证码失败:', error)
+    // 如果需要验证码且当前验证码为空，自动填充
+    if (isRequireGaCode.value && !form.ga_code) {
+      try {
+        // console.log('watch: 自动填充验证码')
+        const gaCode = await generateTOTP(account.gaSecret)
+        form.ga_code = gaCode
+      } catch (error) {
+        // console.error('watch: 自动填充验证码失败:', error)
+      }
     }
   }
-})
+)
 
 /**
  * 监听令牌验证码登录的手机号输入变化
  * 注意：此 watch 主要用于手动输入时的自动补全
  * 选择下拉选项时由 handleAccountSelectForGaCode 处理
  */
-watch(() => gaCodeForm.phone, async (newPhone, oldPhone) => {
-  // 避免重复触发和在自动填充时触发
-  if (!newPhone || autoFillingGaCode.value || newPhone === oldPhone) return
+watch(
+  () => gaCodeForm.phone,
+  async (newPhone, oldPhone) => {
+    // 避免重复触发和在自动填充时触发
+    if (!newPhone || autoFillingGaCode.value || newPhone === oldPhone) return
 
-  // console.log('令牌验证码登录 - 监听到手机号变化:', newPhone)
+    // console.log('令牌验证码登录 - 监听到手机号变化:', newPhone)
 
-  const account = await getAccountByUsername(newPhone)
-  if (!account || !account.gaSecret) {
-    // console.log('令牌验证码登录 watch: 没有找到账号或没有密钥')
-    return
-  }
+    const account = await getAccountByUsername(newPhone)
+    if (!account || !account.gaSecret) {
+      // console.log('令牌验证码登录 watch: 没有找到账号或没有密钥')
+      return
+    }
 
-  // 自动填充验证码（但不自动登录，让用户确认）
-  if (!gaCodeForm.ga_code) {
-    try {
-      // console.log('令牌验证码登录 watch: 自动填充验证码')
-      const gaCode = await generateTOTP(account.gaSecret)
-      gaCodeForm.ga_code = gaCode
-    } catch (error) {
-      // console.error('令牌验证码登录 watch: 自动填充验证码失败:', error)
+    // 自动填充验证码（但不自动登录，让用户确认）
+    if (!gaCodeForm.ga_code) {
+      try {
+        // console.log('令牌验证码登录 watch: 自动填充验证码')
+        const gaCode = await generateTOTP(account.gaSecret)
+        gaCodeForm.ga_code = gaCode
+      } catch (error) {
+        // console.error('令牌验证码登录 watch: 自动填充验证码失败:', error)
+      }
     }
   }
-})
+)
 
 const getPhoneCode = async () => {
   if (!form.bind_phone || !isPhone(form.bind_phone)) {
@@ -1214,7 +1267,7 @@ const getPhoneCode = async () => {
         gp.$baseMessage('验证码发送成功', 'success', 'hey')
       }
     })
-    router.push(handleRoute()).then(() => { })
+    router.push(handleRoute()).then(() => {})
   } finally {
     loading.value = false
   }
@@ -1304,11 +1357,12 @@ const openGaBindDialog = async () => {
 
   // 使用已定义的 apiManager.adminApi，它会自动处理响应拦截
   const { phone, pwd } = form
-  apiManager.adminApi.BindGoogleAuthenticatorOnLogin({ phone, pwd })
-    .then((res) => {
+  apiManager.adminApi
+    .BindGoogleAuthenticatorOnLogin({ phone, pwd })
+    .then(res => {
       gaQrCodeData.value = res
     })
-    .catch((err) => {
+    .catch(err => {
       gp.$baseMessage('获取二维码失败，请重试', 'error', 'hey')
       // console.error('获取令牌验证器二维码失败:', err)
     })
@@ -1324,12 +1378,13 @@ const confirmGaBind = async () => {
 
     // 使用匿名接口，传入用户名、密码和验证码
     const { phone, pwd } = form
-    apiManager.adminApi.VerifyGoogleAuthenticatorSetupOnLogin({
-      phone,
-      pwd,
-      Code: gaBindForm.code
-    })
-      .then(async (res) => {
+    apiManager.adminApi
+      .VerifyGoogleAuthenticatorSetupOnLogin({
+        phone,
+        pwd,
+        Code: gaBindForm.code
+      })
+      .then(async res => {
         // 验证成功，返回的是登录结果
         if (res.ResultType === AdmiPhoneResultType.验证成功 || res.ResultType === AdmiPhoneResultType.None) {
           gp.$baseMessage('绑定成功', 'success', 'hey')
@@ -1337,18 +1392,21 @@ const confirmGaBind = async () => {
           gaBindForm.code = ''
           // 绑定成功后，直接完成登录
           await userStore.afterLogin(res.Token, tokenName)
-          router.push('/index').then(() => { })
+          router.push('/index').then(() => {})
         } else {
           // 如果还需要其他验证，显示相应提示
           const resultDescription = getResultDescription(res.ResultType)
           gp.$baseMessage(resultDescription, 'warning', 'hey')
-          if (res.ResultType === AdmiPhoneResultType.请输入GoogleAuthenticator验证码 || res.RequireGoogleAuthenticator) {
+          if (
+            res.ResultType === AdmiPhoneResultType.请输入GoogleAuthenticator验证码 ||
+            res.RequireGoogleAuthenticator
+          ) {
             isRequireGaCode.value = true
             form.ga_code = ''
           }
         }
       })
-      .catch((err) => {
+      .catch(err => {
         gp.$baseMessage('验证码错误，请重试', 'error', 'hey')
         // console.error('验证令牌验证码失败:', err)
       })
@@ -1541,7 +1599,6 @@ onUnmounted(() => {
   .el-form-item {
     margin: 15px 0;
   }
-
 }
 
 .ga-bind-content {

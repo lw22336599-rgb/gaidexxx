@@ -33,7 +33,9 @@ export const convertRouter = (asyncRoutes: VabRouteRecord[]) => {
  */
 export const filterRoutes = (routes: VabRouteRecord[], rolesControl: boolean, baseUrl = '/') => {
   return routes
-    .filter((route: VabRouteRecord) => (rolesControl && route.meta && route.meta.guard ? hasPermission(route.meta.guard) : true))
+    .filter((route: VabRouteRecord) =>
+      rolesControl && route.meta && route.meta.guard ? hasPermission(route.meta.guard) : true
+    )
     .map((route: VabRouteRecord) => {
       route = { ...route }
       if (route.path !== '*' && !isExternal(route.path)) {
@@ -44,7 +46,8 @@ export const filterRoutes = (routes: VabRouteRecord[], rolesControl: boolean, ba
         route.children = filterRoutes(route.children, rolesControl, route.path)
         if (route.children.length > 0) {
           route.childrenPathList = route.children.flatMap((item: VabRouteRecord) => item.childrenPathList)
-          if (!route.redirect) route.redirect = route.children[0].redirect ? route.children[0].redirect : route.children[0].path
+          if (!route.redirect)
+            route.redirect = route.children[0].redirect ? route.children[0].redirect : route.children[0].path
         }
       } else route.childrenPathList = [route.path]
       return route
@@ -65,8 +68,8 @@ export const filterRoutes = (routes: VabRouteRecord[], rolesControl: boolean, ba
  */
 export const handleMatched = (routes: VabRouteRecord[], path: string): VabRouteRecord[] => {
   return routes
-    .filter((route) => route.childrenPathList.indexOf(path) + 1)
-    .flatMap((route) => (route.children ? [route, ...handleMatched(route.children, path)] : [route]))
+    .filter(route => route.childrenPathList.indexOf(path) + 1)
+    .flatMap(route => (route.children ? [route, ...handleMatched(route.children, path)] : [route]))
 }
 
 /**
@@ -76,7 +79,8 @@ export const handleMatched = (routes: VabRouteRecord[], path: string): VabRouteR
 export const handleTabs = (tag: VabRoute) => {
   let parentIcon = null
   if (tag.matched)
-    for (let i = tag.matched.length - 2; i >= 0; i--) if (!parentIcon && tag.matched[i].meta.icon) parentIcon = tag.matched[i].meta.icon
+    for (let i = tag.matched.length - 2; i >= 0; i--)
+      if (!parentIcon && tag.matched[i].meta.icon) parentIcon = tag.matched[i].meta.icon
   if (!parentIcon) parentIcon = 'menu-line'
   const path = handleActivePath(tag, true)
   if (tag.name && tag.meta && tag.meta.tabHidden !== true) {
@@ -86,7 +90,7 @@ export const handleTabs = (tag: VabRoute) => {
       params: tag.params,
       name: tag.name,
       parentIcon,
-      meta: { ...tag.meta },
+      meta: { ...tag.meta }
     }
   }
 }
@@ -115,7 +119,7 @@ export const toLoginRoute = (currentPath: string) => {
     return {
       path: '/login',
       query: { redirect: currentPath },
-      replace: true,
+      replace: true
     }
   else return { path: '/login', replace: true }
 }

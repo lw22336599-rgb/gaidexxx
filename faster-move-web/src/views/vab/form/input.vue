@@ -60,7 +60,7 @@
 import { Search } from '@element-plus/icons-vue'
 
 defineOptions({
-  name: 'Input',
+  name: 'Input'
 })
 
 const input1 = ref<string>('')

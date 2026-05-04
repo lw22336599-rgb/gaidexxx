@@ -35,7 +35,7 @@ import { VueDraggable as VabDraggable } from 'vue-draggable-plus'
 import { getIconList } from '/@/api/icon'
 
 defineOptions({
-  name: 'Drag',
+  name: 'Drag'
 })
 
 const iconList = ref<any>([])
@@ -47,7 +47,7 @@ const randomHexColor = () => {
 const fetchData = async () => {
   const { data } = await getIconList({
     pageNo: 1,
-    pageSize: 89,
+    pageSize: 89
   })
   iconList.value = data.list
     .filter((icon: any) => icon.includes('-fill'))

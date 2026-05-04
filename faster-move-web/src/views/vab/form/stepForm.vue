@@ -23,7 +23,7 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'StepForm',
+  name: 'StepForm'
 })
 
 const active = ref<any>(0)

@@ -1,4 +1,4 @@
 export interface Item {
-		Start: any;
-		End: any;
+  Start: any
+  End: any
 }

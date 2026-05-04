@@ -66,7 +66,7 @@ import type { TableInstance } from 'element-plus'
 import { doDelete, getList } from '/@/api/userManagement'
 
 defineOptions({
-  name: 'UserManagement',
+  name: 'UserManagement'
 })
 
 const tableRef = ref<TableInstance>()
@@ -79,7 +79,7 @@ const selectRows = ref<any>([])
 const queryForm = reactive<any>({
   pageNo: 1,
   pageSize: 20,
-  username: '',
+  username: ''
 })
 
 const setSelectRows = (value: string) => {

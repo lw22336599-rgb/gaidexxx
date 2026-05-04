@@ -14,12 +14,12 @@ export const useUserStore = defineStore('user', {
   state: (): UserModuleType => ({
     token: getToken() as string,
     username: '游客',
-    avatar: './static/svg/avatar.svg',
+    avatar: './static/svg/avatar.svg'
   }),
   getters: {
-    getToken: (state) => state.token,
-    getUsername: (state) => state.username,
-    getAvatar: (state) => state.avatar,
+    getToken: state => state.token,
+    getUsername: state => state.username,
+    getAvatar: state => state.avatar
   },
   actions: {
     /**
@@ -63,7 +63,8 @@ export const useUserStore = defineStore('user', {
       if (token) {
         this.setToken(token)
         const hour = new Date().getHours()
-        const thisTime = hour < 8 ? '早上好' : hour <= 11 ? '上午好' : hour <= 13 ? '中午好' : hour < 18 ? '下午好' : '晚上好'
+        const thisTime =
+          hour < 8 ? '早上好' : hour <= 11 ? '上午好' : hour <= 13 ? '中午好' : hour < 18 ? '下午好' : '晚上好'
         gp.$baseNotify(`欢迎登录${settingsStore.title}`, `${thisTime}！`)
       } else {
         const err = `登录接口异常，未正确返回${tokenName}...`
@@ -92,7 +93,7 @@ export const useUserStore = defineStore('user', {
         this.afterLogin(data.Token, tokenName)
         return data
       }
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         resolve(data)
       })
     },
@@ -103,7 +104,9 @@ export const useUserStore = defineStore('user', {
     async getUserInfo() {
       const { data } = await getUserInfo()
       localStorage.setItem('userInfo', JSON.stringify(data))
-      const { admin: { user_name, avatar, role, id } } = data
+      const {
+        admin: { user_name, avatar, role, id }
+      } = data
       /**
        * 检验返回数据是否正常，无对应参数，将使用默认用户名,头像,Roles和Permissions
        * user_name {String}
@@ -111,11 +114,7 @@ export const useUserStore = defineStore('user', {
        * role {List}
        * permissions {List}
        */
-      if (
-        (user_name && !isString(user_name)) ||
-        (avatar && !isString(avatar)) ||
-        (role && !isArray(role))
-      ) {
+      if ((user_name && !isString(user_name)) || (avatar && !isString(avatar)) || (role && !isArray(role))) {
         const err = 'getUserInfo核心接口异常，请检查返回JSON格式是否正确'
         gp.$baseMessage(err, 'error', 'hey')
         throw err
@@ -175,6 +174,6 @@ export const useUserStore = defineStore('user', {
       await aclStore.setFull(false)
       await aclStore.setRole([])
       await tabsStore.delAllVisitedRoutes()
-    },
-  },
+    }
+  }
 })

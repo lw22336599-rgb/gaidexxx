@@ -23,7 +23,7 @@ const luckyNum = 1
 const blocks = [
   { padding: '15px', background: '#ffc27a', borderRadius: 28 },
   { padding: '8px', background: '#ff4a4c', borderRadius: 23 },
-  { padding: '8px', background: '#ff625b', borderRadius: 20 },
+  { padding: '8px', background: '#ff625b', borderRadius: 20 }
 ]
 const buttons = [
   {
@@ -36,14 +36,14 @@ const buttons = [
         text: `${luckyNum} 次`,
         fontColor: '#fff',
         top: '73%',
-        fontSize: '11px',
-      },
+        fontSize: '11px'
+      }
     ],
     imgs: [
       { src: buttonImg, width: '65%', top: '12%' },
-      { src: btnImg, width: '50%', top: '73%' },
-    ],
-  },
+      { src: btnImg, width: '50%', top: '73%' }
+    ]
+  }
 ]
 
 const prizes = [
@@ -57,7 +57,7 @@ const prizes = [
     background: '#fefaea',
 
     col: 1,
-    row: 1,
+    row: 1
   },
   {
     name: '100元红包',
@@ -68,7 +68,7 @@ const prizes = [
     imgs: [{ src: award_1, width: '30%', top: '15%' }],
     background: '#fefaea',
     col: 1,
-    row: 1,
+    row: 1
   },
   {
     name: '0.5元红包',
@@ -79,7 +79,7 @@ const prizes = [
     imgs: [{ src: award_1, width: '30%', top: '15%' }],
     background: '#fefaea',
     col: 1,
-    row: 1,
+    row: 1
   },
   {
     name: '2元红包',
@@ -90,7 +90,7 @@ const prizes = [
     imgs: [{ src: award_1, width: '30%', top: '15%' }],
     background: '#fefaea',
     col: 1,
-    row: 1,
+    row: 1
   },
   {
     name: '10元红包',
@@ -101,7 +101,7 @@ const prizes = [
     imgs: [{ src: award_1, width: '30%', top: '15%' }],
     background: '#fefaea',
     col: 1,
-    row: 1,
+    row: 1
   },
   {
     name: '50元红包',
@@ -112,7 +112,7 @@ const prizes = [
     imgs: [{ src: award_1, width: '30%', top: '15%' }],
     background: '#fefaea',
     col: 1,
-    row: 1,
+    row: 1
   },
   {
     name: '0.3元红包',
@@ -123,7 +123,7 @@ const prizes = [
     imgs: [{ src: award_1, width: '30%', top: '15%' }],
     background: '#fefaea',
     col: 1,
-    row: 1,
+    row: 1
   },
   {
     name: '20元红包',
@@ -134,8 +134,8 @@ const prizes = [
     imgs: [{ src: award_1, width: '30%', top: '15%' }],
     background: '#fefaea',
     col: 1,
-    row: 1,
-  },
+    row: 1
+  }
 ]
 
 const awardGridRef = ref<any>(null)

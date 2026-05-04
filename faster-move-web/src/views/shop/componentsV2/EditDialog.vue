@@ -1,5 +1,11 @@
 ﻿<template>
-  <el-dialog v-model="editDialogStateCom" :before-close="handleClose" title="编辑门店" width="600" :close-on-click-modal="false">
+  <el-dialog
+    v-model="editDialogStateCom"
+    :before-close="handleClose"
+    title="编辑门店"
+    width="600"
+    :close-on-click-modal="false"
+  >
     <div class="edit-form">
       <el-form ref="formRef" :model="form" :rules="rules" label-width="100px" label-position="left">
         <!-- 所属平台 -->
@@ -37,15 +43,20 @@
 
         <!-- 备注 -->
         <el-form-item label="备注" prop="notes">
-          <el-input v-model="form.notes" type="textarea" :rows="4" placeholder="请输入门店备注"
-            :maxlength="30" show-word-limit />
+          <el-input
+            v-model="form.notes"
+            type="textarea"
+            :rows="4"
+            placeholder="请输入门店备注"
+            :maxlength="30"
+            show-word-limit
+          />
         </el-form-item>
 
         <!-- 门店分组 -->
         <el-form-item label="门店分组" prop="group">
           <el-select v-model="form.group" placeholder="选择分组" clearable style="width: 100%">
-            <el-option v-for="group in flatGroupOptions" :key="group.value" :label="group.label"
-              :value="group.value" />
+            <el-option v-for="group in flatGroupOptions" :key="group.value" :label="group.label" :value="group.value" />
           </el-select>
         </el-form-item>
       </el-form>
@@ -53,7 +64,7 @@
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="handleClose">取消</el-button>
-        <el-button type="primary" @click="handleSubmit" :loading="loading">保存</el-button>
+        <el-button type="primary" :loading="loading" @click="handleSubmit">保存</el-button>
       </div>
     </template>
   </el-dialog>
@@ -144,7 +155,7 @@ const platformName = computed(() => {
       5: '饿百零售',
       6: '京东到家',
       7: '抖店即时零售',
-      8: '饿了么官方',
+      8: '饿了么官方'
     }
     return typeMap[typeValue] || '未知平台'
   }
@@ -238,16 +249,20 @@ const rules = reactive({
 })
 
 // 监听对话框打开和shopData变化，初始化数据
-watch([() => props.editDialogState, () => props.shopData], async ([newState, newShopData]) => {
-  if (newState && newShopData) {
-    await nextTick()
-    // 如果分组列表还未加载，先加载分组列表
-    if (flatGroupOptions.value.length === 0) {
-      await getGroupList()
+watch(
+  [() => props.editDialogState, () => props.shopData],
+  async ([newState, newShopData]) => {
+    if (newState && newShopData) {
+      await nextTick()
+      // 如果分组列表还未加载，先加载分组列表
+      if (flatGroupOptions.value.length === 0) {
+        await getGroupList()
+      }
+      setFormData()
     }
-    setFormData()
-  }
-}, { immediate: true, deep: true })
+  },
+  { immediate: true, deep: true }
+)
 
 // 提交表单
 const handleSubmit = async () => {

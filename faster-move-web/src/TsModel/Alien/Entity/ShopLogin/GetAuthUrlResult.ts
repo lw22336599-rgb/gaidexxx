@@ -1,3 +1,3 @@
 export interface GetAuthUrlResult {
-		Url: string;
+  Url: string
 }

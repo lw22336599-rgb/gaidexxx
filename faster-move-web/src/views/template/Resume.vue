@@ -105,15 +105,15 @@ const educations = ref<any>([
     school: '大学A',
     degree: '本科',
     major: '计算机科学',
-    duration: '2015 - 2019',
+    duration: '2015 - 2019'
   },
   {
     id: 2,
     school: '大学B',
     degree: '硕士',
     major: '软件工程',
-    duration: '2019 - 2021',
-  },
+    duration: '2019 - 2021'
+  }
 ])
 
 const experiences = ref<any>([
@@ -121,20 +121,20 @@ const experiences = ref<any>([
     id: 1,
     company: '公司A',
     position: '前端工程师',
-    duration: '2021 - 现在',
+    duration: '2021 - 现在'
   },
   {
     id: 2,
     company: '公司B',
     position: '前端工程师',
-    duration: '2019 - 2021',
+    duration: '2019 - 2021'
   },
   {
     id: 3,
     company: '公司C',
     position: '前端工程师',
-    duration: '2017 - 2019',
-  },
+    duration: '2017 - 2019'
+  }
 ])
 </script>
 

@@ -62,7 +62,7 @@ import type { TableInstance } from 'element-plus'
 import { doDelete, getList } from '/@/api/roleManagement'
 
 defineOptions({
-  name: 'RoleManagement',
+  name: 'RoleManagement'
 })
 
 const tableRef = ref<TableInstance>()
@@ -75,7 +75,7 @@ const selectRows = ref<any>([])
 const queryForm = reactive<any>({
   pageNo: 1,
   pageSize: 20,
-  role: '',
+  role: ''
 })
 
 const setSelectRows = (value: any) => {

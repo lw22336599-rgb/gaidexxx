@@ -22,7 +22,7 @@ import type { FormInstance } from 'element-plus'
 import { doEdit } from '/@/api/goodsComment'
 
 defineOptions({
-  name: 'GoodsCommentEdit',
+  name: 'GoodsCommentEdit'
 })
 
 const emit = defineEmits(['fetch-data'])
@@ -49,7 +49,7 @@ const showEdit = (row: any) => {
 }
 
 defineExpose({
-  showEdit,
+  showEdit
 })
 
 const close = () => {

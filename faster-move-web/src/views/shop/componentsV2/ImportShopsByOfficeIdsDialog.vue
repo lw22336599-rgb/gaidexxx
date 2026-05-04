@@ -1,10 +1,21 @@
 <template>
-  <el-dialog v-model="visible" :title="dialogTitle" width="480px" :close-on-click-modal="false"
-    :before-close="handleClose" destroy-on-close>
+  <el-dialog
+    v-model="visible"
+    :title="dialogTitle"
+    width="480px"
+    :close-on-click-modal="false"
+    :before-close="handleClose"
+    destroy-on-close
+  >
     <div class="import-content">
       <div class="import-tip">每行一个门店编号，最多200个</div>
-      <el-input v-model="inputText" type="textarea" :rows="10" placeholder="请输入门店编号，每行一个，最多200个"
-        class="import-textarea" />
+      <el-input
+        v-model="inputText"
+        type="textarea"
+        :rows="10"
+        placeholder="请输入门店编号，每行一个，最多200个"
+        class="import-textarea"
+      />
     </div>
     <template #footer>
       <el-button @click="handleClose">取消</el-button>
@@ -41,12 +52,12 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
-  'confirm': [shops: any[], notFoundOfficeIds: string[]]
+  confirm: [shops: any[], notFoundOfficeIds: string[]]
 }>()
 
 const visible = computed({
   get: () => props.modelValue,
-  set: (val) => emit('update:modelValue', val)
+  set: val => emit('update:modelValue', val)
 })
 
 const dialogTitle = computed(
@@ -56,11 +67,14 @@ const dialogTitle = computed(
 const inputText = ref('')
 const loading = ref(false)
 
-watch(() => props.modelValue, (val) => {
-  if (val) {
-    inputText.value = ''
+watch(
+  () => props.modelValue,
+  val => {
+    if (val) {
+      inputText.value = ''
+    }
   }
-})
+)
 
 const handleClose = () => {
   visible.value = false
@@ -69,8 +83,8 @@ const handleClose = () => {
 const parseOfficeIds = (text: string): string[] => {
   return text
     .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter((line) => line.length > 0)
+    .map(line => line.trim())
+    .filter(line => line.length > 0)
 }
 
 const MAX_IMPORT_COUNT = 200

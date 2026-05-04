@@ -25,13 +25,13 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'OrderNotice',
+  name: 'OrderNotice'
 })
 
 const voice = ref<SpeechSynthesisVoice>(undefined as unknown as SpeechSynthesisVoice)
 const text = ref<string>('')
 const speech = useSpeechSynthesis(text, {
-  voice,
+  voice
 })
 
 const fetchData = async () => {
@@ -71,7 +71,7 @@ const handleSettingNotice = () => {
   globalThis.Notification.requestPermission().then((result: any) => {
     if (result === 'granted') {
       const notification = new globalThis.Notification('温馨提示', {
-        body: text.value,
+        body: text.value
       })
       notification.addEventListener('click', () => {
         window.focus()

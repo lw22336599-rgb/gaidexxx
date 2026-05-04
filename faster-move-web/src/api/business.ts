@@ -27,7 +27,7 @@ export const addCalendar = (data: any) => {
   return request({
     url: '/system/business/calendar/add',
     method: 'post',
-    data,
+    data
   })
 }
 
@@ -35,13 +35,13 @@ export const editCalendar = (data: any) => {
   return request({
     url: '/system/business/calendar/update',
     method: 'post',
-    data,
+    data
   })
 }
 
 export const delCalendar = (id: any) => {
   return request({
     url: `/system/business/calendar/delete?id=${id}`,
-    method: 'post',
+    method: 'post'
   })
 }

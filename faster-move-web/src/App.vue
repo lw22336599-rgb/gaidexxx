@@ -12,7 +12,7 @@ import { addShop } from '/@/api/shop'
 import ElectronUpdate from '/@/plugins/ElectronUpdate/index.vue'
 
 defineOptions({
-  name: 'App',
+  name: 'App'
 })
 
 // 检测是否在 Electron 环境中运行
@@ -40,11 +40,14 @@ const syncTokenToElectron = async () => {
 }
 
 // 监听 token 变化
-watch(() => userStore.token, async (newToken) => {
-  if (isElectron.value && newToken) {
-    await syncTokenToElectron()
+watch(
+  () => userStore.token,
+  async newToken => {
+    if (isElectron.value && newToken) {
+      await syncTokenToElectron()
+    }
   }
-})
+)
 
 const resizeContainer = () => {
   let vh = window.innerHeight * 0.01
@@ -77,7 +80,7 @@ onMounted(() => {
       )
         DisableDevtool({
           url: 'https://vuejs-core.cn/debugger',
-          timeOutUrl: 'https://vuejs-core.cn/debugger',
+          timeOutUrl: 'https://vuejs-core.cn/debugger'
         })
     }, 1000)
   })

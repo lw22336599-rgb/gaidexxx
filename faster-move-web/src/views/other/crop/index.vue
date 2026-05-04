@@ -17,7 +17,7 @@
           <el-form-item label="裁剪后的图片">
             <el-image :lazy="true" :src="cropData">
               <template #error>
-                <div class="image-slot"></div>
+                <div class="image-slot" />
               </template>
             </el-image>
           </el-form-item>
@@ -44,7 +44,7 @@
 import { Crop as TinyCrop } from '@opentiny/vue'
 
 defineOptions({
-  name: 'Crop',
+  name: 'Crop'
 })
 
 const cropRef = ref<any>(null)
@@ -64,16 +64,16 @@ const cropData = ref<any>('')
 const options = [
   {
     value: 16 / 9,
-    label: '16/9',
+    label: '16/9'
   },
   {
     value: 4 / 3,
-    label: '4/3',
+    label: '4/3'
   },
   {
     value: 1 / 1,
-    label: '1/1',
-  },
+    label: '1/1'
+  }
 ]
 
 const cropdata = (data: any) => {

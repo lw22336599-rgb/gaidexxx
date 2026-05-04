@@ -1,4 +1,4 @@
-	export enum OrderByType {
-		Asc = 0,
-		Desc = 1,
-	}
+export enum OrderByType {
+  Asc = 0,
+  Desc = 1
+}

@@ -3,35 +3,42 @@
     <el-select
       v-if="field.enum && !field['x-fetchShopGroups'] && field.type !== 'array'"
       :model-value="modelValue"
-      @update:model-value="$emit('update:modelValue', $event)"
       :placeholder="placeholder"
       :clearable="clearable"
       :size="compact ? 'small' : 'default'"
       :multiple="false"
       :style="inputWidthStyle"
+      @update:model-value="$emit('update:modelValue', $event)"
     >
-      <el-option v-for="(ev, idx) in filterEnumExcludeNone(field)" :key="idx"
-        :label="getEnumLabel(field, ev)" :value="ev" />
+      <el-option
+        v-for="(ev, idx) in filterEnumExcludeNone(field)"
+        :key="idx"
+        :label="getEnumLabel(field, ev)"
+        :value="ev"
+      />
     </el-select>
 
     <el-select
       v-else-if="rootSchema && isArrayOfEnum(field, rootSchema)"
       :model-value="modelValue"
-      @update:model-value="$emit('update:modelValue', $event)"
       :placeholder="placeholder"
       :clearable="clearable"
       :size="compact ? 'small' : 'default'"
       multiple
       :style="inputWidthStyle"
+      @update:model-value="$emit('update:modelValue', $event)"
     >
-      <el-option v-for="(ev, idx) in filterEnumExcludeNone(getArrayItemSchema(field, rootSchema)!)" :key="idx"
-        :label="getEnumLabel(getArrayItemSchema(field, rootSchema)!, ev)" :value="ev" />
+      <el-option
+        v-for="(ev, idx) in filterEnumExcludeNone(getArrayItemSchema(field, rootSchema)!)"
+        :key="idx"
+        :label="getEnumLabel(getArrayItemSchema(field, rootSchema)!, ev)"
+        :value="ev"
+      />
     </el-select>
 
     <el-select
       v-else-if="field['x-fetchShopGroups']"
       :model-value="modelValue"
-      @update:model-value="$emit('update:modelValue', $event)"
       :placeholder="placeholder"
       :clearable="clearable"
       :size="compact ? 'small' : 'default'"
@@ -39,9 +46,10 @@
       :style="inputWidthStyle"
       :loading="groupOptionsLoading"
       filterable
+      @update:model-value="$emit('update:modelValue', $event)"
       @visible-change="(v: boolean) => v && onEnsureGroupOptions?.()"
     >
-      <el-option v-for="g in (groupOptions ?? [])" :key="g.OfficeId" :label="g.Name" :value="g.OfficeId" />
+      <el-option v-for="g in groupOptions ?? []" :key="g.OfficeId" :label="g.Name" :value="g.OfficeId" />
     </el-select>
 
     <div v-else-if="rootSchema && isObjectProperty(field, rootSchema)" class="object-field-wrap group-border">
@@ -49,7 +57,6 @@
         <template v-for="(subField, subKey) in getObjectItemProperties(field, rootSchema)" :key="subKey">
           <SchemaFieldRenderer
             :model-value="getObjVal(modelValue, subKey, subField)"
-            @update:model-value="(v: any) => setObjVal(modelValue, subKey, v)"
             :field="subField"
             :field-key="subKey"
             :root-schema="rootSchema"
@@ -58,44 +65,48 @@
             :group-options="groupOptions"
             :group-options-loading="groupOptionsLoading"
             :on-ensure-group-options="onEnsureGroupOptions"
+            @update:model-value="(v: any) => setObjVal(modelValue, subKey, v)"
           />
         </template>
       </div>
     </div>
 
     <div v-else-if="rootSchema && isArrayOfObject(field, rootSchema)" class="array-of-object-wrap group-border">
-      <div v-for="(item, idx) in (modelValue || [])" :key="idx" class="array-item-row">
+      <div v-for="(item, idx) in modelValue || []" :key="idx" class="array-item-row">
         <div class="array-item-fields">
           <template v-for="(subField, subKey) in getArrayItemProperties(field, rootSchema)" :key="subKey">
             <div class="array-item-field">
               <span class="array-item-label">{{ subField.title || subKey }}</span>
               <SchemaFieldRenderer
                 :model-value="item[subKey]"
-                @update:model-value="item[subKey] = $event"
                 :field="subField"
                 :field-key="subKey"
                 :root-schema="rootSchema"
                 :compact="true"
                 :placeholder="'请选择'"
                 class="array-item-input"
+                @update:model-value="item[subKey] = $event"
               />
             </div>
           </template>
         </div>
-        <el-button type="danger" link size="small" class="array-item-delete" @click="removeArrayItem(Number(idx))">删除</el-button>
+        <el-button type="danger" link size="small" class="array-item-delete" @click="removeArrayItem(Number(idx))"
+          >删除</el-button
+        >
       </div>
       <el-button type="primary" link size="small" @click="addArrayItem">{{ addButtonText }}</el-button>
     </div>
 
     <div v-else-if="isArrayOfString(field)" class="tag-input-wrap">
-      <el-tag v-for="(item, i) in (modelValue || [])" :key="i" closable size="small"
-        @close="removeTag(Number(i))">{{ item }}</el-tag>
+      <el-tag v-for="(item, i) in modelValue || []" :key="i" closable size="small" @close="removeTag(Number(i))">{{
+        item
+      }}</el-tag>
       <el-input
         :model-value="getTagInputValue()"
-        @update:model-value="onTagInputUpdate"
         size="small"
         placeholder="回车添加"
-        style="flex:1;min-width:80px"
+        style="flex: 1; min-width: 80px"
+        @update:model-value="onTagInputUpdate"
         @keyup.enter="addTag"
       />
     </div>
@@ -103,11 +114,11 @@
     <el-select
       v-else-if="field.type === 'boolean' && clearable"
       :model-value="modelValue"
-      @update:model-value="$emit('update:modelValue', $event)"
       :placeholder="placeholder"
       clearable
       :size="compact ? 'small' : 'default'"
       :style="inputWidthStyle"
+      @update:model-value="$emit('update:modelValue', $event)"
     >
       <el-option label="是" :value="true" />
       <el-option label="否" :value="false" />
@@ -122,58 +133,58 @@
     <el-input-number
       v-else-if="field.type === 'number' || field.type === 'integer'"
       :model-value="modelValue"
-      @update:model-value="$emit('update:modelValue', $event)"
       :precision="field.type === 'integer' ? 0 : undefined"
       :size="compact ? 'small' : 'default'"
       :controls="compact ? false : undefined"
       controls-position="right"
       :style="inputWidthStyle"
+      @update:model-value="$emit('update:modelValue', $event)"
     />
 
     <el-date-picker
       v-else-if="field.format === 'date-time'"
       :model-value="modelValue"
-      @update:model-value="$emit('update:modelValue', $event)"
       type="datetime"
       value-format="YYYY-MM-DD HH:mm:ss"
       :placeholder="placeholder"
       :clearable="clearable"
       :size="compact ? 'small' : 'default'"
       :style="inputWidthStyle"
+      @update:model-value="$emit('update:modelValue', $event)"
     />
 
     <el-time-picker
       v-else-if="isTimeFormat(field)"
       :model-value="modelValue"
-      @update:model-value="$emit('update:modelValue', $event)"
       value-format="HH:mm"
       format="HH:mm"
       :placeholder="placeholder"
       :clearable="clearable"
       :size="compact ? 'small' : 'default'"
       :style="inputWidthStyle"
+      @update:model-value="$emit('update:modelValue', $event)"
     />
 
     <el-input
       v-else-if="isTextareaFormat(field)"
       :model-value="modelValue"
-      @update:model-value="$emit('update:modelValue', $event)"
       type="textarea"
       :rows="4"
       :placeholder="placeholder"
       :clearable="clearable"
       :size="compact ? 'small' : 'default'"
       class="schema-textarea"
+      @update:model-value="$emit('update:modelValue', $event)"
     />
 
     <el-input
       v-else
       :model-value="modelValue"
-      @update:model-value="$emit('update:modelValue', $event)"
       :placeholder="placeholder"
       :clearable="clearable"
       :size="compact ? 'small' : 'default'"
       :style="inputWidthStyle"
+      @update:model-value="$emit('update:modelValue', $event)"
     />
   </div>
 </template>
@@ -188,7 +199,7 @@ import {
   isArrayOfEnum,
   isArrayOfObject,
   isArrayOfString,
-  resolveProperty,
+  resolveProperty
 } from './useFuncConfSchema'
 import type { SchemaProperty, ParsedSchema } from './useFuncConfSchema'
 import type { FoodGroupItem } from '@/TsModel/Alien/Entity/Function/FOODMOVE/FoodGroupItem'
@@ -215,9 +226,7 @@ const emit = defineEmits<{
   (e: 'update:modelValue', value: any): void
 }>()
 
-const inputWidthStyle = computed(() =>
-  props.compact ? 'width: auto; min-width: 130px;' : 'width: 100%;'
-)
+const inputWidthStyle = computed(() => (props.compact ? 'width: auto; min-width: 130px;' : 'width: 100%;'))
 
 function getObjectItemSchema(field: SchemaProperty, root: ParsedSchema): SchemaProperty | null {
   const ref = (field as any).$ref

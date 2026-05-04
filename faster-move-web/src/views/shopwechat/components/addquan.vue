@@ -5,9 +5,9 @@
       <div class="addwid">
         <div class="addwxidcont">
           <el-radio-group v-model="checked" @change="changegroup">
-            <div class="fleximg" v-for="item in rodiobjlist" :key="item.id">
+            <div v-for="item in rodiobjlist" :key="item.id" class="fleximg">
               <!-- <el-checkbox v-model="checked" size="large" /> -->
-              <el-radio :value="item.id" size="large"></el-radio>
+              <el-radio :value="item.id" size="large" />
               <div class="imgbox">
                 <img :src="item.head_img" alt="" :class="{ 'blur-avatar': demoMode }" />
               </div>
@@ -19,11 +19,14 @@
       </div>
     </div>
     <div class="top">
-      <el-input :prefix-icon="Search" v-model="mdname" @change="handleEnter" style="margin-right: 20px"
-        placeholder="输入群昵称或备注搜索" />
-      <el-checkbox style="margin-right: 20px" v-model="bindingcheck" @change="yfilterbinding">
-        已绑定群聊
-      </el-checkbox>
+      <el-input
+        v-model="mdname"
+        :prefix-icon="Search"
+        style="margin-right: 20px"
+        placeholder="输入群昵称或备注搜索"
+        @change="handleEnter"
+      />
+      <el-checkbox v-model="bindingcheck" style="margin-right: 20px" @change="yfilterbinding"> 已绑定群聊 </el-checkbox>
       <el-button type="primary" @click="emitflock">刷新群列表</el-button>
     </div>
     <div class="center">
@@ -48,12 +51,8 @@
         </el-table-column>
         <el-table-column label="操作">
           <template #default="scope">
-            <div class="butlist" v-if="!bindingcheck" @click="binding(scope.row)">
-              绑定
-            </div>
-            <div class="butlist" v-else @click="unbinding(scope.row)">
-              解绑
-            </div>
+            <div v-if="!bindingcheck" class="butlist" @click="binding(scope.row)">绑定</div>
+            <div v-else class="butlist" @click="unbinding(scope.row)">解绑</div>
           </template>
         </el-table-column>
       </el-table>
@@ -90,13 +89,13 @@ const props = defineProps({
   tableData: Array as () => any[],
   wxfloclist: Array as () => any[],
   shopobj: Object as () => any,
-  groupListParams: Object as () => any,
+  groupListParams: Object as () => any
 })
 
 let rodiobjlist = ref<any[]>([])
 let rodiobj = reactive({
   head_img: '',
-  name: '',
+  name: ''
 })
 const checked = ref('1')
 const tableData = ref<any[]>([])
@@ -107,7 +106,7 @@ const groupListParams = reactive({
   pageIndex: 1,
   pageSize: 20,
   keyword: '',
-  total: 0,
+  total: 0
 })
 
 const emit = defineEmits([
@@ -118,7 +117,7 @@ const emit = defineEmits([
   'bindingwx',
   'filterbinding',
   'initfilterbinding',
-  'unbindingwx',
+  'unbindingwx'
 ])
 
 const exidt = () => {
@@ -181,7 +180,7 @@ watch(
       groupListParams.total = newVal.total ?? 0
     }
   },
-  { deep: true, immediate: true },
+  { deep: true, immediate: true }
 )
 
 watch(
@@ -194,7 +193,7 @@ watch(
     }
     tableData.value = props.wxfloclist as any
   },
-  { deep: true, immediate: true },
+  { deep: true, immediate: true }
 )
 </script>
 

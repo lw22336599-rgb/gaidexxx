@@ -15,8 +15,8 @@ export default defineComponent({
   props: {
     lf: {
       type: Object,
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   data() {
     return {
@@ -24,44 +24,44 @@ export default defineComponent({
         {
           text: '开始',
           type: 'start',
-          icon: 'play-circle-line',
+          icon: 'play-circle-line'
         },
         {
           text: '矩形',
           type: 'rect',
-          icon: 'shape-line',
+          icon: 'shape-line'
         },
         {
           type: 'user',
           text: '用户',
-          icon: 'user-3-line',
+          icon: 'user-3-line'
         },
         {
           type: 'push',
           text: '推送',
-          icon: 'share-line',
+          icon: 'share-line'
         },
         {
           type: 'download',
           text: '位置',
-          icon: 'user-location-line',
+          icon: 'user-location-line'
         },
         {
           type: 'end',
           text: '结束',
-          icon: 'stop-circle-line',
-        },
-      ],
+          icon: 'stop-circle-line'
+        }
+      ]
     }
   },
   methods: {
     $_dragNode(item) {
       this.$props.lf.dnd.startDrag({
         type: item.type,
-        text: item.label,
+        text: item.label
       })
-    },
-  },
+    }
+  }
 })
 </script>
 

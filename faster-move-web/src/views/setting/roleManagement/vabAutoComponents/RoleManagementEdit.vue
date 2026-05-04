@@ -36,7 +36,7 @@ import { doEdit } from '/@/api/roleManagement'
 import { getList } from '/@/api/router'
 
 defineOptions({
-  name: 'RoleManagementEdit',
+  name: 'RoleManagementEdit'
 })
 
 const emit = defineEmits(['fetch-data'])
@@ -54,11 +54,11 @@ const form = reactive<any>({
     'delete:index',
     'read:index',
     'write:index',
-    'delete:index',
-  ],
+    'delete:index'
+  ]
 })
 const rules = reactive<any>({
-  role: [{ required: true, trigger: 'blur', message: '请输入角色码' }],
+  role: [{ required: true, trigger: 'blur', message: '请输入角色码' }]
 })
 const title = ref<string>('')
 const dialogFormVisible = ref<boolean>(false)
@@ -81,14 +81,14 @@ const showEdit = (row: any) => {
         'delete:index',
         'read:index',
         'write:index',
-        'delete:index',
+        'delete:index'
       ]
     }
   })
 }
 
 defineExpose({
-  showEdit,
+  showEdit
 })
 
 const close = () => {
@@ -109,7 +109,7 @@ const save = () => {
       const treeObject = { 'treeArray:': tree }
       const { msg }: any = await doEdit({
         ...form,
-        ...treeObject,
+        ...treeObject
       })
       await $baseMessage(msg, 'success', 'hey')
       await close()

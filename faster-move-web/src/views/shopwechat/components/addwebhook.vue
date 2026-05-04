@@ -1,8 +1,13 @@
 <template>
   <div class="hwechat">
     <div class="top">
-      <el-input v-model="keyword" :prefix-icon="Search" placeholder="输入名称或Host搜索" style="margin-right: 20px"
-        @change="handleSearch" />
+      <el-input
+        v-model="keyword"
+        :prefix-icon="Search"
+        placeholder="输入名称或Host搜索"
+        style="margin-right: 20px"
+        @change="handleSearch"
+      />
     </div>
     <div class="center">
       <el-table :data="filteredRobots" style="width: 100%" height="100%">
@@ -23,12 +28,8 @@
         <el-table-column label="操作" width="140">
           <template #default="{ row }">
             <div class="butlist">
-              <span v-if="!isBound(row)" class="link" @click="onBind(row)">
-                绑定
-              </span>
-              <span v-else class="link danger" @click="onUnbind(row)">
-                解绑
-              </span>
+              <span v-if="!isBound(row)" class="link" @click="onBind(row)"> 绑定 </span>
+              <span v-else class="link danger" @click="onUnbind(row)"> 解绑 </span>
             </div>
           </template>
         </el-table-column>
@@ -67,11 +68,8 @@ const filteredRobots = computed(() => {
   if (!text) {
     return props.robots
   }
-  return props.robots.filter((item) => {
-    return (
-      item.name.toLowerCase().includes(text) ||
-      (item.host && item.host.toLowerCase().includes(text))
-    )
+  return props.robots.filter(item => {
+    return item.name.toLowerCase().includes(text) || (item.host && item.host.toLowerCase().includes(text))
   })
 })
 
@@ -83,7 +81,7 @@ const getChatTypeName = (type: ChatType): string => {
     [ChatType.WechatWeb]: '微信Web',
     [ChatType.WechatWebHook]: '微信WebHook',
     [ChatType.DingdingWebHook]: '钉钉WebHook',
-    [ChatType.FeishuWebHook]: '飞书WebHook',
+    [ChatType.FeishuWebHook]: '飞书WebHook'
   }
   return map[type] || '未知'
 }

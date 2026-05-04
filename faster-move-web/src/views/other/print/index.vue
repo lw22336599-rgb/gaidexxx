@@ -21,7 +21,7 @@ import landscape from '/@/assets/common_images/landscape.jpg'
 import VabPrint from '/@/plugins/VabPrint'
 
 defineOptions({
-  name: 'Print',
+  name: 'Print'
 })
 
 const imageRef = ref<any>(null)
@@ -29,20 +29,20 @@ const tableRef = ref<TableInstance>()
 const tableData = ref<any>([
   {
     name: '马云',
-    address: '上海市普陀区金沙江路',
+    address: '上海市普陀区金沙江路'
   },
   {
     name: '马化腾',
-    address: '上海市普陀区金沙江路',
+    address: '上海市普陀区金沙江路'
   },
   {
     name: '李彦宏',
-    address: '上海市普陀区金沙江路',
+    address: '上海市普陀区金沙江路'
   },
   {
     name: '刘强东',
-    address: '上海市普陀区金沙江路',
-  },
+    address: '上海市普陀区金沙江路'
+  }
 ])
 
 const print = async (value: any) => {
@@ -63,7 +63,7 @@ const remotePrint = () => {
     inputValue: `<h1>Vue Shop Vite</h1><p>vuejs-core.cn/shop-vite</p>`,
     inputErrorMessage: 'Invalid Email',
     confirmButtonText: '打印',
-    draggable: true,
+    draggable: true
   })
     .then(({ value }) => {
       VabPrint(value)

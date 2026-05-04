@@ -11,8 +11,13 @@
         </div>
         <div class="filter-item">
           <el-segmented v-model="online" :options="onlineOptions" size="large" @change="handleChangeOnline" />
-          <el-input v-model="queryForm.word" clearable placeholder="搜索门店名称或ID或备注" style="margin-left: 20px"
-            @change="getAdminListData" />
+          <el-input
+            v-model="queryForm.word"
+            clearable
+            placeholder="搜索门店名称或ID或备注"
+            style="margin-left: 20px"
+            @change="getAdminListData"
+          />
         </div>
       </div>
       <div v-if="activeName === 'second'" class="filter-item">
@@ -21,7 +26,7 @@
     </vab-card>
     <vab-card style="margin-bottom: 0">
       <div v-if="activeName === 'first'">
-        <el-table v-loading="listLoading" :data="list" height="calc(100vh - 350px)" style="width: 100%;">
+        <el-table v-loading="listLoading" :data="list" height="calc(100vh - 350px)" style="width: 100%">
           <el-table-column align="center" label="账号" prop="user_name" />
           <el-table-column align="center" label="账号ID" prop="code" />
           <el-table-column align="center" label="剩余积分" prop="balance">
@@ -40,15 +45,25 @@
             </template>
           </el-table-column>
         </el-table>
-        <vab-pagination :current-page="queryForm.page" :page-size="queryForm.pageSize" :total="total"
-          @current-change="handleCurrentChange" @size-change="handleSizeChange" />
+        <vab-pagination
+          :current-page="queryForm.page"
+          :page-size="queryForm.pageSize"
+          :total="total"
+          @current-change="handleCurrentChange"
+          @size-change="handleSizeChange"
+        />
       </div>
       <div v-if="activeName === 'second'">
         <div v-if="appState === 1">
           <div class="main-title">
             <div class="main-title-left">
-              <el-segmented v-model="filterVideo" :options="filterVideoOptions" size="large" style="margin-right: 20px"
-                @change="handleChangeFilterVideo" />
+              <el-segmented
+                v-model="filterVideo"
+                :options="filterVideoOptions"
+                size="large"
+                style="margin-right: 20px"
+                @change="handleChangeFilterVideo"
+              />
               <el-switch v-model="useGrid" active-text="宫格" inactive-text="列表" @change="handleLayoutChange" />
             </div>
             <div class="main-title-right">
@@ -56,15 +71,15 @@
             </div>
           </div>
           <div class="main-container">
-            <div ref="courses" :class="{ 'videobox': useGrid == true, 'videobox-drop': useGrid == false }">
+            <div ref="courses" :class="{ videobox: useGrid == true, 'videobox-drop': useGrid == false }">
               <div v-for="(course, index) in videoList" :key="course.id" class="videoitem" :data-index="index">
                 <div class="vide">
-                  <img :src="course.img" style="width: 100%;height: 100%;object-fit: cover;">
+                  <img :src="course.img" style="width: 100%; height: 100%; object-fit: cover" />
                 </div>
                 <div class="desc">
-                  <div style="font-weight: 500;font-size: 14px;margin:10px 0;">{{ course.title }}</div>
-                  <div style="display: flex; align-items: center;justify-content: space-between;">
-                    <div style="font-size: 12px;">上架时间：{{ course.crtim }}</div>
+                  <div style="font-weight: 500; font-size: 14px; margin: 10px 0">{{ course.title }}</div>
+                  <div style="display: flex; align-items: center; justify-content: space-between">
+                    <div style="font-size: 12px">上架时间：{{ course.crtim }}</div>
 
                     <el-popover placement="bottom" trigger="click">
                       <div class="course-btn" @click="editCourse(course)">编辑</div>
@@ -77,15 +92,20 @@
                 </div>
               </div>
             </div>
-            <vab-pagination :current-page="courseParams.page" :page-size="courseParams.pagesize" :total="videoTotal"
-              @current-change="handleCourseCurrentChange" @size-change="handleCourseSizeChange" />
+            <vab-pagination
+              :current-page="courseParams.page"
+              :page-size="courseParams.pagesize"
+              :total="videoTotal"
+              @current-change="handleCourseCurrentChange"
+              @size-change="handleCourseSizeChange"
+            />
           </div>
         </div>
         <div v-if="appState === 2">
-          <div style="width: 100%;display: flex;justify-content: flex-end">
+          <div style="width: 100%; display: flex; justify-content: flex-end">
             <el-button :icon="Plus" type="primary" @click="addMsgState">发布消息</el-button>
           </div>
-          <el-table v-loading="listLoading" :data="msgTableData" height="calc(100vh - 350px)" style="width: 100%;">
+          <el-table v-loading="listLoading" :data="msgTableData" height="calc(100vh - 350px)" style="width: 100%">
             <el-table-column label="标题名称" prop="title" width="150px" />
             <el-table-column label="时间" prop="uptim" width="200px" />
             <el-table-column label="消息内容" prop="msg" />
@@ -96,18 +116,32 @@
               </template>
             </el-table-column>
           </el-table>
-          <vab-pagination :current-page="msgParams.page" :page-size="msgParams.pagesize" :total="msgTotal"
-            @current-change="handleMsgCurrentChange" @size-change="handleMsgSizeChange" />
+          <vab-pagination
+            :current-page="msgParams.page"
+            :page-size="msgParams.pagesize"
+            :total="msgTotal"
+            @current-change="handleMsgCurrentChange"
+            @size-change="handleMsgSizeChange"
+          />
         </div>
         <div v-if="appState === 3">
-          <el-table :data="feedbackListData" height="calc(100vh - 350px)" style="width: 100%;">
+          <el-table :data="feedbackListData" height="calc(100vh - 350px)" style="width: 100%">
             <el-table-column label="反馈时间" prop="uptim" width="200px" />
             <el-table-column label="反馈用户" prop="user" width="200px" />
             <el-table-column label="联系方式" prop="contact" />
             <el-table-column label="反馈图片" prop="img">
               <template #default="{ row }">
-                <el-image fit="cover" :initial-index="4" :max-scale="7" :min-scale="0.2" :preview-src-list="[row.img]"
-                  :preview-teleported="true" :src="row.img" style="width: 100px; height: 100px" :zoom-rate="1.2" />
+                <el-image
+                  fit="cover"
+                  :initial-index="4"
+                  :max-scale="7"
+                  :min-scale="0.2"
+                  :preview-src-list="[row.img]"
+                  :preview-teleported="true"
+                  :src="row.img"
+                  style="width: 100px; height: 100px"
+                  :zoom-rate="1.2"
+                />
               </template>
             </el-table-column>
             <el-table-column label="反馈内容" prop="msg" />
@@ -117,48 +151,52 @@
               </template>
             </el-table-column>
           </el-table>
-          <vab-pagination :current-page="feedbackParams.page" :page-size="feedbackParams.pagesize"
-            :total="feedbackTotal" @current-change="handleFeedbackCurrentChange"
-            @size-change="handleFeedbackSizeChange" />
+          <vab-pagination
+            :current-page="feedbackParams.page"
+            :page-size="feedbackParams.pagesize"
+            :total="feedbackTotal"
+            @current-change="handleFeedbackCurrentChange"
+            @size-change="handleFeedbackSizeChange"
+          />
         </div>
         <div v-if="appState === 4">
           <div v-loading="listLoading" class="setmein">
-            <div style="flex:1">
-              <div style="font-weight: 500;font-size: 16px;margin-bottom: 10px">我的设置</div>
+            <div style="flex: 1">
+              <div style="font-weight: 500; font-size: 16px; margin-bottom: 10px">我的设置</div>
               <div class="inputbox">
-                <span style="font-size: 14px;margin-right:10px;">团队logo</span>
+                <span style="font-size: 14px; margin-right: 10px">团队logo</span>
                 <div>
                   <vab-upload :img="userInfoForm.logo" :limit="1" @set-upload-img="getUploadImg" />
-                  <div style="font-size: 14px;margin: 6px 0 10px 0;">
+                  <div style="font-size: 14px; margin: 6px 0 10px 0">
                     *图片不得大于2M，长宽比1:1，格式为jpg/png，尺寸最小为240*240px，最优为800*800px
                   </div>
                 </div>
               </div>
               <div class="inputbox">
                 <div class="input-item">
-                  <span style="font-size: 14px;margin-right:10px;">团队名称</span>
-                  <el-input v-model="userInfoForm.team_name" style="width:180px;margin-right:20px;" />
+                  <span style="font-size: 14px; margin-right: 10px">团队名称</span>
+                  <el-input v-model="userInfoForm.team_name" style="width: 180px; margin-right: 20px" />
                 </div>
                 <div class="input-item">
-                  <span style="font-size: 14px;margin-right:10px;">团队代码</span>
-                  <el-input v-model="userInfoForm.team_code" disabled style="width:180px" />
-                </div>
-              </div>
-              <div style="font-weight: 500;font-size: 16px;margin-bottom: 10px">联系我们</div>
-              <div class="inputbox">
-                <div class="input-item">
-                  <span style="font-size: 14px;margin-right:10px;">联系总部</span>
-                  <el-input v-model="userInfoForm.contact_main" style="width:180px;margin-right:20px;" />
-                </div>
-                <div class="input-item">
-                  <span style="font-size: 14px;margin-right:10px;">联系客服</span>
-                  <el-input v-model="userInfoForm.contact_server" style="width:180px" />
+                  <span style="font-size: 14px; margin-right: 10px">团队代码</span>
+                  <el-input v-model="userInfoForm.team_code" disabled style="width: 180px" />
                 </div>
               </div>
+              <div style="font-weight: 500; font-size: 16px; margin-bottom: 10px">联系我们</div>
               <div class="inputbox">
                 <div class="input-item">
-                  <span style="font-size: 14px;margin-right:10px;">联系运营</span>
-                  <el-input v-model="userInfoForm.onteact_sell" style="width:180px;margin-right:20px;" />
+                  <span style="font-size: 14px; margin-right: 10px">联系总部</span>
+                  <el-input v-model="userInfoForm.contact_main" style="width: 180px; margin-right: 20px" />
+                </div>
+                <div class="input-item">
+                  <span style="font-size: 14px; margin-right: 10px">联系客服</span>
+                  <el-input v-model="userInfoForm.contact_server" style="width: 180px" />
+                </div>
+              </div>
+              <div class="inputbox">
+                <div class="input-item">
+                  <span style="font-size: 14px; margin-right: 10px">联系运营</span>
+                  <el-input v-model="userInfoForm.onteact_sell" style="width: 180px; margin-right: 20px" />
                 </div>
               </div>
             </div>
@@ -174,7 +212,9 @@
         <el-form-item label="手机号" prop="phone">
           <el-input v-model="userParams.phone" autocomplete="off" size="small" />
         </el-form-item>
-        <div style="font-size: 14px; color: #e02020">密码会自动以短信的形式下发到手机号，请确保填写的手机号能正常接收短信。</div>
+        <div style="font-size: 14px; color: #e02020">
+          密码会自动以短信的形式下发到手机号，请确保填写的手机号能正常接收短信。
+        </div>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
@@ -219,11 +259,22 @@
         </el-form>
       </div>
     </el-dialog>
-    <el-dialog v-model="tutorialsFormState" :before-close="handleDialogClose" :close-on-click-modal="false"
-      :destroy-on-close="true" :title="tutorialsForm.id ? '编辑教程' : '发布教程'" width="500px">
+    <el-dialog
+      v-model="tutorialsFormState"
+      :before-close="handleDialogClose"
+      :close-on-click-modal="false"
+      :destroy-on-close="true"
+      :title="tutorialsForm.id ? '编辑教程' : '发布教程'"
+      width="500px"
+    >
       <div class="jifenbox" style="padding-bottom: 30px">
-        <el-form ref="tutorialsFormInstance" class="demo-ruleForm" label-width="100" :model="tutorialsForm"
-          :rules="tutorialsFormRules">
+        <el-form
+          ref="tutorialsFormInstance"
+          class="demo-ruleForm"
+          label-width="100"
+          :model="tutorialsForm"
+          :rules="tutorialsFormRules"
+        >
           <el-form-item label="教程类目" prop="group">
             <el-select v-model="tutorialsForm.group" placeholder="请选择教程类目">
               <el-option v-for="item in videoOptions" :key="item.id" :label="item.name" :value="item.id" />
@@ -241,10 +292,17 @@
                 <el-radio value="1">视频上传</el-radio>
                 <el-radio value="2">链接上传</el-radio>
               </el-radio-group>
-              <el-upload v-if="radioState == 1" v-model:file-list="videoFileList" accept="video/*"
-                action="system/method/file/upload" :before-upload="beforeUpload" drag :http-request="handleUpload"
-                multiple>
-                <i class="el-icon-upload"></i>
+              <el-upload
+                v-if="radioState == 1"
+                v-model:file-list="videoFileList"
+                accept="video/*"
+                action="system/method/file/upload"
+                :before-upload="beforeUpload"
+                drag
+                :http-request="handleUpload"
+                multiple
+              >
+                <i class="el-icon-upload" />
                 <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
               </el-upload>
               <el-input v-if="radioState == 2" v-model="tutorialsForm.src" />
@@ -272,16 +330,20 @@ import {
   delMsg,
   getAdminList,
   getCourseCourses,
-  getCourseGroups, getFeedback,
+  getCourseGroups,
+  getFeedback,
   getMsg,
   getTeamInfo,
-  saveTeamInfo, setRead, updateAgency,
-  updateCourse, giveIntegral
+  saveTeamInfo,
+  setRead,
+  updateAgency,
+  updateCourse,
+  giveIntegral
 } from '/@/api/group.ts'
 import { gp } from '/@vab/plugins/vab.ts'
 import { translate } from '/@/i18n'
 import { isPhone } from '/@/utils/validate.ts'
-import type { TableInstance } from 'element-plus';
+import type { TableInstance } from 'element-plus'
 import { ElMessageBox } from 'element-plus'
 import { storeToRefs } from 'pinia'
 import { useSettingsStore } from '/@/store/modules/settings'
@@ -324,22 +386,22 @@ const userRule = {
     {
       required: true,
       trigger: 'blur',
-      message: translate('请输入手机号'),
+      message: translate('请输入手机号')
     },
-    { validator: validatePhone, trigger: 'blur' },
-  ],
+    { validator: validatePhone, trigger: 'blur' }
+  ]
 }
 const userParams = reactive({
   phone: '',
-  is_boss: false,
+  is_boss: false
 })
 const rules = {
   id: [{ required: true, message: '请输入对方用户ID', trigger: 'blur' }],
-  balance: [{ required: true, message: '请输入分配积分', trigger: 'blur' }],
+  balance: [{ required: true, message: '请输入分配积分', trigger: 'blur' }]
 }
 const msgRules = {
   title: [{ required: true, message: '请输入标题名称', trigger: 'blur' }],
-  msg: [{ required: true, message: '请输入消息内容', trigger: 'blur' }],
+  msg: [{ required: true, message: '请输入消息内容', trigger: 'blur' }]
 }
 const handleAdd = () => {
   dialogFormVisible.value = true
@@ -390,7 +452,7 @@ getAdminListData()
 const jfdioal = ref(false)
 let form = reactive({
   id: '',
-  balance: '',
+  balance: ''
 })
 const currentRow = ref({})
 const ruleFormRef = ref<TableInstance>()
@@ -398,7 +460,7 @@ const fpjf = (row: any) => {
   jfdioal.value = true
   form = reactive({
     id: row.id,
-    balance: '',
+    balance: ''
   })
   currentRow.value = row
 }
@@ -409,7 +471,7 @@ const sumjfen = () => {
         btnLoading.value = true
         giveIntegral({
           userId: form.id,
-          giveVal: form.balance,
+          giveVal: form.balance
         })
           .then((res: any) => {
             if (res.code === 200) {
@@ -442,15 +504,17 @@ const deleteShop = (row: any) => {
   listLoading.value = true
   updateAgency({
     id: row.id,
-    avtag: !row.avtag,
-  }).then((res: any) => {
-    if (res.code === 200) {
-      gp.$baseMessage('操作成功', 'success', 'hey')
-      getAdminListData()
-    }
-  }).finally(() => {
-    listLoading.value = false
+    avtag: !row.avtag
   })
+    .then((res: any) => {
+      if (res.code === 200) {
+        gp.$baseMessage('操作成功', 'success', 'hey')
+        getAdminListData()
+      }
+    })
+    .finally(() => {
+      listLoading.value = false
+    })
 }
 const handleSizeChange = (value: number) => {
   queryForm.page = 1
@@ -468,11 +532,11 @@ const handleChangeOnline = () => {
   switch (online.value) {
     case '启用': {
       queryForm.avtag = true
-      break;
+      break
     }
     case '停用': {
       queryForm.avtag = false
-      break;
+      break
     }
     default: {
       queryForm.avtag = undefined
@@ -488,22 +552,22 @@ const handleChangeFilterApp = () => {
     case '教学': {
       appState.value = 1
       console.log(123456)
-      break;
+      break
     }
     case '消息': {
       appState.value = 2
       getMsgList()
-      break;
+      break
     }
     case '反馈': {
       appState.value = 3
       getFeedbackList()
-      break;
+      break
     }
     case '我的': {
       appState.value = 4
       getTeamInfoData()
-      break;
+      break
     }
   }
 }
@@ -513,11 +577,11 @@ const handleChangeFilterVideo = () => {
   switch (filterVideo.value) {
     case '产品教学': {
       courseParams.group = videoOptions.value.find((item: any) => item.name === '产品教学')?.id
-      break;
+      break
     }
     case '运营教学': {
       courseParams.group = videoOptions.value.find((item: any) => item.name === '运营教学')?.id
-      break;
+      break
     }
     default: {
       courseParams.group = undefined
@@ -559,40 +623,44 @@ const confPublishTutorial = () => {
         if (tutorialsForm.id) {
           btnLoading.value = true
           const { avtag, group, id, img, src, title } = tutorialsForm
-          updateCourse({ avtag, group, id, img, src, title }).then((res: any) => {
-            if (res.code === 200) {
-              gp.$baseMessage('修改成功!', 'success', 'hey')
-              tutorialsFormState.value = false
-              getCourseCoursesData()
-              tutorialsForm = reactive({
-                avtag: true,
-                group: '',
-                img: '',
-                src: '',
-                title: ''
-              })
-            }
-          }).finally(() => {
-            btnLoading.value = false
-          })
+          updateCourse({ avtag, group, id, img, src, title })
+            .then((res: any) => {
+              if (res.code === 200) {
+                gp.$baseMessage('修改成功!', 'success', 'hey')
+                tutorialsFormState.value = false
+                getCourseCoursesData()
+                tutorialsForm = reactive({
+                  avtag: true,
+                  group: '',
+                  img: '',
+                  src: '',
+                  title: ''
+                })
+              }
+            })
+            .finally(() => {
+              btnLoading.value = false
+            })
         } else {
           btnLoading.value = true
-          addCourse(tutorialsForm).then((res: any) => {
-            if (res.code === 200) {
-              gp.$baseMessage('添加成功!', 'success', 'hey')
-              tutorialsFormState.value = false
-              getCourseCoursesData()
-              tutorialsForm = reactive({
-                avtag: true,
-                group: '',
-                img: '',
-                src: '',
-                title: ''
-              })
-            }
-          }).finally(() => {
-            btnLoading.value = false
-          })
+          addCourse(tutorialsForm)
+            .then((res: any) => {
+              if (res.code === 200) {
+                gp.$baseMessage('添加成功!', 'success', 'hey')
+                tutorialsFormState.value = false
+                getCourseCoursesData()
+                tutorialsForm = reactive({
+                  avtag: true,
+                  group: '',
+                  img: '',
+                  src: '',
+                  title: ''
+                })
+              }
+            })
+            .finally(() => {
+              btnLoading.value = false
+            })
         }
       }
     })
@@ -608,15 +676,17 @@ const videoList = ref<any>([])
 const videoTotal = ref(0)
 const getCourseCoursesData = () => {
   courseLoading.value = true
-  getCourseCourses(courseParams).then((res: any) => {
-    if (res.code === 200) {
-      videoList.value = res.data.rows
-      videoList.value.sort((a: any, b: any) => b.index - a.index);
-      videoTotal.value = res.data.total
-    }
-  }).finally(() => {
-    courseLoading.value = false
-  })
+  getCourseCourses(courseParams)
+    .then((res: any) => {
+      if (res.code === 200) {
+        videoList.value = res.data.rows
+        videoList.value.sort((a: any, b: any) => b.index - a.index)
+        videoTotal.value = res.data.total
+      }
+    })
+    .finally(() => {
+      courseLoading.value = false
+    })
 }
 const handleCourseSizeChange = (value: number) => {
   courseParams.page = 1
@@ -640,7 +710,7 @@ const delCourseData = (row: any) => {
   ElMessageBox.confirm('确认进行此操作吗？', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
-    draggable: true,
+    draggable: true
   }).then(() => {
     delCourse(row.id).then((res: any) => {
       if (res.code === 200) {
@@ -664,14 +734,16 @@ const msgParams = reactive({
 })
 const getMsgList = () => {
   listLoading.value = true
-  getMsg(msgParams).then((res: any) => {
-    if (res.code === 200) {
-      msgTableData.value = res.data.rows
-      msgTotal.value = res.data.total
-    }
-  }).finally(() => {
-    listLoading.value = false
-  })
+  getMsg(msgParams)
+    .then((res: any) => {
+      if (res.code === 200) {
+        msgTableData.value = res.data.rows
+        msgTotal.value = res.data.total
+      }
+    })
+    .finally(() => {
+      listLoading.value = false
+    })
 }
 const msgDialogState = ref(false)
 let msgForm = reactive({
@@ -692,15 +764,17 @@ const sumAddMsg = () => {
     msgFormInstance.value?.validate(async (valid: any) => {
       if (valid) {
         btnLoading.value = true
-        addMsg(msgForm).then((res: any) => {
-          if (res.code === 200) {
-            gp.$baseMessage('添加成功!', 'success', 'hey')
-            msgDialogState.value = false
-            getMsgList()
-          }
-        }).finally(() => {
-          btnLoading.value = false
-        })
+        addMsg(msgForm)
+          .then((res: any) => {
+            if (res.code === 200) {
+              gp.$baseMessage('添加成功!', 'success', 'hey')
+              msgDialogState.value = false
+              getMsgList()
+            }
+          })
+          .finally(() => {
+            btnLoading.value = false
+          })
       }
     })
 }
@@ -751,7 +825,7 @@ const handleFeedbackCurrentChange = (value: number) => {
 const updateFeedback = (row: any) => {
   setRead({
     id: row.id,
-    is_read: !row.is_read,
+    is_read: !row.is_read
   }).then((res: any) => {
     if (res.code === 200) {
       gp.$baseMessage('设置成功', 'success', 'hey')
@@ -769,21 +843,23 @@ let userInfoForm = reactive({
 })
 const getTeamInfoData = () => {
   listLoading.value = true
-  getTeamInfo().then((res: any) => {
-    if (res.code === 200) {
-      const { logo, team_name, team_code, contact_main, contact_server, onteact_sell } = res.data
-      userInfoForm = reactive({
-        logo,
-        team_name,
-        team_code,
-        contact_main,
-        contact_server,
-        onteact_sell,
-      })
-    }
-  }).finally(() => {
-    listLoading.value = false
-  })
+  getTeamInfo()
+    .then((res: any) => {
+      if (res.code === 200) {
+        const { logo, team_name, team_code, contact_main, contact_server, onteact_sell } = res.data
+        userInfoForm = reactive({
+          logo,
+          team_name,
+          team_code,
+          contact_main,
+          contact_server,
+          onteact_sell
+        })
+      }
+    })
+    .finally(() => {
+      listLoading.value = false
+    })
 }
 const getUploadImg = (fileList: any): void => {
   if (fileList.length > 0) {
@@ -791,24 +867,26 @@ const getUploadImg = (fileList: any): void => {
   } else {
     userInfoForm.logo = ''
   }
-};
+}
 const getUploadTutorialsImg = (fileList: any): void => {
   if (fileList.length > 0) {
     tutorialsForm.img = fileList[0].url
   } else {
     tutorialsForm.img = ''
   }
-};
+}
 const updateTeamInfo = () => {
   btnLoading.value = true
-  saveTeamInfo(userInfoForm).then((res: any) => {
-    if (res.code === 200) {
-      gp.$baseMessage('设置成功', 'success', 'hey')
-      getTeamInfoData()
-    }
-  }).finally(() => {
-    btnLoading.value = false
-  })
+  saveTeamInfo(userInfoForm)
+    .then((res: any) => {
+      if (res.code === 200) {
+        gp.$baseMessage('设置成功', 'success', 'hey')
+        getTeamInfoData()
+      }
+    })
+    .finally(() => {
+      btnLoading.value = false
+    })
 }
 const videoFileList = ref([])
 const videoUploadLoading = ref(false)
@@ -817,45 +895,42 @@ const changeRadioState = () => {
   console.log(radioState.value)
 }
 const getToken = (): string => {
-  return localStorage.getItem('shop-vite-token') || '';
-};
+  return localStorage.getItem('shop-vite-token') || ''
+}
 
 const beforeUpload = (file: File) => {
-  const isVideo = file.type.startsWith('video/');
+  const isVideo = file.type.startsWith('video/')
   if (!isVideo) {
     gp.$baseMessage('只能上传视频文件', 'error', 'hey')
   }
-  return isVideo;
-};
+  return isVideo
+}
 
 const handleUpload = async (options: any) => {
-  const formData = new FormData();
-  formData.append('file', options.file);
-  const baseUrlStr = localStorage.getItem('baseUrl');
-  const { default: rawBaseUrl } = JSON.parse(baseUrlStr);
-  const baseUrl =
-    typeof rawBaseUrl === 'string'
-      ? (rawBaseUrl.endsWith('/') ? rawBaseUrl : `${rawBaseUrl}/`)
-      : '';
-  const action = `${baseUrl}system/method/file/upload`;
+  const formData = new FormData()
+  formData.append('file', options.file)
+  const baseUrlStr = localStorage.getItem('baseUrl')
+  const { default: rawBaseUrl } = JSON.parse(baseUrlStr)
+  const baseUrl = typeof rawBaseUrl === 'string' ? (rawBaseUrl.endsWith('/') ? rawBaseUrl : `${rawBaseUrl}/`) : ''
+  const action = `${baseUrl}system/method/file/upload`
   try {
     videoUploadLoading.value = true
     const response = await axios.post(action, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
         Authorization: `Bearer ${getToken()}`
-      },
-    });
+      }
+    })
     gp.$baseMessage('文件上传成功', 'success', 'hey')
-    console.log('Upload successful:', response.data);
+    console.log('Upload successful:', response.data)
   } catch (error) {
     gp.$baseMessage('文件上传失败，请稍后再试', 'error', 'hey')
     videoFileList.value = []
-    console.error('There was an error uploading the video!', error);
+    console.error('There was an error uploading the video!', error)
   } finally {
     videoUploadLoading.value = false
   }
-};
+}
 </script>
 <style scoped lang="scss">
 .filter-main {
@@ -905,7 +980,7 @@ const handleUpload = async (options: any) => {
     .vide {
       width: 100px;
       height: 100px;
-      background: #D8D8D8;
+      background: #d8d8d8;
       border-radius: 6px;
       overflow: hidden;
     }
@@ -936,7 +1011,7 @@ const handleUpload = async (options: any) => {
     .vide {
       width: 100%;
       height: 228px;
-      background: #D8D8D8;
+      background: #d8d8d8;
       border-radius: 6px;
       overflow: hidden;
     }

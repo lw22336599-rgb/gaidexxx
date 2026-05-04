@@ -15,7 +15,7 @@ import { useTabsStore } from '/@/store/modules/tabs'
 import { handleActivePath } from '/@/utils/routes'
 
 defineOptions({
-  name: 'NoLayout',
+  name: 'NoLayout'
 })
 
 const tabsStore = useTabsStore()

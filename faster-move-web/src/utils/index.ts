@@ -21,7 +21,7 @@ export function parseTime(time: any, cFormat: string) {
     h: date.getHours(),
     i: date.getMinutes(),
     s: date.getSeconds(),
-    a: date.getDay(),
+    a: date.getDay()
   }
   return format.replaceAll(/{([adhimsy])+}/g, (result, key) => {
     let value = formatObj[key]
@@ -74,8 +74,8 @@ export function paramObj(url: string) {
  * @returns {*}
  */
 export function translateDataToTree(data: any[]) {
-  const parent = data.filter((value) => value.parentId === 'undefined' || value.parentId === null)
-  const children = data.filter((value) => value.parentId !== 'undefined' && value.parentId !== null)
+  const parent = data.filter(value => value.parentId === 'undefined' || value.parentId === null)
+  const children = data.filter(value => value.parentId !== 'undefined' && value.parentId !== null)
   const translator = (parent: any[], children: any[]) => {
     parent.forEach((_parent: any) => {
       children.forEach((current: any, index: number) => {
@@ -104,7 +104,7 @@ export function translateTreeToData(data: any) {
       result.push({
         id: data.id,
         name: data.name,
-        parentId: data.parentId,
+        parentId: data.parentId
       })
       const child = data.children
       if (child) {

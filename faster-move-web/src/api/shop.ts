@@ -1,4 +1,3 @@
-
 import { ShopType } from '../types/shop'
 import request from '/@/utils/request'
 
@@ -81,7 +80,7 @@ export const setShopIsTop = (data: any) => {
   const { shop, top } = data
   return request({
     url: `/shopmg/setshoptop?shop=${shop}&top=${top}`,
-    method: 'post',
+    method: 'post'
   })
 }
 
@@ -171,7 +170,7 @@ export const filerequ = (data: any): Promise<{ url: string }> => {
     url: '/system/method/file/upload',
     method: 'post',
     headers: {
-      "Content-Type": "multipart/form-data"
+      'Content-Type': 'multipart/form-data'
     },
     data
   })
@@ -190,7 +189,7 @@ export const updateShopExtra = (data: any) => {
   return request({
     url: '/shopmg/updateshopextra',
     method: 'post',
-    data,
+    data
   })
 }
 

@@ -8,7 +8,12 @@
         <el-avatar :size="50" :src="avatar" />
         <div class="username">{{ username }}</div>
         <ul class="menu">
-          <li v-for="(item, index) in menuList" :key="index" :class="item.active ? 'menu-item-active' : ''" @click="openWindow(item)">
+          <li
+            v-for="(item, index) in menuList"
+            :key="index"
+            :class="item.active ? 'menu-item-active' : ''"
+            @click="openWindow(item)"
+          >
             <vab-icon :icon="item.icon" />
             <div>{{ item.title }}</div>
           </li>
@@ -23,7 +28,7 @@
                   <el-col :lg="24">
                     <vab-card
                       :body-style="{
-                        height: '160px',
+                        height: '160px'
                       }"
                       class="top-card"
                     >
@@ -73,7 +78,7 @@ import iot_6 from '/@/assets/iot_images/iot_6.png'
 import { useUserStore } from '/@/store/modules/user'
 
 defineOptions({
-  name: 'Iot',
+  name: 'Iot'
 })
 
 interface MenuListType {
@@ -101,55 +106,55 @@ const menuList = ref<MenuListType[]>([
     icon: 'earthquake-fill',
     title: '物联网',
     path: '/iot',
-    active: true,
+    active: true
   },
   {
     icon: 'building-line',
     title: '门户',
-    path: '/portal',
+    path: '/portal'
   },
   {
     icon: 'database-2-line',
     title: '数据大屏',
-    path: '/dataScreen',
+    path: '/dataScreen'
   },
   {
     icon: 'admin-fill',
     title: '后台管理',
-    path: '/index',
-  },
+    path: '/index'
+  }
 ])
 const iotList = ref<IotListType[]>([
   {
     title: '空调',
-    icon: iot_1,
+    icon: iot_1
   },
   {
     title: '扫地机器人',
-    icon: iot_2,
+    icon: iot_2
   },
   {
     title: '摄像头',
-    icon: iot_3,
+    icon: iot_3
   },
   {
     title: '空气净化器',
-    icon: iot_4,
+    icon: iot_4
   },
   {
     title: '灯',
-    icon: iot_5,
+    icon: iot_5
   },
   {
     title: '门锁',
-    icon: iot_6,
-  },
+    icon: iot_6
+  }
 ])
 const serviceList = ref<ServiceListType[]>([
   { title: '数据看板', icon: 'article' },
   { title: '日志查询', icon: 'wtt' },
   { title: '模组', icon: 'video' },
-  { title: '服务商', icon: 'wenda' },
+  { title: '服务商', icon: 'wenda' }
 ])
 
 const openWindow = (item: MenuListType) => {

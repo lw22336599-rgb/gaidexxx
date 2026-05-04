@@ -30,7 +30,7 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'ECharts',
+  name: 'ECharts'
 })
 </script>
 

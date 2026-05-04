@@ -4,8 +4,8 @@ import { setupI18n } from '/@/i18n'
 import { setupRouter } from '/@/router'
 import { setupStore } from '/@/store'
 
-import "@pureadmin/table/dist/style.css";
-import PureTable from "@pureadmin/table";
+import '@pureadmin/table/dist/style.css'
+import PureTable from '@pureadmin/table'
 import AuthButton from '/@/components/AuthButton/index.vue'
 
 const app = createApp(App)

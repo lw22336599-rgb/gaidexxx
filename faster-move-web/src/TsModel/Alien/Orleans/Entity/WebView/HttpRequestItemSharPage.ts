@@ -1,9 +1,9 @@
-import {SetCookieDomanItemInfo} from "@/TsModel/Alien/Orleans/Entity/WebView/SetCookieDomanItemInfo";
+import type { SetCookieDomanItemInfo } from '@/TsModel/Alien/Orleans/Entity/WebView/SetCookieDomanItemInfo'
 
-import {HttpRequestItem} from "@/TsModel/Alien/Orleans/Entity/WebView/HttpRequestItem";
+import type { HttpRequestItem } from '@/TsModel/Alien/Orleans/Entity/WebView/HttpRequestItem'
 export interface HttpRequestItemSharPage extends HttpRequestItem {
-		SetCookieDomanInfos: SetCookieDomanItemInfo[];
-		ReturnCookies: boolean;
-		ReturnPostdata: boolean;
-		HeaderWhitelist?: string[] | null;
+  SetCookieDomanInfos: SetCookieDomanItemInfo[]
+  ReturnCookies: boolean
+  ReturnPostdata: boolean
+  HeaderWhitelist?: string[] | null
 }

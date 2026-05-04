@@ -1,8 +1,8 @@
 <template>
   <vab-card class="top-card weather-top-card">
     <div class="top-card-main">
-      <img alt="" :src="matchingWeatherImg(weather.describe)" style="width: 30%;height: auto">
-      <div style="width: calc(70% - 30px);box-sizing: border-box;">
+      <img alt="" :src="matchingWeatherImg(weather.describe)" style="width: 30%; height: auto" />
+      <div style="width: calc(70% - 30px); box-sizing: border-box">
         <div class="flexbox">
           <div>{{ weather.describe }}</div>
           <div class="supssd">{{ weather.temperature }}℃</div>
@@ -22,13 +22,13 @@
 <script lang="ts" setup>
 import matchingWeatherImg from '/@/utils/weather.js'
 defineOptions({
-  name: 'WeatherCard',
+  name: 'WeatherCard'
 })
 const props = defineProps({
   config: {
     type: Object,
-    default: () => {},
-  },
+    default: () => {}
+  }
 })
 const weather = props.config
 </script>
@@ -73,7 +73,7 @@ const weather = props.config
   }
 
   .supdiv {
-    color: #2CCA87;
+    color: #2cca87;
   }
 }
 </style>

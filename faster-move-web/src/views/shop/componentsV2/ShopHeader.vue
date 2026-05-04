@@ -8,12 +8,14 @@
         <vab-icon class="notification-2-fill" color="#fff" icon="notification-2-fill" />
         <div class="fun-sta">
           <div class="sta-item" @click="openDrawer('expire')">
-            {{ roleIncludeKA ? 'api授权失效' : '即将到期' }}<span :class="{ 'blur-text': demoMode }">{{ currentFunc ?
-              currentFunc.almost_end : '0' }}</span>家
+            {{ roleIncludeKA ? 'api授权失效' : '即将到期'
+            }}<span :class="{ 'blur-text': demoMode }">{{ currentFunc ? currentFunc.almost_end : '0' }}</span
+            >家
           </div>
           <div class="sta-item" @click="openDrawer('lose')">
             {{ roleIncludeKA ? '插件授权失效' : '店铺授权失效'
-            }}<span :class="{ 'blur-text': demoMode }">{{ currentFunc ? currentFunc.has_end : '0' }}</span>家
+            }}<span :class="{ 'blur-text': demoMode }">{{ currentFunc ? currentFunc.has_end : '0' }}</span
+            >家
           </div>
         </div>
       </div>
@@ -39,46 +41,73 @@
       <div class="recycle-drawer" style="height: 100%">
         <div class="recycle-container" style="border-top: 1px solid #eaeefb; height: 100%; padding: 20px 10px">
           <div class="main">
-            <div v-if="drawerType === 'expire'"
-              style="display: flex; align-items: center; justify-content: space-between">
-              <vab-card class="title-box-item" :class="{ 'title-is-active': queryParams.filter.func_state === 1 }"
-                @click="changeTimeState(1)">
+            <div
+              v-if="drawerType === 'expire'"
+              style="display: flex; align-items: center; justify-content: space-between"
+            >
+              <vab-card
+                class="title-box-item"
+                :class="{ 'title-is-active': queryParams.filter.func_state === 1 }"
+                @click="changeTimeState(1)"
+              >
                 <h3>订购未到期门店</h3>
                 <p>{{ currentFunc.not_out }}<span class="unit">家</span></p>
               </vab-card>
-              <vab-card class="title-box-item" :class="{ 'title-is-active': queryParams.filter.func_state === 2 }"
-                @click="changeTimeState(2)">
+              <vab-card
+                class="title-box-item"
+                :class="{ 'title-is-active': queryParams.filter.func_state === 2 }"
+                @click="changeTimeState(2)"
+              >
                 <h3>即将到期门店</h3>
                 <p>{{ currentFunc.almost_end }}<span class="unit">家</span></p>
               </vab-card>
-              <vab-card class="title-box-item" :class="{ 'title-is-active': queryParams.filter.func_state === 5 }"
-                @click="changeTimeState(5)">
+              <vab-card
+                class="title-box-item"
+                :class="{ 'title-is-active': queryParams.filter.func_state === 5 }"
+                @click="changeTimeState(5)"
+              >
                 <h3>已到期门店</h3>
                 <p>{{ currentFunc.has_end }}<span class="unit">家</span></p>
               </vab-card>
             </div>
             <div class="head" style="margin-top: 30px; display: flex; align-items: center; justify-content: flex-end">
-              <el-select v-if="drawerType === 'expire'" v-model="queryParams.filter.func_code" placeholder="请选择功能名称"
-                style="width: 175px" @change="getShopList">
+              <el-select
+                v-if="drawerType === 'expire'"
+                v-model="queryParams.filter.func_code"
+                placeholder="请选择功能名称"
+                style="width: 175px"
+                @change="getShopList"
+              >
                 <el-option v-for="item in expireOptions" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
-              <el-input v-model="queryParams.filter.word" placeholder="搜索门店名称或ID或备注" style="width: 175px"
-                @change="getShopList" />
+              <el-input
+                v-model="queryParams.filter.word"
+                placeholder="搜索门店名称或ID或备注"
+                style="width: 175px"
+                @change="getShopList"
+              />
             </div>
             <div class="body" style="display: flex; flex-direction: column; flex: 1; overflow: hidden">
-              <el-table v-loading="tableLoading" :data="shopList"
+              <el-table
+                v-loading="tableLoading"
+                :data="shopList"
                 :height="`${drawerType === 'expire' ? 'calc(100vh - 450px)' : 'calc(100vh - 300px)'}`"
-                style="width: 100%; margin-top: 15px">
+                style="width: 100%; margin-top: 15px"
+              >
                 <el-table-column align="left" label="门店名称" width="300">
                   <template #default="scope">
                     <div class="mendianbox">
                       <div class="mendianbox-name">
-                        <div class="pointer" style="
+                        <div
+                          class="pointer"
+                          style="
                             display: flex;
                             align-items: flex-start;
                             color: var(--el-color-primary);
                             font-size: 16px;
-                          " @click="clicname(scope.row)">
+                          "
+                          @click="clicname(scope.row)"
+                        >
                           <vab-icon class="logo" :icon="icon" is-custom-svg />
                           <span>{{ scope.row.name }}</span>
                         </div>
@@ -94,13 +123,14 @@
                 <el-table-column label="店铺授权状态" width="120">
                   <template #default="{ row }">
                     <div class="citytext">
-                      <span class="suc-dot" :class="{ 'err-dot': row.state == 3 }"></span>{{ row.state === 3 ? '授权异常' :
-                        '授权正常' }}
+                      <span class="suc-dot" :class="{ 'err-dot': row.state == 3 }" />{{
+                        row.state === 3 ? '授权异常' : '授权正常'
+                      }}
                     </div>
                   </template>
                 </el-table-column>
                 <el-table-column v-if="drawerType === 'expire'" label="功能名称" width="120">
-                  <div>{{expireOptions.find(item => item.value === queryParams.filter.func_code)?.label}}</div>
+                  <div>{{ expireOptions.find(item => item.value === queryParams.filter.func_code)?.label }}</div>
                 </el-table-column>
                 <el-table-column label="功能到期时间" width="160">
                   <template #default="{ row }">
@@ -109,28 +139,50 @@
                 </el-table-column>
                 <el-table-column label="操作">
                   <template #default="{ row }">
-                    <div v-if="drawerType === 'expire'"
-                      style="font-size: 14px; color: var(--el-color-primary); cursor: pointer" @click="payFunShow(row)">
+                    <div
+                      v-if="drawerType === 'expire'"
+                      style="font-size: 14px; color: var(--el-color-primary); cursor: pointer"
+                      @click="payFunShow(row)"
+                    >
                       续费
                     </div>
-                    <div v-if="row.state === 3" style="font-size: 14px; color: var(--el-color-primary); cursor: pointer"
-                      @click="openApp(row.name)">
+                    <div
+                      v-if="row.state === 3"
+                      style="font-size: 14px; color: var(--el-color-primary); cursor: pointer"
+                      @click="openApp(row.name)"
+                    >
                       修复
                     </div>
                   </template>
                 </el-table-column>
               </el-table>
-              <vab-pagination :current-page="queryParams.page" :page-size="queryParams.pageSize" :total="total"
-                @current-change="handleCurrentChange" @size-change="handleSizeChange" />
+              <vab-pagination
+                :current-page="queryParams.page"
+                :page-size="queryParams.pageSize"
+                :total="total"
+                @current-change="handleCurrentChange"
+                @size-change="handleSizeChange"
+              />
             </div>
           </div>
         </div>
       </div>
     </el-drawer>
-    <set-only-bind v-if="showShopMsgState" :add-shop-after-obj="showShopMsg" :add-shop-after-state="showShopMsgState"
-      :is-bind="isBind" @close-shop-after="closeShopAfter" />
-    <pay-dialog v-if="payDialogState" :pay-dialog-state="payDialogState" :pay-type-text="payTypeText"
-      :shop-data="shopData" @close-dialog="closePayDialog" @pay-success="paySuccess" />
+    <set-only-bind
+      v-if="showShopMsgState"
+      :add-shop-after-obj="showShopMsg"
+      :add-shop-after-state="showShopMsgState"
+      :is-bind="isBind"
+      @close-shop-after="closeShopAfter"
+    />
+    <pay-dialog
+      v-if="payDialogState"
+      :pay-dialog-state="payDialogState"
+      :pay-type-text="payTypeText"
+      :shop-data="shopData"
+      @close-dialog="closePayDialog"
+      @pay-success="paySuccess"
+    />
   </div>
 </template>
 <script setup lang="ts">
@@ -203,17 +255,20 @@ const basicInfoList = [
   {
     type: 5,
     name: '淘宝闪购零售',
-    description: '经营：鲜花、水果、超市百货、生鲜、宠物用品、火锅食材、手机数码、美妆个护、母婴服饰、成人用品、医疗器械'
+    description:
+      '经营：鲜花、水果、超市百货、生鲜、宠物用品、火锅食材、手机数码、美妆个护、母婴服饰、成人用品、医疗器械'
   },
   {
     type: 6,
     name: '京东到家',
-    description: '经营：鲜花、水果、超市百货、生鲜、宠物用品、火锅食材、手机数码、美妆个护、母婴服饰、成人用品、医疗器械'
+    description:
+      '经营：鲜花、水果、超市百货、生鲜、宠物用品、火锅食材、手机数码、美妆个护、母婴服饰、成人用品、医疗器械'
   },
   {
     type: 7,
     name: '抖音即时零售',
-    description: '经营：鲜花、水果、超市百货、生鲜、宠物用品、火锅食材、手机数码、美妆个护、母婴服饰、成人用品、医疗器械'
+    description:
+      '经营：鲜花、水果、超市百货、生鲜、宠物用品、火锅食材、手机数码、美妆个护、母婴服饰、成人用品、医疗器械'
   },
   {
     type: 8,
@@ -387,13 +442,16 @@ const openApp = (name: any) => {
     8: 'open-elm-wm',
     1000: 'open-mt-groupbuy',
     1001: 'open-jd-home',
-    1002: 'open-dy-tuangou-capture',
+    1002: 'open-dy-tuangou-capture'
   }
   const params = {
     name: name || '',
     shop_type: queryParams.filter.shopType
   }
-    ; (globalThis as any).electron.openBrowser(invokeMap[queryParams.filter.shopType as number], params, async (res: any) => {
+  ;(globalThis as any).electron.openBrowser(
+    invokeMap[queryParams.filter.shopType as number],
+    params,
+    async (res: any) => {
       let data = {
         shop_type: params.shop_type,
         // shop_user: res?.info?.u,
@@ -425,7 +483,8 @@ const openApp = (name: any) => {
           getShopList()
         }
       })
-    })
+    }
+  )
 }
 const closeShopAfter = () => {
   showShopMsgState.value = false

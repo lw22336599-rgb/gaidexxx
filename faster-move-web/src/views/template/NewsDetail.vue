@@ -27,7 +27,7 @@ import { useTabsStore } from '/@/store/modules/tabs'
 import { handleActivePath } from '/@/utils/routes'
 
 defineOptions({
-  name: 'NewsDetail',
+  name: 'NewsDetail'
 })
 
 const route = useRoute()

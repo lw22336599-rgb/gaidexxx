@@ -15,7 +15,7 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'IconSelector',
+  name: 'IconSelector'
 })
 const icon = ref<string>('24-hours-fill')
 const visible = ref<boolean>(false)

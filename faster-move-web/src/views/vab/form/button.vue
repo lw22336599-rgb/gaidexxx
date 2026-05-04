@@ -116,9 +116,20 @@
 </template>
 
 <script lang="ts" setup>
-import { ArrowLeft, ArrowRight, Check, Delete, Edit, Message, Search, Share, Star, Upload } from '@element-plus/icons-vue'
+import {
+  ArrowLeft,
+  ArrowRight,
+  Check,
+  Delete,
+  Edit,
+  Message,
+  Search,
+  Share,
+  Star,
+  Upload
+} from '@element-plus/icons-vue'
 
 defineOptions({
-  name: 'Button',
+  name: 'Button'
 })
 </script>

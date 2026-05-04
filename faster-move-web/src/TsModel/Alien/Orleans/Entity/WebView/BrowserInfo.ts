@@ -1,4 +1,4 @@
 export interface BrowserInfo {
-		UserAgent?: string | null;
-		Url?: string | null;
+  UserAgent?: string | null
+  Url?: string | null
 }

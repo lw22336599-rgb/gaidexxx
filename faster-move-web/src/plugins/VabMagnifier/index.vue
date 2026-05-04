@@ -16,10 +16,10 @@
         zoomerPosition,
         !outZoomer && zoomerBgUrl,
         !outZoomer && zoomerBgSize,
-        !outZoomer && zoomerBgPosition,
+        !outZoomer && zoomerBgPosition
       ]"
     >
-      <slot name="zoomer"></slot>
+      <slot name="zoomer" />
     </div>
     <div
       v-if="outZoomer"
@@ -27,10 +27,10 @@
       :class="['img-out-show', { 'base-line': baseline }]"
       :style="[outZoomerStyle, outZoomerSize, outZoomerPosition, zoomerBgUrl, zoomerBgSize, zoomerBgPosition]"
     >
-      <div v-if="pointer" class="img-zoomer-point"></div>
-      <slot name="outZoomer"></slot>
+      <div v-if="pointer" class="img-zoomer-point" />
+      <slot name="outZoomer" />
     </div>
-    <slot></slot>
+    <slot />
   </div>
 </template>
 <script lang="ts">
@@ -39,83 +39,83 @@ export default {
   props: {
     url: {
       type: String,
-      default: '',
+      default: ''
     },
     highUrl: {
       type: String,
-      default: '',
+      default: ''
     },
     width: {
       type: Number,
-      default: 168,
+      default: 168
     },
     height: {
       type: Number,
-      default: -1,
+      default: -1
     },
     type: {
       type: String,
       default: 'square',
       validator(value: string) {
         return ['circle', 'square'].includes(value)
-      },
+      }
     },
     zoomerStyle: {
       type: Object,
-      default: () => {},
+      default: () => {}
     },
     outZoomerStyle: {
       type: Object,
-      default: () => {},
+      default: () => {}
     },
     scale: {
       type: Number,
-      default: 2,
+      default: 2
     },
     enterEvent: {
       type: [Object, UIEvent],
-      default: null,
+      default: null
     },
     moveEvent: {
       type: [Object, UIEvent],
-      default: null,
+      default: null
     },
     leaveEvent: {
       type: [Object, UIEvent],
-      default: null,
+      default: null
     },
     selector: {
       type: Boolean,
-      default: true,
+      default: true
     },
     outZoomer: {
       type: Boolean,
-      default: false,
+      default: false
     },
     pointer: {
       type: Boolean,
-      default: false,
+      default: false
     },
     baseline: {
       type: Boolean,
-      default: false,
+      default: false
     },
     disabledReactive: {
       type: Boolean,
-      default: false,
+      default: false
     },
     disabled: {
       type: Boolean,
-      default: false,
+      default: false
     },
     mask: {
       type: Boolean,
-      default: true,
+      default: true
     },
     maskColor: {
       type: String,
-      default: '',
-    },
+      default: ''
+    }
   },
   emits: ['mousemove', 'mouseleave', 'mouseenter', 'created'],
   data() {
@@ -124,23 +124,23 @@ export default {
         top: 0,
         left: 0,
         absoluteLeft: 0,
-        absoluteTop: 0,
+        absoluteTop: 0
       },
       zoomerBgRect: {
         top: 0,
-        left: 0,
+        left: 0
       },
       zoomerPoint: {
         leftBound: 0,
         topBound: 0,
         rightBound: 0,
-        bottomBound: 0,
+        bottomBound: 0
       },
       vZoomerPoint: {
         leftBound: 0,
         topBound: 0,
         rightBound: 0,
-        bottomBound: 0,
+        bottomBound: 0
       },
       hideZoomer: true,
       hideOutZoomer: true,
@@ -148,7 +148,7 @@ export default {
       outZoomerInitTop: 0,
       outZoomerTop: 0,
       imgInfo: {},
-      $img: null,
+      $img: null
     }
   },
   computed: {
@@ -173,48 +173,48 @@ export default {
       const { top, left } = this.zoomerRect
       return {
         top: `${top}px`,
-        left: `${left}px`,
+        left: `${left}px`
       }
     },
     zoomerSize() {
       const { width, zoomerHeight: height } = this
       return {
         width: `${width}px`,
-        height: `${height}px`,
+        height: `${height}px`
       }
     },
     outZoomerSize() {
       const { scale, width, zoomerHeight: height } = this
       return {
         width: `${width * scale}px`,
-        height: `${height * scale}px`,
+        height: `${height * scale}px`
       }
     },
     outZoomerPosition() {
       return {
-        top: `${this.outZoomerTop}px`,
+        top: `${this.outZoomerTop}px`
       }
     },
     zoomerBgUrl(): any {
       return {
-        backgroundImage: `url(${this.highUrl || this.url})`,
+        backgroundImage: `url(${this.highUrl || this.url})`
       }
     },
     zoomerBgSize(): any {
       const {
         scale,
-        imgInfo: { height, width },
+        imgInfo: { height, width }
       } = this as any
       return {
-        backgroundSize: `${width * scale}px ${height * scale}px`,
+        backgroundSize: `${width * scale}px ${height * scale}px`
       }
     },
     zoomerBgPosition(): any {
       const { left, top } = this.zoomerBgRect
       return {
-        backgroundPosition: `${left}px ${top}px`,
+        backgroundPosition: `${left}px ${top}px`
       }
-    },
+    }
   },
   watch: {
     scale() {
@@ -228,7 +228,7 @@ export default {
     width: 'initZoomerPoint',
     height: 'initZoomerPoint',
     vZoomerHalfWidth: 'initVZoomerPoint',
-    vZoomerHalfHeight: 'initVZoomerPoint',
+    vZoomerHalfHeight: 'initVZoomerPoint'
   },
   mounted() {
     this.url && this.handlerUrlChange()
@@ -251,7 +251,7 @@ export default {
         right: rect.right,
         bottom: rect.bottom,
         width: rect.right - rect.left,
-        height: rect.bottom - rectTop,
+        height: rect.bottom - rectTop
       }
     },
     addResizeListener(dom: any, cb: any) {
@@ -321,7 +321,7 @@ export default {
           zoomerHalfWidth,
           zoomerHalfHeight,
           vZoomerHalfWidth,
-          vZoomerHalfHeight,
+          vZoomerHalfHeight
         }: any = this
         const { absoluteLeft, absoluteTop } = zoomerRect
         const { leftBound, topBound, rightBound, bottomBound } = zoomerPoint
@@ -329,7 +329,7 @@ export default {
           leftBound: vZoomerLeftBound,
           topBound: vZoomerTopBound,
           rightBound: vZoomerRightBound,
-          bottomBound: vZoomerBottomBound,
+          bottomBound: vZoomerBottomBound
         } = vZoomerPoint
         let outZoomerInitTop = this.outZoomerInitTop
         const x = pageX - absoluteLeft
@@ -399,8 +399,8 @@ export default {
     },
     resetOutZoomPosition() {
       this.outZoomerInitTop = 0
-    },
-  },
+    }
+  }
 }
 </script>
 

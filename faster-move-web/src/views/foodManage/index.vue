@@ -3,25 +3,32 @@
     <!-- 进度条局部遮罩 -->
     <el-overlay v-if="showProgress" class="food-manage-overlay">
       <div class="progress-dialog">
-        <ProgressBar ref="progressBarRef" :task-id="progressInfo.taskId" :request-id="progressInfo.requestId"
-          :stream-method="progressInfo.streamMethod" :request-params="progressInfo.requestParams"
-          :title="progressInfo.title" @complete="handleProgressComplete" @error="handleProgressError"
-          @stop="handleProgressStop" />
+        <ProgressBar
+          ref="progressBarRef"
+          :task-id="progressInfo.taskId"
+          :request-id="progressInfo.requestId"
+          :stream-method="progressInfo.streamMethod"
+          :request-params="progressInfo.requestParams"
+          :title="progressInfo.title"
+          @complete="handleProgressComplete"
+          @error="handleProgressError"
+          @stop="handleProgressStop"
+        />
       </div>
     </el-overlay>
 
     <div class="food-manage__left">
       <div class="button-actions">
-        <el-button type="danger" @click="handlePullShopFoodsV2">
-          重新拉取商品
-        </el-button>
-        <el-button type="primary" @click="handlePullShopAct">
-          刷新活动
-        </el-button>
+        <el-button type="danger" @click="handlePullShopFoodsV2"> 重新拉取商品 </el-button>
+        <el-button type="primary" @click="handlePullShopAct"> 刷新活动 </el-button>
       </div>
       <div class="tree-wrapper">
-        <FoodGroupTree v-model:selectedGroups="selectedGroups" :groups="groups" @group-click="handleGroupClick"
-          @load-group-foods="handleLoadGroupFoods" />
+        <FoodGroupTree
+          v-model:selectedGroups="selectedGroups"
+          :groups="groups"
+          @group-click="handleGroupClick"
+          @load-group-foods="handleLoadGroupFoods"
+        />
       </div>
     </div>
     <div class="food-manage__right">
@@ -39,21 +46,31 @@
               <el-input v-model="searchForm.ProductName" placeholder="请输入" clearable @keyup.enter="handleSearch" />
             </el-form-item>
             <el-form-item label="价格区间">
-              <el-input-number v-model="searchForm.MinPrice" placeholder="最低价" :min="0" style="width: 100px;"
-                controls-position="right" />
-              <span style="margin: 0 8px;">-</span>
-              <el-input-number v-model="searchForm.MaxPrice" placeholder="最高价" :min="0" style="width: 100px;"
-                controls-position="right" />
+              <el-input-number
+                v-model="searchForm.MinPrice"
+                placeholder="最低价"
+                :min="0"
+                style="width: 100px"
+                controls-position="right"
+              />
+              <span style="margin: 0 8px">-</span>
+              <el-input-number
+                v-model="searchForm.MaxPrice"
+                placeholder="最高价"
+                :min="0"
+                style="width: 100px"
+                controls-position="right"
+              />
             </el-form-item>
             <el-form-item label="是否折扣">
-              <el-select v-model="searchForm.IsDiscount" placeholder="是否折扣" clearable style="width: 120px;">
+              <el-select v-model="searchForm.IsDiscount" placeholder="是否折扣" clearable style="width: 120px">
                 <el-option :value="undefined" label="全部" />
                 <el-option :value="true" label="是" />
                 <el-option :value="false" label="否" />
               </el-select>
             </el-form-item>
             <el-form-item label="是否上架">
-              <el-select v-model="searchForm.IsOnSale" placeholder="是否上架" clearable style="width: 120px;">
+              <el-select v-model="searchForm.IsOnSale" placeholder="是否上架" clearable style="width: 120px">
                 <el-option :value="undefined" label="全部" />
                 <el-option :value="true" label="上架" />
                 <el-option :value="false" label="下架" />
@@ -90,44 +107,106 @@
             <el-checkbox v-model="syncSite">实时同步到平台</el-checkbox>
           </div>
         </div>
-        <div class="table-wrapper" v-loading="loading" element-loading-text="正在加载商品数据..."
-          element-loading-background="rgba(255, 255, 255, 0.8)" element-loading-custom-class="food-table-loading">
-          <FoodTable v-model:selectedFoods="selectedFoods" v-model:selectedFoodIds="selectedFoodIds"
-            v-model:selectedSkus="selectedSkus" :foods="foods" :loading="loading" :task-id="taskId" :shop-id="shopId"
-            :tab-type="props.tabType" :sync-site="syncSite" @update="handleFoodUpdate"
-            @single-delete="handleSingleDelete" @update-price="handleUpdatePriceConfirm"
-            @update-stock="handleUpdateStockConfirm" @update-discount="handleUpdateDiscountConfirm"
-            @update-minbuy="handleUpdateMinBuyConfirm" @update-name="handleUpdateNameConfirm"
+        <div
+          v-loading="loading"
+          class="table-wrapper"
+          element-loading-text="正在加载商品数据..."
+          element-loading-background="rgba(255, 255, 255, 0.8)"
+          element-loading-custom-class="food-table-loading"
+        >
+          <FoodTable
+            v-model:selectedFoods="selectedFoods"
+            v-model:selectedFoodIds="selectedFoodIds"
+            v-model:selectedSkus="selectedSkus"
+            :foods="foods"
+            :loading="loading"
+            :task-id="taskId"
+            :shop-id="shopId"
+            :tab-type="props.tabType"
+            :sync-site="syncSite"
+            @update="handleFoodUpdate"
+            @single-delete="handleSingleDelete"
+            @update-price="handleUpdatePriceConfirm"
+            @update-stock="handleUpdateStockConfirm"
+            @update-discount="handleUpdateDiscountConfirm"
+            @update-minbuy="handleUpdateMinBuyConfirm"
+            @update-name="handleUpdateNameConfirm"
             @update-status="(params: FoodManageApi.BatchUpdateStatusParams) => handleUpdateStatusConfirm(params)"
             @recover="handleSingleRecover"
-            @offline-discount="(params: FoodManageApi.BatchOfflineDiscountParams) => handleOfflineDiscountConfirm(params)" />
+            @offline-discount="
+              (params: FoodManageApi.BatchOfflineDiscountParams) => handleOfflineDiscountConfirm(params)
+            "
+          />
         </div>
         <div class="pagination-wrapper">
-          <el-pagination v-model:current-page="pageIndex" :total="total" layout="total, prev, pager, next"
-            @current-change="handleCurrentChange" />
+          <el-pagination
+            v-model:current-page="pageIndex"
+            :total="total"
+            layout="total, prev, pager, next"
+            @current-change="handleCurrentChange"
+          />
         </div>
       </div>
     </div>
 
     <!-- 各种操作弹窗 -->
-    <UpdateNameDialog v-model="dialogs.updateName.visible" :selected-count="selectedFoods.length" :shop-id="shopId"
-      :task-id="taskId" @confirm="handleUpdateNameConfirm" />
-    <UpdatePriceDialog v-model="dialogs.updatePrice.visible" :selected-count="selectedFoods.length" :shop-id="shopId"
-      :task-id="taskId" @confirm="handleUpdatePriceConfirm" />
-    <UpdateDiscountDialog v-model="dialogs.updateDiscount.visible" :selected-count="selectedFoods.length"
-      :shop-id="shopId" :task-id="taskId" :targets="discountTargets" @confirm="handleUpdateDiscountConfirm" />
-    <UpdateStockDialog v-model="dialogs.updateStock.visible" :selected-count="selectedFoods.length" :shop-id="shopId"
-      :task-id="taskId" @confirm="handleUpdateStockConfirm" />
-    <UpdateMinBuyDialog v-model="dialogs.updateMinBuy.visible" :selected-count="selectedFoods.length" :shop-id="shopId"
-      :task-id="taskId" :selected-foods="selectedFoods" :selected-skus="selectedSkus"
-      @confirm="handleUpdateMinBuyConfirm" />
-    <UpdateImageDialog v-model="dialogs.updateImage.visible" :first-product-image="firstProductImage"
-      :base-params="baseParams" :food-ids="selectedFoodIds" v-model:onlyMainImage="onlyMainImage"
-      @confirm="handleUpdateImageConfirm" />
-    <ConfirmDialog v-model="dialogs.confirm.visible" :title="dialogs.confirm.title" :content="dialogs.confirm.content"
-      @confirm="dialogs.confirm.onConfirm" />
-    <UpdateStatusDialog v-model="dialogs.updateStatus.visible" :selected-count="selectedFoods.length"
-      @confirm="(params: FoodManageApi.BatchUpdateStatusParams) => handleUpdateStatusConfirm(params)" />
+    <UpdateNameDialog
+      v-model="dialogs.updateName.visible"
+      :selected-count="selectedFoods.length"
+      :shop-id="shopId"
+      :task-id="taskId"
+      @confirm="handleUpdateNameConfirm"
+    />
+    <UpdatePriceDialog
+      v-model="dialogs.updatePrice.visible"
+      :selected-count="selectedFoods.length"
+      :shop-id="shopId"
+      :task-id="taskId"
+      @confirm="handleUpdatePriceConfirm"
+    />
+    <UpdateDiscountDialog
+      v-model="dialogs.updateDiscount.visible"
+      :selected-count="selectedFoods.length"
+      :shop-id="shopId"
+      :task-id="taskId"
+      :targets="discountTargets"
+      @confirm="handleUpdateDiscountConfirm"
+    />
+    <UpdateStockDialog
+      v-model="dialogs.updateStock.visible"
+      :selected-count="selectedFoods.length"
+      :shop-id="shopId"
+      :task-id="taskId"
+      @confirm="handleUpdateStockConfirm"
+    />
+    <UpdateMinBuyDialog
+      v-model="dialogs.updateMinBuy.visible"
+      :selected-count="selectedFoods.length"
+      :shop-id="shopId"
+      :task-id="taskId"
+      :selected-foods="selectedFoods"
+      :selected-skus="selectedSkus"
+      @confirm="handleUpdateMinBuyConfirm"
+    />
+    <UpdateImageDialog
+      v-model="dialogs.updateImage.visible"
+      v-model:onlyMainImage="onlyMainImage"
+      :first-product-image="firstProductImage"
+      :base-params="baseParams"
+      :food-ids="selectedFoodIds"
+      @confirm="handleUpdateImageConfirm"
+    />
+    <ConfirmDialog
+      v-model="dialogs.confirm.visible"
+      :title="dialogs.confirm.title"
+      :content="dialogs.confirm.content"
+      @confirm="dialogs.confirm.onConfirm"
+    />
+    <UpdateStatusDialog
+      v-model="dialogs.updateStatus.visible"
+      :selected-count="selectedFoods.length"
+      @confirm="(params: FoodManageApi.BatchUpdateStatusParams) => handleUpdateStatusConfirm(params)"
+    />
   </div>
 </template>
 
@@ -156,8 +235,7 @@ import {
   batchUpdateImageBorder,
   recoverFoods,
   pullShopFoodsV2,
-
-  pullShopAct,
+  pullShopAct
 } from '/@/api/foodManage'
 import FoodGroupTree from './components/FoodGroupTree.vue'
 import FoodTable from './components/FoodTable.vue'
@@ -212,38 +290,38 @@ const searchForm = reactive({
   MinPrice: 0,
   MaxPrice: 0,
   IsDiscount: undefined as boolean | undefined,
-  IsOnSale: undefined as boolean | undefined,
+  IsOnSale: undefined as boolean | undefined
 })
 
 const dialogs = reactive({
   updateName: {
-    visible: false,
+    visible: false
   },
   updatePrice: {
-    visible: false,
+    visible: false
   },
   updateDiscount: {
-    visible: false,
+    visible: false
   },
   updateStock: {
-    visible: false,
+    visible: false
   },
   updateMinBuy: {
-    visible: false,
+    visible: false
   },
   updateImage: {
-    visible: false,
+    visible: false
   },
   confirm: {
     visible: false,
     title: '',
     content: '',
-    onConfirm: () => { },
+    onConfirm: () => {}
   },
   updateStatus: {
     visible: false,
-    status: true,
-  },
+    status: true
+  }
 })
 
 const progressBarRef = ref()
@@ -307,7 +385,16 @@ const setStreamMethod = (type: string) => {
 }
 
 // 显示进度条并开始任务
-const showProgressAndStartTask = async (method: (params: any, onProgress?: (progress: FoodManageApi.ProgressInfo) => void, requestId?: string) => Promise<any>, params: any, title: string, taskType: string = '') => {
+const showProgressAndStartTask = async (
+  method: (
+    params: any,
+    onProgress?: (progress: FoodManageApi.ProgressInfo) => void,
+    requestId?: string
+  ) => Promise<any>,
+  params: any,
+  title: string,
+  taskType: string = ''
+) => {
   progressInfo.value = {
     taskId: taskId.value,
     requestId: `${taskId.value}_${method.name}`,
@@ -331,8 +418,8 @@ onMounted(async () => {
   try {
     // 获取店铺信息
     console.log(props.shopData)
-    shopData.value = props.shopData;
-    shopId.value = props.shopData.id;
+    shopData.value = props.shopData
+    shopId.value = props.shopData.id
     // 创建任务
     const res = await createTask({
       syncSite: true,
@@ -377,7 +464,6 @@ onMounted(async () => {
     if (currentSelectedGroup.value) {
       handleLoadGroupFoods(currentSelectedGroup.value)
     }
-
   } catch (error) {
     console.error('初始化失败:', error)
     ElMessage.error('初始化失败')
@@ -418,7 +504,12 @@ const loadFoods = async () => {
     const params: FoodManageApi.GetFoodListParams = {
       TaskId: taskId.value,
       ShopId: shopId.value,
-      GroupOffids: selectedGroups.value.length > 0 ? selectedGroups.value : (currentSelectedGroup.value ? [currentSelectedGroup.value] : []),
+      GroupOffids:
+        selectedGroups.value.length > 0
+          ? selectedGroups.value
+          : currentSelectedGroup.value
+            ? [currentSelectedGroup.value]
+            : [],
       ProductName: searchForm.ProductName,
       TabType: activeTab.value as FoodManageApi.ProductTabType,
       Page: pageIndex.value,
@@ -426,7 +517,7 @@ const loadFoods = async () => {
       MinPrice: searchForm.MinPrice || undefined,
       MaxPrice: searchForm.MaxPrice || undefined,
       IsDiscount: searchForm.IsDiscount,
-      IsOnSale: searchForm.IsOnSale,
+      IsOnSale: searchForm.IsOnSale
     }
 
     const res = await getFoodList(params)
@@ -462,8 +553,8 @@ const handleLoadGroupFoods = async (groupOffId: string) => {
       TabType: activeTab.value,
       Page: pageIndex.value,
       SyncSite: syncSite.value,
-      IsDiscount: searchForm.IsDiscount === undefined ? undefined : (searchForm.IsDiscount === true ? true : false),
-      IsOnSale: searchForm.IsOnSale === undefined ? undefined : (searchForm.IsOnSale === true ? true : false),
+      IsDiscount: searchForm.IsDiscount === undefined ? undefined : searchForm.IsDiscount === true ? true : false,
+      IsOnSale: searchForm.IsOnSale === undefined ? undefined : searchForm.IsOnSale === true ? true : false
     }
     const res = await getFoodList(params)
     foods.value = res.data.rows
@@ -523,7 +614,7 @@ const handleSingleDelete = (row: FoodManageApi.FoodItemVo) => {
         ShopId: shopId.value,
         SyncSite: syncSite.value,
         GroupOffids: selectedGroups.value.length > 0 ? selectedGroups.value : null,
-        FoodIds: selectedFoodIds.value,
+        FoodIds: selectedFoodIds.value
       })
       ElMessage.success('删除成功')
       // 如果有当前选中的分组，则加载该分组的商品，否则加载全部商品
@@ -548,14 +639,10 @@ const handleFoodUpdate = () => {
 
 // 调整商品名
 const handleUpdateName = () => {
-  showGroupOperationConfirm(
-    '调整商品名',
-    '确定要调整商品名称吗？',
-    () => {
-      dialogs.updateName.visible = true
-      return Promise.resolve()
-    }
-  )
+  showGroupOperationConfirm('调整商品名', '确定要调整商品名称吗？', () => {
+    dialogs.updateName.visible = true
+    return Promise.resolve()
+  })
 }
 
 const handleUpdateNameConfirm = async (params: Partial<FoodManageApi.UpdateFoodNameParms>) => {
@@ -572,7 +659,7 @@ const handleUpdateNameConfirm = async (params: Partial<FoodManageApi.UpdateFoodN
         Prefix: params.Prefix,
         Suffix: params.Suffix,
         OriginalText: params.OriginalText,
-        ReplacementText: params.ReplacementText,
+        ReplacementText: params.ReplacementText
       },
       '修改商品名称',
       'updateName'
@@ -584,26 +671,23 @@ const handleUpdateNameConfirm = async (params: Partial<FoodManageApi.UpdateFoodN
 
 // 调整原价
 const handleUpdatePrice = () => {
-  showGroupOperationConfirm(
-    '调整原价',
-    '确定要调整商品原价吗？',
-    () => {
-      dialogs.updatePrice.visible = true
-      return Promise.resolve()
-    }
-  )
+  showGroupOperationConfirm('调整原价', '确定要调整商品原价吗？', () => {
+    dialogs.updatePrice.visible = true
+    return Promise.resolve()
+  })
 }
 
 const handleUpdatePriceConfirm = async (params: FoodManageApi.UpdateFoodPriceParms) => {
   try {
     // 如果传入的 params 中已经有 Targets，则使用传入的 Targets
-    const targets = Array.isArray(params.Targets) && params.Targets.length > 0
-      ? params.Targets
-      : selectedSkus.value.length > 0
-        ? selectedSkus.value
-        : selectedFoods.value.length > 0
-          ? selectedFoods.value.map(spu => ({ Spu: spu, SkuIds: [] }))
-          : undefined
+    const targets =
+      Array.isArray(params.Targets) && params.Targets.length > 0
+        ? params.Targets
+        : selectedSkus.value.length > 0
+          ? selectedSkus.value
+          : selectedFoods.value.length > 0
+            ? selectedFoods.value.map(spu => ({ Spu: spu, SkuIds: [] }))
+            : undefined
 
     // 确定 GroupOffids：如果有选中的分组，只对选中的分组生效；如果没有选中的分组，设置为 null（只对选中的商品生效）
     const groupOffids = selectedGroups.value.length > 0 ? selectedGroups.value : null
@@ -629,7 +713,7 @@ const handleUpdatePriceConfirm = async (params: FoodManageApi.UpdateFoodPricePar
         ShopId: shopId.value,
         SyncSite: syncSite.value,
         GroupOffids: groupOffids,
-        Targets: groupOffids ? undefined : targets,
+        Targets: groupOffids ? undefined : targets
       },
       title: '正在修改商品价格',
       taskType: 'updatePrice'
@@ -656,14 +740,10 @@ const handleUpdatePriceConfirm = async (params: FoodManageApi.UpdateFoodPricePar
 
 // 调整折扣价
 const handleUpdateDiscount = () => {
-  showGroupOperationConfirm(
-    '调整折扣价',
-    '确定要调整商品折扣价吗？',
-    () => {
-      dialogs.updateDiscount.visible = true
-      return Promise.resolve()
-    }
-  )
+  showGroupOperationConfirm('调整折扣价', '确定要调整商品折扣价吗？', () => {
+    dialogs.updateDiscount.visible = true
+    return Promise.resolve()
+  })
 }
 
 const handleUpdateDiscountConfirm = async (params: FoodManageApi.BatchUpdateDiscountParams) => {
@@ -675,7 +755,7 @@ const handleUpdateDiscountConfirm = async (params: FoodManageApi.BatchUpdateDisc
         TaskId: taskId.value,
         ShopId: shopId.value,
         SyncSite: syncSite.value,
-        GroupOffids: selectedGroups.value.length > 0 ? selectedGroups.value : null,
+        GroupOffids: selectedGroups.value.length > 0 ? selectedGroups.value : null
       },
       '修改商品折扣',
       'updateDiscount'
@@ -692,47 +772,39 @@ const handleOfflineDiscount = () => {
     return
   }
 
-  showGroupOperationConfirm(
-    '批量下线折扣',
-    '确定要进行下线折扣操作吗？',
-    async () => {
-      try {
-        // 构建 Targets
-        const targets = selectedSkus.value.length > 0
+  showGroupOperationConfirm('批量下线折扣', '确定要进行下线折扣操作吗？', async () => {
+    try {
+      // 构建 Targets
+      const targets =
+        selectedSkus.value.length > 0
           ? selectedSkus.value
           : selectedFoods.value.map(spu => ({
-            Spu: spu,
-            SkuIds: []
-          }))
+              Spu: spu,
+              SkuIds: []
+            }))
 
-        await showProgressAndStartTask(
-          batchOfflineDiscount,
-          {
-            TaskId: taskId.value,
-            ShopId: shopId.value,
-            SyncSite: syncSite.value,
-            GroupOffids: selectedGroups.value.length > 0 ? selectedGroups.value : null,
-            Targets: targets
-          },
-          '下线商品折扣',
-          'offlineDiscount'
-        )
-      } catch (error) {
-        ElMessage.error('操作失败')
-      }
+      await showProgressAndStartTask(
+        batchOfflineDiscount,
+        {
+          TaskId: taskId.value,
+          ShopId: shopId.value,
+          SyncSite: syncSite.value,
+          GroupOffids: selectedGroups.value.length > 0 ? selectedGroups.value : null,
+          Targets: targets
+        },
+        '下线商品折扣',
+        'offlineDiscount'
+      )
+    } catch (error) {
+      ElMessage.error('操作失败')
     }
-  )
+  })
 }
 
 // 添加处理单个商品下线折扣的函数
 const handleOfflineDiscountConfirm = async (params: FoodManageApi.BatchOfflineDiscountParams) => {
   try {
-    await showProgressAndStartTask(
-      batchOfflineDiscount,
-      params,
-      '下线商品折扣',
-      'offlineDiscount'
-    )
+    await showProgressAndStartTask(batchOfflineDiscount, params, '下线商品折扣', 'offlineDiscount')
   } catch (error) {
     ElMessage.error('操作失败')
   }
@@ -740,14 +812,10 @@ const handleOfflineDiscountConfirm = async (params: FoodManageApi.BatchOfflineDi
 
 // 调整库存
 const handleUpdateStock = () => {
-  showGroupOperationConfirm(
-    '调整库存',
-    '确定要调整商品库存吗？',
-    () => {
-      dialogs.updateStock.visible = true
-      return Promise.resolve()
-    }
-  )
+  showGroupOperationConfirm('调整库存', '确定要调整商品库存吗？', () => {
+    dialogs.updateStock.visible = true
+    return Promise.resolve()
+  })
 }
 
 const handleUpdateStockConfirm = async (params: FoodManageApi.BatchUpdateStockParams) => {
@@ -761,7 +829,7 @@ const handleUpdateStockConfirm = async (params: FoodManageApi.BatchUpdateStockPa
           TaskId: taskId.value,
           ShopId: shopId.value,
           SyncSite: syncSite.value,
-          GroupOffids: selectedGroups.value.length > 0 ? selectedGroups.value : null,
+          GroupOffids: selectedGroups.value.length > 0 ? selectedGroups.value : null
         },
         '修改商品库存',
         'updateStock'
@@ -776,10 +844,13 @@ const handleUpdateStockConfirm = async (params: FoodManageApi.BatchUpdateStockPa
     }
 
     // 构建Targets
-    const targets = selectedSkus.value.length > 0 ? selectedSkus.value : selectedFoods.value.map(spu => ({
-      Spu: spu,
-      SkuIds: []
-    }))
+    const targets =
+      selectedSkus.value.length > 0
+        ? selectedSkus.value
+        : selectedFoods.value.map(spu => ({
+            Spu: spu,
+            SkuIds: []
+          }))
 
     await showProgressAndStartTask(
       batchUpdateStock,
@@ -789,7 +860,7 @@ const handleUpdateStockConfirm = async (params: FoodManageApi.BatchUpdateStockPa
         ShopId: shopId.value,
         SyncSite: syncSite.value,
         GroupOffids: selectedGroups.value.length > 0 ? selectedGroups.value : null,
-        Targets: targets,
+        Targets: targets
       },
       '修改商品库存',
       'updateStock'
@@ -801,17 +872,15 @@ const handleUpdateStockConfirm = async (params: FoodManageApi.BatchUpdateStockPa
 
 // 调整上下架
 const handleUpdateStatus = () => {
-  showGroupOperationConfirm(
-    '调整上下架',
-    '确定要调整商品上下架状态吗？',
-    () => {
-      dialogs.updateStatus.visible = true
-      return Promise.resolve()
-    }
-  )
+  showGroupOperationConfirm('调整上下架', '确定要调整商品上下架状态吗？', () => {
+    dialogs.updateStatus.visible = true
+    return Promise.resolve()
+  })
 }
 
-const handleUpdateStatusConfirm = async (params: FoodManageApi.BatchUpdateStatusParams | Pick<FoodManageApi.BatchUpdateStatusParams, 'IsOnSale'>) => {
+const handleUpdateStatusConfirm = async (
+  params: FoodManageApi.BatchUpdateStatusParams | Pick<FoodManageApi.BatchUpdateStatusParams, 'IsOnSale'>
+) => {
   try {
     console.log('index.vue - 接收到的状态值:', params.IsOnSale)
     // 兼容只传 IsOnSale 的情况
@@ -821,23 +890,21 @@ const handleUpdateStatusConfirm = async (params: FoodManageApi.BatchUpdateStatus
       SyncSite: syncSite.value,
       GroupOffids: selectedGroups.value.length > 0 ? selectedGroups.value : null,
       // 如果 params 中有 FoodIds，则使用它，否则使用 selectedFoodIds
-      FoodIds: ('FoodIds' in params && params.FoodIds) ? params.FoodIds : selectedFoodIds.value,
+      FoodIds: 'FoodIds' in params && params.FoodIds ? params.FoodIds : selectedFoodIds.value,
       IsOnSale: params.IsOnSale
     }
 
     // 验证 FoodIds 是否为空
-    if ((!realParams.FoodIds || realParams.FoodIds.length === 0) && (!realParams.GroupOffids || realParams.GroupOffids.length === 0)) {
+    if (
+      (!realParams.FoodIds || realParams.FoodIds.length === 0) &&
+      (!realParams.GroupOffids || realParams.GroupOffids.length === 0)
+    ) {
       ElMessage.error('商品ID不能为空')
       return
     }
 
     console.log('index.vue - 发送到后端的状态值:', realParams.IsOnSale)
-    await showProgressAndStartTask(
-      batchUpdateStatus,
-      realParams,
-      '修改商品状态',
-      'updateStatus'
-    )
+    await showProgressAndStartTask(batchUpdateStatus, realParams, '修改商品状态', 'updateStatus')
   } catch (error) {
     ElMessage.error('操作失败')
   }
@@ -845,14 +912,10 @@ const handleUpdateStatusConfirm = async (params: FoodManageApi.BatchUpdateStatus
 
 // 设置起购
 const handleUpdateMinBuy = () => {
-  showGroupOperationConfirm(
-    '设置起购',
-    '确定要设置商品起购数量吗？',
-    () => {
-      dialogs.updateMinBuy.visible = true
-      return Promise.resolve()
-    }
-  )
+  showGroupOperationConfirm('设置起购', '确定要设置商品起购数量吗？', () => {
+    dialogs.updateMinBuy.visible = true
+    return Promise.resolve()
+  })
 }
 
 const handleUpdateMinBuyConfirm = async (params: FoodManageApi.BatchUpdateMinBuyParams) => {
@@ -864,7 +927,7 @@ const handleUpdateMinBuyConfirm = async (params: FoodManageApi.BatchUpdateMinBuy
         TaskId: taskId.value,
         ShopId: shopId.value,
         SyncSite: syncSite.value,
-        GroupOffids: selectedGroups.value.length > 0 ? selectedGroups.value : null,
+        GroupOffids: selectedGroups.value.length > 0 ? selectedGroups.value : null
       },
       '修改起购数量',
       'updateMinBuy'
@@ -888,7 +951,7 @@ const handleDelete = () => {
             ShopId: shopId.value,
             SyncSite: syncSite.value,
             GroupOffids: selectedGroups.value.length > 0 ? selectedGroups.value : null,
-            FoodIds: selectedFoodIds.value,
+            FoodIds: selectedFoodIds.value
           },
           '删除商品',
           'delete'
@@ -902,14 +965,10 @@ const handleDelete = () => {
 
 // 批量主图框
 const handleUpdateImage = () => {
-  showGroupOperationConfirm(
-    '批量主图框',
-    '确定要调整商品主图框吗？',
-    () => {
-      dialogs.updateImage.visible = true
-      return Promise.resolve()
-    }
-  )
+  showGroupOperationConfirm('批量主图框', '确定要调整商品主图框吗？', () => {
+    dialogs.updateImage.visible = true
+    return Promise.resolve()
+  })
 }
 
 const handleUpdateImageConfirm = async (params: FoodManageApi.BatchUpdateImageBorderParams) => {
@@ -921,7 +980,7 @@ const handleUpdateImageConfirm = async (params: FoodManageApi.BatchUpdateImageBo
         TaskId: taskId.value,
         ShopId: shopId.value,
         SyncSite: syncSite.value,
-        GroupOffids: selectedGroups.value.length > 0 ? selectedGroups.value : null,
+        GroupOffids: selectedGroups.value.length > 0 ? selectedGroups.value : null
       },
       '修改商品图片边框',
       'updateImage'
@@ -968,7 +1027,8 @@ const handleRecover = () => {
   dialogs.confirm.title = '恢复商品'
 
   // 构建提示内容
-  let content = '确定要恢复商品吗？\n注意：\n1. 将从上次从平台拉取的商品中恢复\n2. 恢复商品不涉及折扣操作，需根据平台规则重新设置折扣等'
+  let content =
+    '确定要恢复商品吗？\n注意：\n1. 将从上次从平台拉取的商品中恢复\n2. 恢复商品不涉及折扣操作，需根据平台规则重新设置折扣等'
 
   // 如果选择了分组，添加分组信息
   if (selectedGroups.value.length > 0 && selectedFoodIds.value.length === 0) {
@@ -1008,7 +1068,8 @@ const handleSingleRecover = (row: FoodManageApi.FoodItemVo) => {
 
   dialogs.confirm.visible = true
   dialogs.confirm.title = '恢复商品'
-  dialogs.confirm.content = '确定要恢复该商品吗？\n注意：\n1. 将从上次从平台拉取的商品中恢复\n2. 恢复商品不涉及折扣操作，需根据平台规则重新设置折扣等'
+  dialogs.confirm.content =
+    '确定要恢复该商品吗？\n注意：\n1. 将从上次从平台拉取的商品中恢复\n2. 恢复商品不涉及折扣操作，需根据平台规则重新设置折扣等'
   dialogs.confirm.onConfirm = async () => {
     try {
       await showProgressAndStartTask(
@@ -1033,7 +1094,7 @@ const handleSingleRecover = (row: FoodManageApi.FoodItemVo) => {
 const handleProgressComplete = async () => {
   showProgress.value = false
   // 如果是 pullShopFoods、pullShopFoodsV2 或 pullShopAct 任务，重新加载分组和商品
-  if (["pullShopFoods", "pullShopFoodsV2", "pullShopAct"].includes(progressInfo.value.taskType)) {
+  if (['pullShopFoods', 'pullShopFoodsV2', 'pullShopAct'].includes(progressInfo.value.taskType)) {
     try {
       await loadFoodGroups()
       ElMessage.success('商品分组已更新')
@@ -1128,7 +1189,7 @@ const showGroupOperationConfirm = (title: string, content: string, onConfirm: ()
     dialogs.confirm.onConfirm = onConfirm
   } else if (selectedFoodIds.value.length === 0) {
     ElMessage.warning('请选择商品或分组')
-  } else if (title.includes("删除")) {
+  } else if (title.includes('删除')) {
     dialogs.confirm.visible = true
     dialogs.confirm.title = title
     dialogs.confirm.content = content
@@ -1184,8 +1245,6 @@ const handlePullShopAct = () => {
     }
   }
 }
-
-
 </script>
 
 <style lang="scss">

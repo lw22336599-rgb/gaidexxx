@@ -66,7 +66,7 @@ import type { FormInstance } from 'element-plus'
 import { doEdit } from '/@/api/menuManagement'
 
 defineOptions({
-  name: 'MenuManagementEdit',
+  name: 'MenuManagementEdit'
 })
 
 const emit = defineEmits(['fetch-data'])
@@ -89,15 +89,15 @@ const form = reactive<any>({
     noClosable: false,
     noKeepAlive: false,
     tabHidden: false,
-    guard: [],
-  },
+    guard: []
+  }
 })
 const rules = reactive<any>({
   parentId: [{ required: true, trigger: 'blur', message: '请输入父级id' }],
   name: [{ required: true, trigger: 'blur', message: '请输入name' }],
   path: [{ required: true, trigger: 'blur', message: '请输入path' }],
   component: [{ required: true, trigger: 'blur', message: '请输入component' }],
-  'meta.title': [{ required: true, trigger: 'blur', message: '请输入标题' }],
+  'meta.title': [{ required: true, trigger: 'blur', message: '请输入标题' }]
 })
 const title = ref<string>('')
 const dialogFormVisible = ref<boolean>(false)
@@ -126,14 +126,14 @@ const showEdit = (row: any) => {
         noClosable: false,
         noKeepAlive: false,
         tabHidden: false,
-        guard: [],
+        guard: []
       }
     }
   })
 }
 
 defineExpose({
-  showEdit,
+  showEdit
 })
 
 const close = () => {

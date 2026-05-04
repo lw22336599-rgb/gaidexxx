@@ -11,7 +11,7 @@ export default function registerStart(lf) {
             x: x - 12,
             y: y + 4,
             width: 50,
-            height: 25,
+            height: 25
           },
           '开始'
         )
@@ -25,9 +25,9 @@ export default function registerStart(lf) {
           h('circle', {
             ...style,
             cx: x,
-            cy: y,
+            cy: y
           }),
-          this.getLabelShape(),
+          this.getLabelShape()
         ])
       }
     }
@@ -39,7 +39,7 @@ export default function registerStart(lf) {
           x: data.x,
           y: data.y + 35,
           dragable: false,
-          editable: true,
+          editable: true
         }
         super(data, graphModel)
       }
@@ -48,7 +48,7 @@ export default function registerStart(lf) {
         const rules = super.getConnectedTargetRules()
         const notAsTarget = {
           message: '起始节点不能作为连线的终点',
-          validate: () => false,
+          validate: () => false
         }
         rules.push(notAsTarget)
         return rules
@@ -57,7 +57,7 @@ export default function registerStart(lf) {
 
     return {
       view: StartNode,
-      model: StartModel,
+      model: StartModel
     }
   })
 }

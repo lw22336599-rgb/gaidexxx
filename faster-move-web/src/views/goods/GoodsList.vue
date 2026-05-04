@@ -7,7 +7,9 @@
             <el-input v-model="queryForm.title" placeholder="商品名称" />
           </el-form-item>
           <el-form-item>
-            <el-button :icon="Search" :loading="listLoading" native-type="submit" type="primary" @click="queryData">查询</el-button>
+            <el-button :icon="Search" :loading="listLoading" native-type="submit" type="primary" @click="queryData"
+              >查询</el-button
+            >
           </el-form-item>
         </el-form>
       </vab-query-form-right-panel>
@@ -58,7 +60,7 @@ import { Search } from '@element-plus/icons-vue'
 import { getList } from '/@/api/goodsManagement'
 
 defineOptions({
-  name: 'GoodsList',
+  name: 'GoodsList'
 })
 
 const emptyShow = ref<boolean>(false)
@@ -67,7 +69,7 @@ const listLoading = ref<boolean>(true)
 const total = ref<number>(0)
 const queryForm = reactive<any>({
   pageNo: 1,
-  pageSize: 20,
+  pageSize: 20
 })
 
 onActivated(() => {

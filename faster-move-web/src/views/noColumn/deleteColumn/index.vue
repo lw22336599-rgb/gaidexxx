@@ -9,7 +9,7 @@
 import { useSettingsStore } from '/@/store/modules/settings'
 
 defineOptions({
-  name: 'DeleteColumn',
+  name: 'DeleteColumn'
 })
 
 const settingsStore = useSettingsStore()

@@ -1,20 +1,26 @@
 /**
  * 对齐 faster-move-web `src/utils/request.ts` 的契约：baseURL、Authorization、code/msg、401 清会话
  * 实现为 uni.request（H5/小程序通用）
+ *
+ * H5：所有业务请求直连本常量指向的 PC 端 Vite（再由其代理到 bridge/上游），与 utils/request 拦截器一致。
  */
 import { invalidateSession } from "@/auth/session";
 import { netConfig } from "@/config/http";
 import type { ApiEnvelope } from "@/types/http";
+import { resolvePcViteOrigin } from "@/utils/h5DevOrigins";
 import { getToken } from "@/utils/token";
 
 export interface RequestOptions extends UniApp.RequestOptions {
   /** 为 true 时不自动附加 Authorization */
   skipAuth?: boolean;
+  /**
+   * 失败或网关错误时的额外重试次数（默认 1 → 最多共 2 次请求），缓解弱网/桥接慢
+   */
+  retry?: number;
 }
 
 function resolveBaseUrl(): string {
-  const u = (import.meta.env.VITE_APP_BASE_URL || import.meta.env.VITE_APP_BASE_API || "") as string;
-  return u;
+  return resolvePcViteOrigin();
 }
 
 function normalizeUrl(base: string, url: string): string {
@@ -41,8 +47,30 @@ function toast(msg: string) {
   uni.showToast({ title: msg.slice(0, 80), icon: "none", duration: 2500 });
 }
 
-export function request<T = unknown>(options: RequestOptions): Promise<ApiEnvelope<T>> {
-  const { skipAuth, ...uniOpts } = options;
+function sleep(ms: number) {
+  return new Promise((r) => setTimeout(r, ms));
+}
+
+function isRetriableError(err: unknown, httpStatus?: number): boolean {
+  if (httpStatus === 502 || httpStatus === 503 || httpStatus === 504) return true;
+  if (!err || typeof err !== "object") return false;
+  if ("errMsg" in err) {
+    const m = String((err as UniApp.GeneralCallbackResult).errMsg || "").toLowerCase();
+    return m.includes("timeout") || m.includes("time out") || m.includes("fail") || m.includes("abort");
+  }
+  if (err instanceof Error) {
+    const m = err.message || "";
+    return /HTTP_502|HTTP_503|HTTP_504|timeout/i.test(m);
+  }
+  return false;
+}
+
+/** 单次请求（不重试）；finalAttempt 为 false 时 502/网络失败不弹 Toast，交给外层重试 */
+function requestOnce<T>(
+  options: RequestOptions,
+  finalAttempt: boolean,
+): Promise<ApiEnvelope<T>> {
+  const { skipAuth, retry: _r, ...uniOpts } = options;
   const baseURL = resolveBaseUrl();
   const header: Record<string, string> = {
     "Content-Type": netConfig.contentType as string,
@@ -73,12 +101,16 @@ export function request<T = unknown>(options: RequestOptions): Promise<ApiEnvelo
         }
 
         if (httpStatus >= 500) {
+          if (!finalAttempt && isRetriableError(null, httpStatus)) {
+            reject(new Error(`HTTP_${httpStatus}`));
+            return;
+          }
           const hint502 =
             httpStatus === 502 || httpStatus === 504
-              ? "（常见：代理目标未启动或端口错误）"
+              ? "（常见：api-dev-bridge 未监听 3000，或 PC Vite 代理目标不可达）"
               : "";
           toast(
-            `服务端 HTTP ${httpStatus}${hint502}。请确认后端可用，或修改 .env.development 的 VITE_PROXY_TARGET`
+            `服务端 HTTP ${httpStatus}${hint502}。请确认 5200 已启动且已在 PC 上运行 bridge；可执行 pnpm run restart:pc-stack`,
           );
           reject(new Error(`HTTP_${httpStatus}`));
           return;
@@ -86,7 +118,7 @@ export function request<T = unknown>(options: RequestOptions): Promise<ApiEnvelo
 
         const rawData = res.data;
         if (typeof rawData === "string" && /^\s*</.test(rawData)) {
-          toast(`接口返回 HTML（HTTP ${httpStatus}），多为域名停放页或网关错误，请更换 VITE_PROXY_TARGET`);
+          toast(`接口返回 HTML（HTTP ${httpStatus}），请确认 PC 端 faster-move-web 已在 ${resolveBaseUrl()} 启动`);
           reject(new Error("HTML_RESPONSE"));
           return;
         }
@@ -116,6 +148,10 @@ export function request<T = unknown>(options: RequestOptions): Promise<ApiEnvelo
         reject(new Error(msg));
       },
       fail: (err) => {
+        if (!finalAttempt && isRetriableError(err)) {
+          reject(err);
+          return;
+        }
         toast(err.errMsg || "网络异常");
         reject(err);
       },
@@ -123,10 +159,38 @@ export function request<T = unknown>(options: RequestOptions): Promise<ApiEnvelo
   });
 }
 
-export function get<T = unknown>(url: string, data?: UniApp.RequestOptions["data"]) {
-  return request<T>({ url, method: "GET", data });
+export async function request<T = unknown>(options: RequestOptions): Promise<ApiEnvelope<T>> {
+  const extra = Math.max(0, options.retry ?? 1);
+  const maxAttempts = 1 + extra;
+  let lastErr: unknown;
+  for (let i = 0; i < maxAttempts; i++) {
+    const final = i >= maxAttempts - 1;
+    try {
+      return await requestOnce<T>(options, final);
+    } catch (e) {
+      lastErr = e;
+      if (!final && isRetriableError(e)) {
+        await sleep(380 + i * 220);
+        continue;
+      }
+      throw e;
+    }
+  }
+  throw lastErr;
 }
 
-export function post<T = unknown>(url: string, data?: UniApp.RequestOptions["data"]) {
-  return request<T>({ url, method: "POST", data });
+export function get<T = unknown>(
+  url: string,
+  data?: UniApp.RequestOptions["data"],
+  extra?: Partial<RequestOptions>,
+) {
+  return request<T>({ url, method: "GET", data, ...extra });
+}
+
+export function post<T = unknown>(
+  url: string,
+  data?: UniApp.RequestOptions["data"],
+  extra?: Partial<RequestOptions>,
+) {
+  return request<T>({ url, method: "POST", data, ...extra });
 }

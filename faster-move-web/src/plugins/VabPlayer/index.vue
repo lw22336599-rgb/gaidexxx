@@ -1,5 +1,5 @@
 <template>
-  <div :id="config.id"></div>
+  <div :id="config.id" />
 </template>
 
 <script lang="ts" setup>
@@ -7,7 +7,7 @@ import Player from 'xgplayer'
 import 'xgplayer/dist/index.min.css'
 
 defineOptions({
-  name: 'VabPlayer',
+  name: 'VabPlayer'
 })
 
 const props = defineProps({
@@ -15,9 +15,9 @@ const props = defineProps({
     type: Object,
     default: () => ({
       id: 'mse',
-      url: '',
-    }),
-  },
+      url: ''
+    })
+  }
 })
 
 const player = ref<any>(null)

@@ -6,19 +6,19 @@
 import { registerMap } from 'echarts/core'
 
 defineOptions({
-  name: 'DataScreenMap',
+  name: 'DataScreenMap'
 })
 
 const option = reactive<any>({
   tooltip: {
-    trigger: 'item',
+    trigger: 'item'
   },
   grid: {
     top: '0%',
     left: '0%',
     right: '0%',
-    bottom: '0%',
-  },
+    bottom: '0%'
+  }
 })
 
 const chinaData = ref<any>('')
@@ -26,7 +26,7 @@ const getMap = () => {
   axios({
     //url: 'static/json/china.json',
     url: 'https://unpkg.com/echarts@4.9.0/map/json/china.json',
-    method: 'get',
+    method: 'get'
   }).then(({ data }) => {
     chinaData.value = data
     registerMap('china', chinaData.value)
@@ -38,16 +38,16 @@ const getMap = () => {
       roam: true,
       label: {
         show: true,
-        color: '#ffffff',
+        color: '#ffffff'
       },
       emphasis: {
         label: {
           show: true,
-          color: '#ffffff',
+          color: '#ffffff'
         },
         itemStyle: {
-          areaColor: '#01022e',
-        },
+          areaColor: '#01022e'
+        }
       },
       itemStyle: {
         borderColor: 'rgba(147, 235, 248, 1)',
@@ -60,19 +60,19 @@ const getMap = () => {
           colorStops: [
             {
               offset: 0,
-              color: '#01022e', // 0% 处的颜色
+              color: '#01022e' // 0% 处的颜色
             },
             {
               offset: 1,
-              color: '#000', // 100% 处的颜色
-            },
-          ],
+              color: '#000' // 100% 处的颜色
+            }
+          ]
         },
         shadowColor: '#00a1ff',
         shadowOffsetX: -2,
         shadowOffsetY: 2,
-        shadowBlur: 10,
-      },
+        shadowBlur: 10
+      }
     }
     option.series = [
       {
@@ -84,15 +84,15 @@ const getMap = () => {
           period: 6,
           trailLength: 0.7,
           symbol: 'arrow',
-          symbolSize: 3,
+          symbolSize: 3
         },
         lineStyle: {
           width: 0.1,
           opacity: 0.5,
-          curveness: 0.3,
+          curveness: 0.3
         },
-        data: coordsData,
-      },
+        data: coordsData
+      }
     ]
   })
 }
@@ -133,24 +133,24 @@ const geoCoordMap: any = {
   香港: [114.109497, 22.396428],
   澳门: [113.5440083, 22.20167546],
   钓鱼岛: [112.071486, 26.249452],
-  赤尾屿: [116.271486, 25.549452],
+  赤尾屿: [116.271486, 25.549452]
 }
 
 const coordsData: any = []
 
-Object.keys(geoCoordMap).forEach((key) => {
+Object.keys(geoCoordMap).forEach(key => {
   coordsData.push(
     {
-      coords: [[...geoCoordMap[key]], [117.1582, 36.8701]],
+      coords: [[...geoCoordMap[key]], [117.1582, 36.8701]]
     },
     {
-      coords: [[117.1582, 36.8701], [...geoCoordMap[key]]],
+      coords: [[117.1582, 36.8701], [...geoCoordMap[key]]]
     },
     {
-      coords: [[...geoCoordMap[key]], [116.4551, 40.2539]],
+      coords: [[...geoCoordMap[key]], [116.4551, 40.2539]]
     },
     {
-      coords: [[116.4551, 40.2539], [...geoCoordMap[key]]],
+      coords: [[116.4551, 40.2539], [...geoCoordMap[key]]]
     }
   )
 })

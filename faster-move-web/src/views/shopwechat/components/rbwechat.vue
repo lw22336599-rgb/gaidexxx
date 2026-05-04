@@ -11,127 +11,130 @@
 </template>
 
 <script setup lang="ts">
-const props=defineProps({
-  funcdata:Object
+const props = defineProps({
+  funcdata: Object
 })
-const emit = defineEmits(['setrbwechat','setEnableFields']);
-const exidt=()=>{
-  emit('setrbwechat',false)
+const emit = defineEmits(['setrbwechat', 'setEnableFields'])
+const exidt = () => {
+  emit('setrbwechat', false)
 }
 // const checked=ref(true)
-let checklist=ref([
+let checklist = ref([
   {
-    lable:'昨日订单数',
-    checked:true,
+    lable: '昨日订单数',
+    checked: true
   },
   {
-    lable:'店铺评分',
-    checked:true,
+    lable: '店铺评分',
+    checked: true
   },
   {
-    lable:'店铺评价数',
-    checked:true,
+    lable: '店铺评价数',
+    checked: true
   },
   {
-    lable:'实际收入',
-    checked:true,
+    lable: '实际收入',
+    checked: true
   },
   {
-    lable:'营业额',
-    checked:true,
+    lable: '营业额',
+    checked: true
   },
   {
-    lable:'活动补贴',
-    checked:true,
+    lable: '活动补贴',
+    checked: true
   },
   {
-    lable:'曝光人数',
-    checked:true,
+    lable: '曝光人数',
+    checked: true
   },
   {
-    lable:'入店人数',
-    checked:true,
+    lable: '入店人数',
+    checked: true
   },
   {
-    lable:'入店转化率',
-    checked:true,
+    lable: '入店转化率',
+    checked: true
   },
   {
-    lable:'推广花费',
-    checked:true,
+    lable: '推广花费',
+    checked: true
   },
   {
-    lable:'推广曝光量',
-    checked:true,
+    lable: '推广曝光量',
+    checked: true
   },
   {
-    lable:'推广进店量',
-    checked:true,
+    lable: '推广进店量',
+    checked: true
   },
   {
-    lable:'下单转化率',
-    checked:true,
+    lable: '下单转化率',
+    checked: true
   },
   {
-    lable:'推广进店率',
-    checked:true,
+    lable: '推广进店率',
+    checked: true
   },
   {
-    lable:'实付单均价',
-    checked:true,
+    lable: '实付单均价',
+    checked: true
   },
   {
-    lable:'下单人数',
-    checked:true,
-  },
-  
+    lable: '下单人数',
+    checked: true
+  }
 ])
-const submit=()=>{
-  let arr:Array<number>=[]
-  checklist.value.map((item,index)=>{
-    if(item.checked){
-      arr.push(index+1)
+const submit = () => {
+  let arr: Array<number> = []
+  checklist.value.map((item, index) => {
+    if (item.checked) {
+      arr.push(index + 1)
     }
   })
   // console.log(arr,"arr");
-  emit('setEnableFields',arr)
-  exidt();
+  emit('setEnableFields', arr)
+  exidt()
 }
-watch(props,()=>{
-  checklist.value=checklist.value.map(item=>{
-    item.checked=false;
-    return item;
-  })
-  props.funcdata.ConfObj.PushShopReport.EnableFields.map(item=>{
-    checklist.value[item-1].checked=true;
-  })
-},{deep:true,immediate:true})
+watch(
+  props,
+  () => {
+    checklist.value = checklist.value.map(item => {
+      item.checked = false
+      return item
+    })
+    props.funcdata.ConfObj.PushShopReport.EnableFields.map(item => {
+      checklist.value[item - 1].checked = true
+    })
+  },
+  { deep: true, immediate: true }
+)
 </script>
 
 <style scoped lang="scss">
-::v-deep.hwechat{
+::v-deep.hwechat {
   width: 100%;
   height: 250px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  .el-table{
+  .el-table {
     height: 100%;
   }
 
-  .center{
+  .center {
     flex: 1;
     overflow: hidden;
     display: flex;
     flex-wrap: wrap;
   }
-  .butlist{
+  .butlist {
     color: #699be7;
   }
   .el-checkbox {
     width: 100px;
   }
-  .bottom{
+  .bottom {
     width: 100%;
     display: flex;
     justify-content: flex-end;

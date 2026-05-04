@@ -10,14 +10,14 @@
 import { random } from 'lodash-es'
 
 defineOptions({
-  name: 'VabChartSunburst',
+  name: 'VabChartSunburst'
 })
 
 defineProps({
   title: {
     type: String,
-    default: '',
-  },
+    default: ''
+  }
 })
 
 let timer: ReturnType<typeof setInterval>
@@ -27,10 +27,10 @@ const option = reactive<any>({
     top: 20,
     right: 20,
     bottom: 20,
-    left: 20,
+    left: 20
   },
   tooltip: {
-    trigger: 'item',
+    trigger: 'item'
   },
   series: {
     type: 'sunburst',
@@ -41,24 +41,24 @@ const option = reactive<any>({
             value: random(0, 40),
             children: [
               {
-                value: random(0, 40),
+                value: random(0, 40)
               },
               {
                 value: random(0, 40),
                 children: [
                   {
-                    value: random(0, 40),
-                  },
-                ],
+                    value: random(0, 40)
+                  }
+                ]
               },
               {
                 children: [
                   {
-                    value: random(0, 40),
-                  },
-                ],
-              },
-            ],
+                    value: random(0, 40)
+                  }
+                ]
+              }
+            ]
           },
           {
             value: random(0, 40),
@@ -67,37 +67,37 @@ const option = reactive<any>({
                 value: random(0, 40),
                 children: [
                   {
-                    value: random(0, 40),
+                    value: random(0, 40)
                   },
                   {
-                    value: random(0, 40),
+                    value: random(0, 40)
                   },
                   {
-                    value: random(0, 40),
+                    value: random(0, 40)
                   },
                   {
-                    value: random(0, 40),
-                  },
-                ],
+                    value: random(0, 40)
+                  }
+                ]
               },
               {
                 value: random(0, 40),
                 children: [
                   {
-                    value: random(0, 40),
-                  },
-                ],
+                    value: random(0, 40)
+                  }
+                ]
               },
               {
                 children: [
                   {
-                    value: random(0, 40),
-                  },
-                ],
-              },
-            ],
-          },
-        ],
+                    value: random(0, 40)
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       },
       {
         value: random(0, 40),
@@ -106,16 +106,16 @@ const option = reactive<any>({
             value: random(0, 40),
             children: [
               {
-                value: random(0, 40),
+                value: random(0, 40)
               },
               {
                 children: [
                   {
-                    value: random(0, 40),
-                  },
-                ],
-              },
-            ],
+                    value: random(0, 40)
+                  }
+                ]
+              }
+            ]
           },
           {
             children: [
@@ -123,16 +123,16 @@ const option = reactive<any>({
                 value: random(0, 40),
                 children: [
                   {
-                    value: random(0, 40),
+                    value: random(0, 40)
                   },
                   {
-                    value: random(0, 40),
-                  },
-                ],
-              },
-            ],
-          },
-        ],
+                    value: random(0, 40)
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       },
       {
         value: random(0, 40),
@@ -140,33 +140,33 @@ const option = reactive<any>({
           {
             children: [
               {
-                value: random(0, 40),
+                value: random(0, 40)
               },
               {
                 value: random(0, 40),
                 children: [
                   {
-                    value: random(0, 40),
+                    value: random(0, 40)
                   },
                   {
-                    value: random(0, 40),
-                  },
-                ],
+                    value: random(0, 40)
+                  }
+                ]
               },
               {
                 value: random(0, 40),
                 children: [
                   {
-                    value: random(0, 40),
+                    value: random(0, 40)
                   },
                   {
-                    value: random(0, 40),
-                  },
-                ],
-              },
-            ],
-          },
-        ],
+                    value: random(0, 40)
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       },
       {
         children: [
@@ -174,47 +174,47 @@ const option = reactive<any>({
             value: random(0, 40),
             children: [
               {
-                value: random(0, 40),
+                value: random(0, 40)
               },
               {
                 value: random(0, 40),
                 children: [
                   {
-                    value: random(0, 40),
-                  },
-                ],
+                    value: random(0, 40)
+                  }
+                ]
               },
               {
-                value: random(0, 40),
-              },
-            ],
+                value: random(0, 40)
+              }
+            ]
           },
           {
             value: random(0, 40),
             children: [
               {
-                value: random(0, 40),
+                value: random(0, 40)
               },
               {
                 children: [
                   {
-                    value: random(0, 40),
-                  },
-                ],
+                    value: random(0, 40)
+                  }
+                ]
               },
               {
-                value: random(0, 40),
-              },
-            ],
-          },
-        ],
-      },
+                value: random(0, 40)
+              }
+            ]
+          }
+        ]
+      }
     ],
     radius: ['10%', '100%'],
     label: {
-      rotate: 'radial',
-    },
-  },
+      rotate: 'radial'
+    }
+  }
 })
 
 onMounted(() => {
@@ -226,24 +226,24 @@ onMounted(() => {
             value: random(0, 40),
             children: [
               {
-                value: random(0, 40),
+                value: random(0, 40)
               },
               {
                 value: random(0, 40),
                 children: [
                   {
-                    value: random(0, 40),
-                  },
-                ],
+                    value: random(0, 40)
+                  }
+                ]
               },
               {
                 children: [
                   {
-                    value: random(0, 40),
-                  },
-                ],
-              },
-            ],
+                    value: random(0, 40)
+                  }
+                ]
+              }
+            ]
           },
           {
             value: random(0, 40),
@@ -252,37 +252,37 @@ onMounted(() => {
                 value: random(0, 40),
                 children: [
                   {
-                    value: random(0, 40),
+                    value: random(0, 40)
                   },
                   {
-                    value: random(0, 40),
+                    value: random(0, 40)
                   },
                   {
-                    value: random(0, 40),
+                    value: random(0, 40)
                   },
                   {
-                    value: random(0, 40),
-                  },
-                ],
+                    value: random(0, 40)
+                  }
+                ]
               },
               {
                 value: random(0, 40),
                 children: [
                   {
-                    value: random(0, 40),
-                  },
-                ],
+                    value: random(0, 40)
+                  }
+                ]
               },
               {
                 children: [
                   {
-                    value: random(0, 40),
-                  },
-                ],
-              },
-            ],
-          },
-        ],
+                    value: random(0, 40)
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       },
       {
         value: random(0, 40),
@@ -291,16 +291,16 @@ onMounted(() => {
             value: random(0, 40),
             children: [
               {
-                value: random(0, 40),
+                value: random(0, 40)
               },
               {
                 children: [
                   {
-                    value: random(0, 40),
-                  },
-                ],
-              },
-            ],
+                    value: random(0, 40)
+                  }
+                ]
+              }
+            ]
           },
           {
             children: [
@@ -308,16 +308,16 @@ onMounted(() => {
                 value: random(0, 40),
                 children: [
                   {
-                    value: random(0, 40),
+                    value: random(0, 40)
                   },
                   {
-                    value: random(0, 40),
-                  },
-                ],
-              },
-            ],
-          },
-        ],
+                    value: random(0, 40)
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       },
       {
         value: random(0, 40),
@@ -325,33 +325,33 @@ onMounted(() => {
           {
             children: [
               {
-                value: random(0, 40),
+                value: random(0, 40)
               },
               {
                 value: random(0, 40),
                 children: [
                   {
-                    value: random(0, 40),
+                    value: random(0, 40)
                   },
                   {
-                    value: random(0, 40),
-                  },
-                ],
+                    value: random(0, 40)
+                  }
+                ]
               },
               {
                 value: random(0, 40),
                 children: [
                   {
-                    value: random(0, 40),
+                    value: random(0, 40)
                   },
                   {
-                    value: random(0, 40),
-                  },
-                ],
-              },
-            ],
-          },
-        ],
+                    value: random(0, 40)
+                  }
+                ]
+              }
+            ]
+          }
+        ]
       },
       {
         children: [
@@ -359,41 +359,41 @@ onMounted(() => {
             value: random(0, 40),
             children: [
               {
-                value: random(0, 40),
+                value: random(0, 40)
               },
               {
                 value: random(0, 40),
                 children: [
                   {
-                    value: random(0, 40),
-                  },
-                ],
+                    value: random(0, 40)
+                  }
+                ]
               },
               {
-                value: random(0, 40),
-              },
-            ],
+                value: random(0, 40)
+              }
+            ]
           },
           {
             value: random(0, 40),
             children: [
               {
-                value: random(0, 40),
+                value: random(0, 40)
               },
               {
                 children: [
                   {
-                    value: random(0, 40),
-                  },
-                ],
+                    value: random(0, 40)
+                  }
+                ]
               },
               {
-                value: random(0, 40),
-              },
-            ],
-          },
-        ],
-      },
+                value: random(0, 40)
+              }
+            ]
+          }
+        ]
+      }
     ]
   }, 3000)
 })

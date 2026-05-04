@@ -2,9 +2,7 @@
   <el-dialog v-model="visible" title="批量操作部分失败" width="640px">
     <div class="batch-fail-content">
       <el-alert type="warning" :closable="false" show-icon class="summary-alert">
-        <template #title>
-          成功 {{ successCount }} 家，失败 {{ failedList.length }} 家
-        </template>
+        <template #title> 成功 {{ successCount }} 家，失败 {{ failedList.length }} 家 </template>
       </el-alert>
       <el-table :data="failedList" max-height="320" size="small" border>
         <el-table-column prop="OffId" label="门店ID" width="120" show-overflow-tooltip>
@@ -38,7 +36,7 @@ const emit = defineEmits<{
 
 const visible = computed({
   get: () => props.modelValue,
-  set: (val) => emit('update:modelValue', val)
+  set: val => emit('update:modelValue', val)
 })
 </script>
 

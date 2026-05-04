@@ -47,7 +47,7 @@ import type { FormInstance, UploadUserFile } from 'element-plus'
 import { doEdit } from '/@/api/workOrder'
 
 defineOptions({
-  name: 'GoodsManagementEdit',
+  name: 'GoodsManagementEdit'
 })
 
 const emit = defineEmits(['fetch-data'])
@@ -61,17 +61,17 @@ const rules = reactive<any>({
   type: [{ required: true, trigger: 'blur', message: '请输入商品类型' }],
   price: [{ required: true, trigger: 'blur', message: '请输入商品售价' }],
   stock: [{ required: true, trigger: 'blur', message: '请输入库存' }],
-  status: [{ required: true, trigger: 'blur', message: '请输入状态' }],
+  status: [{ required: true, trigger: 'blur', message: '请输入状态' }]
 })
 const typeList = ref<any>([
   { value: '1', label: '家用电器' },
   { value: '2', label: '食品饮料' },
-  { value: '3', label: '其他' },
+  { value: '3', label: '其他' }
 ])
 const statusList = ref<any>([
   { value: '1', label: '待上架' },
   { value: '2', label: '已上架' },
-  { value: '3', label: '已下架' },
+  { value: '3', label: '已下架' }
 ])
 const fileList = ref<UploadUserFile[]>([])
 
@@ -84,8 +84,8 @@ const showEdit = (row: any) => {
       fileList.value = [
         {
           name: '商品图',
-          url: row.image,
-        },
+          url: row.image
+        }
       ]
     } else {
       title.value = '添加'
@@ -95,7 +95,7 @@ const showEdit = (row: any) => {
 }
 
 defineExpose({
-  showEdit,
+  showEdit
 })
 
 const close = () => {

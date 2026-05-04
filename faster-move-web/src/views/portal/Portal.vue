@@ -2,13 +2,16 @@
   <el-scrollbar wrap-class="scroll-wrap-portal">
     <div class="portal-main">
       <portal-header active-menu="portal" />
-      <div class="carousel-background" :style="{ background: background }"></div>
+      <div class="carousel-background" :style="{ background: background }" />
       <main class="hidden-xs-only" style="padding-top: 85px">
         <el-row :gutter="0">
           <el-col :span="6">
             <div class="left-tab">
-              <el-menu active-text-color="var(--el-color-white)" background-color="#39364d"
-                text-color="var(--el-color-white)">
+              <el-menu
+                active-text-color="var(--el-color-white)"
+                background-color="#39364d"
+                text-color="var(--el-color-white)"
+              >
                 <el-menu-item index="1" @click="openWindow('https://vuejs-core.cn/admin-pro')">
                   <template #title>Vue Admin Pro：企业级中后台前端框架</template>
                 </el-menu-item>
@@ -128,7 +131,7 @@ import carousel_2 from '/@/assets/portal_images/carousel_2.jpg'
 import carousel_3 from '/@/assets/portal_images/carousel_3.jpg'
 
 defineOptions({
-  name: 'Portal',
+  name: 'Portal'
 })
 
 const background = ref<string>('')
@@ -164,58 +167,58 @@ const tableData = [
   {
     date: '2016-05-03',
     name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles'
   },
   {
     date: '2016-05-02',
     name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles'
   },
   {
     date: '2016-05-04',
     name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles'
   },
   {
     date: '2016-05-01',
     name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles'
   },
   {
     date: '2016-05-01',
     name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles'
   },
   {
     date: '2016-05-01',
     name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles'
   },
   {
     date: '2016-05-01',
     name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles'
   },
   {
     date: '2016-05-01',
     name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles'
   },
   {
     date: '2016-05-01',
     name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles'
   },
   {
     date: '2016-05-01',
     name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles'
   },
   {
     date: '2016-05-01',
     name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
+    address: 'No. 189, Grove St, Los Angeles'
+  }
 ]
 </script>
 
@@ -404,8 +407,7 @@ const tableData = [
 
   .vab-theme-setting {
     section {
-      >div {
-
+      > div {
         &:nth-child(1),
         &:nth-child(2),
         &:nth-child(3),

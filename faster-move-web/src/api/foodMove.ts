@@ -1,6 +1,6 @@
-import { ShopType } from '../types/shop';
+import { ShopType } from '../types/shop'
 import request from '/@/utils/request-move.ts'
-import brotli from 'brotli';
+import brotli from 'brotli'
 const headers = {
   ClientKey: 'u6wzysUGFBjnS4CPtqI1VeRQmdip2B8o6NWajlyZSDExDVVD9gpF/WgAxOK95Kib/7UpKuC5CsTemrzDGMBzLA==',
   WorkId: 678
@@ -33,7 +33,6 @@ export function stopTask(data: any) {
     headers
   })
 }
-
 
 export function taskProgress(data: any) {
   const { taskid, tasktype } = data
@@ -243,10 +242,8 @@ export function queryFoodTask(data: any) {
 
 // 获取商品复制日志
 export function parseWxData(data: object) {
-
-
   var compressedData = globalThis.electron.brotliCompressBr(JSON.stringify(data))
-  var setHead = { ...headers, "Content-Type": "application/json;charset=UTF-8", "Content-Encoding": "br" };
+  var setHead = { ...headers, 'Content-Type': 'application/json;charset=UTF-8', 'Content-Encoding': 'br' }
   console.log(setHead)
   return request({
     url: `/fooddataparse/parsewxdata`,

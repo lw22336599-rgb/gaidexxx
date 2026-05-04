@@ -1,7 +1,7 @@
 <template>
   <el-dialog v-model="dialogVisible" :title="title" width="400px" :close-on-click-modal="false">
     <div class="confirm-dialog">
-      <p v-html="processedContent"></p>
+      <p v-html="processedContent" />
     </div>
     <template #footer>
       <span class="dialog-footer">
@@ -29,7 +29,7 @@ const emit = defineEmits<{
 
 const dialogVisible = computed({
   get: () => props.modelValue,
-  set: (val) => emit('update:modelValue', val)
+  set: val => emit('update:modelValue', val)
 })
 
 // 处理内容，将换行符转换为 HTML 标签

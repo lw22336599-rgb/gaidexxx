@@ -1,6 +1,13 @@
 <template>
-  <el-drawer v-model="drawerVisible" :before-close="handleClose" :title="title" class="blazor-config-drawer"
-    :class="{ 'is-resizing': isResizing }" direction="rtl" :size="drawerWidth">
+  <el-drawer
+    v-model="drawerVisible"
+    :before-close="handleClose"
+    :title="title"
+    class="blazor-config-drawer"
+    :class="{ 'is-resizing': isResizing }"
+    direction="rtl"
+    :size="drawerWidth"
+  >
     <div class="blazor-drawer-inner">
       <!-- 左侧拖拽边，可左右调整抽屉宽度 -->
       <div class="blazor-drawer-resize-handle" @mousedown="onResizeStart" />
@@ -98,36 +105,43 @@ const emit = defineEmits<{
 
 const drawerVisible = computed({
   get: () => props.modelValue,
-  set: (v) => emit('update:modelValue', v)
+  set: v => emit('update:modelValue', v)
 })
 
 const handleClose = () => {
   // 先清理 iframe
   cleanupIframe()
-  
+
   // 然后关闭抽屉
   emit('close')
   emit('update:modelValue', false)
 }
 
 // 监听抽屉打开状态，当打开时加载 URL
-watch(() => props.modelValue, async (isOpen) => {
-  if (isOpen && props.url) {
-    // 抽屉打开时，加载 URL
-    await nextTick()
-    currentUrl.value = props.url
-  } else if (!isOpen) {
-    // 抽屉关闭时，清理 iframe
-    cleanupIframe()
-  }
-}, { immediate: true })
+watch(
+  () => props.modelValue,
+  async isOpen => {
+    if (isOpen && props.url) {
+      // 抽屉打开时，加载 URL
+      await nextTick()
+      currentUrl.value = props.url
+    } else if (!isOpen) {
+      // 抽屉关闭时，清理 iframe
+      cleanupIframe()
+    }
+  },
+  { immediate: true }
+)
 
 // 监听 URL 变化
-watch(() => props.url, (newUrl) => {
-  if (props.modelValue && newUrl) {
-    currentUrl.value = newUrl
+watch(
+  () => props.url,
+  newUrl => {
+    if (props.modelValue && newUrl) {
+      currentUrl.value = newUrl
+    }
   }
-})
+)
 </script>
 
 <style scoped lang="scss">

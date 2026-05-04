@@ -8,8 +8,15 @@
         </div>
         <div class="mdtabs">
           <div class="mdtitle">门店:</div>
-          <el-cascader v-model="grouvalue" clearable :options="groupOptions" placeholder="请选择分组"
-            :props="{ checkStrictly: true }" :show-all-levels="false" @change="handleChangeGroup" />
+          <el-cascader
+            v-model="grouvalue"
+            clearable
+            :options="groupOptions"
+            placeholder="请选择分组"
+            :props="{ checkStrictly: true }"
+            :show-all-levels="false"
+            @change="handleChangeGroup"
+          />
           <!--          <el-select v-model="grouvalue" placeholder="全部分组" >-->
           <!--            <el-option-->
           <!--              v-for="item in options"-->
@@ -18,76 +25,168 @@
           <!--              :value="item.value"-->
           <!--            />-->
           <!--          </el-select>-->
-          <el-cascader v-model="city" clearable :collapse-tags="true" :options="cityList" placeholder="请选择城市"
-            :props="{ multiple: true }" :show-all-levels="false" @change="handleChangeCity" />
+          <el-cascader
+            v-model="city"
+            clearable
+            :collapse-tags="true"
+            :options="cityList"
+            placeholder="请选择城市"
+            :props="{ multiple: true }"
+            :show-all-levels="false"
+            @change="handleChangeCity"
+          />
 
-          <el-input :prefix-icon="Search" v-model="queryParams.filter.word" style="width:240px"
-            placeholder="输入门店名称或id或备注" @change="getshop()" />
+          <el-input
+            v-model="queryParams.filter.word"
+            :prefix-icon="Search"
+            style="width: 240px"
+            placeholder="输入门店名称或id或备注"
+            @change="getshop()"
+          />
         </div>
       </div>
 
-
       <div class="tswechatright">
         <template v-if="funstate == 1">
-          <span v-if="localShopList.length > 0" class="batch-count"
-            :class="{ 'batch-over-limit': localShopList.length > 200 }">
+          <span
+            v-if="localShopList.length > 0"
+            class="batch-count"
+            :class="{ 'batch-over-limit': localShopList.length > 200 }"
+          >
             已选 {{ localShopList.length }} 家{{ localShopList.length > 200 ? '（超过200无法执行）' : '' }}
           </span>
-          <el-button type="primary" size="small" :disabled="localShopList.length > 200"
-            @click="triggerBatchEnable(true)">批量开启</el-button>
-          <el-button type="warning" size="small" :disabled="localShopList.length > 200"
-            @click="triggerBatchEnable(false)">批量关闭</el-button>
-          <el-button type="success" size="small" :disabled="localShopList.length > 200"
-            @click="triggerBatchConfig">批量更新配置</el-button>
+          <el-button
+            type="primary"
+            size="small"
+            :disabled="localShopList.length > 200"
+            @click="triggerBatchEnable(true)"
+            >批量开启</el-button
+          >
+          <el-button
+            type="warning"
+            size="small"
+            :disabled="localShopList.length > 200"
+            @click="triggerBatchEnable(false)"
+            >批量关闭</el-button
+          >
+          <el-button type="success" size="small" :disabled="localShopList.length > 200" @click="triggerBatchConfig"
+            >批量更新配置</el-button
+          >
           <!-- <el-button type="info" size="small" :disabled="localShopList.length > 200"
             @click="triggerBatchPushNow">批量立即推送</el-button> -->
-          <el-button v-if="localShopList.length > 0" type="default" size="small"
-            @click="clearBatchSelection">清空选择</el-button>
+          <el-button v-if="localShopList.length > 0" type="default" size="small" @click="clearBatchSelection"
+            >清空选择</el-button
+          >
         </template>
       </div>
     </div>
 
-    <tswechattable ref="tswechattableRef" @getfuncdata="getfuncdata" @chatpushchang="chatpushchang"
-      @getman="(bindTargetType) => getman(bindTargetType)" @setpayDialogState="setpayDialogState" @opendio="opendio"
-      :totalnum="totalnum" :loadshow="loadshow" :tablelist="tablelist as any" @sethaddwechat="sethaddwechat"
-      @setdrawer="setdrawer" @setqaddwechat="setqaddwechat" :funstate="funstate" @changeState="handleChangeState"
-      @shopSelectionChange="onShopSelectionChange">
-    </tswechattable>
-    <el-pagination v-model:current-page="queryParams.page" background v-model:page-size="queryParams.pageSize"
-      :page-sizes="[10, 20, 30, 40]" layout="total, sizes, prev, pager, next, jumper" :total="totalnum"
-      @size-change="handleSizeChange" @current-change="handleCurrentChange" />
-    <el-drawer :destroy-on-close="true" v-model="haddwechat" :title="wechatFriendDrawerTitle" size="800px"
-      direction="rtl">
+    <tswechattable
+      ref="tswechattableRef"
+      :totalnum="totalnum"
+      :loadshow="loadshow"
+      :tablelist="tablelist as any"
+      :funstate="funstate"
+      @getfuncdata="getfuncdata"
+      @chatpushchang="chatpushchang"
+      @getman="bindTargetType => getman(bindTargetType)"
+      @setpayDialogState="setpayDialogState"
+      @opendio="opendio"
+      @sethaddwechat="sethaddwechat"
+      @setdrawer="setdrawer"
+      @setqaddwechat="setqaddwechat"
+      @changeState="handleChangeState"
+      @shopSelectionChange="onShopSelectionChange"
+    />
+    <el-pagination
+      v-model:current-page="queryParams.page"
+      v-model:page-size="queryParams.pageSize"
+      background
+      :page-sizes="[10, 20, 30, 40]"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="totalnum"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+    />
+    <el-drawer
+      v-model="haddwechat"
+      :destroy-on-close="true"
+      :title="wechatFriendDrawerTitle"
+      size="800px"
+      direction="rtl"
+    >
       <template #default>
-        <addhao @setcheckfrien="setcheckfrien" @unbindingwx="unbindingwx" @filterbinding="filterbinding"
-          @initfilterbinding="initfilterbinding" @bindingwx="bindingwx" :shopobj="shopobj"
-          @filterfriendlist="filterfriendlist" :wxfriendlist="wxfriendlist" :tableData="tableData"
-          @sethaddwechat="sethaddwechat" @getwxfriend="getwxfriend" :friend-list-params="friendListParams"></addhao>
+        <addhao
+          :shopobj="shopobj"
+          :wxfriendlist="wxfriendlist"
+          :tableData="tableData"
+          :friend-list-params="friendListParams"
+          @setcheckfrien="setcheckfrien"
+          @unbindingwx="unbindingwx"
+          @filterbinding="filterbinding"
+          @initfilterbinding="initfilterbinding"
+          @bindingwx="bindingwx"
+          @filterfriendlist="filterfriendlist"
+          @sethaddwechat="sethaddwechat"
+          @getwxfriend="getwxfriend"
+        />
       </template>
     </el-drawer>
-    <el-drawer :destroy-on-close="true" v-model="qaddwechat" :title="wechatGroupDrawerTitle" size="800px"
-      direction="rtl">
+    <el-drawer
+      v-model="qaddwechat"
+      :destroy-on-close="true"
+      :title="wechatGroupDrawerTitle"
+      size="800px"
+      direction="rtl"
+    >
       <template #default>
-        <addquan @setcheckflock="setcheckflock" @unbindingwx="unbindingwx" @filterbinding="filterbinding"
-          @initfilterbinding="initfilterbinding" @bindingwx="bindingwx" :shopobj="shopobj"
-          @filterfloclist="filterfloclist" :tableData="tableData" :wxfloclist="wxfloclist"
-          @setqaddwechat="setqaddwechat" @getwxflock="getwxflock" :group-list-params="groupListParams"></addquan>
+        <addquan
+          :shopobj="shopobj"
+          :tableData="tableData"
+          :wxfloclist="wxfloclist"
+          :group-list-params="groupListParams"
+          @setcheckflock="setcheckflock"
+          @unbindingwx="unbindingwx"
+          @filterbinding="filterbinding"
+          @initfilterbinding="initfilterbinding"
+          @bindingwx="bindingwx"
+          @filterfloclist="filterfloclist"
+          @setqaddwechat="setqaddwechat"
+          @getwxflock="getwxflock"
+        />
       </template>
     </el-drawer>
-    <el-drawer :destroy-on-close="true" v-model="webhookDrawer" :title="webhookDrawerTitle" size="800px"
-      direction="rtl">
+    <el-drawer
+      v-model="webhookDrawer"
+      :destroy-on-close="true"
+      :title="webhookDrawerTitle"
+      size="800px"
+      direction="rtl"
+    >
       <template #default>
-        <addwebhook :robots="webhookRobots" :bound-webhook-ids="boundWebhookIds" @binding-webhook="bindingWebhook"
-          @unbinding-webhook="unbindingWebhook" @close="setWebhookDrawer(false)" />
+        <addwebhook
+          :robots="webhookRobots"
+          :bound-webhook-ids="boundWebhookIds"
+          @binding-webhook="bindingWebhook"
+          @unbinding-webhook="unbindingWebhook"
+          @close="setWebhookDrawer(false)"
+        />
       </template>
     </el-drawer>
-    <el-dialog v-model="rbwechat" title="经营日报推送数据设置" width="450" style="height:350px">
-      <rbwechatdia @setEnableFields="setEnableFields" :funcdata="funcdata" @setrbwechat="setrbwechat"></rbwechatdia>
+    <el-dialog v-model="rbwechat" title="经营日报推送数据设置" width="450" style="height: 350px">
+      <rbwechatdia :funcdata="funcdata" @setEnableFields="setEnableFields" @setrbwechat="setrbwechat" />
     </el-dialog>
-    <el-drawer body-class="bodybox" :size="sizenum" :with-header="false" v-model="drawer" direction="rtl">
+    <el-drawer v-model="drawer" body-class="bodybox" :size="sizenum" :with-header="false" direction="rtl">
       <template #default>
-        <drawerwechat :funcdata="funcdata" @setfuncdata="setfuncdata" @setdrawer="setdrawer" :tsshopobj="shopobj"
-          @sethaddwechat="sethaddwechat" @setqaddwechat="setqaddwechat" @setrbwechat="setrbwechat"></drawerwechat>
+        <drawerwechat
+          :funcdata="funcdata"
+          :tsshopobj="shopobj"
+          @setfuncdata="setfuncdata"
+          @setdrawer="setdrawer"
+          @sethaddwechat="sethaddwechat"
+          @setqaddwechat="setqaddwechat"
+          @setrbwechat="setrbwechat"
+        />
       </template>
     </el-drawer>
     <!-- <el-drawer body-class="bodybox" :size="sizenum" :with-header="false" v-model="qundrawer" direction="rtl">
@@ -101,31 +200,53 @@
         </div>
       </template>
     </el-drawer> -->
-    <paydome v-if="payDialogState" :pay-dialog-state="payDialogState" :pay-type-text="typetext" :shop-data="shopobj"
-      @close-dialog="closePayDialog" @pay-success="paySuccess"></paydome>
-    <el-dialog v-model="tutorialsDialogState" :close-on-click-modal="false" :destroy-on-close="true"
-      :title="currentTutorials" width="900px" @close="closeTutorialsDialog">
+    <paydome
+      v-if="payDialogState"
+      :pay-dialog-state="payDialogState"
+      :pay-type-text="typetext"
+      :shop-data="shopobj"
+      @close-dialog="closePayDialog"
+      @pay-success="paySuccess"
+    />
+    <el-dialog
+      v-model="tutorialsDialogState"
+      :close-on-click-modal="false"
+      :destroy-on-close="true"
+      :title="currentTutorials"
+      width="900px"
+      @close="closeTutorialsDialog"
+    >
       <div style="padding-bottom: 20px">
         <vab-player :config="configMp4" style="background-color: rgba(0, 0, 0, 0.87)" />
       </div>
     </el-dialog>
-    <BatchSelectShopsDialog v-model="batchSelectShopsDialogVisible" :shop-type="shopType" :function-code="'CHATPUSH'"
-      :action-title="pendingBatchActionTitle" @confirm="onBatchSelectShopsConfirm" />
-    <BatchChatPushConfigDialog v-model="batchConfigDialogVisible"
-      :shop-list="batchConfigShops.length ? batchConfigShops : localShopList" :shop-type="shopType"
-      @success="onBatchConfigSuccess" />
-    <BatchFailDialog v-model="batchFailDialogVisible" :success-count="batchFailSuccessCount"
-      :failed-list="batchFailList" />
+    <BatchSelectShopsDialog
+      v-model="batchSelectShopsDialogVisible"
+      :shop-type="shopType"
+      :function-code="'CHATPUSH'"
+      :action-title="pendingBatchActionTitle"
+      @confirm="onBatchSelectShopsConfirm"
+    />
+    <BatchChatPushConfigDialog
+      v-model="batchConfigDialogVisible"
+      :shop-list="batchConfigShops.length ? batchConfigShops : localShopList"
+      :shop-type="shopType"
+      @success="onBatchConfigSuccess"
+    />
+    <BatchFailDialog
+      v-model="batchFailDialogVisible"
+      :success-count="batchFailSuccessCount"
+      :failed-list="batchFailList"
+    />
   </div>
-
 </template>
 
 <script setup lang="ts">
-import { Search } from '@element-plus/icons-vue';
-import tswechattable from './components/tswechattable.vue';
-import addhao from "./components/addhao.vue";
-import addquan from "./components/addquan.vue";
-import addwebhook from "./components/addwebhook.vue";
+import { Search } from '@element-plus/icons-vue'
+import tswechattable from './components/tswechattable.vue'
+import addhao from './components/addhao.vue'
+import addquan from './components/addquan.vue'
+import addwebhook from './components/addwebhook.vue'
 import rbwechatdia from './components/rbwechat.vue'
 import drawerwechat from './components/drawerwechat.vue'
 // import  qundrawervue from './components/qundraw.vue'
@@ -133,9 +254,9 @@ import paydome from '../shop/componentsV2/PayDialog.vue'
 import BatchSelectShopsDialog from './components/BatchSelectShopsDialog.vue'
 import BatchChatPushConfigDialog from './components/BatchChatPushConfigDialog.vue'
 import BatchFailDialog from './components/BatchFailDialog.vue'
-import { computed, onMounted, watch } from 'vue';
+import { computed, onMounted, watch } from 'vue'
 // import { getCity, getGroup, getShopV2, setconf_func, enableFunc, getConfFunc } from '/@/api/shop.ts' // 已替换为 TsModel API
-import { newaxios } from "/@/api/setaxios"
+import { newaxios } from '/@/api/setaxios'
 import { gp } from '/@vab/plugins/vab.ts'
 import { uniqueId } from 'lodash-es'
 import { useUserStore } from '/@/store/modules/user'
@@ -167,8 +288,8 @@ const configMp4 = reactive({
   autoplay: true,
   screenShot: true,
   playbackRate: [0.5, 0.75, 1, 1.5, 2],
-  fluid: true,
-},)
+  fluid: true
+})
 // const cityvalue = ref('')
 // const typevalue = ref('')
 const mdname = ref('')
@@ -206,11 +327,11 @@ const getShopId = (s: { id?: string; shop?: string }) => s.id ?? s.shop ?? ''
 
 const localShopList = computed(() => {
   const byId = new Map<string, any>()
-  importedShops.value.forEach((s) => {
+  importedShops.value.forEach(s => {
     const id = getShopId(s)
     if (id) byId.set(id, { ...s, id })
   })
-  tableSelectedRows.value.forEach((s) => {
+  tableSelectedRows.value.forEach(s => {
     const id = getShopId(s)
     if (id) byId.set(id, { ...s, id })
   })
@@ -243,68 +364,50 @@ let initwxfloclist = ref<ChatMemberItem[]>([])
 const city = ref([])
 const boundWebhookIds = ref<string[]>([])
 let funcdata = ref<ChatPushFuncData>({
-  "shop": null,
-  "code": "CHATPUSH",
-  "ConfObj": {
-    "PushGroupOffIds": [
+  shop: null,
+  code: 'CHATPUSH',
+  ConfObj: {
+    PushGroupOffIds: [
       // {
       // 	"ChatOffId": "wxid_sbgpqr1heq2v12",
       // 	"MemberOffid": "45912716029@chatroom"
       // }
     ],
-    "PushFriendOffids": [],
-    "PushNormalClose": {
-      "Enable": true,
-      "Time": null
+    PushFriendOffids: [],
+    PushNormalClose: {
+      Enable: true,
+      Time: null
     },
-    "PushNormalAd": {
-      "MinAdBalance": 10,
-      "Enable": true,
-      "Time": null
+    PushNormalAd: {
+      MinAdBalance: 10,
+      Enable: true,
+      Time: null
     },
-    "PushBadComment": {
-      "Enable": true,
-      "Time": null
+    PushBadComment: {
+      Enable: true,
+      Time: null
     },
-    "PushShopReport": {
-      "EnableFields": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16
-      ],
-      "Enable": true,
-      "Time": null
+    PushShopReport: {
+      EnableFields: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
+      Enable: true,
+      Time: null
     },
-    "PushShopEndTime": {
-      "Enable": false,
-      "Time": null
+    PushShopEndTime: {
+      Enable: false,
+      Time: null
     },
-    "PushShopOut": {
-      "Enable": true,
-      "Time": null
+    PushShopOut: {
+      Enable: true,
+      Time: null
     },
-    "PushStrFirst": null,
-    "PushStrLast": null,
-    "MarkTop": true,
-    "MarkLow": true,
-    "CommandBind": true
+    PushStrFirst: null,
+    PushStrLast: null,
+    MarkTop: true,
+    MarkLow: true,
+    CommandBind: true
   },
-  "LastExceptionStr": null
-}
-)
+  LastExceptionStr: null
+})
 const queryParams = reactive({
   page: 1,
   pageSize: 10,
@@ -315,7 +418,7 @@ const queryParams = reactive({
     citys: undefined,
     group: undefined,
     word: undefined,
-    state: undefined,
+    state: undefined
   }
 })
 let wxfriendlist = ref<ChatMemberItem[]>([])
@@ -342,8 +445,8 @@ const groupParams = reactive({
   grouptype: 1,
   recursionchild: true
 })
-let checkfrien = ref<WechatRobotItem | null>(null);
-let checkflock = ref<WechatRobotItem | null>(null);
+let checkfrien = ref<WechatRobotItem | null>(null)
+let checkflock = ref<WechatRobotItem | null>(null)
 const setcheckfrien = (val: WechatRobotItem) => {
   checkfrien.value = val
   // console.log(val);
@@ -363,10 +466,10 @@ const setcheckflock = (val: WechatRobotItem) => {
 //   tsshopobj.value=obj
 // }
 const setpayDialogState = (val: boolean) => {
-  payDialogState.value = val;
+  payDialogState.value = val
 }
 const getGroupList = () => {
-  apiManager.groupApi.GetGroups(groupParams.grouptype, groupParams.recursionchild).then((data) => {
+  apiManager.groupApi.GetGroups(groupParams.grouptype, groupParams.recursionchild).then(data => {
     groupOptions.value = data
     factory(groupOptions.value)
   })
@@ -381,17 +484,17 @@ const handleChangeGroup = () => {
 }
 const handleChangeState = (state: number | undefined) => {
   // 当选择"全部"时，设置为 null 而不是 undefined，避免后端反序列化错误
-  queryParams.filter.state = state ?? null;
+  queryParams.filter.state = state ?? null
   getshop()
 }
 const factory = (material: any) => {
   material.forEach((raw: any) => {
-    raw.id = raw.Member.id;
-    raw.label = raw.Member.name;
-    raw.value = raw.Member.id;
-    raw.children && factory(raw.children);
+    raw.id = raw.Member.id
+    raw.label = raw.Member.name
+    raw.value = raw.Member.id
+    raw.children && factory(raw.children)
   })
-};
+}
 const handleChangeCity = () => {
   if (city.value && city.value.length > 0) {
     queryParams.filter.citys = city.value.map(item => item[1])
@@ -407,16 +510,16 @@ let totalnum = ref<number>(0)
 
 const setfunstate = (num: number) => {
   if (num == funstate.value) {
-    return;
+    return
   }
-  funstate.value = num;
-  queryParams.filter.func_state = num;
-  queryParams.filter.state = undefined;
-  getshop();
+  funstate.value = num
+  queryParams.filter.func_state = num
+  queryParams.filter.state = undefined
+  getshop()
 }
 const cityList = ref<Array<any>>([])
 const getCityList = () => {
-  apiManager.serviceApi.GetProvinceWithCitys().then((data) => {
+  apiManager.serviceApi.GetProvinceWithCitys().then(data => {
     let arr = []
     for (let key in data) {
       let children = data[key].map((item: any) => {
@@ -424,37 +527,37 @@ const getCityList = () => {
       })
       arr.push({ value: key, label: key, children })
     }
-    cityList.value = arr;
+    cityList.value = arr
   })
 }
 const getshop = async () => {
   // queryParams.filter.func_state=funstate.value;
-  loadshow.value = true;
-  const data = await apiManager.shopmgApi.GetShopList(queryParams);
-  loadshow.value = false;
+  loadshow.value = true
+  const data = await apiManager.shopmgApi.GetShopList(queryParams)
+  loadshow.value = false
   // console.log(data,"res");
-  tablelist.value = data.rows;
+  tablelist.value = data.rows
   tablelist.value = data.rows.map(item => {
-    const funcList = item.func_info ?? [];
-    let arr = funcList.filter((f) => f.code == 'CHATPUSH');
+    const funcList = item.func_info ?? []
+    let arr = funcList.filter(f => f.code == 'CHATPUSH')
     if (arr.length) {
-      item.chatendtime = arr[0].end_time;
-      item.chatcheck = arr[0].enable;
+      item.chatendtime = arr[0].end_time
+      item.chatcheck = arr[0].enable
     } else {
-      item.chatcheck = false;
+      item.chatcheck = false
     }
-    return item;
+    return item
   })
-  totalnum.value = data.total;
+  totalnum.value = data.total
 }
 const handleSizeChange = (val: number) => {
   // console.log(`${val} items per page`)
-  queryParams.pageSize = val;
+  queryParams.pageSize = val
   getshop()
 }
 const handleCurrentChange = (val: number) => {
   // console.log(`current page: ${val}`)
-  queryParams.page = val;
+  queryParams.page = val
   getshop()
 }
 // onMounted(()=>{
@@ -478,10 +581,10 @@ const setdrawer = (val: boolean) => {
 // const setqundrawer=(val:boolean)=>{
 //   qundrawer.value=val
 // }
-let shopobj = ref<ShopListItemWithChatPush>({} as ShopListItemWithChatPush);
+let shopobj = ref<ShopListItemWithChatPush>({} as ShopListItemWithChatPush)
 let typetext = ref('推送服务')
 const opendio = (obj: ShopListItemWithChatPush) => {
-  shopobj.value = obj;
+  shopobj.value = obj
 }
 
 // 抽屉标题计算属性
@@ -504,8 +607,8 @@ const closePayDialog = () => {
 }
 const paySuccess = () => {
   payDialogState.value = false
-  queryParams.page = 1;
-  getshop();
+  queryParams.page = 1
+  getshop()
 }
 // 绑定目标类型：1=微信好友推送，2=微信群推送，3=WebHook 机器人推送
 const getman = (bindTargetType: number) => {
@@ -575,11 +678,7 @@ const getwex = (bindTargetType: number) => {
     const wechatRobots = data.rows.filter(item => {
       const chatType = item.chat_type
       // 只保留微信PC、微信iPad、微信Web类型
-      return (
-        chatType === ChatType.WechatPc ||
-        chatType === ChatType.WechatIpad ||
-        chatType === ChatType.WechatWeb
-      )
+      return chatType === ChatType.WechatPc || chatType === ChatType.WechatIpad || chatType === ChatType.WechatWeb
     })
 
     // 转换为扩展类型（添加 type 字段，表示是否在线）
@@ -611,11 +710,7 @@ const getwex = (bindTargetType: number) => {
     }
   })
 }
-const getwxfriend = async (
-  pageIndex: number = 1,
-  pageSize: number = 20,
-  keyword: string = ''
-): Promise<boolean> => {
+const getwxfriend = async (pageIndex: number = 1, pageSize: number = 20, keyword: string = ''): Promise<boolean> => {
   if (!checkfrien.value) return true
 
   try {
@@ -647,11 +742,7 @@ const filterfriendlist = (text: string) => {
   friendListParams.pageIndex = 1
   getwxfriend(friendListParams.pageIndex, friendListParams.pageSize, text)
 }
-const getwxflock = async (
-  pageIndex: number = 1,
-  pageSize: number = 20,
-  keyword: string = ''
-): Promise<boolean> => {
+const getwxflock = async (pageIndex: number = 1, pageSize: number = 20, keyword: string = ''): Promise<boolean> => {
   if (!checkflock.value) return true
 
   try {
@@ -685,43 +776,44 @@ const filterfloclist = (text: string) => {
 
 const bindingwx = (row: BindWxParams) => {
   let { type, obj, rodiobj } = row
-  funcdata.value.shop = shopobj.value.id;
+  funcdata.value.shop = shopobj.value.id
   if (type == 1) {
-    let arr = null;
+    let arr = null
     let fridenlist = { ChatOffId: rodiobj.offid, MemberOffid: obj.Offid }
     arr = funcdata.value.ConfObj.PushFriendOffids.filter(item => item.MemberOffid == obj.Offid)
     if (arr && arr.length) {
       gp.$baseMessage('该好友已绑定')
-      return;
+      return
     }
-    funcdata.value.ConfObj.PushFriendOffids.push(fridenlist);
+    funcdata.value.ConfObj.PushFriendOffids.push(fridenlist)
   } else if (type == 2) {
-    let brr = null;
+    let brr = null
     let grouplist = { ChatOffId: rodiobj.offid, MemberOffid: obj.Offid }
     brr = funcdata.value.ConfObj.PushGroupOffIds.filter(item => item.MemberOffid == obj.Offid)
     if (brr && brr.length) {
       gp.$baseMessage('该群聊已绑定')
-      return;
+      return
     }
-    funcdata.value.ConfObj.PushGroupOffIds.push(grouplist);
+    funcdata.value.ConfObj.PushGroupOffIds.push(grouplist)
   }
-  apiManager.functionuserApi.SetConf_func(funcdata.value as any).then(data => {
-    gp.$baseMessage('绑定成功', 'success', 'hey')
+  apiManager.functionuserApi
+    .SetConf_func(funcdata.value as any)
+    .then(data => {
+      gp.$baseMessage('绑定成功', 'success', 'hey')
 
-    if (type == 1) {
-      getwxfriend(friendListParams.pageIndex, friendListParams.pageSize, friendListParams.keyword)
-    } else if (type == 2) {
-      getwxflock(groupListParams.pageIndex, groupListParams.pageSize, groupListParams.keyword)
-    }
-  }).catch(() => {
-    gp.$baseMessage('绑定失败', 'error', 'hey')
-  })
+      if (type == 1) {
+        getwxfriend(friendListParams.pageIndex, friendListParams.pageSize, friendListParams.keyword)
+      } else if (type == 2) {
+        getwxflock(groupListParams.pageIndex, groupListParams.pageSize, groupListParams.keyword)
+      }
+    })
+    .catch(() => {
+      gp.$baseMessage('绑定失败', 'error', 'hey')
+    })
 }
 const refreshBoundWebhookIds = () => {
   const items = funcdata.value.ConfObj?.PushGroupOffIds || []
-  boundWebhookIds.value = items
-    .filter(item => item.ChatOffId && !item.MemberOffid)
-    .map(item => item.ChatOffId)
+  boundWebhookIds.value = items.filter(item => item.ChatOffId && !item.MemberOffid).map(item => item.ChatOffId)
 }
 
 const bindingWebhook = (robot: t_chat_push_list) => {
@@ -740,48 +832,56 @@ const bindingWebhook = (robot: t_chat_push_list) => {
   items.push({ ChatOffId: robot.id, MemberOffid: null })
   funcdata.value.ConfObj.PushGroupOffIds = items
 
-  apiManager.functionuserApi.SetConf_func(funcdata.value as any).then(() => {
-    gp.$baseMessage('绑定成功', 'success', 'hey')
-    refreshBoundWebhookIds()
-  }).catch(() => {
-    gp.$baseMessage('绑定失败', 'error', 'hey')
-  })
+  apiManager.functionuserApi
+    .SetConf_func(funcdata.value as any)
+    .then(() => {
+      gp.$baseMessage('绑定成功', 'success', 'hey')
+      refreshBoundWebhookIds()
+    })
+    .catch(() => {
+      gp.$baseMessage('绑定失败', 'error', 'hey')
+    })
 }
 const setfuncdata = (obj: Partial<ChatPushFuncData['ConfObj']>) => {
   Object.assign(funcdata.value.ConfObj, obj)
-  funcdata.value.shop = shopobj.value.id;
-  apiManager.functionuserApi.SetConf_func(funcdata.value as any).then(data => {
-    gp.$baseMessage('设置成功', 'success', 'hey')
-    setdrawer(false);
-  }).catch(() => {
-    gp.$baseMessage('设置失败', 'error', 'hey')
-  })
+  funcdata.value.shop = shopobj.value.id
+  apiManager.functionuserApi
+    .SetConf_func(funcdata.value as any)
+    .then(data => {
+      gp.$baseMessage('设置成功', 'success', 'hey')
+      setdrawer(false)
+    })
+    .catch(() => {
+      gp.$baseMessage('设置失败', 'error', 'hey')
+    })
 }
 const setEnableFields = (arr: Array<number>) => {
   if (funcdata.value.ConfObj.PushShopReport) {
     funcdata.value.ConfObj.PushShopReport.EnableFields = arr
   }
-
 }
 // 功能开关
 const chatpushchang = (val: ShopListItemWithChatPush) => {
   // enableFunc
   let obj = {
-    "code": "CHATPUSH",
-    "enable": val.chatcheck || false,
-    "shop": val.id
+    code: 'CHATPUSH',
+    enable: val.chatcheck || false,
+    shop: val.id
   }
-  apiManager.functionuserApi.Enable_func(obj).then(data => {
-    gp.$baseMessage('操作成功!', 'success', 'hey');
-    getshop()
-  }).catch(() => {
-    gp.$baseMessage('操作失败!', 'error', 'hey');
-    // tablelist.value.chatcheck=!val.chatcheck;
-    getshop()
-  })
+  apiManager.functionuserApi
+    .Enable_func(obj)
+    .then(data => {
+      gp.$baseMessage('操作成功!', 'success', 'hey')
+      getshop()
+    })
+    .catch(() => {
+      gp.$baseMessage('操作失败!', 'error', 'hey')
+      // tablelist.value.chatcheck=!val.chatcheck;
+      getshop()
+    })
 }
-const getfuncdata = (obj: { id: string, type: number }) => {
-  let { id, type } = obj;
+const getfuncdata = (obj: { id: string; type: number }) => {
+  let { id, type } = obj
   apiManager.functionuserApi.GetConf_func({ code: 'CHATPUSH', shop: id }).then(data => {
     const confObj = data.conf_json || {}
     const firld = confObj.PushFriendOffids?.filter((item: any) => item?.MemberOffid && item?.ChatOffId) || []
@@ -811,7 +911,7 @@ const onBatchSelectShopsConfirm = (shops: any[]) => {
   batchSelectShopsDialogVisible.value = false
   const action = pendingBatchAction.value
   pendingBatchAction.value = null
-  const shopList = shops.map((s) => ({ ...s, id: getShopId(s) })).filter((s) => s.id)
+  const shopList = shops.map(s => ({ ...s, id: getShopId(s) })).filter(s => s.id)
   if (action === 'enable') batchEnableWithShops(true, shopList)
   else if (action === 'disable') batchEnableWithShops(false, shopList)
   else if (action === 'config') {
@@ -824,11 +924,11 @@ const onShopSelectionChange = (selectedRows: any[]) => {
   tableSelectedRows.value = selectedRows
 }
 
-watch(batchSelectShopsDialogVisible, (val) => {
+watch(batchSelectShopsDialogVisible, val => {
   if (!val) pendingBatchAction.value = null
 })
 
-watch(batchConfigDialogVisible, (val) => {
+watch(batchConfigDialogVisible, val => {
   if (!val) batchConfigShops.value = []
 })
 
@@ -862,7 +962,7 @@ const triggerBatchPushNow = () => {
 }
 
 const getShopIds = (shops?: any[]) => {
-  const ids = (shops ?? localShopList.value).map((s) => getShopId(s)).filter(Boolean) as string[]
+  const ids = (shops ?? localShopList.value).map(s => getShopId(s)).filter(Boolean) as string[]
   return [...new Set(ids)]
 }
 
@@ -892,7 +992,7 @@ const batchEnableWithShops = async (enable: boolean, shops: any[]) => {
       ShopType: shopType.value,
       Code: 'CHATPUSH',
       ShopIds: shopIds,
-      Enable: enable,
+      Enable: enable
     })
     const msg = showBatchResult(res)
     gp.$baseMessage(`批量${enable ? '开启' : '关闭'}${msg}`, 'success', 'hey')
@@ -917,7 +1017,7 @@ const batchEnable = async (enable: boolean) => {
       ShopType: shopType.value,
       Code: 'CHATPUSH',
       ShopIds: shopIds,
-      Enable: enable,
+      Enable: enable
     })
     const msg = showBatchResult(res)
     gp.$baseMessage(`批量${enable ? '开启' : '关闭'}${msg}`, 'success', 'hey')
@@ -941,7 +1041,7 @@ const batchPushNowWithShops = async (shops: any[]) => {
   try {
     const res = await apiManager.chatPushDataApi.BatchPushDataNow({
       ShopType: shopType.value,
-      ShopIds: shopIds,
+      ShopIds: shopIds
     })
     const msg = showBatchResult(res)
     gp.$baseMessage(`批量推送${msg}`, 'success', 'hey')
@@ -963,7 +1063,7 @@ const batchPushNow = async () => {
   try {
     const res = await apiManager.chatPushDataApi.BatchPushDataNow({
       ShopType: shopType.value,
-      ShopIds: shopIds,
+      ShopIds: shopIds
     })
     const msg = showBatchResult(res)
     gp.$baseMessage(`批量推送${msg}`, 'success', 'hey')
@@ -997,14 +1097,12 @@ const filterbinding = async (type: number) => {
     const currentRobotOffid = checkfrien.value.offid || checkfrien.value.id
 
     const boundFriendOffids =
-      funcdata.value.ConfObj.PushFriendOffids
-        ?.filter(
-          item =>
-            item.MemberOffid &&
-            item.ChatOffId &&
-            (item.ChatOffId === currentRobotId || item.ChatOffId === currentRobotOffid)
-        )
-        .map(item => item.MemberOffid as string) || []
+      funcdata.value.ConfObj.PushFriendOffids?.filter(
+        item =>
+          item.MemberOffid &&
+          item.ChatOffId &&
+          (item.ChatOffId === currentRobotId || item.ChatOffId === currentRobotOffid)
+      ).map(item => item.MemberOffid as string) || []
 
     if (boundFriendOffids.length === 0) {
       friendListOnlyMemberOffIds.value = null
@@ -1054,14 +1152,12 @@ const filterbinding = async (type: number) => {
     const currentRobotOffid = checkflock.value.offid || checkflock.value.id
 
     const boundGroupOffIds =
-      funcdata.value.ConfObj.PushGroupOffIds
-        ?.filter(
-          item =>
-            item.MemberOffid &&
-            item.ChatOffId &&
-            (item.ChatOffId === currentRobotId || item.ChatOffId === currentRobotOffid)
-        )
-        .map(item => item.MemberOffid as string) || []
+      funcdata.value.ConfObj.PushGroupOffIds?.filter(
+        item =>
+          item.MemberOffid &&
+          item.ChatOffId &&
+          (item.ChatOffId === currentRobotId || item.ChatOffId === currentRobotOffid)
+      ).map(item => item.MemberOffid as string) || []
 
     if (boundGroupOffIds.length === 0) {
       groupListOnlyMemberOffIds.value = null
@@ -1121,27 +1217,32 @@ const initfilterbinding = (type: number) => {
     getwxflock(groupListParams.pageIndex, groupListParams.pageSize, groupListParams.keyword)
   }
 }
-const unbindingwx = (data: { type: number, row: ChatMemberItem }) => {
-  let { type, row } = data;
+const unbindingwx = (data: { type: number; row: ChatMemberItem }) => {
+  let { type, row } = data
   let obj: ChatPushFuncData = JSON.parse(JSON.stringify(funcdata.value))
   if (type == 1 && obj.ConfObj) {
-    obj.ConfObj.PushFriendOffids = funcdata.value.ConfObj?.PushFriendOffids?.filter(item => item.MemberOffid != row.Offid) || []
+    obj.ConfObj.PushFriendOffids =
+      funcdata.value.ConfObj?.PushFriendOffids?.filter(item => item.MemberOffid != row.Offid) || []
   } else if (type == 2 && obj.ConfObj) {
-    obj.ConfObj.PushGroupOffIds = funcdata.value.ConfObj?.PushGroupOffIds?.filter(item => item.MemberOffid != row.Offid) || []
+    obj.ConfObj.PushGroupOffIds =
+      funcdata.value.ConfObj?.PushGroupOffIds?.filter(item => item.MemberOffid != row.Offid) || []
   }
-  apiManager.functionuserApi.SetConf_func(obj as any).then(data => {
-    gp.$baseMessage('解绑成功', 'success')
-    funcdata.value = obj
-    filterbinding(type)
-    // if(type==1){
-    //   getwxfriend()
-    // }else if(type==2){
-    //   getwxflock()
-    // }
-  }).catch(() => {
-    gp.$baseMessage('解绑失败', 'error')
-    filterbinding(type)
-  })
+  apiManager.functionuserApi
+    .SetConf_func(obj as any)
+    .then(data => {
+      gp.$baseMessage('解绑成功', 'success')
+      funcdata.value = obj
+      filterbinding(type)
+      // if(type==1){
+      //   getwxfriend()
+      // }else if(type==2){
+      //   getwxflock()
+      // }
+    })
+    .catch(() => {
+      gp.$baseMessage('解绑失败', 'error')
+      filterbinding(type)
+    })
 }
 const unbindingWebhook = (robot: t_chat_push_list) => {
   const obj: ChatPushFuncData = JSON.parse(JSON.stringify(funcdata.value))
@@ -1150,18 +1251,20 @@ const unbindingWebhook = (robot: t_chat_push_list) => {
       obj.ConfObj.PushGroupOffIds?.filter(item => !(item.ChatOffId === robot.id && !item.MemberOffid)) || []
   }
 
-  apiManager.functionuserApi.SetConf_func(obj as any).then(() => {
-    gp.$baseMessage('解绑成功', 'success')
-    funcdata.value = obj
-    refreshBoundWebhookIds()
-  }).catch(() => {
-    gp.$baseMessage('解绑失败', 'error')
-  })
+  apiManager.functionuserApi
+    .SetConf_func(obj as any)
+    .then(() => {
+      gp.$baseMessage('解绑成功', 'success')
+      funcdata.value = obj
+      refreshBoundWebhookIds()
+    })
+    .catch(() => {
+      gp.$baseMessage('解绑失败', 'error')
+    })
 }
 const opennewurl = () => {
   // configMp4.url
   tutorialsDialogState.value = true
-
 }
 const closeTutorialsDialog = () => {
   configMp4.url = ''
@@ -1169,22 +1272,26 @@ const closeTutorialsDialog = () => {
 }
 
 // 监听路由变化，当店铺类型变化时重新加载店铺列表
-watch(funstate, (val) => {
+watch(funstate, val => {
   if (val !== 1) {
     tableSelectedRows.value = []
     tswechattableRef.value?.clearSelection?.()
   }
 })
 
-watch(shopType, (newType, oldType) => {
-  // 只有在当前路由是门店推送相关页面且值真正变化时才执行
-  const isShopWechatRoute = route.name === 'Tswechat' || route.name === 'Elmtswechat' || route.name === 'Jdtswechat'
-  if (isShopWechatRoute && newType !== oldType && newType !== queryParams.filter.shopType) {
-    queryParams.filter.shopType = newType
-    queryParams.page = 1
-    getshop()
-  }
-}, { flush: 'post' })
+watch(
+  shopType,
+  (newType, oldType) => {
+    // 只有在当前路由是门店推送相关页面且值真正变化时才执行
+    const isShopWechatRoute = route.name === 'Tswechat' || route.name === 'Elmtswechat' || route.name === 'Jdtswechat'
+    if (isShopWechatRoute && newType !== oldType && newType !== queryParams.filter.shopType) {
+      queryParams.filter.shopType = newType
+      queryParams.page = 1
+      getshop()
+    }
+  },
+  { flush: 'post' }
+)
 
 onMounted(() => {
   getshop()
@@ -1193,20 +1300,20 @@ onMounted(() => {
   const handleResize = () => {
     // 在这里处理窗口大小变化的事件
     if (window.innerWidth <= 800) {
-      sizenum.value = "100%"
+      sizenum.value = '100%'
     } else {
-      sizenum.value = "800px"
+      sizenum.value = '800px'
     }
-  };
+  }
 
   // 添加事件监听器
-  window.addEventListener('resize', handleResize);
+  window.addEventListener('resize', handleResize)
 
   // 清理函数，在组件卸载时移除事件监听器
   onUnmounted(() => {
-    window.removeEventListener('resize', handleResize);
-  });
-});
+    window.removeEventListener('resize', handleResize)
+  })
+})
 </script>
 
 <style scoped lang="scss">
@@ -1310,11 +1417,69 @@ onMounted(() => {
       width: 160px !important;
       margin-right: 10px;
     }
-
   }
 
   .bodybox {
     width: 50% !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-container .tswechat-top {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding-bottom: 14px;
+
+    .tswechatleft {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .tswechatright {
+      min-width: 0;
+      width: 100%;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .tabs {
+      width: 100%;
+      div {
+        flex: 1;
+        min-width: 0;
+      }
+    }
+
+    .mdtabs {
+      flex-wrap: wrap;
+      margin-left: 0;
+      margin-top: 4px;
+      gap: 10px;
+      width: 100%;
+
+      .mdtitle {
+        width: auto;
+      }
+
+      :deep(.el-cascader) {
+        width: 100% !important;
+        min-width: 0 !important;
+      }
+
+      :deep(.el-input) {
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+      }
+    }
+  }
+
+  .page-container :deep(.el-pagination) {
+    flex-wrap: wrap;
+    row-gap: 10px;
+    justify-content: center;
   }
 }
 
@@ -1326,4 +1491,5 @@ onMounted(() => {
 //         width: 50% !important;
 
 //     }
-// }</style>
+// }
+</style>

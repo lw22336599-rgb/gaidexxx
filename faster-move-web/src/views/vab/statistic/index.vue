@@ -17,6 +17,6 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'Statistic',
+  name: 'Statistic'
 })
 </script>

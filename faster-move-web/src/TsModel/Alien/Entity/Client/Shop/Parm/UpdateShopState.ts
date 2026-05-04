@@ -1,3 +1,3 @@
 export interface UpdateShopState {
-		ShopIds: string[];
+  ShopIds: string[]
 }

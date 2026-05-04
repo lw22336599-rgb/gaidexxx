@@ -41,7 +41,7 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'PasswordGenerator',
+  name: 'PasswordGenerator'
 })
 
 const form = reactive<any>({
@@ -49,7 +49,7 @@ const form = reactive<any>({
   includeUppercase: true,
   includeLowercase: true,
   includeNumbers: true,
-  includeSymbols: false,
+  includeSymbols: false
 })
 
 const generatedPassword = ref<string>('')

@@ -10,7 +10,7 @@ const list = [
     image: handleRandomImage(),
     fullImage: true,
     time: '@datetime',
-    content: '@cparagraph(100, 200)',
+    content: '@cparagraph(100, 200)'
   },
   {
     span: 6,
@@ -19,7 +19,7 @@ const list = [
     logo: handleRandomImage(),
     image: handleRandomImage(),
     time: '@datetime',
-    content: '@cparagraph(100, 200)',
+    content: '@cparagraph(100, 200)'
   },
   {
     span: 6,
@@ -28,7 +28,7 @@ const list = [
     logo: handleRandomImage(),
     image: handleRandomImage(),
     time: '@datetime',
-    content: '@cparagraph(100, 200)',
+    content: '@cparagraph(100, 200)'
   },
   {
     span: 6,
@@ -37,7 +37,7 @@ const list = [
     logo: handleRandomImage(),
     image: handleRandomImage(),
     time: '@datetime',
-    content: '@cparagraph(100, 200)',
+    content: '@cparagraph(100, 200)'
   },
   {
     span: 6,
@@ -46,7 +46,7 @@ const list = [
     logo: handleRandomImage(),
     image: handleRandomImage(),
     time: '@datetime',
-    content: '@cparagraph(100, 200)',
+    content: '@cparagraph(100, 200)'
   },
   {
     span: 6,
@@ -55,7 +55,7 @@ const list = [
     logo: handleRandomImage(),
     image: handleRandomImage(),
     time: '@datetime',
-    content: '@cparagraph(100, 200)',
+    content: '@cparagraph(100, 200)'
   },
   {
     span: 6,
@@ -64,7 +64,7 @@ const list = [
     logo: handleRandomImage(),
     image: handleRandomImage(),
     time: '@datetime',
-    content: '@cparagraph(100, 200)',
+    content: '@cparagraph(100, 200)'
   },
   {
     span: 6,
@@ -73,7 +73,7 @@ const list = [
     logo: handleRandomImage(),
     image: handleRandomImage(),
     time: '@datetime',
-    content: '@cparagraph(100, 200)',
+    content: '@cparagraph(100, 200)'
   },
   {
     span: 6,
@@ -82,7 +82,7 @@ const list = [
     logo: handleRandomImage(),
     image: handleRandomImage(),
     time: '@datetime',
-    content: '@cparagraph(100, 200)',
+    content: '@cparagraph(100, 200)'
   },
   {
     span: 12,
@@ -92,7 +92,7 @@ const list = [
     image: handleRandomImage(),
     fullImage: true,
     time: '@datetime',
-    content: '@cparagraph(100, 200)',
+    content: '@cparagraph(100, 200)'
   },
   {
     span: 6,
@@ -101,7 +101,7 @@ const list = [
     logo: handleRandomImage(),
     image: handleRandomImage(),
     time: '@datetime',
-    content: '@cparagraph(100, 200)',
+    content: '@cparagraph(100, 200)'
   },
   {
     span: 6,
@@ -110,7 +110,7 @@ const list = [
     logo: handleRandomImage(),
     image: handleRandomImage(),
     time: '@datetime',
-    content: '@cparagraph(100, 200)',
+    content: '@cparagraph(100, 200)'
   },
   {
     span: 6,
@@ -119,7 +119,7 @@ const list = [
     logo: handleRandomImage(),
     image: handleRandomImage(),
     time: '@datetime',
-    content: '@cparagraph(100, 200)',
+    content: '@cparagraph(100, 200)'
   },
   {
     span: 6,
@@ -128,8 +128,8 @@ const list = [
     logo: handleRandomImage(),
     image: handleRandomImage(),
     time: '@datetime',
-    content: '@cparagraph(100, 200)',
-  },
+    content: '@cparagraph(100, 200)'
+  }
 ]
 
 export default [
@@ -144,8 +144,8 @@ export default [
       return {
         code: 200,
         msg: 'success',
-        data: { list },
+        data: { list }
       }
-    },
-  },
+    }
+  }
 ] as MockMethod[]

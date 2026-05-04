@@ -20,7 +20,7 @@ import award_2 from '/@/assets/award_images/award_2.png'
 const blocks = [
   { padding: '15px', background: '#ffc27a', borderRadius: 28 },
   { padding: '25px', background: '#ff4a4c', borderRadius: 23 },
-  { padding: '15px', background: '#ff625b', borderRadius: 20 },
+  { padding: '15px', background: '#ff625b', borderRadius: 20 }
 ]
 const prizes = [
   {
@@ -30,9 +30,9 @@ const prizes = [
       {
         width: '40%',
         top: '20%',
-        src: award_1,
-      },
-    ],
+        src: award_1
+      }
+    ]
   },
   {
     background: '#fefaea',
@@ -41,15 +41,15 @@ const prizes = [
       {
         width: '40%',
         top: '30%',
-        src: award_2,
-      },
-    ],
-  },
+        src: award_2
+      }
+    ]
+  }
 ]
 const slots = [{ speed: 1 }, { speed: 4 }, { speed: 5 }]
 const defaultConfig = {
   rowSpacing: '10px',
-  colSpacing: '10px',
+  colSpacing: '10px'
 }
 
 const awardSlotMachineRef = ref<any>(null)
@@ -61,7 +61,7 @@ const startCallback = () => {
       [9, 9, 6],
       [0, 0, 7],
       [6, 6, 6],
-      [8, 8, 8],
+      [8, 8, 8]
     ]
     // 随机取一组数据
     const index = res[Math.trunc(Math.random() * 4)]

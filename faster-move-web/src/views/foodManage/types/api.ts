@@ -5,7 +5,11 @@ import { DateTimeScope } from '/@/types/activity/DateTimeScope'
 import { DayType } from '/@/types/activity/DayType'
 import { TimeSpanScope } from '/@/types/activity/TimeSpanScope'
 import { PickType } from '/@/types/activity/PickType'
-import { ActivityType_ZheKou, ActivityType_ZheKou_Item, ActivityType_ZheKou_SetType } from '/@/types/activity/ActivityType_ZheKou'
+import type {
+  ActivityType_ZheKou,
+  ActivityType_ZheKou_Item,
+  ActivityType_ZheKou_SetType
+} from '/@/types/activity/ActivityType_ZheKou'
 
 export namespace FoodManageApi {
   // 基础请求参数
@@ -53,10 +57,6 @@ export namespace FoodManageApi {
     /** 多规格商品 */
     MultiSpec = 4
   }
-
-
-
-
 
   // 批量修改图片参数
   export interface BatchUpdateImageParams extends BaseParams {
@@ -170,11 +170,11 @@ export namespace FoodManageApi {
     /**
      * 商品的spu
      */
-    Spu: string;
+    Spu: string
     /**
      * 商品的sku id列表
      */
-    SkuIds: string[];
+    SkuIds: string[]
   }
 
   // 批量下线折扣参数
@@ -182,7 +182,7 @@ export namespace FoodManageApi {
     /**
      * 要更新的商品和sku，如果为空则更新全部商品
      */
-    Targets?: UpdateSpuInSkuItem[];
+    Targets?: UpdateSpuInSkuItem[]
   }
 
   // 批量修改起购数量参数
@@ -246,7 +246,7 @@ export namespace FoodManageApi {
 
   // 拉取商品数据参数
   export interface PullShopFoodsParams {
-    taskId: string,
+    taskId: string
     /*强制拉取*/
     forcedPull: boolean
   }

@@ -32,16 +32,16 @@ const emit = defineEmits<{
 
 const dialogVisible = computed({
   get: () => props.modelValue,
-  set: (val) => emit('update:modelValue', val),
+  set: val => emit('update:modelValue', val)
 })
 
 const formRef = ref<FormInstance>()
 const form = ref({
-  IsOnSale: FoodManageApi.FoodStatusType.已上架, // 使用枚举值
+  IsOnSale: FoodManageApi.FoodStatusType.已上架 // 使用枚举值
 })
 
 const rules = {
-  IsOnSale: [{ required: true, message: '请选择商品状态', trigger: 'change' }],
+  IsOnSale: [{ required: true, message: '请选择商品状态', trigger: 'change' }]
 }
 
 const handleClose = () => {
@@ -51,11 +51,11 @@ const handleClose = () => {
 
 const handleConfirm = async () => {
   if (!formRef.value) return
-  await formRef.value.validate((valid) => {
+  await formRef.value.validate(valid => {
     if (valid) {
       console.log('UpdateStatusDialog - 发送状态值:', form.value.IsOnSale)
       emit('confirm', {
-        IsOnSale: form.value.IsOnSale,
+        IsOnSale: form.value.IsOnSale
       })
       handleClose()
     }

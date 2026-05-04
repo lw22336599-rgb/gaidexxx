@@ -8,7 +8,7 @@ export default function registerPolyline(lf) {
 
     return {
       view: PolylineEdge,
-      model: ConnectionModel,
+      model: ConnectionModel
     }
   })
 }

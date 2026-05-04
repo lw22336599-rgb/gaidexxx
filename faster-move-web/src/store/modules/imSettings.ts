@@ -20,15 +20,15 @@ const readSettings = (): Partial<ImSettingsState> => {
 
 export const useImSettingsStore = defineStore('imSettings', {
   state: (): ImSettingsState => ({
-    alertSoundEnabled: readSettings().alertSoundEnabled ?? true,
+    alertSoundEnabled: readSettings().alertSoundEnabled ?? true
   }),
   getters: {
-    isAlertSoundEnabled: (state): boolean => state.alertSoundEnabled,
+    isAlertSoundEnabled: (state): boolean => state.alertSoundEnabled
   },
   actions: {
     setAlertSoundEnabled(enabled: boolean): void {
       this.alertSoundEnabled = enabled
       localStorage.setItem(STORAGE_KEY, JSON.stringify({ alertSoundEnabled: enabled }))
-    },
-  },
+    }
+  }
 })

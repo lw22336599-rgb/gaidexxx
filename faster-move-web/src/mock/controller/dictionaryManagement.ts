@@ -19,19 +19,19 @@ export default [
                 {
                   id: '@id',
                   key: 'sex',
-                  label: '性别',
+                  label: '性别'
                 },
                 {
                   id: '@id',
                   key: 'type',
-                  label: '类型',
-                },
-              ],
-            },
-          ],
-        },
+                  label: '类型'
+                }
+              ]
+            }
+          ]
+        }
       }
-    },
+    }
   },
   {
     url: '/dictionaryManagement/getList',
@@ -44,15 +44,15 @@ export default [
           id: '@id',
           label: '性别',
           key: '1',
-          value: '男',
+          value: '男'
         },
         {
           parentKey: 'sex',
           id: '@id',
           label: '性别',
           key: '2',
-          value: '女',
-        },
+          value: '女'
+        }
       ]
       const list2 = [
         {
@@ -60,33 +60,33 @@ export default [
           id: '@id',
           label: '类型',
           key: '1',
-          value: '新闻',
+          value: '新闻'
         },
         {
           parentKey: 'type',
           id: '@id',
           label: '类型',
           key: '2',
-          value: '知识',
-        },
+          value: '知识'
+        }
       ]
       if (parentKey) {
         return {
           code: 200,
           msg: 'success',
           data: {
-            list: parentKey === 'sex' ? list1 : list2,
-          },
+            list: parentKey === 'sex' ? list1 : list2
+          }
         }
       }
       return {
         code: 200,
         msg: 'success',
         data: {
-          list: !key || key === 'root' ? [] : key === 'sex' ? list1 : list2,
-        },
+          list: !key || key === 'root' ? [] : key === 'sex' ? list1 : list2
+        }
       }
-    },
+    }
   },
   {
     url: '/dictionaryManagement/doEdit',
@@ -94,9 +94,9 @@ export default [
     response: () => {
       return {
         code: 200,
-        msg: '模拟保存成功',
+        msg: '模拟保存成功'
       }
-    },
+    }
   },
   {
     url: '/dictionaryManagement/doDelete',
@@ -104,8 +104,8 @@ export default [
     response: () => {
       return {
         code: 200,
-        msg: '模拟删除成功',
+        msg: '模拟删除成功'
       }
-    },
-  },
+    }
+  }
 ] as MockMethod[]

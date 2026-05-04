@@ -11,14 +11,14 @@ import { random } from 'lodash-es'
 import { useSettingsStore } from '/@/store/modules/settings'
 
 defineOptions({
-  name: 'VabChartThemeRiver',
+  name: 'VabChartThemeRiver'
 })
 
 defineProps({
   title: {
     type: String,
-    default: '',
-  },
+    default: ''
+  }
 })
 
 const settingsStore = useSettingsStore()
@@ -30,7 +30,7 @@ const option = reactive<any>({
     top: 20,
     right: 20,
     bottom: 40,
-    left: 40,
+    left: 40
   },
   tooltip: {
     trigger: 'axis',
@@ -39,14 +39,14 @@ const option = reactive<any>({
       lineStyle: {
         color: 'rgba(0,0,0,0.2)',
         width: 1,
-        type: 'solid',
-      },
-    },
+        type: 'solid'
+      }
+    }
   },
   singleAxis: {
     top: 20,
     bottom: 20,
-    type: 'time',
+    type: 'time'
   },
 
   series: {
@@ -177,9 +177,9 @@ const option = reactive<any>({
       ['2015/11/25', random(0, 100), 'DD'],
       ['2015/11/26', random(0, 100), 'DD'],
       ['2015/11/27', random(0, 100), 'DD'],
-      ['2015/11/28', random(0, 100), 'DD'],
-    ],
-  },
+      ['2015/11/28', random(0, 100), 'DD']
+    ]
+  }
 })
 
 watch(
@@ -318,7 +318,7 @@ onMounted(() => {
       ['2015/11/25', random(0, 100), 'DD'],
       ['2015/11/26', random(0, 100), 'DD'],
       ['2015/11/27', random(0, 100), 'DD'],
-      ['2015/11/28', random(0, 100), 'DD'],
+      ['2015/11/28', random(0, 100), 'DD']
     ]
   }, 3000)
 })

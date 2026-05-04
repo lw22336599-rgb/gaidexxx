@@ -7,12 +7,12 @@ const SHOP_V2_NAME = 'ShopV2'
 
 // 公共 meta 配置
 const commonNoColumnMeta = {
-  noColumn: true, // 隐藏侧边栏
+  noColumn: true // 隐藏侧边栏
 }
 
 const commonHiddenFeatureMeta = {
   levelHidden: true,
-  hidden: true, // 完全隐藏，不在菜单显示
+  hidden: true // 完全隐藏，不在菜单显示
 }
 
 const routerConfig: VabRouteRecord = {
@@ -24,7 +24,7 @@ const routerConfig: VabRouteRecord = {
     icon: 'home-4-fill',
     badge: 'NEW',
     levelHidden: true, // 隐藏一级路由，直接显示子路由，避免切换时显示二级菜单
-    noColumn: true, // 隐藏侧边栏，避免切换时显示二级菜单
+    noColumn: true // 隐藏侧边栏，避免切换时显示二级菜单
   },
   redirect: SHOP_V2_FUNCTIONAL_PATH, // 默认跳转到功能版页面
   children: [
@@ -35,8 +35,8 @@ const routerConfig: VabRouteRecord = {
       meta: {
         title: '门店管理',
         icon: 'home-4-fill',
-        ...commonNoColumnMeta,
-      },
+        ...commonNoColumnMeta
+      }
     },
     {
       path: 'functional',
@@ -45,8 +45,8 @@ const routerConfig: VabRouteRecord = {
       meta: {
         title: '门店管理',
         icon: 'home-4-fill',
-        ...commonNoColumnMeta,
-      },
+        ...commonNoColumnMeta
+      }
     },
     {
       path: 'operation',
@@ -55,8 +55,8 @@ const routerConfig: VabRouteRecord = {
       meta: {
         title: '门店管理🆕-运营版',
         icon: 'home-4-fill',
-        ...commonNoColumnMeta,
-      },
+        ...commonNoColumnMeta
+      }
     },
     // 功能版路由（隐藏，不在菜单显示）
     {
@@ -69,8 +69,8 @@ const routerConfig: VabRouteRecord = {
         title: '美团外卖',
         typeStr: 'mt-feature',
         type: 1,
-        ...commonHiddenFeatureMeta,
-      },
+        ...commonHiddenFeatureMeta
+      }
     },
     {
       path: 'feature/type=elm-feature',
@@ -85,9 +85,9 @@ const routerConfig: VabRouteRecord = {
         ...commonHiddenFeatureMeta,
         guard: {
           role: ['KA'],
-          mode: 'except', // 有KA权限的不能访问
-        },
-      },
+          mode: 'except' // 有KA权限的不能访问
+        }
+      }
     },
     {
       path: 'feature/type=elm-feature-official',
@@ -102,9 +102,9 @@ const routerConfig: VabRouteRecord = {
         ...commonHiddenFeatureMeta,
         guard: {
           role: ['KA'],
-          mode: 'except', // 有KA权限的不能访问
-        },
-      },
+          mode: 'except' // 有KA权限的不能访问
+        }
+      }
     },
     {
       path: 'feature/type=jd-home-feature',
@@ -116,8 +116,8 @@ const routerConfig: VabRouteRecord = {
         isCustomSvg: true,
         typeStr: 'jd-home-feature',
         type: 6,
-        hidden: true,
-      },
+        hidden: true
+      }
     },
     {
       path: 'feature/type=mt-shop-feature',
@@ -129,8 +129,8 @@ const routerConfig: VabRouteRecord = {
         title: '美团闪购',
         typeStr: 'mt-shop-feature',
         type: 3,
-        hidden: true,
-      },
+        hidden: true
+      }
     },
     {
       path: 'feature/type=mt-medicine-feature',
@@ -142,8 +142,8 @@ const routerConfig: VabRouteRecord = {
         isCustomSvg: true,
         typeStr: 'mt-medicine-feature',
         type: 4,
-        hidden: true,
-      },
+        hidden: true
+      }
     },
     {
       path: 'feature/type=elm-retail-feature',
@@ -155,8 +155,8 @@ const routerConfig: VabRouteRecord = {
         isCustomSvg: true,
         typeStr: 'elm-retail-feature',
         type: 5,
-        hidden: true,
-      },
+        hidden: true
+      }
     },
     {
       path: 'feature/type=dy-retail-feature',
@@ -168,8 +168,8 @@ const routerConfig: VabRouteRecord = {
         isCustomSvg: true,
         typeStr: 'dy-retail-feature',
         type: 7,
-        hidden: true,
-      },
+        hidden: true
+      }
     },
     {
       path: 'webhook-config',
@@ -180,10 +180,10 @@ const routerConfig: VabRouteRecord = {
         icon: 'webhook-alert',
         levelHidden: true,
         isCustomSvg: true
-      },
-    },
+      }
+    }
   ]
-};
+}
 
 // 店铺后台管理器路由（独立窗口）
 export const shopBackendManagerRoute = {
@@ -196,4 +196,4 @@ export const shopBackendManagerRoute = {
   }
 }
 
-export default routerConfig;
+export default routerConfig

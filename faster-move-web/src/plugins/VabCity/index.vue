@@ -22,7 +22,9 @@
             <div v-for="item in cityListByProvince" :key="item.p.n">
               <vab-divider :class="'el-city-' + item.p.l" content-position="left">{{ item.p.n }}</vab-divider>
               <el-space wrap>
-                <el-button v-for="city in item.c" :key="city.n" text @click="handleChangeValue(city.c)">{{ city.n }}</el-button>
+                <el-button v-for="city in item.c" :key="city.n" text @click="handleChangeValue(city.c)">{{
+                  city.n
+                }}</el-button>
               </el-space>
             </div>
           </div>
@@ -42,7 +44,9 @@
               </vab-divider>
               <div>
                 <el-space wrap>
-                  <el-button v-for="city in item" :key="city.n" text @click="handleChangeValue(city.c)">{{ city.n }}</el-button>
+                  <el-button v-for="city in item" :key="city.n" text @click="handleChangeValue(city.c)">{{
+                    city.n
+                  }}</el-button>
                 </el-space>
               </div>
             </div>
@@ -58,13 +62,13 @@ import cityData from './city'
 import provinceData from './province'
 
 defineOptions({
-  name: 'VabCity',
+  name: 'VabCity'
 })
 
 const props = defineProps({
   modelValue: {
-    type: String,
-  },
+    type: String
+  }
 })
 
 const emit = defineEmits(['update:modelValue'])
@@ -122,7 +126,7 @@ const handleGetProvinceByLetter = () => {
     Y: { n: 'Y', p: [], c: [] },
     Z: { n: 'Z', p: [], c: [] },
     Z1: { n: '直辖市', p: [], c: [] },
-    Z2: { n: '港澳', p: [], c: [] },
+    Z2: { n: '港澳', p: [], c: [] }
   }
   for (const c in provinceData) {
     const item = provinceData[c]
@@ -138,7 +142,7 @@ const handleGetCityByProvince = () => {
 
   const otherCities: any = [
     { p: { n: '直辖市', p: '86', l: 'Z1' }, c: [] },
-    { p: { n: '港澳', p: '86', l: 'Z2' }, c: [] },
+    { p: { n: '港澳', p: '86', l: 'Z2' }, c: [] }
   ]
 
   for (const letter in _provinceList) {
@@ -150,7 +154,7 @@ const handleGetCityByProvince = () => {
 
       const provinceCities: any = {
         p: province,
-        c: [],
+        c: []
       }
 
       for (const cid in cData) {
@@ -191,7 +195,7 @@ const handleGetCityByLetter = () => {
     W: [],
     X: [],
     Y: [],
-    Z: [],
+    Z: []
   }
   for (const cid in cData) {
     const city = cData[cid]

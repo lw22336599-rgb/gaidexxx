@@ -38,6 +38,6 @@
 import { Edit } from '@element-plus/icons-vue'
 
 defineOptions({
-  name: 'Link',
+  name: 'Link'
 })
 </script>

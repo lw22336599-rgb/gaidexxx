@@ -39,18 +39,18 @@ const emit = defineEmits<{
 
 const dialogVisible = computed({
   get: () => props.modelValue,
-  set: (val) => emit('update:modelValue', val),
+  set: val => emit('update:modelValue', val)
 })
 
 const formRef = ref<FormInstance>()
 const form = ref({
   AdjustType: 0,
-  AdjustMinBuy: 1,
+  AdjustMinBuy: 1
 })
 
 const rules = {
   AdjustType: [{ required: true, message: '请选择调整方式', trigger: 'change' }],
-  AdjustMinBuy: [{ required: true, message: '请输入起购数量', trigger: 'blur' }],
+  AdjustMinBuy: [{ required: true, message: '请输入起购数量', trigger: 'blur' }]
 }
 
 const handleClose = () => {
@@ -60,15 +60,16 @@ const handleClose = () => {
 
 const handleConfirm = async () => {
   if (!formRef.value) return
-  await formRef.value.validate((valid) => {
+  await formRef.value.validate(valid => {
     if (valid) {
       // 优先使用 selectedSkus，如果没有则使用 selectedFoods
-      const targets = props.selectedSkus.length > 0
-        ? props.selectedSkus
-        : props.selectedFoods.map(spu => ({
-          Spu: spu,
-          SkuIds: []
-        }))
+      const targets =
+        props.selectedSkus.length > 0
+          ? props.selectedSkus
+          : props.selectedFoods.map(spu => ({
+              Spu: spu,
+              SkuIds: []
+            }))
 
       emit('confirm', {
         AdjustType: form.value.AdjustType,

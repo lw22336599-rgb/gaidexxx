@@ -6,9 +6,9 @@ import { useSettingsStore } from '/@/store/modules/settings'
 
 const messages: Record<LanguageType, any> = {
   en: {
-    ...en,
+    ...en
   },
-  zh: {},
+  zh: {}
 }
 
 const getLanguage = () => {
@@ -20,7 +20,7 @@ export const i18n = createI18n({
   legacy: false,
   locale: getLanguage(),
   fallbackLocale: 'zh',
-  messages,
+  messages
 })
 
 export const setupI18n = (app: App<Element>) => {

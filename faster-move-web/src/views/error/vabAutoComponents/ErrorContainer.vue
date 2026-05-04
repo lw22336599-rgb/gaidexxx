@@ -18,7 +18,7 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'ErrorContainer',
+  name: 'ErrorContainer'
 })
 // const router = useRouter()
 
@@ -28,24 +28,24 @@ defineOptions({
 defineProps({
   oops: {
     type: String,
-    default: '',
+    default: ''
   },
   headline: {
     type: String,
-    default: '',
+    default: ''
   },
   info: {
     type: String,
-    default: '',
+    default: ''
   },
   btn: {
     type: String,
-    default: '',
+    default: ''
   },
   icon: {
     type: String,
-    default: '',
-  },
+    default: ''
+  }
 })
 </script>
 

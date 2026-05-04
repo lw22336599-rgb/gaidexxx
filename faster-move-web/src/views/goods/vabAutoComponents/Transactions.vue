@@ -18,25 +18,25 @@ const updateTime = ref<any>()
 const option = reactive<any>({
   tooltip: {
     trigger: 'axis',
-    extraCssText: 'z-index:1',
+    extraCssText: 'z-index:1'
   },
   grid: {
     top: '5%',
     left: '0%',
     right: '0%',
     bottom: '0%',
-    containLabel: true,
+    containLabel: true
   },
   xAxis: {
     type: 'category',
     boundaryGap: false,
     data: [],
     axisTick: {
-      alignWithLabel: true,
-    },
+      alignWithLabel: true
+    }
   },
   yAxis: {
-    type: 'value',
+    type: 'value'
   },
   series: {
     name: '交易笔数',
@@ -48,10 +48,10 @@ const option = reactive<any>({
       borderRadius: [0, 5, 5, 0],
       color: new graphic.LinearGradient(0, 0, 1, 0, [
         { offset: 0, color: lightenColor(theme.value.color, 50) },
-        { offset: 1, color: theme.value.color },
-      ]),
-    },
-  },
+        { offset: 1, color: theme.value.color }
+      ])
+    }
+  }
 })
 
 watch(
@@ -59,7 +59,7 @@ watch(
   () => {
     option.series.itemStyle.color = new graphic.LinearGradient(0, 0, 1, 0, [
       { offset: 0, color: lightenColor(theme.value.color, 50) },
-      { offset: 1, color: theme.value.color },
+      { offset: 1, color: theme.value.color }
     ])
   },
   { immediate: true }

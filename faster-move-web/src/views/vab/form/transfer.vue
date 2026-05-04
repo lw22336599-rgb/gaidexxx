@@ -9,7 +9,7 @@
         filterable
         :format="{
           noChecked: '${total}',
-          hasChecked: '${checked}/${total}',
+          hasChecked: '${checked}/${total}'
         }"
         :left-default-checked="[2, 3]"
         :right-default-checked="[1]"
@@ -34,7 +34,7 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'Transfer',
+  name: 'Transfer'
 })
 
 /* 基础用法 */
@@ -50,7 +50,7 @@ const generateData1 = () => {
     data.push({
       key: i,
       label: `Option ${i}`,
-      disabled: i % 4 === 0,
+      disabled: i % 4 === 0
     })
   }
   return data
@@ -75,7 +75,7 @@ const generateData2 = () => {
     data.push({
       label: city,
       key: index,
-      initial: initials[index],
+      initial: initials[index]
     })
   })
   return data
@@ -101,28 +101,28 @@ const generateData3 = (): Option3[] => {
     {
       key: 1,
       label: '曲丽丽',
-      disabled: false,
+      disabled: false
     },
     {
       key: 2,
       label: '付小小',
-      disabled: false,
+      disabled: false
     },
     {
       key: 3,
       label: '林东东',
-      disabled: false,
+      disabled: false
     },
     {
       key: 4,
       label: '周星星',
-      disabled: false,
+      disabled: false
     },
     {
       key: 5,
       label: '朱偏右',
-      disabled: true,
-    },
+      disabled: true
+    }
   ]
   return data
 }
@@ -160,7 +160,7 @@ const value3 = ref([1])
     2: var(--el-color-success),
     3: var(--el-color-warning),
     4: var(--el-color-danger),
-    5: var(--el-color-info),
+    5: var(--el-color-info)
   );
 
   @each $key, $color in $colors {

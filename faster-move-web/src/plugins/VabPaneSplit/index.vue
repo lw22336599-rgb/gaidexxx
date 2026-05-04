@@ -1,18 +1,18 @@
 <template>
   <div class="split" :class="{ horizontal }">
     <div ref="one" class="sub" :style="{ flexGrow: grow1 }">
-      <slot name="one"></slot>
+      <slot name="one" />
     </div>
-    <div class="resizer" @mousedown="startResize"></div>
+    <div class="resizer" @mousedown="startResize" />
     <div ref="two" class="sub" :style="{ flexGrow: grow2 }">
-      <slot name="two"></slot>
+      <slot name="two" />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'VabPaneSplit',
+  name: 'VabPaneSplit'
 })
 
 export interface Props {
@@ -21,14 +21,14 @@ export interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  horizontal: false,
+  horizontal: false
 })
 
 const parseRatio = (ratio: string): [number, number] => {
   const rn = ratio
     ?.split('/')
     ?.map(Number)
-    ?.filter((value) => !isNaN(value))
+    ?.filter(value => !isNaN(value))
 
   if (!rn || rn.length !== 2) {
     return [1, 1]

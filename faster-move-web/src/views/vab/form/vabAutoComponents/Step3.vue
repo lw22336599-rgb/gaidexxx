@@ -26,15 +26,15 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'Step3',
+  name: 'Step3'
 })
 defineProps({
   infoData: {
     type: Object,
     default: () => {
       return {}
-    },
-  },
+    }
+  }
 })
 const emit = defineEmits(['change-step'])
 

@@ -26,7 +26,9 @@
         <vab-card class="auto-height-card">
           <vab-query-form>
             <vab-query-form-top-panel :span="12">
-              <el-button :disabled="isRoot" :icon="Plus" type="primary" @click="handleEdit({ parentKey })">添加</el-button>
+              <el-button :disabled="isRoot" :icon="Plus" type="primary" @click="handleEdit({ parentKey })"
+                >添加</el-button
+              >
             </vab-query-form-top-panel>
           </vab-query-form>
           <el-table ref="tableRef" v-loading="listLoading" border :data="list">
@@ -56,7 +58,7 @@ import type { TableInstance } from 'element-plus'
 import { doDelete, getList, getTree } from '/@/api/dictionaryManagement'
 
 defineOptions({
-  name: 'DictionaryManagement',
+  name: 'DictionaryManagement'
 })
 
 const tableRef = ref<TableInstance>()
@@ -65,7 +67,7 @@ const editRef = ref<any>(null)
 const treeList = ref<any>([])
 const defaultProps = reactive<any>({
   children: 'children',
-  label: 'label',
+  label: 'label'
 })
 const list = ref<any>([])
 const listLoading = ref<boolean>(true)
@@ -123,7 +125,7 @@ const remove = (node: { parent: any }, data: any) => {
   treeList.value = [...treeList.value]
 }
 
-watch(filterText, (value) => {
+watch(filterText, value => {
   treeRef.value.filter(value)
 })
 

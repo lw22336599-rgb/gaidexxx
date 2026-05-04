@@ -8,8 +8,12 @@
         <el-button :icon="Management" @click="openTutorials">使用教程</el-button>
       </div>
       <div class="time-right">
-        <el-button :disabled="endTime == '已到期'" :icon="toolState ? VideoPause : VideoPlay" type="primary"
-          @click="changeToolState">
+        <el-button
+          :disabled="endTime == '已到期'"
+          :icon="toolState ? VideoPause : VideoPlay"
+          type="primary"
+          @click="changeToolState"
+        >
           {{ toolState ? '关闭调研' : '开启调研' }}
         </el-button>
         <el-button v-if="poiInfo.pic_url" :icon="Download" @click="exportExelData">数据导出</el-button>
@@ -42,12 +46,21 @@
         </div>
       </div> -->
       <div class="imglist">
-        <div style='width: fit-content;display: flex;flex-direction: column;'>
+        <div style="width: fit-content; display: flex; flex-direction: column">
           <div class="imgbox imgbox1">
             <div class="img">
-              <el-image v-if="poiInfo && poiInfo.pic_url" fit="cover" :initial-index="4" :max-scale="7" :min-scale="0.2"
-                :preview-src-list="[poiInfo.pic_url]" show-progress :src="poiInfo.pic_url"
-                style="width: 100%; height: 100%" :zoom-rate="1.2" />
+              <el-image
+                v-if="poiInfo && poiInfo.pic_url"
+                fit="cover"
+                :initial-index="4"
+                :max-scale="7"
+                :min-scale="0.2"
+                :preview-src-list="[poiInfo.pic_url]"
+                show-progress
+                :src="poiInfo.pic_url"
+                style="width: 100%; height: 100%"
+                :zoom-rate="1.2"
+              />
               <el-image v-else>
                 <template #error>
                   <div class="image-slot">
@@ -63,21 +76,26 @@
             <el-button :icon="Download">下载店铺logo</el-button>
           </div> -->
           </div>
-          <el-button style='margin: auto;' :disabled="!(poiInfo && poiInfo.pic_url)" :icon="Download"
-            @click="downImg(poiInfo.pic_url)">下载店铺logo</el-button>
+          <el-button
+            style="margin: auto"
+            :disabled="!(poiInfo && poiInfo.pic_url)"
+            :icon="Download"
+            @click="downImg(poiInfo.pic_url)"
+            >下载店铺logo</el-button
+          >
         </div>
 
         <div class="boxflexlist">
           <div class="shoptext">
-            <div class='textbox'>
+            <div class="textbox">
               <div class="textboxtop">
-                <div class="carttext" style="width:500px">
+                <div class="carttext" style="width: 500px">
                   <span>店铺名称：</span>
                   <span>
                     {{ poiInfo.name }}
                   </span>
                 </div>
-                <div class="carttext" style='width: 200px;'>
+                <div class="carttext" style="width: 200px">
                   <span>营业时间：</span>
                   {{ poiInfo.shipping_time }}
                 </div>
@@ -92,12 +110,21 @@
               </div>
             </div>
           </div>
-          <div style='width: fit-content;display: flex;flex-direction: column;width: 25%;min-width: 350px;'>
+          <div style="width: fit-content; display: flex; flex-direction: column; width: 25%; min-width: 350px">
             <div class="imgbox">
               <div class="img">
-                <el-image v-if="poiInfo && poiInfo.head_pic_url" fit="cover" :initial-index="4" :max-scale="7"
-                  :min-scale="0.2" :preview-src-list="[poiInfo.head_pic_url]" show-progress :src="poiInfo.head_pic_url"
-                  style="width: 100%; height: 100%" :zoom-rate="1.2" />
+                <el-image
+                  v-if="poiInfo && poiInfo.head_pic_url"
+                  fit="cover"
+                  :initial-index="4"
+                  :max-scale="7"
+                  :min-scale="0.2"
+                  :preview-src-list="[poiInfo.head_pic_url]"
+                  show-progress
+                  :src="poiInfo.head_pic_url"
+                  style="width: 100%; height: 100%"
+                  :zoom-rate="1.2"
+                />
                 <el-image v-else>
                   <template #error>
                     <div class="image-slot">
@@ -112,14 +139,22 @@
                     >
                   </div> -->
             </div>
-            <el-button style='margin: auto;' :disabled="!(poiInfo && poiInfo.head_pic_url)" :icon="Download"
-              @click='downImg(poiInfo.head_pic_url)'>下载店铺招牌</el-button>
+            <el-button
+              style="margin: auto"
+              :disabled="!(poiInfo && poiInfo.head_pic_url)"
+              :icon="Download"
+              @click="downImg(poiInfo.head_pic_url)"
+              >下载店铺招牌</el-button
+            >
           </div>
-          <div style='width: fit-content;display: flex;flex-direction: column;width: 25%;min-width: 350px;'>
+          <div style="width: fit-content; display: flex; flex-direction: column; width: 25%; min-width: 350px">
             <div class="imgbox">
               <div class="img">
-                <el-carousel v-if="operationSourceList && operationSourceList.length > 0" indicator-position="none"
-                  style="width: 100%; height: 100%">
+                <el-carousel
+                  v-if="operationSourceList && operationSourceList.length > 0"
+                  indicator-position="none"
+                  style="width: 100%; height: 100%"
+                >
                   <el-carousel-item v-for="item in operationSourceList" :key="item.pic_url">
                     <img alt="" :src="item.pic_url" style="width: 100%; height: 100%" />
                   </el-carousel-item>
@@ -135,12 +170,16 @@
               <!-- <div v-if="operationSourceList && operationSourceList.length > 0" @click="openChange">
             </div> -->
             </div>
-            <el-button style='margin: auto;' :disabled='!(operationSourceList && operationSourceList.length > 0)'
-              :icon="Download" @click="openChange">下载店铺海报</el-button>
-
+            <el-button
+              style="margin: auto"
+              :disabled="!(operationSourceList && operationSourceList.length > 0)"
+              :icon="Download"
+              @click="openChange"
+              >下载店铺海报</el-button
+            >
           </div>
           <div class="tablebox">
-            <el-table :data="poiTags" :height="148" style="width: 100%;">
+            <el-table :data="poiTags" :height="148" style="width: 100%">
               <el-table-column label="序号" width="80">
                 <template #default="scope">
                   {{ scope.$index + 1 }}
@@ -159,8 +198,6 @@
             </el-table>
           </div>
         </div>
-
-
       </div>
       <!-- <div>
         <el-button :disabled="!(poiInfo && poiInfo.pic_url)" :icon="Download"  @click="downImg(poiInfo.pic_url)">下载店铺logo</el-button>
@@ -189,62 +226,71 @@
         <h5>店铺商品列表</h5>
         <div class="good-container">
           <div class="good-list">
-            <div v-for="(item, index) in foodSpuTags" :key="item.id" class="list-item"
-              :class="{ 'group-is-active': currentGroupIndex === index }" @click="getGroupGoodList(item, index)">
+            <div
+              v-for="(item, index) in foodSpuTags"
+              :key="item.id"
+              class="list-item"
+              :class="{ 'group-is-active': currentGroupIndex === index }"
+              @click="getGroupGoodList(item, index)"
+            >
               <div style="width: 100%">
-                <div style="color: #999999;white-space: nowrap;overflow: hidden;text-overflow: ellipsis;">{{ item.name
-                }}
+                <div style="color: #999999; white-space: nowrap; overflow: hidden; text-overflow: ellipsis">
+                  {{ item.name }}
                 </div>
-                <div style="font-weight: 400;font-size: 12px;color: #999999;margin-top: 4px;">商品（{{
-                  item.dynamic_spus.length
-                }}/{{ item.all_sorted_spu_ids.length }}）</div>
+                <div style="font-weight: 400; font-size: 12px; color: #999999; margin-top: 4px">
+                  商品（{{ item.dynamic_spus.length }}/{{ item.all_sorted_spu_ids.length }}）
+                </div>
               </div>
             </div>
           </div>
           <div class="good-detail-list">
-            <div v-for="(item) in currentGoodList" :key="item.index" class="good-detail">
+            <div v-for="item in currentGoodList" :key="item.index" class="good-detail">
               <div class="detail-left">
                 <div class="detail-img">
-                  <img alt="" :src="item.picture">
+                  <img alt="" :src="item.picture" />
                 </div>
                 <div class="ai-btn">AI去水印</div>
                 <div class="ai-btn">AI美化</div>
-                <img v-if="item.render_info.img_area.tag_icon_url" alt="" class="travelcube"
-                  src="https://p0.meituan.net/travelcube/8be28067646744c6f878dfdbf1a714b316766.png">
+                <img
+                  v-if="item.render_info.img_area.tag_icon_url"
+                  alt=""
+                  class="travelcube"
+                  src="https://p0.meituan.net/travelcube/8be28067646744c6f878dfdbf1a714b316766.png"
+                />
               </div>
               <div class="detail-right">
-                <div class="detail-line" style="display: flex;align-items: center;justify-content: space-between;">
-                  <div class="specs-name" style="width: 110px;padding: 0 10px 0 20px;">名称</div>
+                <div class="detail-line" style="display: flex; align-items: center; justify-content: space-between">
+                  <div class="specs-name" style="width: 110px; padding: 0 10px 0 20px">名称</div>
                   <el-input v-model="item.name" disabled style="width: calc(100% - 110px)" />
                 </div>
                 <div class="detail-line">
-                  <div class="specs-name" style="width: 110px;padding: 0 10px 0 20px;">描述</div>
+                  <div class="specs-name" style="width: 110px; padding: 0 10px 0 20px">描述</div>
                   <el-input v-model="item.description" disabled style="width: calc(100% - 110px)" />
                 </div>
                 <div class="detail-line">
-                  <div class="specs-name" style="width: 110px;padding: 0 10px 0 20px;">最小购买数</div>
-                  <el-input v-model="item.skus[0].min_order_count" disabled style="width: 120px;" />
-                  <div class="specs-name" style="width: 110px;padding: 0 10px 0 20px;">月售</div>
-                  <el-input v-model="item.month_saled" disabled style="width: 120px;" />
-                  <div class="specs-name" style="width: 110px;padding: 0 10px 0 20px;">好评度</div>
-                  <el-input v-model="item.like_ratio_desc" disabled style="width: 120px;" />
+                  <div class="specs-name" style="width: 110px; padding: 0 10px 0 20px">最小购买数</div>
+                  <el-input v-model="item.skus[0].min_order_count" disabled style="width: 120px" />
+                  <div class="specs-name" style="width: 110px; padding: 0 10px 0 20px">月售</div>
+                  <el-input v-model="item.month_saled" disabled style="width: 120px" />
+                  <div class="specs-name" style="width: 110px; padding: 0 10px 0 20px">好评度</div>
+                  <el-input v-model="item.like_ratio_desc" disabled style="width: 120px" />
                 </div>
                 <div class="detail-line">
-                  <div class="specs-name" style="width: 110px;padding: 0 10px 0 20px;">份量</div>
-                  <el-input v-model="item.unit" disabled style="width: 120px;" />
-                  <div class="specs-name" style="width: 110px;padding: 0 10px 0 20px;">库存</div>
-                  <el-input disabled style="width: 120px;" :value="item.stock > 0 ? item.stock : '无限'" />
-                  <div class="specs-name" style="width: 110px;padding: 0 10px 0 20px;">折扣</div>
-                  <el-input v-model="item.max_discount" disabled style="width: 120px;" />
+                  <div class="specs-name" style="width: 110px; padding: 0 10px 0 20px">份量</div>
+                  <el-input v-model="item.unit" disabled style="width: 120px" />
+                  <div class="specs-name" style="width: 110px; padding: 0 10px 0 20px">库存</div>
+                  <el-input disabled style="width: 120px" :value="item.stock > 0 ? item.stock : '无限'" />
+                  <div class="specs-name" style="width: 110px; padding: 0 10px 0 20px">折扣</div>
+                  <el-input v-model="item.max_discount" disabled style="width: 120px" />
                 </div>
                 <div class="detail-line">
-                  <div class="specs-name" style="width: 130px;padding: 0 10px 0 20px;">是否单点不送</div>
-                  <el-input v-model="item.forbid_single_buy" disabled style="width: 120px;" />
+                  <div class="specs-name" style="width: 130px; padding: 0 10px 0 20px">是否单点不送</div>
+                  <el-input v-model="item.forbid_single_buy" disabled style="width: 120px" />
                 </div>
                 <div v-for="(_item, _index) in item.attrs" :key="_index" class="detail-line specs-other">
-                  <div class="specs-item" style="width: 100%;display: flex;align-items: flex-start">
-                    <div class="specs-name specs-name-other" style="border: 1px solid #DCDFE6">{{ _item.name }}</div>
-                    <div style="display: flex;flex-wrap: wrap;align-items: center;width: calc(100% - 90px);">
+                  <div class="specs-item" style="width: 100%; display: flex; align-items: flex-start">
+                    <div class="specs-name specs-name-other" style="border: 1px solid #dcdfe6">{{ _item.name }}</div>
+                    <div style="display: flex; flex-wrap: wrap; align-items: center; width: calc(100% - 90px)">
                       <div v-for="(__item, __index) in _item.values" :key="__index" class="litItemInput">
                         <el-input v-model="__item.value" class="lit-input" disabled />
                       </div>
@@ -255,20 +301,28 @@
             </div>
           </div>
         </div>
-
       </div>
     </div>
     <el-dialog v-model="changeImgState" title="选择图片下载" width="30%">
       <div style="width: 100%; overflow-x: auto; display: flex; align-items: center; padding-bottom: 20px">
-        <div v-for="item in operationSourceList" :key="item.pic_url"
-          style="width: 210px; height: 140px; margin-right: 10px; display: flex; align-items: center; flex-wrap: wrap">
+        <div
+          v-for="item in operationSourceList"
+          :key="item.pic_url"
+          style="width: 210px; height: 140px; margin-right: 10px; display: flex; align-items: center; flex-wrap: wrap"
+        >
           <img alt="" :src="item.pic_url" style="width: 100%; height: 80px" />
           <div @click="downImg(item.pic_url)"><el-button :icon="Download">下载海报</el-button></div>
         </div>
       </div>
     </el-dialog>
-    <el-dialog v-if="exportState" v-model="exportState" custom-class="dialog-min-width" title="请选择数据导出格式" width="30%">
-      <div style="padding: 10px;">
+    <el-dialog
+      v-if="exportState"
+      v-model="exportState"
+      custom-class="dialog-min-width"
+      title="请选择数据导出格式"
+      width="30%"
+    >
+      <div style="padding: 10px">
         <!-- ref="ruleFormRef" -->
         <el-form ref="ruleFormRef" class="demo-ruleForm" label-width="120px" :model="ruleForm">
           <el-form-item label="图片命名格式">
@@ -278,7 +332,8 @@
               <!--              <el-radio label="商品条码命名"></el-radio>-->
             </el-radio-group>
             <div class="form-tips">
-              注意：使用商品名称命名图片，如果商品名称内包含 (/ | : * " <> ) 以上特殊符号会导致图片保存失败。解决办法再使用序号命名保存一次！
+              注意：使用商品名称命名图片，如果商品名称内包含 (/ | : * " <> )
+              以上特殊符号会导致图片保存失败。解决办法再使用序号命名保存一次！
             </div>
           </el-form-item>
           <el-form-item label="数据导出格式">
@@ -290,24 +345,37 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="导出路径">
-            <div style="width: 100%;display: flex;align-items: center;">
-              <el-input v-model="fileAddress" disabled placeholder="不设置默认保存到桌面" style="width: 60%;" />
+            <div style="width: 100%; display: flex; align-items: center">
+              <el-input v-model="fileAddress" disabled placeholder="不设置默认保存到桌面" style="width: 60%" />
               <el-button type="primary" @click="handleSelectFolder">设置</el-button>
             </div>
           </el-form-item>
         </el-form>
       </div>
       <template #footer>
-        <span class="dialog-footer" style="display: flex;align-items: center;justify-content: flex-end">
+        <span class="dialog-footer" style="display: flex; align-items: center; justify-content: flex-end">
           <el-button style="margin-right: 10px" @click="closeForm">取 消</el-button>
           <el-button type="primary" @click="submitForm">立即导出</el-button>
         </span>
       </template>
     </el-dialog>
-    <pay-dialog v-if="payDialogState" :pay-dialog-state="payDialogState" :pay-type-text="payTypeText" :shop-type="1"
-      @close-dialog="closePayDialog" @pay-success="paySuccess" />
-    <el-dialog v-if="tutorialsDialogState" v-model="tutorialsDialogState" :close-on-click-modal="false"
-      :destroy-on-close="true" :title="currentTutorials" width="900px" @close="closeTutorialsDialog">
+    <pay-dialog
+      v-if="payDialogState"
+      :pay-dialog-state="payDialogState"
+      :pay-type-text="payTypeText"
+      :shop-type="1"
+      @close-dialog="closePayDialog"
+      @pay-success="paySuccess"
+    />
+    <el-dialog
+      v-if="tutorialsDialogState"
+      v-model="tutorialsDialogState"
+      :close-on-click-modal="false"
+      :destroy-on-close="true"
+      :title="currentTutorials"
+      width="900px"
+      @close="closeTutorialsDialog"
+    >
       <div style="padding-bottom: 20px">
         <vab-player :config="configMp4" style="background-color: rgba(0, 0, 0, 0.87)" />
       </div>
@@ -322,7 +390,7 @@ import { gp } from '/@vab/plugins/vab.ts'
 import { uniqueId } from 'lodash-es'
 import PayDialog from '/@/views/shop/componentsV2/PayDialogUser.vue'
 defineOptions({
-  name: 'IntegralMt',
+  name: 'IntegralMt'
 })
 const ruleFormRef = ref<FormInstance>()
 const getGroupGoodList = (item: any, index: number) => {
@@ -338,7 +406,7 @@ const configMp4 = reactive({
   autoplay: true,
   screenShot: true,
   playbackRate: [0.5, 0.75, 1, 1.5, 2],
-  fluid: true,
+  fluid: true
 })
 const tutorialsDialogState = ref(false)
 const currentTutorials = ref('竞对店铺分析')
@@ -365,7 +433,7 @@ const downImg = (url: any) => {
       url = url.split('?')[0]
     }
     if (url.indexOf('@') > -1) {
-      url = url.split('@')[0];
+      url = url.split('@')[0]
     }
 
     globalThis.electron.downImage(url)
@@ -385,7 +453,7 @@ const getActiveType = (row: any) => {
     '集点返卷',
     '下单返卷',
     '店内领卷',
-    '超值换购',
+    '超值换购'
   ]
   return row ? typeList[row] : ''
 }
@@ -414,7 +482,7 @@ const closeInvestigation = () => {
 const onDataReceived = (res: any) => {
   // 链接如果是图片就不执行
   const imageTypes = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'svg']
-  if (imageTypes.some((type) => res.url.toLowerCase().includes(type))) {
+  if (imageTypes.some(type => res.url.toLowerCase().includes(type))) {
     return
   }
   handleDetailUrl(res)
@@ -434,7 +502,7 @@ onBeforeUnmount(() => {
 })
 const currentGroupIndex = ref(0)
 const handleDetailUrl = (data: any) => {
-  console.log(data, 'data');
+  console.log(data, 'data')
 
   if (data.url.includes('poi/food?')) {
     // console.log('获取店铺详情', data.body)
@@ -471,7 +539,7 @@ const handleFoodDetail = (data: any) => {
   if (poiInfo.value.poi_tags && poiInfo.value.poi_tags.length > 0) {
     poiInfo.value.poi_tags.forEach((item: any) => {
       if (item.sub_tags && item.sub_tags[0] && item.sub_tags[0].text) {
-        activeStr += (`${item.sub_tags[0].text};`)
+        activeStr += `${item.sub_tags[0].text};`
       }
     })
   }
@@ -495,7 +563,12 @@ const handleProductList = (data: any) => {
   foodSpuTags.value.forEach((item: any) => {
     tableDataList.value.push(...item.dynamic_spus)
   })
-  if (foodSpuTags.value && foodSpuTags.value.length > 0 && foodSpuTags.value[currentGroupIndex.value] && foodSpuTags.value[currentGroupIndex.value].dynamic_spus) {
+  if (
+    foodSpuTags.value &&
+    foodSpuTags.value.length > 0 &&
+    foodSpuTags.value[currentGroupIndex.value] &&
+    foodSpuTags.value[currentGroupIndex.value].dynamic_spus
+  ) {
     currentGoodList.value = foodSpuTags.value[currentGroupIndex.value].dynamic_spus
     currentGoodList.value = currentGoodList.value.map(item => {
       if (item.render_info && item.render_info.sale_info && item.render_info.sale_info.month_sales_description) {
@@ -508,10 +581,9 @@ const handleProductList = (data: any) => {
       } else {
         item.like_ratio_desc = ''
       }
-      return item;
+      return item
     })
     // console.log(currentGoodList.value,"currentGoodList");
-
   }
   attrs.value = foodSpuTags.value[currentGroupIndex.value].attrs
   handleExcelData()
@@ -541,7 +613,7 @@ const handleExcelData = () => {
         item.attrs.forEach((_item: any) => {
           if (_item.values && _item.values.length > 0) {
             _item.values.forEach((__item: any) => {
-              attribute += (`${__item.value}#`)
+              attribute += `${__item.value}#`
             })
           }
         })
@@ -550,7 +622,11 @@ const handleExcelData = () => {
         id: index + 1,
         name: item.group_name || '',
         product_name: item.name || '',
-        month_sales_description: item.render_info.sale_info?.month_sales_description || item?.month_sales_description || item?.month_saled || '',
+        month_sales_description:
+          item.render_info.sale_info?.month_sales_description ||
+          item?.month_sales_description ||
+          item?.month_saled ||
+          '',
         unit: item.unit || '',
         min_price: item.render_info.price_info.origin_price || '',
         max_discount: item.max_discount || '',
@@ -565,9 +641,9 @@ const handleExcelData = () => {
         active_price: item.render_info.price_info.min_price || '', // 运营特有
         pack_price: 1, // 运营特有
         like_ratio_desc: item.render_info.sale_info?.like_ratio_desc || item?.like_ratio_desc || '', // 运营特有
-        attribute: attribute.slice(0, -1),
-      };
-      console.log("表格行。。。", item, '解析后', rowItem)
+        attribute: attribute.slice(0, -1)
+      }
+      console.log('表格行。。。', item, '解析后', rowItem)
       dataArr.value.push(rowItem)
       if (item.picture) {
         let price = handleSizeImg(item.picture)
@@ -582,7 +658,6 @@ const handleExcelData = () => {
         })
       }
     })
-
   }
   exportName.value = poiInfo.value.name
 }
@@ -591,29 +666,27 @@ const handleSizeImg = (filename: any) => {
     return
   }
   // 首先移除最后一个 '?' 及其后面的内容（如果存在）
-  let cleaned = filename;
-  const lastQuestionIndex = filename.lastIndexOf('?');
+  let cleaned = filename
+  const lastQuestionIndex = filename.lastIndexOf('?')
   if (lastQuestionIndex !== -1) {
-    cleaned = filename.substring(0, lastQuestionIndex);
+    cleaned = filename.substring(0, lastQuestionIndex)
   }
   // 然后移除最后一个 '@' 及其后面的内容（如果存在）
-  const lastAtIndex = cleaned.lastIndexOf('@');
+  const lastAtIndex = cleaned.lastIndexOf('@')
   if (lastAtIndex !== -1) {
-    cleaned = cleaned.substring(0, lastAtIndex);
+    cleaned = cleaned.substring(0, lastAtIndex)
   }
-  return cleaned;
+  return cleaned
 }
 const handleClassificationFood = (data: any) => {
-  const foodTagMap = new Map(
-    foodSpuTags.value.map((item: any) => [item.tag, item])
-  );
+  const foodTagMap = new Map(foodSpuTags.value.map((item: any) => [item.tag, item]))
   if (data.food_spu_tags && data.food_spu_tags.length) {
     data.food_spu_tags.forEach((_item: any) => {
-      const existingItem = foodTagMap.get(_item.tag);
+      const existingItem = foodTagMap.get(_item.tag)
       if (existingItem) {
-        existingItem.dynamic_spus.push(..._item.dynamic_spus);
+        existingItem.dynamic_spus.push(..._item.dynamic_spus)
       }
-    });
+    })
   }
   handleExcelData()
 }
@@ -683,13 +756,12 @@ const paySuccess = () => {
 const exportState = ref(false)
 let ruleForm = reactive({
   nameType: '商品名称命名',
-  exportType: '默认表格',
+  exportType: '默认表格'
 })
 const fileAddress = ref('')
 const exportExelData = () => {
   exportState.value = true
   // console.log(ruleForm,'ruleForm');
-
 }
 const closeForm = () => {
   exportState.value = false
@@ -697,23 +769,23 @@ const closeForm = () => {
   exportType1.value = '默认表格'
   ruleForm = {
     nameType: '商品名称命名',
-    exportType: '默认表格',
+    exportType: '默认表格'
   }
   fileAddress.value = ''
 }
 const handleSelectFolder = async () => {
   try {
-    fileAddress.value = await globalThis.electron.openDirectoryDialog();
+    fileAddress.value = await globalThis.electron.openDirectoryDialog()
   } catch (error) {
-    console.error('Error opening directory dialog:', error);
+    console.error('Error opening directory dialog:', error)
   }
 }
 const desktopPath = ref('')
 const handleGetDesktopPath = async () => {
-  const path = await globalThis.electron.getDefaultExportPath();
+  const path = await globalThis.electron.getDefaultExportPath()
   if (path) {
-    desktopPath.value = path;
-    console.log(path, 'desktopPath.value');
+    desktopPath.value = path
+    console.log(path, 'desktopPath.value')
   }
 }
 const submitForm = async () => {
@@ -724,29 +796,76 @@ const submitForm = async () => {
       baseFolderPath = fileAddress.value
     } else {
       // 第一步：让用户选择导出文件夹，默认选择桌面
-      baseFolderPath = desktopPath.value;
-      console.log('Selected export folder or desktop:', baseFolderPath);
+      baseFolderPath = desktopPath.value
+      console.log('Selected export folder or desktop:', baseFolderPath)
     }
     // 第二步：创建文件夹
-    const subfolderName = poiInfo.value.name;
-    const resultCreateFolder = await globalThis.electron.createFolder(baseFolderPath, subfolderName);
-    const dataArrCopy = JSON.parse(JSON.stringify(dataArr.value));
-    const operateDataCopy = JSON.parse(JSON.stringify(operateData.value));
+    const subfolderName = poiInfo.value.name
+    const resultCreateFolder = await globalThis.electron.createFolder(baseFolderPath, subfolderName)
+    const dataArrCopy = JSON.parse(JSON.stringify(dataArr.value))
+    const operateDataCopy = JSON.parse(JSON.stringify(operateData.value))
     if (exportType1.value !== '只导出图片') {
-      const excelFileName = `${exportType1.value}.xlsx`;
-      const excelFilePath = await globalThis.electron.pathMontage([baseFolderPath, subfolderName, excelFileName]);
+      const excelFileName = `${exportType1.value}.xlsx`
+      const excelFilePath = await globalThis.electron.pathMontage([baseFolderPath, subfolderName, excelFileName])
       if (exportType1.value === '默认表格') {
-        const header = ['序号', '分类名称', '商品名称', '月售', '商品规格', '售价', '折扣', '原价', '当前库存', '每日库存', '餐盒数量', '餐盒价格', '单位', '最小购买数', '描述']
-        const columnWidths = [10, 20, 40, 20, 20, 10, 10, 10, 10, 10, 10, 10, 10, 20, 100];
-        const resultCreateExcel = await globalThis.electron.createAndSaveExcel(excelFilePath, header, dataArrCopy, columnWidths);
+        const header = [
+          '序号',
+          '分类名称',
+          '商品名称',
+          '月售',
+          '商品规格',
+          '售价',
+          '折扣',
+          '原价',
+          '当前库存',
+          '每日库存',
+          '餐盒数量',
+          '餐盒价格',
+          '单位',
+          '最小购买数',
+          '描述'
+        ]
+        const columnWidths = [10, 20, 40, 20, 20, 10, 10, 10, 10, 10, 10, 10, 10, 20, 100]
+        const resultCreateExcel = await globalThis.electron.createAndSaveExcel(
+          excelFilePath,
+          header,
+          dataArrCopy,
+          columnWidths
+        )
       } else if (exportType1.value === '数据分析表格') {
         const header1 = ['商家运营概况']
         const headerRow1 = ['门店名称', '平均配送费', '起送价', '商家活动', '门店评分']
-        const columnWidths1 = [40, 30, 20, 80, 10];
+        const columnWidths1 = [40, 30, 20, 80, 10]
         const header2 = ['门店商品信息（按销量排序）']
-        const headerRow2 = ['分类名称', '商品名称', '月售', '商品规格', '售价', '活动价', '原价', '折扣', '库存', '打包费', '单位', '最小购买数', '好评度', '属性', '商品描述']
-        const columnWidths2 = [15, 25, 10, 10, 10, 10, 10, 10, 10, 10, 10, 15, 10, 30, 60];
-        const resultCreateExcel = await globalThis.electron.createAndSaveExcelOperate(excelFilePath, header1, headerRow1, columnWidths1, header2, headerRow2, columnWidths2, operateDataCopy, dataArrCopy);
+        const headerRow2 = [
+          '分类名称',
+          '商品名称',
+          '月售',
+          '商品规格',
+          '售价',
+          '活动价',
+          '原价',
+          '折扣',
+          '库存',
+          '打包费',
+          '单位',
+          '最小购买数',
+          '好评度',
+          '属性',
+          '商品描述'
+        ]
+        const columnWidths2 = [15, 25, 10, 10, 10, 10, 10, 10, 10, 10, 10, 15, 10, 30, 60]
+        const resultCreateExcel = await globalThis.electron.createAndSaveExcelOperate(
+          excelFilePath,
+          header1,
+          headerRow1,
+          columnWidths1,
+          header2,
+          headerRow2,
+          columnWidths2,
+          operateDataCopy,
+          dataArrCopy
+        )
       }
     }
 
@@ -762,18 +881,18 @@ const submitForm = async () => {
     }
 
     // 可以继续在此文件夹中创建更多的子文件夹和文件
-    const deeperSubfolderName = '商品主图';
+    const deeperSubfolderName = '商品主图'
     const pathMontage2 = await globalThis.electron.pathMontage([baseFolderPath, subfolderName, deeperSubfolderName])
-    await globalThis.electron.createFolder(pathMontage1, deeperSubfolderName);
+    await globalThis.electron.createFolder(pathMontage1, deeperSubfolderName)
     imgList.value.forEach((item: any, index: number) => {
-      let num: string = index + 1 + '';
+      let num: string = index + 1 + ''
       downloadImageFile(item.picture, pathMontage2, nameType1.value === '商品名称命名' ? item.name : num)
     })
 
     setTimeout(() => {
       gp.$baseMessage(`导出成功！`, 'success', 'hey')
     }, 1000)
-    console.log('Files and images exported successfully!');
+    console.log('Files and images exported successfully!')
   } catch (error) {
     console.log(error)
     gp.$baseMessage(`导出失败：${error}`, 'error', 'hey')
@@ -783,21 +902,25 @@ const downloadImageFile = async (url: string, path: string, name: string) => {
   let imgUrl = handleSizeImg(url)
   let nameStr = ''
   if (ruleForm.nameType === '商品名称命名') {
-    nameStr = name?.replaceAll(/[\/|:*"<>]/g, '');
+    nameStr = name?.replaceAll(/[\/|:*"<>]/g, '')
   } else {
     nameStr = name
   }
   if (imgUrl) {
     let suffix = ''
-    const cleanUrl = imgUrl.split('?')[0].split('#')[0];
-    const regex = /\.(png|gif|jpe?g)$/i; // i表示不区分大小写
-    const match = cleanUrl.match(regex);
+    const cleanUrl = imgUrl.split('?')[0].split('#')[0]
+    const regex = /\.(png|gif|jpe?g)$/i // i表示不区分大小写
+    const match = cleanUrl.match(regex)
     if (match) {
-      suffix = `.${match[1].toLowerCase()}`;
+      suffix = `.${match[1].toLowerCase()}`
     } else {
       suffix = '.jpg'
     }
-    const resultDownloadImage = await globalThis.electron.downloadImageFile(`${imgUrl}@watermark=1&&object=L3dtcHJvZHVjdC9kZWJiN2M1ZTgyZjJiNjU4Y2ZmNzA1ZTg1N2FjOTcwYjgxLnBuZw==`, path, nameStr + suffix);
+    const resultDownloadImage = await globalThis.electron.downloadImageFile(
+      `${imgUrl}@watermark=1&&object=L3dtcHJvZHVjdC9kZWJiN2M1ZTgyZjJiNjU4Y2ZmNzA1ZTg1N2FjOTcwYjgxLnBuZw==`,
+      path,
+      nameStr + suffix
+    )
   }
 }
 const nameType1 = ref('商品名称命名')
@@ -851,7 +974,6 @@ const exportType1 = ref('默认表格')
   margin-left: 10px;
 
   .shoptext {
-
     width: 100%;
     // height:100px;
     min-width: fit-content;
@@ -929,8 +1051,6 @@ const exportType1 = ref('默认表格')
     }
   }
 }
-
-
 
 .imglist {
   display: flex;
@@ -1036,7 +1156,7 @@ const exportType1 = ref('默认表格')
       padding: 0 14px;
       height: 30px;
       line-height: 30px;
-      background-color: #F1F4FF;
+      background-color: #f1f4ff;
       font-weight: 400;
       font-size: 12px;
       border-radius: 4px;
@@ -1056,9 +1176,9 @@ const exportType1 = ref('默认表格')
       width: 100%;
       box-sizing: border-box;
       padding: 10px 20px;
-      background: #F7F8FA;
+      background: #f7f8fa;
       border-radius: 6px;
-      border: 1px solid #ECECEC;
+      border: 1px solid #ececec;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -1098,11 +1218,11 @@ const exportType1 = ref('默认表格')
   font-size: 14px;
   color: #333333;
   line-height: 30px;
-  border: 1px solid #DCDFE6;
+  border: 1px solid #dcdfe6;
   box-sizing: border-box;
   padding: 0 15px;
   border-right: none;
-  background-color: #F5F7FA;
+  background-color: #f5f7fa;
 }
 
 .specs-item {

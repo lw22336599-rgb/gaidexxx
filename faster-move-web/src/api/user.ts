@@ -7,14 +7,14 @@ export const login = async (data: any) => {
   return request({
     url: '/admin/agencylogin',
     method: 'post',
-    data,
+    data
   })
 }
 
 export const getUserInfo = () => {
   return request({
     url: '/admin/getagencyinfo',
-    method: 'get',
+    method: 'get'
   })
 }
 
@@ -22,13 +22,13 @@ export const getUserInfo = () => {
 export const getUserBaseInfo = () => {
   return request({
     url: '/admin/GetUserBaseInfo',
-    method: 'get',
+    method: 'get'
   })
 }
 export const logout = () => {
   return request({
     url: '/logout',
-    method: 'get',
+    method: 'get'
   })
 }
 
@@ -36,7 +36,7 @@ export const register = (data: any) => {
   return request({
     url: '/admin/agencyreg',
     method: 'post',
-    data,
+    data
   })
 }
 
@@ -44,13 +44,13 @@ export const password = (data: any) => {
   return request({
     url: '/admin/agencyforget',
     method: 'post',
-    data,
+    data
   })
 }
 
 export const lock = () => {
   return request({
     url: '/lock',
-    method: 'get',
+    method: 'get'
   })
 }

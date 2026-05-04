@@ -5,5 +5,5 @@ export {
   ContextMenuGroup as VabContextMenuGroup,
   ContextMenuItem as VabContextMenuItem,
   ContextMenuSeparator as VabContextMenuSeparator,
-  type MenuOptions,
+  type MenuOptions
 } from 'vsv-context-menu'

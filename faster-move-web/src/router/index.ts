@@ -15,6 +15,7 @@ import teamRouter from './modules/team'
 import customerServiceRouter from './modules/customer-service'
 import routerConfig from './modules/shop'
 import shopV2Router, { shopBackendManagerRoute } from './modules/shop-v2'
+import userOperateRouter from './modules/userOperate'
 
 export const constantRoutes: VabRouteRecord[] = [
   {
@@ -22,8 +23,8 @@ export const constantRoutes: VabRouteRecord[] = [
     name: 'Login',
     component: () => import('/@/views/login/Login.vue'),
     meta: {
-      hidden: true,
-    },
+      hidden: true
+    }
     // beforeEnter: (to, from, next) => {
     //   console.log(to.query.redirect,from,"222",to);
     //   if((!to.query.redirect)&&to.fullPath.indexOf('/login')!==-1){
@@ -39,16 +40,16 @@ export const constantRoutes: VabRouteRecord[] = [
     name: 'Register',
     component: () => import('/@/views/login/Register.vue'),
     meta: {
-      hidden: true,
-    },
+      hidden: true
+    }
   },
   {
     path: '/password',
     name: 'Password',
     component: () => import('/@/views/login/Password.vue'),
     meta: {
-      hidden: true,
-    },
+      hidden: true
+    }
   },
   {
     path: '/userAgreement',
@@ -56,32 +57,32 @@ export const constantRoutes: VabRouteRecord[] = [
     component: () => import('/@/views/login/UserAgreement.vue'),
     meta: {
       title: '“极狐”SAAS软件用户服务协议',
-      hidden: true,
-    },
+      hidden: true
+    }
   },
   {
     path: '/redirect',
     name: 'Redirect',
     component: () => import('/@/views/redirect/Redirect.vue'),
     meta: {
-      hidden: true,
-    },
+      hidden: true
+    }
   },
   {
     path: '/403',
     name: '403',
     component: () => import('/@/views/error/403.vue'),
     meta: {
-      hidden: true,
-    },
+      hidden: true
+    }
   },
   {
     path: '/404',
     name: '404',
     component: () => import('/@/views/error/404.vue'),
     meta: {
-      hidden: true,
-    },
+      hidden: true
+    }
   },
   {
     path: '/remote-browser',
@@ -89,9 +90,9 @@ export const constantRoutes: VabRouteRecord[] = [
     component: () => import('/@/views/remoteBrowser/RemoteBrowser.vue'),
     meta: {
       hidden: true,
-      title: '远程浏览器',
-    },
-  },
+      title: '远程浏览器'
+    }
+  }
 ]
 
 export const asyncRoutes: VabRouteRecord[] = [
@@ -101,8 +102,7 @@ export const asyncRoutes: VabRouteRecord[] = [
     component: Layout,
     meta: {
       title: '首页',
-      icon: 'dashboard-3-fill',
-
+      icon: 'dashboard-3-fill'
     },
     children: [
       {
@@ -113,11 +113,10 @@ export const asyncRoutes: VabRouteRecord[] = [
           title: '首页',
           icon: 'dashboard-3-fill',
           noColumn: true,
-          noClosable: true,
-
-        },
+          noClosable: true
+        }
       }
-    ],
+    ]
   },
   //门店管理
   //routerConfig,
@@ -131,12 +130,14 @@ export const asyncRoutes: VabRouteRecord[] = [
   // 店铺调研
   surveyRouter,
 
-
   // 团队管理
   teamRouter,
 
   // 客服中心
   customerServiceRouter,
+
+  // 用户运营（开发版：本地 dev-bridge 提供数据 + CRUD）
+  userOperateRouter,
 
   shopBackendManagerRoute,
 
@@ -146,18 +147,18 @@ export const asyncRoutes: VabRouteRecord[] = [
     name: 'NotFound',
     meta: {
       title: '404',
-      hidden: true,
-    },
-  },
+      hidden: true
+    }
+  }
 ]
 
 const router = createRouter({
   history: isHashRouterMode ? createWebHashHistory(base) : createWebHistory(base),
-  routes: constantRoutes as RouteRecordRaw[],
+  routes: constantRoutes as RouteRecordRaw[]
 })
 
 const fatteningRoutes = (routes: VabRouteRecord[]): VabRouteRecord[] => {
-  return routes.flatMap((route) => {
+  return routes.flatMap(route => {
     return route.children ? fatteningRoutes(route.children) : route
   })
 }
@@ -173,7 +174,7 @@ export const resetRouter = (routes: VabRouteRecord[] = constantRoutes) => {
   routes.map((route: VabRouteRecord) => {
     if (route.children) route.children = fatteningRoutes(route.children)
   })
-  router.getRoutes().forEach((route) => {
+  router.getRoutes().forEach(route => {
     if (route.name) {
       const routeName: RouteRecordName = route.name
       router.hasRoute(routeName) && router.removeRoute(routeName)
@@ -191,7 +192,7 @@ export const setupRouter = (app: App<Element>) => {
   if (disableRouterWarning)
     router.addRoute({
       path: '/:pathMatch(.*)*',
-      component: () => { },
+      component: () => {}
     })
 
   if (authentication === 'intelligence') addRouter(asyncRoutes)

@@ -10,8 +10,6 @@ const routerConfig: VabRouteRecord = {
   },
   children: [
     {
-
-
       path: 'feature/type=mt-feature',
       name: 'MtFeature',
       component: () => import('/@/views/shop/MtFeature.vue'),
@@ -22,10 +20,8 @@ const routerConfig: VabRouteRecord = {
         typeStr: 'mt-feature',
         type: 1,
         levelHidden: true,
-        noKeepAlive: true,
-      },
-
-
+        noKeepAlive: true
+      }
     },
     {
       path: 'feature/type=elm-feature',
@@ -41,7 +37,7 @@ const routerConfig: VabRouteRecord = {
         noKeepAlive: true,
         guard: {
           role: ['KA'],
-          mode: 'except', // 有KA权限的不能访问
+          mode: 'except' // 有KA权限的不能访问
         }
       }
     },
@@ -59,14 +55,11 @@ const routerConfig: VabRouteRecord = {
         noKeepAlive: true,
         guard: {
           role: ['KA'],
-          mode: 'except', // 有KA权限的不能访问
+          mode: 'except' // 有KA权限的不能访问
         }
       }
-
-
     },
     {
-
       path: 'feature/type=jd-home-feature',
       name: 'JdHomeFeature',
       component: () => import('/@/views/shop/MtFeature.vue'),
@@ -76,9 +69,8 @@ const routerConfig: VabRouteRecord = {
         isCustomSvg: true,
         typeStr: 'jd-home-feature',
         type: 6,
-        noKeepAlive: true,
-      },
-
+        noKeepAlive: true
+      }
     },
     {
       path: 'feature/type=mt-shop-feature',
@@ -90,7 +82,7 @@ const routerConfig: VabRouteRecord = {
         title: '美团闪购',
         typeStr: 'mt-shop-feature',
         type: 3,
-        noKeepAlive: true,
+        noKeepAlive: true
       }
     },
     {
@@ -103,7 +95,7 @@ const routerConfig: VabRouteRecord = {
         isCustomSvg: true,
         typeStr: 'mt-medicine-feature',
         type: 4,
-        noKeepAlive: true,
+        noKeepAlive: true
       }
     },
     {
@@ -116,7 +108,7 @@ const routerConfig: VabRouteRecord = {
         isCustomSvg: true,
         typeStr: 'elm-retail-feature',
         type: 5,
-        noKeepAlive: true,
+        noKeepAlive: true
       }
     },
     {
@@ -130,8 +122,8 @@ const routerConfig: VabRouteRecord = {
 
         typeStr: 'dy-retail-feature',
         type: 7,
-        noKeepAlive: true,
-      },
+        noKeepAlive: true
+      }
     },
     {
       path: 'webhook-config',
@@ -142,10 +134,9 @@ const routerConfig: VabRouteRecord = {
         icon: 'webhook-alert',
         levelHidden: true,
         isCustomSvg: true
-      },
-    },
-
+      }
+    }
   ]
-};
+}
 
-export default routerConfig;
+export default routerConfig

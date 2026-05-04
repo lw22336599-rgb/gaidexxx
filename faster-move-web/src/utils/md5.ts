@@ -117,8 +117,8 @@ function md51(s: string) {
   }
   s = s.substring(i - 64)
   const tail = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-  for (i = 0; i < s.length; i++) tail[i >> 2] |= s.charCodeAt(i) << ((i % 4) << 3)
-  tail[i >> 2] |= 0x80 << ((i % 4) << 3)
+  for (i = 0; i < s.length; i++) tail[i >> 2] |= s.charCodeAt(i) << (i % 4 << 3)
+  tail[i >> 2] |= 0x80 << (i % 4 << 3)
   if (i > 55) {
     md5cycle(state, tail)
     for (i = 0; i < 16; i++) tail[i] = 0
@@ -132,10 +132,7 @@ function md5blk(s: string) {
   const md5blks = []
   for (let i = 0; i < 64; i += 4) {
     md5blks[i >> 2] =
-      s.charCodeAt(i) +
-      (s.charCodeAt(i + 1) << 8) +
-      (s.charCodeAt(i + 2) << 16) +
-      (s.charCodeAt(i + 3) << 24)
+      s.charCodeAt(i) + (s.charCodeAt(i + 1) << 8) + (s.charCodeAt(i + 2) << 16) + (s.charCodeAt(i + 3) << 24)
   }
   return md5blks
 }

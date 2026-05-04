@@ -9,7 +9,13 @@
       </el-form-item>
       <el-form-item v-if="'technology' != theme.themeName" label="主题配置">
         <el-radio-group v-model="form.theme" @change="handleDialogTheme">
-          <el-radio-button v-for="item in themeList" :key="item.label" :label="item.label" :value="item.label" @change="handleOpen">
+          <el-radio-button
+            v-for="item in themeList"
+            :key="item.label"
+            :label="item.label"
+            :value="item.label"
+            @change="handleOpen"
+          >
             <template #default>{{ item.title }}</template>
           </el-radio-button>
         </el-radio-group>
@@ -26,7 +32,11 @@
         <el-checkbox v-model="form.center" label="开启header、footer居中" />
         <el-checkbox v-model="form.closeOnClickModal" label="开启点击遮罩关闭" />
         <el-checkbox v-model="form.closeOnPressEscape" label="开启ESC按键关闭" />
-        <el-checkbox v-model="form.openInTab" label="在内容页弹框（不影响tab页切换，不推荐）" @change="handleOpenInTab" />
+        <el-checkbox
+          v-model="form.openInTab"
+          label="在内容页弹框（不影响tab页切换，不推荐）"
+          @change="handleOpenInTab"
+        />
       </el-form-item>
       <el-form-item class="hidden-xs-only" label="弹窗宽度（30% - 60%）">
         <el-slider v-model="form.width" :disabled="form.fullscreen" :max="60" :min="30" style="width: 345px" />
@@ -73,7 +83,7 @@
 import { useSettingsStore } from '/@/store/modules/settings'
 
 defineOptions({
-  name: 'Dialog',
+  name: 'Dialog'
 })
 
 const settingsStore = useSettingsStore()
@@ -95,13 +105,13 @@ const form = reactive<any>({
   top: 15,
   appendToBoy: true,
   openInTab: false,
-  lockScroll: true,
+  lockScroll: true
 })
 const dialogVisible = ref<any>(false)
 const themeList = ref<any>([
   { label: 'default', title: '默认' },
   { label: 'plain', title: '简约' },
-  { label: 'primary', title: '主题色' },
+  { label: 'primary', title: '主题色' }
 ])
 
 const handleDialogTheme = (val: any) => {

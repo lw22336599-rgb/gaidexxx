@@ -1,10 +1,20 @@
 <template>
-  <el-dialog v-model="dialogVisible" title="添加机器人" width="500px" :close-on-click-modal="false" @close="handleClose">
+  <el-dialog
+    v-model="dialogVisible"
+    title="添加机器人"
+    width="500px"
+    :close-on-click-modal="false"
+    @close="handleClose"
+  >
     <el-form :model="form" label-width="100px">
       <el-form-item label="机器人类型">
         <el-select v-model="form.chatType" placeholder="请选择机器人类型" @change="handleChatTypeChange">
-          <el-option v-for="option in chatTypeOptions" :key="option.value" :label="option.label"
-            :value="option.value" />
+          <el-option
+            v-for="option in chatTypeOptions"
+            :key="option.value"
+            :label="option.label"
+            :value="option.value"
+          />
         </el-select>
       </el-form-item>
 
@@ -42,12 +52,21 @@
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="handleClose">取消</el-button>
-        <el-button v-if="form.chatType === ChatType.WechatPc" type="primary" :loading="connecting"
-          @click="handleConnectWechat">
+        <el-button
+          v-if="form.chatType === ChatType.WechatPc"
+          type="primary"
+          :loading="connecting"
+          @click="handleConnectWechat"
+        >
           连接微信
         </el-button>
-        <el-button v-else-if="isWebhookType" type="primary" :disabled="!form.webhookUrl" :loading="saving"
-          @click="handleSaveWebhook">
+        <el-button
+          v-else-if="isWebhookType"
+          type="primary"
+          :disabled="!form.webhookUrl"
+          :loading="saving"
+          @click="handleSaveWebhook"
+        >
           保存
         </el-button>
       </div>
@@ -55,8 +74,13 @@
   </el-dialog>
 
   <!-- 连接进度对话框 -->
-  <ConnectProgressDialog v-model:visible="progressDialogVisible" @cancel="handleCancelConnect"
-    @retry="handleRetryConnect" @complete="handleConnectComplete" @confirm-login="handleConfirmLogin" />
+  <ConnectProgressDialog
+    v-model:visible="progressDialogVisible"
+    @cancel="handleCancelConnect"
+    @retry="handleRetryConnect"
+    @complete="handleConnectComplete"
+    @confirm-login="handleConfirmLogin"
+  />
 </template>
 
 <script setup lang="ts">
@@ -90,13 +114,13 @@ const userStore = useUserStore()
 
 const dialogVisible = computed({
   get: () => props.visible,
-  set: (value) => emit('update:visible', value),
+  set: value => emit('update:visible', value)
 })
 
 // 表单数据
 const form = ref({
   chatType: ChatType.WechatPc,
-  webhookUrl: '',
+  webhookUrl: ''
 })
 
 // 状态
@@ -109,16 +133,12 @@ const chatTypeOptions = [
   { label: '微信PC版', value: ChatType.WechatPc },
   { label: '企业微信群机器人', value: ChatType.WechatWebHook },
   { label: '钉钉群机器人', value: ChatType.DingdingWebHook },
-  { label: '飞书群机器人', value: ChatType.FeishuWebHook },
+  { label: '飞书群机器人', value: ChatType.FeishuWebHook }
 ]
 
 // 是否是 Webhook 类型
 const isWebhookType = computed(() => {
-  return [
-    ChatType.WechatWebHook,
-    ChatType.DingdingWebHook,
-    ChatType.FeishuWebHook,
-  ].includes(form.value.chatType)
+  return [ChatType.WechatWebHook, ChatType.DingdingWebHook, ChatType.FeishuWebHook].includes(form.value.chatType)
 })
 
 // 获取 Webhook 类型描述
@@ -229,13 +249,13 @@ const handleSaveWebhook = async () => {
         city: '',
         country: '',
         province: '',
-        signature: '',
+        signature: ''
       },
       avtag: true, // 可用状态
       notes: `${getWebhookTypeName(form.value.chatType)} - ${form.value.webhookUrl}`, // 备注
       ExTime: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // 过期时间：1年后
       crtim: new Date(), // 创建时间
-      uptim: new Date(), // 更新时间
+      uptim: new Date() // 更新时间
     }
 
     // 调用 API 保存
@@ -292,7 +312,7 @@ const handleConfirmLogin = () => {
 const handleClose = () => {
   form.value = {
     chatType: ChatType.WechatPc,
-    webhookUrl: '',
+    webhookUrl: ''
   }
   dialogVisible.value = false
 }

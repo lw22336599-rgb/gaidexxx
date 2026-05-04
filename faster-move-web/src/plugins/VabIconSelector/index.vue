@@ -37,7 +37,7 @@ import { Search } from '@element-plus/icons-vue'
 import { getIconList } from '/@/api/icon'
 
 defineOptions({
-  name: 'VabIconSelector',
+  name: 'VabIconSelector'
 })
 
 const emit = defineEmits(['handle-icon'])
@@ -49,7 +49,7 @@ const queryIcon = ref<any>([])
 const queryForm = reactive<any>({
   pageNo: 1,
   pageSize: 20,
-  title: '',
+  title: ''
 })
 
 const handleSizeChange = (value: number) => {

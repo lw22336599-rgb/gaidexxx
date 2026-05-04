@@ -6,7 +6,7 @@
     </template>
     <div class="medal-list">
       <div v-for="(item, index) in iconList" :key="index" class="medal-list-item">
-        <div class="medal-list-item-rank"></div>
+        <div class="medal-list-item-rank" />
         <div class="medal-list-item-img">
           <div :style="{ background: item.color }">
             <vab-icon :icon="item.icon" />
@@ -25,24 +25,24 @@
 const iconList = ref<any>([
   {
     icon: 'apple-line',
-    color: 'var(--el-color-primary)',
+    color: 'var(--el-color-primary)'
   },
   {
     icon: 'qq-line',
-    color: 'var(--el-color-success)',
+    color: 'var(--el-color-success)'
   },
   {
     icon: 'wechat-line',
-    color: 'var(--el-color-warning)',
+    color: 'var(--el-color-warning)'
   },
   {
     icon: 'twitter-line',
-    color: 'var(--el-color-danger)',
+    color: 'var(--el-color-danger)'
   },
   {
     icon: 'twitch-line',
-    color: '#ffc069',
-  },
+    color: '#ffc069'
+  }
 ])
 </script>
 
@@ -62,7 +62,7 @@ const iconList = ref<any>([
       2: -64px -83px,
       3: -123px -5px,
       4: -123px -39px,
-      5: -123px -73px,
+      5: -123px -73px
     );
 
     @each $key, $item in $position {

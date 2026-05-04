@@ -20,7 +20,7 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'InputNumber',
+  name: 'InputNumber'
 })
 const num = ref<any>(1)
 const num2 = ref<any>(1)

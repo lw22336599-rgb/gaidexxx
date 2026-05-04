@@ -1,6 +1,6 @@
-import {GroupType} from "@/TsModel/Alien/Entity/Enums/GroupType";
+import type { GroupType } from '@/TsModel/Alien/Entity/Enums/GroupType'
 
 /** 当一个表需要分组时,必须瓢此特性*/
 export interface GroupTypeSet {
-		GroupType: GroupType;
+  GroupType: GroupType
 }

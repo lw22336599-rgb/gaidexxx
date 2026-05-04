@@ -27,11 +27,13 @@
 <script lang="ts" setup>
 import { graphic } from 'echarts/core'
 import { pull, random, sample } from 'lodash-es'
+import { storeToRefs } from 'pinia'
+import { onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { useSettingsStore } from '/@/store/modules/settings'
 import { lightenColor } from '/@/utils/lightenColor'
 
 defineOptions({
-  name: 'Authorization',
+  name: 'Authorization'
 })
 
 const settingsStore = useSettingsStore()
@@ -45,30 +47,30 @@ const countConfig = reactive<any>({
   prefix: '',
   suffix: '',
   separator: ',',
-  duration: 8000,
+  duration: 8000
 })
 const option = reactive<any>({
   tooltip: {
     trigger: 'axis',
-    extraCssText: 'z-index:1',
+    extraCssText: 'z-index:1'
   },
   grid: {
     top: '5%',
     left: '2%',
     right: '4%',
     bottom: '0%',
-    containLabel: true,
+    containLabel: true
   },
   xAxis: {
     type: 'category',
     data: ['0时', '4时', '8时', '12时', '16时', '20时', '24时'],
     axisTick: {
-      alignWithLabel: true,
-    },
+      alignWithLabel: true
+    }
   },
 
   yAxis: {
-    type: 'value',
+    type: 'value'
   },
 
   series: {
@@ -80,10 +82,10 @@ const option = reactive<any>({
       borderRadius: [2, 2, 0, 0],
       color: new graphic.LinearGradient(0, 0, 1, 0, [
         { offset: 0, color: lightenColor(theme.value.color, 50) },
-        { offset: 1, color: theme.value.color },
-      ]),
-    },
-  },
+        { offset: 1, color: theme.value.color }
+      ])
+    }
+  }
 })
 
 watch(
@@ -91,7 +93,7 @@ watch(
   () => {
     option.series.itemStyle.color = new graphic.LinearGradient(0, 0, 1, 0, [
       { offset: 0, color: lightenColor(theme.value.color, 50) },
-      { offset: 1, color: theme.value.color },
+      { offset: 1, color: theme.value.color }
     ])
   },
   { immediate: true }

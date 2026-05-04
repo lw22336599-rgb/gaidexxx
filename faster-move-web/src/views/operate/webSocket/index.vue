@@ -47,7 +47,7 @@
       </el-col>
     </el-row>
 
-    <p></p>
+    <p />
   </div>
 </template>
 
@@ -56,7 +56,7 @@ import type { FormInstance } from 'element-plus'
 import { thirteenBitTimestamp } from '/@/utils'
 
 defineOptions({
-  name: 'WebSocket',
+  name: 'WebSocket'
 })
 
 const formRef = ref<FormInstance>()
@@ -64,14 +64,14 @@ const form = reactive<any>({
   server: 'ws://127.0.0.1:7002',
   serverHide: 'ws://*.*.*.*',
   sendValue: '你好！',
-  recordList: [],
+  recordList: []
 })
 const { status, data, send, close, open } = useWebSocket(form.server, {
   autoReconnect: false,
-  heartbeat: true,
+  heartbeat: true
 })
 const rules = reactive<any>({
-  sendValue: [{ required: true, trigger: 'blur', message: '请输入内容' }],
+  sendValue: [{ required: true, trigger: 'blur', message: '请输入内容' }]
 })
 
 watchEffect(() => {
@@ -83,7 +83,7 @@ watchEffect(() => {
       form.recordList.push({
         res: data.value,
         id: Math.ceil(Math.random() * 1000),
-        time: Date.now(),
+        time: Date.now()
       })
     }
 })

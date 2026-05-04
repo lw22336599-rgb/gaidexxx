@@ -12,6 +12,6 @@ export const getIconList = (params?: QueryFormType) => {
   return request({
     url: '/icon/getList',
     method: 'get',
-    params,
+    params
   })
 }

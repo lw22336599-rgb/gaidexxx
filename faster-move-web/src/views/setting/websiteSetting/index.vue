@@ -48,7 +48,7 @@ import { UploadFilled } from '@element-plus/icons-vue'
 import type { FormInstance, UploadUserFile } from 'element-plus'
 
 defineOptions({
-  name: 'WebsiteSetting',
+  name: 'WebsiteSetting'
 })
 
 interface FormType {
@@ -64,7 +64,7 @@ const form = reactive<FormType>({
   siteUrl: 'https://vuejs-core.cn/shop-vite',
   metaKeywords: '',
   metaDesc: '',
-  copyright: '',
+  copyright: ''
 })
 const fileList = ref<UploadUserFile[]>([])
 const formRef = ref<FormInstance>()
@@ -75,12 +75,12 @@ const formRules = reactive<any>({
     {
       pattern: /^https?:\/\/.*/,
       message: '请输入正确的网址',
-      trigger: 'blur',
-    },
+      trigger: 'blur'
+    }
   ],
   metaKeywords: [{ required: true, message: '请输入META关键词', trigger: 'blur' }],
   metaDesc: [{ required: true, message: '请输入META描述', trigger: 'blur' }],
-  copyright: [{ required: true, message: '请输入版权信息', trigger: 'blur' }],
+  copyright: [{ required: true, message: '请输入版权信息', trigger: 'blur' }]
 })
 
 const submitForm = () => {

@@ -4,16 +4,11 @@
  */
 
 import { defineStore } from 'pinia'
-import { t_chat_push_list } from '@/TsModel/Alien/Entity/Tables/function/chat_push/t_chat_push_list'
-import { ChatInfo } from '@/TsModel/Alien/Entity/Function/CHATPUSH/ChatInfo'
-import { ChatMemberItem } from '@/TsModel/Alien/Entity/Function/CHATPUSH/ChatMemberItem'
-import { ChatType } from '@/TsModel/Alien/Entity/Function/CHATPUSH/ChatType'
-import {
-  SignalRConnectionState,
-  WxProcessState,
-  ConnectProgress,
-  ConnectStep,
-} from '@/types/wechat'
+import type { t_chat_push_list } from '@/TsModel/Alien/Entity/Tables/function/chat_push/t_chat_push_list'
+import type { ChatInfo } from '@/TsModel/Alien/Entity/Function/CHATPUSH/ChatInfo'
+import type { ChatMemberItem } from '@/TsModel/Alien/Entity/Function/CHATPUSH/ChatMemberItem'
+import type { ChatType } from '@/TsModel/Alien/Entity/Function/CHATPUSH/ChatType'
+import { SignalRConnectionState, type WxProcessState, type ConnectProgress, type ConnectStep } from '@/types/wechat'
 
 /**
  * 机器人运行时状态
@@ -58,55 +53,55 @@ export const useWechatRobotStore = defineStore('wechatRobot', {
     robots: [],
     runtimeStates: new Map(),
     connectProgress: null,
-    currentRobotId: null,
+    currentRobotId: null
   }),
 
   getters: {
     /**
      * 获取所有机器人
      */
-    getAllRobots: (state) => state.robots,
+    getAllRobots: state => state.robots,
 
     /**
      * 根据ID获取机器人
      */
-    getRobotById: (state) => (id: string) => {
-      return state.robots.find((r) => r.id === id)
+    getRobotById: state => (id: string) => {
+      return state.robots.find(r => r.id === id)
     },
 
     /**
      * 获取在线机器人数量
      */
-    getOnlineRobotCount: (state) => {
-      return state.robots.filter((r) => r.on_line).length
+    getOnlineRobotCount: state => {
+      return state.robots.filter(r => r.on_line).length
     },
 
     /**
      * 根据ChatType过滤机器人
      */
-    getRobotsByType: (state) => (type: ChatType) => {
-      return state.robots.filter((r) => r.chat_type === type)
+    getRobotsByType: state => (type: ChatType) => {
+      return state.robots.filter(r => r.chat_type === type)
     },
 
     /**
      * 获取机器人运行时状态
      */
-    getRuntimeState: (state) => (robotId: string) => {
+    getRuntimeState: state => (robotId: string) => {
       return state.runtimeStates.get(robotId)
     },
 
     /**
      * 获取当前机器人
      */
-    getCurrentRobot: (state) => {
+    getCurrentRobot: state => {
       if (!state.currentRobotId) return null
-      return state.robots.find((r) => r.id === state.currentRobotId)
+      return state.robots.find(r => r.id === state.currentRobotId)
     },
 
     /**
      * 获取当前连接进度
      */
-    getConnectProgress: (state) => state.connectProgress,
+    getConnectProgress: state => state.connectProgress
   },
 
   actions: {
@@ -121,7 +116,7 @@ export const useWechatRobotStore = defineStore('wechatRobot', {
      * 添加机器人
      */
     addRobot(robot: t_chat_push_list) {
-      const index = this.robots.findIndex((r) => r.id === robot.id)
+      const index = this.robots.findIndex(r => r.id === robot.id)
       if (index >= 0) {
         // 更新现有机器人
         this.robots[index] = robot
@@ -135,7 +130,7 @@ export const useWechatRobotStore = defineStore('wechatRobot', {
      * 移除机器人
      */
     removeRobot(robotId: string) {
-      const index = this.robots.findIndex((r) => r.id === robotId)
+      const index = this.robots.findIndex(r => r.id === robotId)
       if (index >= 0) {
         this.robots.splice(index, 1)
       }
@@ -147,7 +142,7 @@ export const useWechatRobotStore = defineStore('wechatRobot', {
      * 更新机器人在线状态
      */
     updateRobotOnlineStatus(robotId: string, onLine: boolean) {
-      const robot = this.robots.find((r) => r.id === robotId)
+      const robot = this.robots.find(r => r.id === robotId)
       if (robot) {
         robot.on_line = onLine
       }
@@ -166,7 +161,7 @@ export const useWechatRobotStore = defineStore('wechatRobot', {
           friends: [],
           groups: [],
           lastUpdateTime: Date.now(),
-          error: null,
+          error: null
         })
       }
     },
@@ -174,10 +169,7 @@ export const useWechatRobotStore = defineStore('wechatRobot', {
     /**
      * 更新运行时状态
      */
-    updateRuntimeState(
-      robotId: string,
-      updates: Partial<Omit<RobotRuntimeState, 'robotId'>>
-    ) {
+    updateRuntimeState(robotId: string, updates: Partial<Omit<RobotRuntimeState, 'robotId'>>) {
       const state = this.runtimeStates.get(robotId)
       if (state) {
         Object.assign(state, updates, { lastUpdateTime: Date.now() })
@@ -264,7 +256,7 @@ export const useWechatRobotStore = defineStore('wechatRobot', {
         message,
         canCancel: options?.canCancel ?? true,
         error: options?.error,
-        downloadProgress: options?.downloadProgress,
+        downloadProgress: options?.downloadProgress
       }
     },
 
@@ -317,6 +309,6 @@ export const useWechatRobotStore = defineStore('wechatRobot', {
       this.runtimeStates.clear()
       this.connectProgress = null
       this.currentRobotId = null
-    },
-  },
+    }
+  }
 })

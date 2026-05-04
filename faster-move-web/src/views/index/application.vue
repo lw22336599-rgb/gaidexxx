@@ -10,7 +10,7 @@
 import { pwaDev } from '/@/config'
 
 defineOptions({
-  name: 'Application',
+  name: 'Application'
 })
 
 const development = import.meta.env.DEV

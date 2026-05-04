@@ -13,7 +13,7 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'CustomerServiceManagement',
+  name: 'CustomerServiceManagement'
 })
 </script>
 
@@ -39,7 +39,7 @@ defineOptions({
   .page-content {
     border-radius: 8px;
     overflow: hidden;
-    
+
     .el-card {
       padding: 20px;
       border-radius: 8px;
@@ -47,4 +47,3 @@ defineOptions({
   }
 }
 </style>
-

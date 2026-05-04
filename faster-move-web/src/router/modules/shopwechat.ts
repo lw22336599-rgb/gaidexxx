@@ -6,7 +6,7 @@ const routerConfig: VabRouteRecord = {
   component: Layout,
   meta: {
     title: '门店推送',
-    icon: 'telegram-2-fill',
+    icon: 'telegram-2-fill'
     //guard: ['ADMIN']
   },
   children: [
@@ -32,7 +32,7 @@ const routerConfig: VabRouteRecord = {
         levelHidden: true,
         isCustomSvg: true,
         type: 1,
-        noKeepAlive: true,
+        noKeepAlive: true
       }
     },
     {
@@ -45,7 +45,7 @@ const routerConfig: VabRouteRecord = {
         levelHidden: true,
         isCustomSvg: true,
         type: 3
-      },
+      }
     },
     {
       path: 'elmtswechat',
@@ -71,8 +71,8 @@ const routerConfig: VabRouteRecord = {
         levelHidden: true,
         isCustomSvg: true,
         type: 6,
-        noKeepAlive: true,
-      },
+        noKeepAlive: true
+      }
     },
     // {
     //   path: 'wechat',
@@ -93,8 +93,8 @@ const routerConfig: VabRouteRecord = {
       meta: {
         title: '机器人管理',
         icon: 'robot-2-fill',
-        levelHidden: false,
-      },
+        levelHidden: false
+      }
     },
     {
       path: 'tutorial',
@@ -104,11 +104,10 @@ const routerConfig: VabRouteRecord = {
         title: '使用教程',
         icon: 'book-3-line',
         levelHidden: false,
-        tutorialType: 'ShopPushTutorialUrl',
-      },
+        tutorialType: 'ShopPushTutorialUrl'
+      }
     }
-
   ]
-};
+}
 
-export default routerConfig;
+export default routerConfig

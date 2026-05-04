@@ -10,7 +10,14 @@
   <el-button type="primary" @click="drawer = true">打开</el-button>
   <el-button type="primary" @click="drawer2 = true">包含页脚</el-button>
 
-  <el-drawer v-model="drawer" append-to-body :before-close="handleClose" :direction="direction" size="288px" title="我是标题">
+  <el-drawer
+    v-model="drawer"
+    append-to-body
+    :before-close="handleClose"
+    :direction="direction"
+    size="288px"
+    title="我是标题"
+  >
     <span>我是内容</span>
   </el-drawer>
   <el-drawer v-model="drawer2" append-to-body :direction="direction" size="288px">
@@ -39,7 +46,7 @@ const direction = ref<any>('rtl')
 const radio1 = ref<any>('Option 1')
 const handleClose = (done: () => void) => {
   ElMessageBox.confirm('您确定要关闭抽屉吗？', {
-    draggable: true,
+    draggable: true
   })
     .then(() => {
       done()
@@ -55,7 +62,7 @@ function cancelClick() {
 
 function confirmClick() {
   ElMessageBox.confirm(`您确认选择${radio1.value}吗？`, {
-    draggable: true,
+    draggable: true
   })
     .then(() => {
       drawer2.value = false

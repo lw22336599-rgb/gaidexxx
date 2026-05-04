@@ -81,7 +81,7 @@ import { useTabsStore } from '/@/store/modules/tabs'
 import { handleActivePath } from '/@/utils/routes'
 
 defineOptions({
-  name: 'DefaultTableDetail',
+  name: 'DefaultTableDetail'
 })
 
 const route: any = useRoute()
@@ -110,8 +110,8 @@ onMounted(() => {
   changeTabsMeta({
     title: '详情页',
     meta: {
-      title: `${route.query.title} 详情页`,
-    },
+      title: `${route.query.title} 详情页`
+    }
   })
 })
 </script>

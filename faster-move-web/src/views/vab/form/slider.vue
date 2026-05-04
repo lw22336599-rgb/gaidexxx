@@ -37,7 +37,7 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'Slider',
+  name: 'Slider'
 })
 
 const value1 = ref<any>(0)

@@ -5,12 +5,24 @@
       <el-tab-pane label="任务记录" name="tasks">
         <!-- 筛选栏 -->
         <div class="filter-bar">
-          <el-input v-model="filterShopName" placeholder="店铺名称" clearable style="width:160px" @change="handleSearch" />
-          <el-input v-model="filterOffId" placeholder="门店ID" clearable style="width:150px" @change="handleSearch" />
-          <el-select v-model="filterFuncCode" placeholder="功能" clearable style="width:140px" @change="handleSearch">
+          <el-input
+            v-model="filterShopName"
+            placeholder="店铺名称"
+            clearable
+            style="width: 160px"
+            @change="handleSearch"
+          />
+          <el-input v-model="filterOffId" placeholder="门店ID" clearable style="width: 150px" @change="handleSearch" />
+          <el-select v-model="filterFuncCode" placeholder="功能" clearable style="width: 140px" @change="handleSearch">
             <el-option v-for="item in functionOptions" :key="item.code" :label="item.name" :value="item.code" />
           </el-select>
-          <el-select v-model="filterStatus" placeholder="任务状态" clearable style="width:130px" @change="handleSearch">
+          <el-select
+            v-model="filterStatus"
+            placeholder="任务状态"
+            clearable
+            style="width: 130px"
+            @change="handleSearch"
+          >
             <el-option label="待执行" :value="FuncRunTaskStatus.Pending" />
             <el-option label="执行中" :value="FuncRunTaskStatus.Running" />
             <el-option label="已完成" :value="FuncRunTaskStatus.Succeeded" />
@@ -19,15 +31,25 @@
           <el-button type="primary" :icon="Search" @click="handleSearch">查询</el-button>
           <el-button :icon="Refresh" @click="handleReset">重置</el-button>
           <el-button :icon="Download" :loading="exporting" @click="handleExport">导出</el-button>
-          <el-button type="success" :disabled="selectedRows.length === 0" @click="openTriggerDialog"
-            style="margin-left:auto">
+          <el-button
+            type="success"
+            :disabled="selectedRows.length === 0"
+            style="margin-left: auto"
+            @click="openTriggerDialog"
+          >
             再次执行 ({{ selectedRows.length }})
           </el-button>
         </div>
 
         <!-- 任务列表 -->
-        <el-table ref="tableRef" :data="taskList" v-loading="loading" border @selection-change="handleSelectionChange"
-          max-height="430px">
+        <el-table
+          ref="tableRef"
+          v-loading="loading"
+          :data="taskList"
+          border
+          max-height="430px"
+          @selection-change="handleSelectionChange"
+        >
           <el-table-column type="selection" width="50" />
           <el-table-column label="店铺名称" prop="shop_name" min-width="150" show-overflow-tooltip>
             <template #default="{ row }">
@@ -75,9 +97,15 @@
         </el-table>
 
         <div class="pagination-bar">
-          <el-pagination v-model:current-page="page" v-model:page-size="pageSize" :total="total"
-            :page-sizes="[10, 20, 50]" layout="total, sizes, prev, pager, next" @size-change="handleSearch"
-            @current-change="loadData" />
+          <el-pagination
+            v-model:current-page="page"
+            v-model:page-size="pageSize"
+            :total="total"
+            :page-sizes="[10, 20, 50]"
+            layout="total, sizes, prev, pager, next"
+            @size-change="handleSearch"
+            @current-change="loadData"
+          />
         </div>
       </el-tab-pane>
 
@@ -85,12 +113,22 @@
       <el-tab-pane label="执行进度" name="jobs">
         <!-- 筛选栏 -->
         <div class="filter-bar">
-          <el-select v-model="jobFilterFuncCode" placeholder="功能" clearable style="width:140px"
-            @change="handleJobSearch">
+          <el-select
+            v-model="jobFilterFuncCode"
+            placeholder="功能"
+            clearable
+            style="width: 140px"
+            @change="handleJobSearch"
+          >
             <el-option v-for="item in functionOptions" :key="item.code" :label="item.name" :value="item.code" />
           </el-select>
-          <el-select v-model="jobFilterStatus" placeholder="任务状态" clearable style="width:140px"
-            @change="handleJobSearch">
+          <el-select
+            v-model="jobFilterStatus"
+            placeholder="任务状态"
+            clearable
+            style="width: 140px"
+            @change="handleJobSearch"
+          >
             <el-option label="待处理" :value="JobStatus.Pending" />
             <el-option label="已入队" :value="JobStatus.Enqueued" />
             <el-option label="执行中" :value="JobStatus.Processing" />
@@ -101,11 +139,11 @@
           </el-select>
           <el-button type="primary" :icon="Search" @click="handleJobSearch">查询</el-button>
           <el-button :icon="Refresh" @click="handleJobReset">重置</el-button>
-          <el-button :icon="RefreshRight" @click="loadJobData" style="margin-left:auto">刷新</el-button>
+          <el-button :icon="RefreshRight" style="margin-left: auto" @click="loadJobData">刷新</el-button>
         </div>
 
         <!-- 进度列表 -->
-        <el-table :data="jobList" v-loading="jobLoading" border max-height="430px">
+        <el-table v-loading="jobLoading" :data="jobList" border max-height="430px">
           <el-table-column label="任务名称" prop="task_name" min-width="200" show-overflow-tooltip />
           <el-table-column label="状态" width="100" align="center">
             <template #default="{ row }">
@@ -117,8 +155,12 @@
           <el-table-column label="进度" min-width="200">
             <template #default="{ row }">
               <div class="progress-cell">
-                <el-progress :percentage="calcPercent(row)" :status="progressStatus(row.job_status)" :stroke-width="10"
-                  style="flex:1" />
+                <el-progress
+                  :percentage="calcPercent(row)"
+                  :status="progressStatus(row.job_status)"
+                  :stroke-width="10"
+                  style="flex: 1"
+                />
                 <span class="progress-text">{{ row.progress }}/{{ row.total }}</span>
               </div>
             </template>
@@ -150,9 +192,15 @@
         </el-table>
 
         <div class="pagination-bar">
-          <el-pagination v-model:current-page="jobPage" v-model:page-size="jobPageSize" :total="jobTotal"
-            :page-sizes="[10, 20, 50]" layout="total, sizes, prev, pager, next" @size-change="handleJobSearch"
-            @current-change="loadJobData" />
+          <el-pagination
+            v-model:current-page="jobPage"
+            v-model:page-size="jobPageSize"
+            :total="jobTotal"
+            :page-sizes="[10, 20, 50]"
+            layout="total, sizes, prev, pager, next"
+            @size-change="handleJobSearch"
+            @current-change="loadJobData"
+          />
         </div>
       </el-tab-pane>
     </el-tabs>
@@ -163,24 +211,41 @@
     </el-dialog>
 
     <!-- 手动触发参数配置弹窗 -->
-    <el-dialog v-model="triggerDialogVisible" title="手动触发 - 配置参数" width="900px" append-to-body
-      :before-close="closeTriggerDialog">
-      <div v-if="triggerSchemaLoading" v-loading="true" style="height:120px" />
+    <el-dialog
+      v-model="triggerDialogVisible"
+      title="手动触发 - 配置参数"
+      width="900px"
+      append-to-body
+      :before-close="closeTriggerDialog"
+    >
+      <div v-if="triggerSchemaLoading" v-loading="true" style="height: 120px" />
       <template v-else>
-        <div v-if="!hasTriggerSchema" class="no-schema-tip">
-          该功能无需配置参数，直接触发即可。
-        </div>
+        <div v-if="!hasTriggerSchema" class="no-schema-tip">该功能无需配置参数，直接触发即可。</div>
         <!-- 类目属性批量设置：使用独立配置组件 -->
-        <CategoryAttrConfigPanel v-else-if="triggerFuncCode === 'CTGYPRTYMG'" :shop-type="props.shopType"
-          :shop-list="triggerShopsForAttrPanel" :first-shop-id="triggerShops[0]?.shop_id ?? ''"
-          :default-conf="triggerDefaultConf as any" :shop-conf-map="triggerShopConfMap" />
-        <FuncConfSchemaForm v-else-if="triggerSchemaResult" :schema="triggerSchemaResult"
-          :default-conf="triggerDefaultConf" :shop-list="triggerShops.map(s => ({ id: s.shop_id, name: s.shop_name }))"
-          :get-shop-conf="getTriggerShopConf" :group-options="triggerGroupOptions"
-          :group-options-loading="triggerGroupOptionsLoading" :get-shop-group-options="getTriggerShopGroupOptions"
+        <CategoryAttrConfigPanel
+          v-else-if="triggerFuncCode === 'CTGYPRTYMG'"
+          :shop-type="props.shopType"
+          :shop-list="triggerShopsForAttrPanel"
+          :first-shop-id="triggerShops[0]?.shop_id ?? ''"
+          :default-conf="triggerDefaultConf as any"
+          :shop-conf-map="triggerShopConfMap"
+        />
+        <FuncConfSchemaForm
+          v-else-if="triggerSchemaResult"
+          :schema="triggerSchemaResult"
+          :default-conf="triggerDefaultConf"
+          :shop-list="triggerShops.map(s => ({ id: s.shop_id, name: s.shop_name }))"
+          :get-shop-conf="getTriggerShopConf"
+          :group-options="triggerGroupOptions"
+          :group-options-loading="triggerGroupOptionsLoading"
+          :get-shop-group-options="getTriggerShopGroupOptions"
           :get-shop-group-options-loading="getTriggerShopGroupOptionsLoading"
-          :on-ensure-default-group-options="() => triggerShops.length > 0 && triggerEnsureGroupOptions(triggerShops[0].shop_id)"
-          :on-ensure-group-options="triggerEnsureGroupOptions" :demo-mode="demoMode" />
+          :on-ensure-default-group-options="
+            () => triggerShops.length > 0 && triggerEnsureGroupOptions(triggerShops[0].shop_id)
+          "
+          :on-ensure-group-options="triggerEnsureGroupOptions"
+          :demo-mode="demoMode"
+        />
       </template>
 
       <template #footer>
@@ -224,7 +289,7 @@ const emit = defineEmits<{
 
 const visible = computed({
   get: () => props.modelValue,
-  set: (val) => emit('update:modelValue', val)
+  set: val => emit('update:modelValue', val)
 })
 
 const settingsStore = useSettingsStore()
@@ -270,7 +335,7 @@ const loadData = async () => {
       off_id: filterOffId.value || null,
       func_code: filterFuncCode.value || null,
       run_status: filterStatus.value ?? null,
-      shop_type: props.shopType,
+      shop_type: props.shopType
     })
     taskList.value = (result as any).rows ?? []
     total.value = result.total ?? 0
@@ -300,7 +365,7 @@ const runStatusLabel = (status: FuncRunTaskStatus) => {
     [FuncRunTaskStatus.Pending]: '待执行',
     [FuncRunTaskStatus.Running]: '执行中',
     [FuncRunTaskStatus.Succeeded]: '已完成',
-    [FuncRunTaskStatus.Failed]: '执行失败',
+    [FuncRunTaskStatus.Failed]: '执行失败'
   }
   return map[status] ?? '未知'
 }
@@ -310,7 +375,7 @@ const runStatusTagType = (status: FuncRunTaskStatus): 'success' | 'warning' | 'd
     [FuncRunTaskStatus.Pending]: 'info',
     [FuncRunTaskStatus.Running]: 'warning',
     [FuncRunTaskStatus.Succeeded]: 'success',
-    [FuncRunTaskStatus.Failed]: 'danger',
+    [FuncRunTaskStatus.Failed]: 'danger'
   }
   return map[status]
 }
@@ -340,7 +405,7 @@ const loadJobData = async () => {
       pageSize: jobPageSize.value,
       func_code: jobFilterFuncCode.value || null,
       task_name: JOB_TASK_NAME_KEYWORD,
-      job_status: jobFilterStatus.value ?? null,
+      job_status: jobFilterStatus.value ?? null
     })
     jobList.value = (result as any).rows ?? []
     jobTotal.value = result.total ?? 0
@@ -371,7 +436,7 @@ const jobStatusLabel = (status: JobStatus) => {
     [JobStatus.Succeeded]: '已完成',
     [JobStatus.Scheduled]: '已计划',
     [JobStatus.Failed]: '已失败',
-    [JobStatus.Deleted]: '已删除',
+    [JobStatus.Deleted]: '已删除'
   }
   return map[status] ?? '未知'
 }
@@ -384,7 +449,7 @@ const jobStatusTagType = (status: JobStatus): 'success' | 'warning' | 'danger' |
     [JobStatus.Succeeded]: 'success',
     [JobStatus.Scheduled]: undefined,
     [JobStatus.Failed]: 'danger',
-    [JobStatus.Deleted]: 'danger',
+    [JobStatus.Deleted]: 'danger'
   }
   return map[status]
 }
@@ -424,7 +489,7 @@ const showMsgDetail = (msg: string) => {
 }
 
 // 监听对话框打开
-watch(visible, (val) => {
+watch(visible, val => {
   if (val) {
     activeTab.value = 'tasks'
     handleReset()
@@ -460,14 +525,14 @@ const triggerFuncCode = ref('')
 const triggerTaskRows = ref<t_wmt_func_run_task[]>([])
 
 // CategoryAttrConfigPanel 需要的店铺格式 { id, name }
-const triggerShopsForAttrPanel = computed(() =>
-  triggerShops.value.map((s) => ({ id: s.shop_id, name: s.shop_name }))
-)
+const triggerShopsForAttrPanel = computed(() => triggerShops.value.map(s => ({ id: s.shop_id, name: s.shop_name })))
 
 const triggerParsedSchema = ref<JsonSchema | null>(null)
 const triggerSchemaResult = ref<FuncConfSchemaResult | null>(null)
 const hasTriggerSchema = computed(
-  () => triggerFuncCode.value === 'CTGYPRTYMG' || (triggerSchemaResult.value != null && Object.keys(getParsedProperties(triggerSchemaResult.value)).length > 0)
+  () =>
+    triggerFuncCode.value === 'CTGYPRTYMG' ||
+    (triggerSchemaResult.value != null && Object.keys(getParsedProperties(triggerSchemaResult.value)).length > 0)
 )
 
 const triggerDefaultConf = ref<Record<string, any>>({})
@@ -481,7 +546,10 @@ function triggerFlattenGroupTree(items: FoodGroupItem[] | FoodGroupItem | null |
   const list: FoodGroupItem[] = []
   const walk = (nodes: FoodGroupItem[] | FoodGroupItem | null | undefined) => {
     if (Array.isArray(nodes)) nodes.forEach(walk)
-    else if (nodes) { list.push(nodes); walk(nodes.Children) }
+    else if (nodes) {
+      list.push(nodes)
+      walk(nodes.Children)
+    }
   }
   walk(items)
   return list
@@ -539,7 +607,7 @@ const resolveProperty = (prop: SchemaProperty, rootSchema: JsonSchema): SchemaPr
             enum: resolved.enum,
             enumNames: resolved['x-enumNames'] ?? resolved.enumNames,
             type: resolved.type ?? prop.type,
-            default: prop.default ?? resolved.default,
+            default: prop.default ?? resolved.default
           }
         }
       }
@@ -554,7 +622,7 @@ const resolveProperty = (prop: SchemaProperty, rootSchema: JsonSchema): SchemaPr
         enum: resolved.enum,
         enumNames: resolved['x-enumNames'] ?? resolved.enumNames,
         type: resolved.type ?? prop.type,
-        default: prop.default ?? resolved.default,
+        default: prop.default ?? resolved.default
       }
     }
   }
@@ -588,7 +656,7 @@ const loadTriggerSchema = async (funcCode: string) => {
           GroupOffIds: Array.isArray(conf.GroupOffIds) ? conf.GroupOffIds : [],
           PrttyValues: conf.PrttyValues && typeof conf.PrttyValues === 'object' ? conf.PrttyValues : {},
           RequiredAttrValues: Array.isArray(conf.RequiredAttrValues) ? conf.RequiredAttrValues : undefined,
-          OtheryPrtty: conf.OtheryPrtty && typeof conf.OtheryPrtty === 'object' ? conf.OtheryPrtty : undefined,
+          OtheryPrtty: conf.OtheryPrtty && typeof conf.OtheryPrtty === 'object' ? conf.OtheryPrtty : undefined
         }
       } else {
         triggerDefaultConf.value = { GroupOffIds: [], PrttyValues: {} }
@@ -598,7 +666,7 @@ const loadTriggerSchema = async (funcCode: string) => {
             GroupOffIds: Array.isArray(conf.GroupOffIds) ? conf.GroupOffIds : [],
             PrttyValues: conf.PrttyValues && typeof conf.PrttyValues === 'object' ? conf.PrttyValues : {},
             RequiredAttrValues: Array.isArray(conf.RequiredAttrValues) ? conf.RequiredAttrValues : undefined,
-            OtheryPrtty: conf.OtheryPrtty && typeof conf.OtheryPrtty === 'object' ? conf.OtheryPrtty : undefined,
+            OtheryPrtty: conf.OtheryPrtty && typeof conf.OtheryPrtty === 'object' ? conf.OtheryPrtty : undefined
           }
         }
       }
@@ -634,8 +702,9 @@ const loadTriggerSchema = async (funcCode: string) => {
 
       const properties = parsed.properties ?? {}
       const rootSchema = parsed
-      const hasFetchShopGroups = Object.values(properties).some((f) =>
-        resolveProperty(f, rootSchema)['x-fetchShopGroups'])
+      const hasFetchShopGroups = Object.values(properties).some(
+        f => resolveProperty(f, rootSchema)['x-fetchShopGroups']
+      )
       if (hasFetchShopGroups && triggerShops.value.length > 0) {
         triggerGroupOptionsLoading.value = true
         try {
@@ -668,7 +737,7 @@ const openTriggerDialog = async () => {
   triggerShops.value = selectedRows.value.map(r => ({
     shop_id: r.shop_id,
     shop_name: r.shop_name ?? r.shop_id,
-    func_code: r.func_code,
+    func_code: r.func_code
   }))
   triggerDialogVisible.value = true
   await loadTriggerSchema(triggerFuncCode.value)
@@ -731,7 +800,7 @@ const confirmTrigger = async () => {
       func_code: triggerFuncCode.value,
       shop_ids: triggerShops.value.map(s => s.shop_id),
       default_conf_values: buildTriggerDefaultConf(),
-      shop_conf_values: buildTriggerShopConfValues(),
+      shop_conf_values: buildTriggerShopConfValues()
     }
     await apiManager.funcRunTaskApi.TriggerFuncRun(parm)
     gp.$baseMessage(`已成功触发 ${triggerShops.value.length} 家店铺的任务`, 'success', 'hey')
@@ -765,7 +834,7 @@ const handleExport = async () => {
       off_id: filterOffId.value || null,
       func_code: filterFuncCode.value || null,
       run_status: filterStatus.value ?? null,
-      shop_type: props.shopType,
+      shop_type: props.shopType
     })
     fetchedTotal = first.total ?? 0
     allRows = (first as any).rows ?? []
@@ -784,7 +853,7 @@ const handleExport = async () => {
         off_id: filterOffId.value || null,
         func_code: filterFuncCode.value || null,
         run_status: filterStatus.value ?? null,
-        shop_type: props.shopType,
+        shop_type: props.shopType
       })
       allRows = allRows.concat((result as any).rows ?? [])
     }
@@ -798,7 +867,7 @@ const handleExport = async () => {
       runStatusLabel(row.run_status),
       formatDate(row.start_time),
       formatDate(row.end_time),
-      row.msg ?? '',
+      row.msg ?? ''
     ])
 
     const csvContent = [headers, ...rows]

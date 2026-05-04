@@ -1,5 +1,5 @@
 <template>
-  <div :id="config.id"></div>
+  <div :id="config.id" />
 </template>
 
 <script lang="ts" setup>
@@ -8,7 +8,7 @@ import HlsPlayer from 'xgplayer-hls.js'
 import 'xgplayer/dist/index.min.css'
 
 defineOptions({
-  name: 'VabPlayerHls',
+  name: 'VabPlayerHls'
 })
 
 const props = defineProps({
@@ -16,9 +16,9 @@ const props = defineProps({
     type: Object,
     default: () => ({
       id: 'mse',
-      url: '',
-    }),
-  },
+      url: ''
+    })
+  }
 })
 
 const player = ref<any>(null)
@@ -29,7 +29,7 @@ const init = () => {
   if (props.config.url && props.config.url !== '') {
     player.value = new Player({
       plugins: [HlsPlayer],
-      ...props.config,
+      ...props.config
     })
     emit('player', player.value)
   }

@@ -4,7 +4,7 @@ export function getList(params?: any) {
   return request({
     url: '/roleManagement/getList',
     method: 'get',
-    params,
+    params
   })
 }
 
@@ -12,7 +12,7 @@ export const doEdit = (data: any) => {
   return request({
     url: '/roleManagement/doEdit',
     method: 'post',
-    data,
+    data
   })
 }
 
@@ -20,6 +20,6 @@ export const doDelete = (data: any) => {
   return request({
     url: '/roleManagement/doDelete',
     method: 'post',
-    data,
+    data
   })
 }

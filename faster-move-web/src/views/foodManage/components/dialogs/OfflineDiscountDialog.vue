@@ -2,9 +2,7 @@
   <el-dialog v-model="dialogVisible" title="下架折扣" width="500px" :close-on-click-modal="false" @close="handleClose">
     <el-form ref="formRef" :model="form" :rules="rules" label-width="100px">
       <el-form-item label="确认下架" prop="confirm">
-        <el-checkbox v-model="form.confirm">
-          我已确认要下架选中商品的折扣
-        </el-checkbox>
+        <el-checkbox v-model="form.confirm"> 我已确认要下架选中商品的折扣 </el-checkbox>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -31,12 +29,12 @@ const emit = defineEmits<{
 
 const dialogVisible = computed({
   get: () => props.modelValue,
-  set: (val) => emit('update:modelValue', val),
+  set: val => emit('update:modelValue', val)
 })
 
 const formRef = ref<FormInstance>()
 const form = ref({
-  confirm: false,
+  confirm: false
 })
 
 const rules = {
@@ -49,9 +47,9 @@ const rules = {
           callback()
         }
       },
-      trigger: 'change',
-    },
-  ],
+      trigger: 'change'
+    }
+  ]
 }
 
 const handleClose = () => {
@@ -61,10 +59,10 @@ const handleClose = () => {
 
 const handleConfirm = async () => {
   if (!formRef.value) return
-  await formRef.value.validate((valid) => {
+  await formRef.value.validate(valid => {
     if (valid) {
       emit('confirm', {
-        confirm: form.value.confirm,
+        confirm: form.value.confirm
       })
       handleClose()
     }

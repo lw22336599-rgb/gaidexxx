@@ -10,7 +10,7 @@ const config: { [key: string]: any } = {
   ...cliConfig,
   ...netConfig,
   ...settingConfig,
-  ...themeConfig,
+  ...themeConfig
 }
 
 export default config
@@ -99,5 +99,5 @@ export const {
   tokenTableName,
   uniqueOpened,
   columnDrag,
-  rightToolsDrag,
+  rightToolsDrag
 } = config

@@ -30,15 +30,20 @@
           />
           <el-scrollbar style="height: calc(100% - 60px)">
             <el-timeline>
-              <el-timeline-item v-for="(item, index) in activities" :key="index" :color="item.color" :timestamp="item.timestamp">
+              <el-timeline-item
+                v-for="(item, index) in activities"
+                :key="index"
+                :color="item.color"
+                :timestamp="item.timestamp"
+              >
                 <template v-if="item.waver" #dot>
                   <vab-dot :type="item.waver" />
                 </template>
                 <vab-card v-if="item.card">
-                  <div class="change-log-item" v-html="item.content"></div>
+                  <div class="change-log-item" v-html="item.content" />
                 </vab-card>
                 <template v-else>
-                  <div class="change-log-item" v-html="item.content"></div>
+                  <div class="change-log-item" v-html="item.content" />
                 </template>
               </el-timeline-item>
             </el-timeline>
@@ -56,7 +61,7 @@ import { getList } from '/@/api/changeLog'
 // import { useRoutesStore } from '/@/store/modules/routes'
 
 defineOptions({
-  name: 'ChangeLog',
+  name: 'ChangeLog'
 })
 
 // const routesStore = useRoutesStore()
@@ -102,7 +107,7 @@ onBeforeMount(async () => {
     小版本更新日志及bug修复日志演示地址不做展示，具体更新内容请购买后前往绑定仓库查看，
     <a href='${commonUrl}/authorization/shop-vite.html' target='_blank'>点我购买</a>
     `,
-    waver: 'success',
+    waver: 'success'
   })
   activities.value = _data
   // changeMenuMeta({
@@ -113,7 +118,7 @@ onBeforeMount(async () => {
 
 // 正式项目如果要用到更新日志模板，请删除以下代码
 onMounted(() => {
-  if (!['localhost', '127', '192', 'vuejs-core'].some((host) => location.hostname.includes(host)))
+  if (!['localhost', '127', '192', 'vuejs-core'].some(host => location.hostname.includes(host)))
     $baseMessage('检测到当前演示地址非官方演示地址，即将为您跳转，请稍后', 'warning', 'hey', () => {
       location.href = 'https://vuejs-core.cn/shop-vite/#/changeLog'
     })
@@ -122,10 +127,10 @@ onMounted(() => {
 const fetchData = async () => {
   loading.value = true
   const {
-    data: { version },
+    data: { version }
   } = await axios({
     url: `./vue-shop-vite-version.json` + `?t=${Date.now()}`,
-    method: 'get',
+    method: 'get'
   })
   servicesVersion.value = version
   setTimeout(() => {

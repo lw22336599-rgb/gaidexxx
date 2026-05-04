@@ -1,6 +1,5 @@
 ﻿<template>
-  <div class="screen-container">
-  </div>
+  <div class="screen-container" />
 </template>
 <script setup lang="ts">
 import { ref, reactive, onMounted, watch } from 'vue'
@@ -12,7 +11,7 @@ const { roleIncludeKA } = useAclStore()
 const props = defineProps({
   queryParams: {
     type: Object,
-    default: () => { }
+    default: () => {}
   },
   shopTypeStr: String,
   shopType: Number,
@@ -61,46 +60,50 @@ const state = ref<any>('')
 const emit = defineEmits(['updateQueryParams'])
 
 // 监听 props.queryParams 的变化，同步内部状态
-watch(() => props.queryParams, (newParams) => {
-  if (newParams) {
-    // 同步 queryForm
-    Object.keys(newParams).forEach(key => {
-      queryForm[key] = newParams[key]
-    })
+watch(
+  () => props.queryParams,
+  newParams => {
+    if (newParams) {
+      // 同步 queryForm
+      Object.keys(newParams).forEach(key => {
+        queryForm[key] = newParams[key]
+      })
 
-    // 同步筛选按钮状态
-    // 重置城市选择
-    if (!newParams.citys || newParams.citys.length === 0) {
-      city.value = []
-    }
+      // 同步筛选按钮状态
+      // 重置城市选择
+      if (!newParams.citys || newParams.citys.length === 0) {
+        city.value = []
+      }
 
-    // 重置分组选择
-    if (!newParams.group) {
-      group.value = []
-    }
+      // 重置分组选择
+      if (!newParams.group) {
+        group.value = []
+      }
 
-    // 重置状态选择
-    if (!newParams.state) {
-      state.value = ''
-    }
+      // 重置状态选择
+      if (!newParams.state) {
+        state.value = ''
+      }
 
-    // 重置功能选择
-    if (!newParams.func_code) {
-      fun.value = []
-    } else if (newParams.func_code === 'APPDATA') {
-      fun.value = [newParams.func_code, newParams.func_state]
-    }
+      // 重置功能选择
+      if (!newParams.func_code) {
+        fun.value = []
+      } else if (newParams.func_code === 'APPDATA') {
+        fun.value = [newParams.func_code, newParams.func_state]
+      }
 
-    // 重置在线状态
-    if (newParams.ck_online === undefined && newParams.state === undefined) {
-      online.value = '全部'
-    } else if (newParams.ck_online === true) {
-      online.value = '授权正常'
-    } else if (newParams.state === 3) {
-      online.value = '授权异常'
+      // 重置在线状态
+      if (newParams.ck_online === undefined && newParams.state === undefined) {
+        online.value = '全部'
+      } else if (newParams.ck_online === true) {
+        online.value = '授权正常'
+      } else if (newParams.state === 3) {
+        online.value = '授权异常'
+      }
     }
-  }
-}, { deep: true, immediate: true })
+  },
+  { deep: true, immediate: true }
+)
 const handleChangeCity = () => {
   if (city.value && city.value.length > 0) {
     queryForm.citys = city.value.map(item => item[1])

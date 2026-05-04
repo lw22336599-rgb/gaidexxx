@@ -1,10 +1,10 @@
 <template>
-  <div class="redirect-container"></div>
+  <div class="redirect-container" />
 </template>
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'Redirect',
+  name: 'Redirect'
 })
 
 onBeforeMount(() => {

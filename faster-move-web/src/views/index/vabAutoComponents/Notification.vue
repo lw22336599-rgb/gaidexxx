@@ -1,7 +1,7 @@
 <template>
   <div class="scroll-text-container">
     <tiny-scroll-text :direction="form.direction" :time="form.time">
-      <div v-html="text"></div>
+      <div v-html="text" />
     </tiny-scroll-text>
   </div>
 </template>
@@ -15,7 +15,7 @@ const text = props.dataList[0]?.name
 const form = reactive({
   theme: 'warning',
   direction: 'left',
-  time: 25,
+  time: 25
 })
 </script>
 

@@ -34,7 +34,7 @@ const CODE_MESSAGE: any = {
   500: '服务器发生错误',
   502: '网关错误',
   503: '服务不可用，服务器暂时过载或维护',
-  504: '网关超时',
+  504: '网关超时'
 }
 
 /**
@@ -76,7 +76,7 @@ const requestConfig = (config: any): any => {
  */
 const tryRefreshToken = async (config: any): Promise<any> => {
   if (refreshToking) {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       // 将resolve放进队列，用一个函数形式来保存，等token刷新后直接执行
       requests.push(() => {
         resolve(instance(requestConfig(config)))
@@ -86,19 +86,19 @@ const tryRefreshToken = async (config: any): Promise<any> => {
     refreshToking = true
     try {
       const {
-        data: { token },
+        data: { token }
       } = await refreshToken()
       if (token) {
         const { setToken } = useUserStore()
         setToken(token)
         // 已经刷新了token，将所有队列中的请求进行重试
-        requests.forEach((cb) => cb(token))
+        requests.forEach(cb => cb(token))
         requests = []
         return instance(requestConfig(config))
       }
     } catch (error) {
       console.error('refreshToken error =>', error)
-      router.push({ path: '/login', replace: true }).then(() => { })
+      router.push({ path: '/login', replace: true }).then(() => {})
     } finally {
       refreshToking = false
     }
@@ -141,7 +141,7 @@ const handleData = async ({ config, data, status, statusText }: any): Promise<an
     }
     case 401: {
       resetAll().then(() => {
-        router.push({ path: '/login', replace: true }).then(() => { })
+        router.push({ path: '/login', replace: true }).then(() => {})
       })
       break
     }
@@ -149,7 +149,7 @@ const handleData = async ({ config, data, status, statusText }: any): Promise<an
       return await tryRefreshToken(config)
     }
     case 403: {
-      router.push({ path: '/403' }).then(() => { })
+      router.push({ path: '/403' }).then(() => {})
       break
     }
   }
@@ -176,15 +176,14 @@ const instance = axios.create({
   baseURL: `${import.meta.env.VITE_APP_BASE_URL}`,
   timeout,
   headers: {
-    'Content-Type': contentType,
-  },
+    'Content-Type': contentType
+  }
 })
 
 /**
  * @description axios请求拦截器
  */
-instance.interceptors.request.use(requestConfig, (error) => {
-
+instance.interceptors.request.use(requestConfig, error => {
   return Promise.reject(error)
 })
 
@@ -192,8 +191,8 @@ instance.interceptors.request.use(requestConfig, (error) => {
  * @description axios响应拦截器
  */
 instance.interceptors.response.use(
-  (response) => handleData(response),
-  (error) => {
+  response => handleData(response),
+  error => {
     const { response } = error
     if (response === undefined) {
       if (loadingInstance) loadingInstance.close()

@@ -12,14 +12,14 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'PortalDivider',
+  name: 'PortalDivider'
 })
 
 defineProps({
   activeMenu: {
     type: String,
-    default: 'portal',
-  },
+    default: 'portal'
+  }
 })
 </script>
 

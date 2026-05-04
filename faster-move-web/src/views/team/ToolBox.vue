@@ -4,18 +4,19 @@
       <div class="filter-main">
         <div class="filter-item">
           <span class="filter-label">目标店铺类型：</span>
-          <el-select v-model="targetShopType" class="filter-select" placeholder="请选择店铺类型" size="small"
-            @change="handleShopTypeChange">
+          <el-select
+            v-model="targetShopType"
+            class="filter-select"
+            placeholder="请选择店铺类型"
+            size="small"
+            @change="handleShopTypeChange"
+          >
             <el-option v-for="item in shopTypeOptions" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
         </div>
         <div class="filter-item filter-item-right">
-          <el-button type="primary" size="small" @click="handleCreate">
-            新增工具
-          </el-button>
-          <el-button size="small" @click="loadToolList">
-            刷新
-          </el-button>
+          <el-button type="primary" size="small" @click="handleCreate"> 新增工具 </el-button>
+          <el-button size="small" @click="loadToolList"> 刷新 </el-button>
         </div>
       </div>
     </vab-card>
@@ -37,9 +38,7 @@
               <el-tag v-for="code in row.FunctionCodes" :key="code" class="func-tag" size="small" type="info">
                 {{ getFunctionLabel(code) }}
               </el-tag>
-              <span v-if="!row.FunctionCodes || row.FunctionCodes.length === 0">
-                未配置
-              </span>
+              <span v-if="!row.FunctionCodes || row.FunctionCodes.length === 0"> 未配置 </span>
             </div>
           </template>
         </el-table-column>
@@ -48,9 +47,7 @@
             <el-tag v-for="type in row.FromShopTypes" :key="type" class="func-tag" size="small" type="success">
               {{ getShopTypeName(type) }}
             </el-tag>
-            <span v-if="!row.FromShopTypes || row.FromShopTypes.length === 0">
-              未配置
-            </span>
+            <span v-if="!row.FromShopTypes || row.FromShopTypes.length === 0"> 未配置 </span>
           </template>
         </el-table-column>
         <!-- <el-table-column label="显示站点图标" width="120" align="center">
@@ -62,8 +59,14 @@
         </el-table-column> -->
         <el-table-column label="启用状态" width="120" align="center">
           <template #default="{ row }">
-            <el-switch v-model="row.Avtag" :active-value="true" :inactive-value="false" active-color="#13ce66"
-              inactive-color="#ff4949" @change="handleToggleStatus(row)" />
+            <el-switch
+              v-model="row.Avtag"
+              :active-value="true"
+              :inactive-value="false"
+              active-color="#13ce66"
+              inactive-color="#ff4949"
+              @change="handleToggleStatus(row)"
+            />
           </template>
         </el-table-column>
         <!-- <el-table-column label="排序" width="140" align="center">
@@ -85,8 +88,12 @@
       </el-table>
     </vab-card>
 
-    <el-dialog v-model="editDialogVisible" :title="editForm.id ? '编辑工具' : '新增工具'" width="720px"
-      :close-on-click-modal="false">
+    <el-dialog
+      v-model="editDialogVisible"
+      :title="editForm.id ? '编辑工具' : '新增工具'"
+      width="720px"
+      :close-on-click-modal="false"
+    >
       <el-form ref="editFormRef" :model="editForm" :rules="editRules" label-width="110px">
         <el-form-item label="工具名称" prop="Name">
           <el-input v-model="editForm.Name" placeholder="请输入工具名称" size="small" />
@@ -96,8 +103,12 @@
         </el-form-item>
         <div class="form-two-col-row">
           <el-form-item label="目标店铺类型" class="form-two-col-item" prop="TargetShopType">
-            <el-select v-model="editForm.TargetShopType" placeholder="请选择店铺类型" size="small"
-              @change="handleEditTargetShopTypeChange">
+            <el-select
+              v-model="editForm.TargetShopType"
+              placeholder="请选择店铺类型"
+              size="small"
+              @change="handleEditTargetShopTypeChange"
+            >
               <el-option v-for="item in shopTypeOptions" :key="item.value" :label="item.label" :value="item.value" />
             </el-select>
           </el-form-item>
@@ -126,8 +137,12 @@
         </el-form-item>
         <el-form-item label="关联功能" prop="FunctionCodes">
           <el-select v-model="editForm.FunctionCodes" multiple filterable placeholder="请选择关联功能" size="small">
-            <el-option v-for="item in funcOptions" :key="item.code" :label="`${item.name}(${item.code})`"
-              :value="item.code" />
+            <el-option
+              v-for="item in funcOptions"
+              :key="item.code"
+              :label="`${item.name}(${item.code})`"
+              :value="item.code"
+            />
           </el-select>
         </el-form-item>
         <el-form-item label="源店铺类型" prop="FromShopTypes">
@@ -139,9 +154,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="editDialogVisible = false">取 消</el-button>
-          <el-button type="primary" :loading="editSubmitting" @click="submitEditForm">
-            确 定
-          </el-button>
+          <el-button type="primary" :loading="editSubmitting" @click="submitEditForm"> 确 定 </el-button>
         </div>
       </template>
     </el-dialog>
@@ -162,7 +175,7 @@ import type { ToolItemUpdateDto } from '@/TsModel/Alien/Entity/Function/Tool/Too
 import type { t_wmt_function } from '@/TsModel/Alien/Entity/Tables/function/t_wmt_function'
 
 defineOptions({
-  name: 'ToolBox',
+  name: 'ToolBox'
 })
 
 interface ShopTypeOption {
@@ -184,7 +197,7 @@ const shopTypeOptions: ShopTypeOption[] = [
   { label: '抖店即时零售', value: ShopType.抖店即时零售 },
   { label: '饿了么官方', value: ShopType.饿了么官方 },
   { label: '美团团购', value: ShopType.美团团购 },
-  { label: '京东团购', value: ShopType.京东团购 },
+  { label: '京东团购', value: ShopType.京东团购 }
 ]
 
 const listLoading = ref(false)
@@ -210,7 +223,7 @@ const editForm = reactive<ToolForm>({
   TutorialUrl: '',
   Sort: 1,
   TargetShopType: ShopType.美团,
-  Avtag: true,
+  Avtag: true
 })
 
 const editRules: FormRules = {
@@ -219,17 +232,17 @@ const editRules: FormRules = {
   Points: [{ required: true, message: '请输入积分', trigger: 'change' }],
   Img: [{ required: true, message: '请输入图标地址', trigger: 'blur' }],
   TargetShopType: [{ required: true, message: '请选择店铺类型', trigger: 'change' }],
-  FunctionCodes: [{ required: true, message: '请选择关联功能', trigger: 'change' }],
+  FunctionCodes: [{ required: true, message: '请选择关联功能', trigger: 'change' }]
 }
 
 const getShopTypeName = (shopType: ShopType | null | undefined) => {
   if (shopType === null || shopType === undefined) return ''
-  const option = shopTypeOptions.find((item) => item.value === shopType)
+  const option = shopTypeOptions.find(item => item.value === shopType)
   return option ? option.label : ''
 }
 
 const getFunctionLabel = (code: string) => {
-  const match = funcOptions.value.find((item) => item.code?.toUpperCase() === code?.toUpperCase())
+  const match = funcOptions.value.find(item => item.code?.toUpperCase() === code?.toUpperCase())
   if (match) return `${match.name}(${match.code})`
   return code
 }
@@ -262,22 +275,20 @@ const resetEditForm = () => {
 }
 
 const loadFunctionOptions = async (shopType: ShopType) => {
-  await apiManager.functionpriceApi
-    .GetFuncList(shopType)
-    .then((res) => {
-      funcOptions.value = res || []
-    })
+  await apiManager.functionpriceApi.GetFuncList(shopType).then(res => {
+    funcOptions.value = res || []
+  })
 }
 
 const loadToolList = async () => {
   listLoading.value = true
   await apiManager.toolApi
     .GetList(targetShopType.value)
-    .then((res) => {
+    .then(res => {
       toolList.value = (res || [])
-        .map((item) => ({
+        .map(item => ({
           ...item,
-          Sort: Number.isFinite(item.Sort) ? item.Sort : 0,
+          Sort: Number.isFinite(item.Sort) ? item.Sort : 0
         }))
         .sort((a, b) => a.Sort - b.Sort)
     })
@@ -310,7 +321,7 @@ const handleEdit = (row: ToolItemDto) => {
 
 const submitEditForm = () => {
   if (!editFormRef.value) return
-  editFormRef.value.validate(async (valid) => {
+  editFormRef.value.validate(async valid => {
     if (!valid) return
     editSubmitting.value = true
     const payload: ToolItemUpdateDto = {
@@ -324,7 +335,7 @@ const submitEditForm = () => {
       TutorialUrl: editForm.TutorialUrl,
       Sort: editForm.Sort,
       TargetShopType: editForm.TargetShopType,
-      Avtag: editForm.Avtag,
+      Avtag: editForm.Avtag
     }
     const request = editForm.id
       ? apiManager.toolApi.Update(editForm.id, payload)
@@ -340,7 +351,7 @@ const submitEditForm = () => {
 
 const handleToggleStatus = async (row: ToolItemDto) => {
   const dto: ToolItemStatusDto = {
-    Avtag: row.Avtag,
+    Avtag: row.Avtag
   }
   await apiManager.toolApi.UpdateStatus(row.Id, dto)
   await loadToolList()
@@ -352,22 +363,18 @@ const handleSaveSort = async (row: ToolItemDto) => {
     throw new Error('排序值无效，请输入数字')
   }
   const dto: ToolItemSortDto = {
-    Sort: sortValue,
+    Sort: sortValue
   }
   await apiManager.toolApi.UpdateSort(row.Id, dto)
   await loadToolList()
 }
 
 const handleDelete = (row: ToolItemDto) => {
-  ElMessageBox.confirm(
-    `确定要删除工具【${row.Name || '未命名'}】吗？`,
-    '提示',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }
-  ).then(async () => {
+  ElMessageBox.confirm(`确定要删除工具【${row.Name || '未命名'}】吗？`, '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(async () => {
     await apiManager.toolApi.Delete(row.Id)
     await loadToolList()
   })

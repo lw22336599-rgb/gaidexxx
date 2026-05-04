@@ -1,5 +1,8 @@
 <template>
-  <div class="column-table-container no-background-container auto-height-container" :class="{ 'fullscreen-container': isFullscreen }">
+  <div
+    class="column-table-container no-background-container auto-height-container"
+    :class="{ 'fullscreen-container': isFullscreen }"
+  >
     <el-row :gutter="20">
       <el-col :lg="5" :md="24" :sm="24" :xl="4" :xs="24">
         <vab-card class="auto-height-card">
@@ -26,7 +29,12 @@
                   <el-input v-model="queryForm.author" clearable placeholder="请输入作者" />
                 </el-form-item>
                 <el-form-item v-show="!fold" label="时间">
-                  <el-date-picker v-model="queryForm.datetime" format="YYYY/MM/DD HH:mm:ss" placeholder="请选择时间" type="datetime" />
+                  <el-date-picker
+                    v-model="queryForm.datetime"
+                    format="YYYY/MM/DD HH:mm:ss"
+                    placeholder="请选择时间"
+                    type="datetime"
+                  />
                 </el-form-item>
                 <el-form-item v-show="!fold" label="状态">
                   <el-select v-model="queryForm.status" placeholder="请选择状态">
@@ -36,7 +44,14 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item>
-                  <el-button :icon="Search" :loading="listLoading" native-type="submit" type="primary" @click="queryData">查询</el-button>
+                  <el-button
+                    :icon="Search"
+                    :loading="listLoading"
+                    native-type="submit"
+                    type="primary"
+                    @click="queryData"
+                    >查询</el-button
+                  >
                   <el-button class="hidden-xs-only" text type="primary" @click="handleFold">
                     <span v-if="fold">展开</span>
                     <span v-else>合并</span>
@@ -125,7 +140,7 @@ import { useTabsStore } from '/@/store/modules/tabs'
 import { handleMatched, handleTabs } from '/@/utils/routes'
 
 defineOptions({
-  name: 'ColumnTable',
+  name: 'ColumnTable'
 })
 
 const router = useRouter()
@@ -144,13 +159,13 @@ const total = ref<number>(0)
 const selectRows = ref<any>([])
 const queryForm = reactive<any>({
   pageNo: 1,
-  pageSize: 20,
+  pageSize: 20
 })
 const filterText = ref<string>('')
 const treeRef = ref<InstanceType<typeof ElTree>>()
 const { exit, enter, isFullscreen: _isFullscreen } = useFullscreen()
 
-watch(filterText, (value) => {
+watch(filterText, value => {
   treeRef.value?.filter(value)
 })
 
@@ -176,15 +191,15 @@ const data: Tree[] = [
         children: [
           {
             id: 9,
-            label: '三级 1-1-1',
+            label: '三级 1-1-1'
           },
           {
             id: 10,
-            label: '三级 1-1-2',
-          },
-        ],
-      },
-    ],
+            label: '三级 1-1-2'
+          }
+        ]
+      }
+    ]
   },
   {
     id: 2,
@@ -192,13 +207,13 @@ const data: Tree[] = [
     children: [
       {
         id: 5,
-        label: '二级 2-1',
+        label: '二级 2-1'
       },
       {
         id: 6,
-        label: '二级 2-2',
-      },
-    ],
+        label: '二级 2-2'
+      }
+    ]
   },
   {
     id: 3,
@@ -206,14 +221,14 @@ const data: Tree[] = [
     children: [
       {
         id: 7,
-        label: '二级 3-1',
+        label: '二级 3-1'
       },
       {
         id: 8,
-        label: '二级 3-2',
-      },
-    ],
-  },
+        label: '二级 3-2'
+      }
+    ]
+  }
 ]
 const handleNodeClick = () => {
   fetchData()
@@ -221,7 +236,7 @@ const handleNodeClick = () => {
 
 const defaultProps = {
   children: 'children',
-  label: 'label',
+  label: 'label'
 }
 
 const fetchData = async () => {
@@ -257,7 +272,7 @@ const statusFilter = (status: string | number) => {
   const statusMap: any = {
     published: 'success',
     draft: 'primary',
-    deleted: 'danger',
+    deleted: 'danger'
   }
   return statusMap[status]
 }
@@ -305,15 +320,15 @@ const handleDetailStayTable = async () => {
       const matched = handleMatched(allRoutes.value, '/vab/table/defaultTableDetail')
       const tab = handleTabs({
         ...matched.at(-1),
-        query: selectRows.value[i],
+        query: selectRows.value[i]
       })
       if (tab) {
         await addVisitedRoute(tab)
         await changeTabsMeta({
           title: '详情页',
           meta: {
-            title: `${tab.query.title} 详情页`,
-          },
+            title: `${tab.query.title} 详情页`
+          }
         })
       }
     }
@@ -326,8 +341,8 @@ const handleDetail = (row: any) => {
       path: '/vab/table/defaultTableDetail',
       query: {
         ...row,
-        timestamp: Date.now(), //允许同一个详情页同时打开多次，否则会触发路由被缓存下次无法刷新的bug
-      },
+        timestamp: Date.now() //允许同一个详情页同时打开多次，否则会触发路由被缓存下次无法刷新的bug
+      }
     })
   else {
     if (selectRows.value.length === 1)
@@ -335,8 +350,8 @@ const handleDetail = (row: any) => {
         path: '/vab/table/defaultTableDetail',
         query: {
           ...selectRows.value[0],
-          timestamp: Date.now(), //允许同一个详情页同时打开多次，否则会触发路由被缓存下次无法刷新的bug
-        },
+          timestamp: Date.now() //允许同一个详情页同时打开多次，否则会触发路由被缓存下次无法刷新的bug
+        }
       })
     else $baseMessage('请选择一行进行详情页跳转', 'warning', 'hey')
   }

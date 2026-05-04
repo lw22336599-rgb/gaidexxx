@@ -37,7 +37,7 @@ export enum SignalRConnectionState {
   /** 重连中 */
   Reconnecting = 3,
   /** 连接失败 */
-  Failed = 4,
+  Failed = 4
 }
 
 /**
@@ -57,7 +57,7 @@ export enum WxProcessState {
   /** 已停止 */
   Stopped = 5,
   /** 错误 */
-  Error = 6,
+  Error = 6
 }
 
 /**
@@ -81,7 +81,7 @@ export enum ConnectStep {
   /** 同步联系人数据 */
   SyncContacts = 7,
   /** 连接完成 */
-  Completed = 8,
+  Completed = 8
 }
 
 /**

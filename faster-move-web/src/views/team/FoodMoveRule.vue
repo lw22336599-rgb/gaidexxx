@@ -6,19 +6,23 @@
         <div class="tree-container">
           <div class="tree-header">
             <span>规则分组</span>
-            <el-button type="primary" size="small" @click="handleAddGroup">
-              新增分组
-            </el-button>
+            <el-button type="primary" size="small" @click="handleAddGroup"> 新增分组 </el-button>
           </div>
-          <el-tree ref="groupTreeRef" v-loading="groupLoading" :data="groupTreeData" :props="treeProps" node-key="id"
-            default-expand-all highlight-current @node-click="handleGroupNodeClick">
+          <el-tree
+            ref="groupTreeRef"
+            v-loading="groupLoading"
+            :data="groupTreeData"
+            :props="treeProps"
+            node-key="id"
+            default-expand-all
+            highlight-current
+            @node-click="handleGroupNodeClick"
+          >
             <template #default="{ node, data }">
               <div class="tree-node">
                 <span class="tree-node-label">{{ data.name }}</span>
                 <span class="tree-node-actions">
-                  <el-button type="text" size="small" @click.stop="handleEditGroup(data)">
-                    编辑
-                  </el-button>
+                  <el-button type="text" size="small" @click.stop="handleEditGroup(data)"> 编辑 </el-button>
                   <el-button type="text" size="small" style="color: #f56c6c" @click.stop="handleDeleteGroup(data)">
                     删除
                   </el-button>
@@ -33,56 +37,96 @@
           <div class="filter-main">
             <div class="filter-item">
               <span class="filter-label">店铺类型：</span>
-              <el-select v-model="query.shop_type" class="filter-select" placeholder="全部" size="small" clearable
-                @change="reloadRuleList">
+              <el-select
+                v-model="query.shop_type"
+                class="filter-select"
+                placeholder="全部"
+                size="small"
+                clearable
+                @change="reloadRuleList"
+              >
                 <el-option v-for="item in shopTypeOptions" :key="item.value" :label="item.label" :value="item.value" />
               </el-select>
             </div>
             <div class="filter-item">
               <span class="filter-label">事件类型：</span>
-              <el-select v-model="query.for_evnt" class="filter-select" placeholder="全部" size="small" clearable
-                @change="reloadRuleList">
-                <el-option v-for="item in ruleForEventOptions" :key="item.value" :label="item.label"
-                  :value="item.value" />
+              <el-select
+                v-model="query.for_evnt"
+                class="filter-select"
+                placeholder="全部"
+                size="small"
+                clearable
+                @change="reloadRuleList"
+              >
+                <el-option
+                  v-for="item in ruleForEventOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
               </el-select>
             </div>
             <div class="filter-item">
               <span class="filter-label">规则类型：</span>
-              <el-select v-model="query.ForType" class="filter-select" placeholder="全部" size="small" clearable
-                @change="reloadRuleList">
-                <el-option v-for="item in ruleForTypeOptions" :key="item.value" :label="item.label"
-                  :value="item.value" />
+              <el-select
+                v-model="query.ForType"
+                class="filter-select"
+                placeholder="全部"
+                size="small"
+                clearable
+                @change="reloadRuleList"
+              >
+                <el-option
+                  v-for="item in ruleForTypeOptions"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
               </el-select>
             </div>
             <div class="filter-item">
               <span class="filter-label">规则名称：</span>
-              <el-input v-model.trim="query.name" class="filter-input" clearable placeholder="输入规则名称搜索" size="small"
-                @keyup.enter="reloadRuleList" />
+              <el-input
+                v-model.trim="query.name"
+                class="filter-input"
+                clearable
+                placeholder="输入规则名称搜索"
+                size="small"
+                @keyup.enter="reloadRuleList"
+              />
             </div>
             <div class="filter-item">
               <span class="filter-label">启用状态：</span>
-              <el-select v-model="query.avtag" class="filter-select" placeholder="全部" size="small" clearable
-                @change="reloadRuleList">
+              <el-select
+                v-model="query.avtag"
+                class="filter-select"
+                placeholder="全部"
+                size="small"
+                clearable
+                @change="reloadRuleList"
+              >
                 <el-option label="启用" :value="true" />
                 <el-option label="禁用" :value="false" />
               </el-select>
             </div>
-            <div class="filter-item ">
+            <div class="filter-item">
               <el-button type="danger" size="small" :disabled="selectedRules.length === 0" @click="handleBatchDelete">
                 批量删除
               </el-button>
-              <el-button type="primary" size="small" @click="handleAddRule">
-                新增规则
-              </el-button>
-              <el-button size="small" @click="reloadRuleList">
-                刷新
-              </el-button>
+              <el-button type="primary" size="small" @click="handleAddRule"> 新增规则 </el-button>
+              <el-button size="small" @click="reloadRuleList"> 刷新 </el-button>
             </div>
           </div>
 
           <div class="table-scroll">
-            <el-table v-loading="listLoading" :data="ruleList" height="calc(100vh - 310px)" size="small"
-              style="min-width: 100%" @selection-change="handleSelectionChange">
+            <el-table
+              v-loading="listLoading"
+              :data="ruleList"
+              height="calc(100vh - 310px)"
+              size="small"
+              style="min-width: 100%"
+              @selection-change="handleSelectionChange"
+            >
               <el-table-column type="selection" width="55" align="center" />
               <el-table-column type="index" width="60" label="序号" align="center" />
               <el-table-column prop="name" label="规则名称" min-width="140" show-overflow-tooltip />
@@ -141,8 +185,14 @@
               <el-table-column prop="group_name" label="所属分组" min-width="120" show-overflow-tooltip />
               <el-table-column label="启用状态" width="100" align="center">
                 <template #default="{ row }">
-                  <el-switch v-model="row.avtag" :active-value="true" :inactive-value="false" active-color="#13ce66"
-                    inactive-color="#ff4949" @change="handleToggleRule(row)" />
+                  <el-switch
+                    v-model="row.avtag"
+                    :active-value="true"
+                    :inactive-value="false"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949"
+                    @change="handleToggleRule(row)"
+                  />
                 </template>
               </el-table-column>
               <el-table-column label="操作" width="280" fixed="right" align="center">
@@ -150,25 +200,34 @@
                   <el-button type="text" @click="handleEditRule(row)">编辑</el-button>
                   <el-button type="text" @click="handleConnectGroup(row)">移入分组</el-button>
                   <el-button type="text" @click="handleRemoveGroup(row)">移出分组</el-button>
-                  <el-button type="text" style="color: #f56c6c" @click="handleDeleteRule(row)">
-                    删除
-                  </el-button>
+                  <el-button type="text" style="color: #f56c6c" @click="handleDeleteRule(row)"> 删除 </el-button>
                 </template>
               </el-table-column>
             </el-table>
           </div>
           <div class="pagination-main">
-            <el-pagination v-model:current-page="query.page" v-model:page-size="query.pageSize"
-              :page-sizes="[10, 20, 50, 100]" :total="total" background layout="total, sizes, prev, pager, next"
-              @current-change="handlePageChange" @size-change="handleSizeChange" />
+            <el-pagination
+              v-model:current-page="query.page"
+              v-model:page-size="query.pageSize"
+              :page-sizes="[10, 20, 50, 100]"
+              :total="total"
+              background
+              layout="total, sizes, prev, pager, next"
+              @current-change="handlePageChange"
+              @size-change="handleSizeChange"
+            />
           </div>
         </div>
       </div>
     </vab-card>
 
     <!-- 规则编辑对话框 -->
-    <el-dialog v-model="editDialogVisible" :title="editForm.id ? '编辑商品复制规则' : '新增商品复制规则'" width="680px"
-      :close-on-click-modal="false">
+    <el-dialog
+      v-model="editDialogVisible"
+      :title="editForm.id ? '编辑商品复制规则' : '新增商品复制规则'"
+      width="680px"
+      :close-on-click-modal="false"
+    >
       <el-form ref="editFormRef" :model="editForm" :rules="editRules" label-width="130px">
         <el-divider content-position="left">基础信息</el-divider>
         <el-form-item label="规则名称" prop="name">
@@ -196,8 +255,12 @@
         <div class="form-two-col-row">
           <el-form-item label="针对事件型" class="form-two-col-item">
             <el-select v-model="editForm.for_evnt" placeholder="请选择事件类型" size="small" clearable>
-              <el-option v-for="item in ruleForEventOptions" :key="item.value" :label="item.label"
-                :value="item.value" />
+              <el-option
+                v-for="item in ruleForEventOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
             </el-select>
           </el-form-item>
           <el-form-item label="事件关键词" class="form-two-col-item">
@@ -217,8 +280,12 @@
         <div class="form-two-col-row">
           <el-form-item label="设置字段类型" class="form-two-col-item">
             <el-select v-model="editForm.evnt_set_type" placeholder="请选择设置字段类型" size="small" clearable>
-              <el-option v-for="item in evntSetValueTypeOptions" :key="item.value" :label="item.label"
-                :value="item.value" />
+              <el-option
+                v-for="item in evntSetValueTypeOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              />
             </el-select>
           </el-form-item>
           <el-form-item label="自动保存到数据库" class="form-two-col-item">
@@ -266,9 +333,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="editDialogVisible = false">取 消</el-button>
-          <el-button type="primary" :loading="editSubmitting" @click="submitEditForm">
-            确 定
-          </el-button>
+          <el-button type="primary" :loading="editSubmitting" @click="submitEditForm"> 确 定 </el-button>
         </div>
       </template>
     </el-dialog>
@@ -286,9 +351,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="groupDialogVisible = false">取 消</el-button>
-          <el-button type="primary" :loading="groupSubmitting" @click="submitGroupForm">
-            确 定
-          </el-button>
+          <el-button type="primary" :loading="groupSubmitting" @click="submitGroupForm"> 确 定 </el-button>
         </div>
       </template>
     </el-dialog>
@@ -305,9 +368,7 @@
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="connectGroupDialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="submitConnectGroup">
-            确 定
-          </el-button>
+          <el-button type="primary" @click="submitConnectGroup"> 确 定 </el-button>
         </div>
       </template>
     </el-dialog>
@@ -333,7 +394,7 @@ import type { TreeData } from '@/TsModel/Alien/Entity/TreeData'
 import type { PageResultVo } from '@/TsModel/Alien/Entity/MethodResult/PageResultVo'
 
 defineOptions({
-  name: 'FoodMoveRule',
+  name: 'FoodMoveRule'
 })
 
 interface ShopTypeOption {
@@ -399,7 +460,7 @@ const query = reactive<QueryState>({
   name: undefined,
   avtag: undefined,
   page: 1,
-  pageSize: 20,
+  pageSize: 20
 })
 
 // 店铺类型选项
@@ -413,7 +474,7 @@ const shopTypeOptions: ShopTypeOption[] = [
   { label: '抖店即时零售', value: ShopType.抖店即时零售 },
   { label: '饿了么官方', value: ShopType.饿了么官方 },
   { label: '美团团购', value: ShopType.美团团购 },
-  { label: '京东团购', value: ShopType.京东团购 },
+  { label: '京东团购', value: ShopType.京东团购 }
 ]
 
 // 规则类型选项
@@ -430,13 +491,13 @@ const ruleForTypeOptions: RuleForTypeOption[] = [
   { label: '针对类目属性值', value: RuleForType.针对类目属性值 },
   { label: '针对自定义属性', value: RuleForType.针对自定义属性 },
   { label: '针对商品卖点', value: RuleForType.针对商品卖点 },
-  { label: '针对商品库存', value: RuleForType.针对商品库存 },
+  { label: '针对商品库存', value: RuleForType.针对商品库存 }
 ]
 
 // 事件类型选项
 const ruleForEventOptions: RuleForEventOption[] = [
   { label: '商品提交失败出现关键词', value: RuleForEvent.商品提交失败出现关键词 },
-  { label: '分组创建失败出现关键词', value: RuleForEvent.分组创建失败出现关键词 },
+  { label: '分组创建失败出现关键词', value: RuleForEvent.分组创建失败出现关键词 }
 ]
 
 // 事件设置值类型选项
@@ -448,7 +509,7 @@ const evntSetValueTypeOptions: EvntSetValueTypeOption[] = [
   { label: '针对数字最大值', value: EvntRuleSetValueType.针对数字最大值 },
   { label: '针对数字最小值', value: EvntRuleSetValueType.针对数字最小值 },
   { label: '老字符串并新正则', value: EvntRuleSetValueType.老字符串并新正则 },
-  { label: '强制推荐类目', value: EvntRuleSetValueType.强制推荐类目 },
+  { label: '强制推荐类目', value: EvntRuleSetValueType.强制推荐类目 }
 ]
 
 // 编辑表单
@@ -474,12 +535,12 @@ const editForm: any = reactive({
   group_name: undefined,
   notes: '',
   id: '',
-  avtag: true,
+  avtag: true
 })
 
 const editRules: FormRules = {
   shop_type: [{ required: true, message: '请选择店铺类型', trigger: 'change' }],
-  ForType: [{ required: true, message: '请选择规则类型', trigger: 'change' }],
+  ForType: [{ required: true, message: '请选择规则类型', trigger: 'change' }]
 }
 
 // 分组表单
@@ -489,50 +550,50 @@ const groupForm = reactive<Partial<t_wmt_group>>({
   notes: '',
   type: GroupType.商品复制规则分组,
   user: '',
-  avtag: true,
+  avtag: true
 })
 
 const groupRules: FormRules = {
-  name: [{ required: true, message: '请输入分组名称', trigger: 'blur' }],
+  name: [{ required: true, message: '请输入分组名称', trigger: 'blur' }]
 }
 
 // 树形组件配置
 const treeProps = {
   children: 'children',
-  label: 'name',
+  label: 'name'
 }
 
 /** 获取店铺类型名称 */
 const getShopTypeName = (shopType: ShopType | null | undefined) => {
   if (shopType === null || shopType === undefined) return ''
-  const option = shopTypeOptions.find((item) => item.value === shopType)
+  const option = shopTypeOptions.find(item => item.value === shopType)
   return option ? option.label : ''
 }
 
 /** 获取规则类型名称 */
 const getRuleForTypeName = (forType: RuleForType | null | undefined) => {
   if (forType === null || forType === undefined) return ''
-  const option = ruleForTypeOptions.find((item) => item.value === forType)
+  const option = ruleForTypeOptions.find(item => item.value === forType)
   return option ? option.label : ''
 }
 
 /** 获取事件类型名称 */
 const getRuleForEventName = (forEvent: RuleForEvent | null | undefined) => {
   if (forEvent === null || forEvent === undefined) return ''
-  const option = ruleForEventOptions.find((item) => item.value === forEvent)
+  const option = ruleForEventOptions.find(item => item.value === forEvent)
   return option ? option.label : ''
 }
 
 /** 获取事件设置类型名称 */
 const getEvntSetTypeName = (setType: EvntRuleSetValueType | null | undefined) => {
   if (setType === null || setType === undefined) return ''
-  const option = evntSetValueTypeOptions.find((item) => item.value === setType)
+  const option = evntSetValueTypeOptions.find(item => item.value === setType)
   return option ? option.label : ''
 }
 
 /** 将 TreeData 转换为 el-tree 可用的格式 */
 const convertTreeData = (nodes: TreeData<t_wmt_group>[]): any[] => {
-  return nodes.map((node) => {
+  return nodes.map(node => {
     const converted: any = {
       ...node.Member,
       children: node.children && node.children.length > 0 ? convertTreeData(node.children) : []
@@ -546,16 +607,10 @@ const loadGroupTree = async () => {
   groupLoading.value = true
   try {
     // 由于后端统一返回 { Success, code, message, data } 包装，这里需要做一层兼容解包
-    const rawResult = (await apiManager.groupApi.GetGroups(
-      GroupType.商品复制规则分组,
-      true,
-      undefined
-    )) as any
+    const rawResult = (await apiManager.groupApi.GetGroups(GroupType.商品复制规则分组, true, undefined)) as any
 
     // 兼容两种情况：直接返回数组 或 包装在 data 字段中
-    const sourceTreeData: TreeData<t_wmt_group>[] = Array.isArray(rawResult)
-      ? rawResult
-      : rawResult?.data || []
+    const sourceTreeData: TreeData<t_wmt_group>[] = Array.isArray(rawResult) ? rawResult : rawResult?.data || []
 
     // 转换 TreeData 为 el-tree 可用的格式
     const convertedTree = convertTreeData(sourceTreeData || [])
@@ -565,14 +620,14 @@ const loadGroupTree = async () => {
       {
         id: ALL_GROUP_ID,
         name: '全部分组',
-        children: convertedTree,
-      },
+        children: convertedTree
+      }
     ]
 
     // 展平分组列表用于下拉选择
     const flattenGroups = (nodes: any[]): t_wmt_group[] => {
       const list: t_wmt_group[] = []
-      nodes.forEach((node) => {
+      nodes.forEach(node => {
         // 跳过“全部分组”虚拟节点，只保留真实分组用于下拉选择
         if (node.id !== ALL_GROUP_ID) {
           list.push(node)
@@ -601,13 +656,12 @@ const getRuleList = async () => {
       name: query.name,
       avtag: query.avtag,
       page: query.page,
-      pageSize: query.pageSize,
+      pageSize: query.pageSize
     }
     // 兼容后端统一返回 { Success, code, message, data } 的包装结构
     const rawResult = (await apiManager.fdmvruleApi.GetRuleList(parms)) as any
-    const result: PageResultVo<t_wmt_fc_fdmv_rule> = (rawResult && (rawResult.data || rawResult)) as PageResultVo<
-      t_wmt_fc_fdmv_rule
-    >
+    const result: PageResultVo<t_wmt_fc_fdmv_rule> = (rawResult &&
+      (rawResult.data || rawResult)) as PageResultVo<t_wmt_fc_fdmv_rule>
     ruleList.value = result?.rows || []
     total.value = result?.total || 0
   } finally {
@@ -711,7 +765,7 @@ const handleEditRule = (row: t_wmt_fc_fdmv_rule) => {
 /** 提交编辑表单 */
 const submitEditForm = () => {
   if (!editFormRef.value) return
-  editFormRef.value.validate(async (valid) => {
+  editFormRef.value.validate(async valid => {
     if (!valid) return
     editSubmitting.value = true
     try {
@@ -738,7 +792,7 @@ const submitEditForm = () => {
           min_val: editForm.min_val,
           group: editForm.group,
           group_name: editForm.group_name,
-          notes: editForm.notes,
+          notes: editForm.notes
         }
         await apiManager.fdmvruleApi.UpdateRule(updateParms)
       } else {
@@ -778,7 +832,7 @@ const handleToggleRule = async (row: t_wmt_fc_fdmv_rule) => {
       min_val: row.min_val,
       group: row.group,
       group_name: row.group_name,
-      notes: row.notes,
+      notes: row.notes
     }
     await apiManager.fdmvruleApi.UpdateRule(updateParms)
   } catch {
@@ -788,15 +842,11 @@ const handleToggleRule = async (row: t_wmt_fc_fdmv_rule) => {
 
 /** 删除规则 */
 const handleDeleteRule = (row: t_wmt_fc_fdmv_rule) => {
-  ElMessageBox.confirm(
-    `确定要删除规则【${row.name || '未命名'}】吗？`,
-    '提示',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }
-  ).then(async () => {
+  ElMessageBox.confirm(`确定要删除规则【${row.name || '未命名'}】吗？`, '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(async () => {
     await apiManager.fdmvruleApi.DeleteRule(row.id)
     await getRuleList()
   })
@@ -805,16 +855,12 @@ const handleDeleteRule = (row: t_wmt_fc_fdmv_rule) => {
 /** 批量删除规则 */
 const handleBatchDelete = () => {
   if (selectedRules.value.length === 0) return
-  ElMessageBox.confirm(
-    `确定要删除选中的 ${selectedRules.value.length} 条规则吗？`,
-    '提示',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }
-  ).then(async () => {
-    const ids = selectedRules.value.map((item) => item.id)
+  ElMessageBox.confirm(`确定要删除选中的 ${selectedRules.value.length} 条规则吗？`, '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(async () => {
+    const ids = selectedRules.value.map(item => item.id)
     await apiManager.fdmvruleApi.DeleteRules(ids)
     await getRuleList()
   })
@@ -832,7 +878,7 @@ const submitConnectGroup = async () => {
   if (!currentRule.value || !selectedGroupId.value) return
   const parms: ConnectRuleGroupParmsVo = {
     ruleIds: [currentRule.value.id],
-    groupId: selectedGroupId.value,
+    groupId: selectedGroupId.value
   }
   await apiManager.fdmvruleApi.ConnectGroup(parms)
   connectGroupDialogVisible.value = false
@@ -844,18 +890,14 @@ const handleRemoveGroup = (row: t_wmt_fc_fdmv_rule) => {
   if (!row.group) {
     return
   }
-  ElMessageBox.confirm(
-    `确定要将规则【${row.name || '未命名'}】移出分组吗？`,
-    '提示',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }
-  ).then(async () => {
+  ElMessageBox.confirm(`确定要将规则【${row.name || '未命名'}】移出分组吗？`, '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(async () => {
     const parms: ConnectRuleGroupParmsVo = {
       ruleIds: [row.id],
-      groupId: row.group!,
+      groupId: row.group!
     }
     await apiManager.fdmvruleApi.RemoveGroup(parms)
     await getRuleList()
@@ -882,7 +924,7 @@ const handleEditGroup = (data: any) => {
 /** 提交分组表单 */
 const submitGroupForm = () => {
   if (!groupFormRef.value) return
-  groupFormRef.value.validate(async (valid) => {
+  groupFormRef.value.validate(async valid => {
     if (!valid) return
     groupSubmitting.value = true
     try {
@@ -894,7 +936,7 @@ const submitGroupForm = () => {
         user: groupForm.user || '',
         avtag: true,
         crtim: undefined,
-        uptim: undefined,
+        uptim: undefined
       }
       if (groupForm.id) {
         await apiManager.groupApi.UpdateGroup(formData)
@@ -912,15 +954,11 @@ const submitGroupForm = () => {
 /** 删除分组 */
 const handleDeleteGroup = (data: any) => {
   if (!data) return
-  ElMessageBox.confirm(
-    `确定要删除分组【${data.name}】吗？`,
-    '提示',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }
-  ).then(async () => {
+  ElMessageBox.confirm(`确定要删除分组【${data.name}】吗？`, '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(async () => {
     await apiManager.groupApi.DeleteGroup(data.id)
     await loadGroupTree()
   })

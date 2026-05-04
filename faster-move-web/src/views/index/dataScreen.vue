@@ -4,7 +4,7 @@
       <data-screen-header
         :style="{
           height: headerContentHeight,
-          'line-height': headerContentHeight,
+          'line-height': headerContentHeight
         }"
       />
       <div style="padding: 30px 40px 0 40px">
@@ -54,7 +54,7 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'DataScreen',
+  name: 'DataScreen'
 })
 
 const headerContentHeight = ref<any>('60px')

@@ -186,7 +186,7 @@ import { random } from 'lodash-es'
 import imageUrl from '/@/assets/task_image/task.png'
 
 defineOptions({
-  name: 'ServerManagement',
+  name: 'ServerManagement'
 })
 
 let timer: ReturnType<typeof setInterval>

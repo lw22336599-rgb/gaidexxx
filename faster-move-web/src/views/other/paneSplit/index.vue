@@ -29,7 +29,7 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'PaneSplit',
+  name: 'PaneSplit'
 })
 
 const resize = () => {

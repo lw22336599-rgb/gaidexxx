@@ -36,9 +36,17 @@ export function mockGetUserInfoEnvelope() {
       admin: {
         user_name: "默认测试账号",
         avatar: "",
-        role: [] as unknown[],
-        id: 0,
+        role: ["演示角色", "ADMIN"] as unknown[],
+        id: 10001,
+        phone: "18000000000",
+        notes: "Mock 账号 · 无后端时使用",
+        balance: 0,
       },
+      count_shop_type: [
+        { Title: "美团", ShopCount: 8 },
+        { Title: "饿了么", ShopCount: 5 },
+        { Title: "京东", ShopCount: 2 },
+      ],
     },
     msg: "mock-ok",
   } as const;

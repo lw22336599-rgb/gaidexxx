@@ -4,32 +4,48 @@
       <!-- 店铺类型导航栏 -->
       <div class="shop-type-nav">
         <div class="shop-type-list">
-          <div v-for="option in shopTypeOptions" :key="option.value" class="shop-type-item"
-            :class="{ active: currentShopType === option.value }" @click.stop="handleShopTypeChange(option.value)">
+          <div
+            v-for="option in shopTypeOptions"
+            :key="option.value"
+            class="shop-type-item"
+            :class="{ active: currentShopType === option.value }"
+            @click.stop="handleShopTypeChange(option.value)"
+          >
             <PlatformIcon :shop-type="option.value" :size="20" />
             <span class="shop-type-label">{{ option.label }}</span>
           </div>
         </div>
         <!-- 搜索框 -->
         <div class="shop-type-search">
-          <el-input v-model="queryParams.filter.word" clearable placeholder="搜索门店名称或ID或备注" style="width: 220px"
-            @change="handleSearch" />
+          <el-input
+            v-model="queryParams.filter.word"
+            clearable
+            placeholder="搜索门店名称或ID或备注"
+            style="width: 220px"
+            @change="handleSearch"
+          />
         </div>
       </div>
 
       <!-- 版本选择和操作按钮 -->
       <div class="version-actions-bar">
         <div class="version-buttons">
-          <el-button :type="'primary'" class="version-button">
-            功能版
-          </el-button>
-          <el-button v-if="showOperationVersion" :type="versionType === '运营版' ? 'primary' : 'default'"
-            @click="switchToOperation" class="version-button">
+          <el-button :type="'primary'" class="version-button"> 功能版 </el-button>
+          <el-button
+            v-if="showOperationVersion"
+            :type="versionType === '运营版' ? 'primary' : 'default'"
+            class="version-button"
+            @click="switchToOperation"
+          >
             运营版
           </el-button>
           <div class="action-buttons">
-            <AuthButton :shop-type="currentShopType" @refresh="handleRefresh" @shop-added="handleShopAdded"
-              @bind="bindShopCode()" />
+            <AuthButton
+              :shop-type="currentShopType"
+              @refresh="handleRefresh"
+              @shop-added="handleShopAdded"
+              @bind="bindShopCode()"
+            />
             <el-button type="primary" @click="openGroupManagement">
               <el-icon style="margin-right: 4px">
                 <Folder />
@@ -41,40 +57,68 @@
         <!-- 功能版功能状态卡片（移到回收站左边） -->
         <div class="operate-status-card">
           <!-- 即将到期卡片：只在有功能选项时显示（排除饿了么复制版） -->
-          <div v-if="currentShopType !== ShopType.饿了么官方 && functionOptions.length > 0" class="status-entry warning"
-            @click="openExpiringDialog">
-            <el-select v-model="expiringFunctionCode" placeholder="选择功能" size="small" class="function-select"
-              @change="handleExpiringFunctionChange" @click.stop>
+          <div
+            v-if="currentShopType !== ShopType.饿了么官方 && functionOptions.length > 0"
+            class="status-entry warning"
+            @click="openExpiringDialog"
+          >
+            <el-select
+              v-model="expiringFunctionCode"
+              placeholder="选择功能"
+              size="small"
+              class="function-select"
+              @change="handleExpiringFunctionChange"
+              @click.stop
+            >
               <el-option v-for="item in functionOptions" :key="item.code" :label="item.name" :value="item.code" />
             </el-select>
             <span class="status-label">即将到期：</span>
             <span class="status-number" :class="{ 'blur-text': demoMode }">{{ expiringShopCount }}</span>
             <span class="status-unit">家店铺</span>
-            <el-button :type="batchRenewMode ? 'warning' : 'primary'" size="small" class="batch-renew-btn"
-              @click.stop="toggleBatchRenewMode">
+            <el-button
+              :type="batchRenewMode ? 'warning' : 'primary'"
+              size="small"
+              class="batch-renew-btn"
+              @click.stop="toggleBatchRenewMode"
+            >
               <el-icon style="margin-right: 4px">
                 <Tickets />
               </el-icon>
               {{ batchRenewMode ? '取消批量续费' : '批量续费' }}
             </el-button>
-            <el-button v-if="batchRenewMode && selectedShopsForRenew.length > 0" type="primary" size="small"
-              class="confirm-renew-btn" @click.stop="handleConfirmRenew">
+            <el-button
+              v-if="batchRenewMode && selectedShopsForRenew.length > 0"
+              type="primary"
+              size="small"
+              class="confirm-renew-btn"
+              @click.stop="handleConfirmRenew"
+            >
               <el-icon style="margin-right: 4px">
                 <Check />
               </el-icon>
               确认续费
             </el-button>
             <el-tooltip content="执行已续费且未到期的功能" placement="top">
-              <el-button v-if="showExecuteFuncButton" :type="executeFuncMode ? 'warning' : 'primary'" size="small"
-                class="execute-func-btn" @click.stop="toggleExecuteFuncMode">
+              <el-button
+                v-if="showExecuteFuncButton"
+                :type="executeFuncMode ? 'warning' : 'primary'"
+                size="small"
+                class="execute-func-btn"
+                @click.stop="toggleExecuteFuncMode"
+              >
                 <el-icon style="margin-right: 4px">
                   <VideoPlay />
                 </el-icon>
                 {{ executeFuncMode ? '取消执行' : '执行功能' }}
               </el-button>
             </el-tooltip>
-            <el-button v-if="executeFuncMode && selectedShopsForExecute.length > 0" type="primary" size="small"
-              class="confirm-execute-btn" @click.stop="openExecuteFuncDialog">
+            <el-button
+              v-if="executeFuncMode && selectedShopsForExecute.length > 0"
+              type="primary"
+              size="small"
+              class="confirm-execute-btn"
+              @click.stop="openExecuteFuncDialog"
+            >
               <el-icon style="margin-right: 4px">
                 <Check />
               </el-icon>
@@ -88,79 +132,138 @@
             <span class="status-unit">家店铺</span>
           </div>
         </div>
-        <el-button :icon="Download" type="success" :loading="exportLoading" @click="openExportDialog"
-          style="margin-right: 8px;">
+        <el-button
+          :icon="Download"
+          type="success"
+          :loading="exportLoading"
+          style="margin-right: 8px"
+          @click="openExportDialog"
+        >
           导出店铺
         </el-button>
-        <el-button :icon="Delete" type="danger" @click="openRecycle" class="recycle-btn">回收站</el-button>
-        <el-button :icon="Monitor" type="primary" @click="openFuncRunTaskCenter"
-          style="margin-left: 8px;">任务执行中心</el-button>
+        <el-button :icon="Delete" type="danger" class="recycle-btn" @click="openRecycle">回收站</el-button>
+        <el-button :icon="Monitor" type="primary" style="margin-left: 8px" @click="openFuncRunTaskCenter"
+          >任务执行中心</el-button
+        >
       </div>
     </div>
-    <screen :query-params="queryParams.filter" :shop-type="currentShopType"
-      :shop-type-str="getShopTypeStr(currentShopType)" @update-query-params="setParams" />
+    <screen
+      :query-params="queryParams.filter"
+      :shop-type="currentShopType"
+      :shop-type-str="getShopTypeStr(currentShopType)"
+      @update-query-params="setParams"
+    />
     <div class="shop-table-wrapper">
-      <shop-table ref="shopTableRef" :list-loading="tableLoading" :page="queryParams.page"
-        :page-size="queryParams.pageSize" :shop-list="shopList" :shop-type="currentShopType"
-        :shop-type-str="getShopTypeStr(currentShopType)" :total="total" :is-functional="true"
-        :batch-renew-mode="batchRenewMode || executeFuncMode" @update-page="updatePage"
-        @update-filter="handleFilterChange" @save-scroll="handleSaveScroll"
-        @shop-selection-change="handleShopSelectionChange" @sort-change="handleSortChange" />
+      <shop-table
+        ref="shopTableRef"
+        :list-loading="tableLoading"
+        :page="queryParams.page"
+        :page-size="queryParams.pageSize"
+        :shop-list="shopList"
+        :shop-type="currentShopType"
+        :shop-type-str="getShopTypeStr(currentShopType)"
+        :total="total"
+        :is-functional="true"
+        :batch-renew-mode="batchRenewMode || executeFuncMode"
+        @update-page="updatePage"
+        @update-filter="handleFilterChange"
+        @save-scroll="handleSaveScroll"
+        @shop-selection-change="handleShopSelectionChange"
+        @sort-change="handleSortChange"
+      />
     </div>
     <!-- 导出店铺对话框 -->
-    <el-dialog v-model="exportDialogVisible" title="导出店铺" width="480px" :close-on-click-modal="false"
-      :before-close="closeExportDialog">
+    <el-dialog
+      v-model="exportDialogVisible"
+      title="导出店铺"
+      width="480px"
+      :close-on-click-modal="false"
+      :before-close="closeExportDialog"
+    >
       <div class="export-dialog-content">
         <div v-if="!exportLoading" class="export-settings">
           <el-form label-width="90px" size="default">
             <el-form-item label="导出页数">
-              <el-input-number v-model="exportMaxPages" :min="1" :max="50" :step="1" controls-position="right"
-                style="width: 140px" />
-              <span style="margin-left: 8px; color: #909399; font-size: 13px;">页（每页 {{ MAX_PAGE_SIZE }} 条）</span>
+              <el-input-number
+                v-model="exportMaxPages"
+                :min="1"
+                :max="50"
+                :step="1"
+                controls-position="right"
+                style="width: 140px"
+              />
+              <span style="margin-left: 8px; color: #909399; font-size: 13px">页（每页 {{ MAX_PAGE_SIZE }} 条）</span>
             </el-form-item>
             <el-form-item label="过滤条件">
-              <el-tag v-if="queryParams.filter.word" type="info" style="margin-right: 6px">关键词: {{
-                queryParams.filter.word }}</el-tag>
-              <el-tag v-if="queryParams.filter.state !== undefined && queryParams.filter.state !== null" type="info"
-                style="margin-right: 6px">状态筛选</el-tag>
+              <el-tag v-if="queryParams.filter.word" type="info" style="margin-right: 6px"
+                >关键词: {{ queryParams.filter.word }}</el-tag
+              >
+              <el-tag
+                v-if="queryParams.filter.state !== undefined && queryParams.filter.state !== null"
+                type="info"
+                style="margin-right: 6px"
+                >状态筛选</el-tag
+              >
               <el-tag v-if="queryParams.filter.func_code" type="info" style="margin-right: 6px">功能筛选</el-tag>
               <el-tag v-if="queryParams.filter.group" type="info" style="margin-right: 6px">分组筛选</el-tag>
               <span
-                v-if="!queryParams.filter.word && queryParams.filter.state === undefined && !queryParams.filter.func_code && !queryParams.filter.group"
-                style="color: #909399; font-size: 13px;">全部店铺</span>
+                v-if="
+                  !queryParams.filter.word &&
+                  queryParams.filter.state === undefined &&
+                  !queryParams.filter.func_code &&
+                  !queryParams.filter.group
+                "
+                style="color: #909399; font-size: 13px"
+                >全部店铺</span
+              >
             </el-form-item>
           </el-form>
-          <div style="color: #909399; font-size: 12px; margin-top: 4px;">
-            <el-icon style="vertical-align: middle; margin-right: 4px;">
+          <div style="color: #909399; font-size: 12px; margin-top: 4px">
+            <el-icon style="vertical-align: middle; margin-right: 4px">
               <InfoFilled />
             </el-icon>
             将按当前过滤条件分页查询，每页间隔 1~3 秒，避免请求过于频繁
           </div>
         </div>
         <div v-else class="export-progress">
-          <el-progress :percentage="exportProgress" :stroke-width="10" style="margin-bottom: 16px;" />
-          <div style="text-align: center; color: #606266; font-size: 14px;">
+          <el-progress :percentage="exportProgress" :stroke-width="10" style="margin-bottom: 16px" />
+          <div style="text-align: center; color: #606266; font-size: 14px">
             {{ exportStatusText }}
           </div>
         </div>
       </div>
       <template #footer>
-        <el-button @click="closeExportDialog" :disabled="exportLoading">取消</el-button>
+        <el-button :disabled="exportLoading" @click="closeExportDialog">取消</el-button>
         <el-button type="primary" :loading="exportLoading" :disabled="exportLoading" @click="startExport">
           {{ exportLoading ? '导出中...' : '开始导出' }}
         </el-button>
       </template>
     </el-dialog>
     <!-- 回收站 -->
-    <recycle v-if="recycleState" :recycle-state="recycleState" :shop-type="currentShopType"
-      :shop-type-str="getShopTypeStr(currentShopType)" @close-recycle="closeRecycle"
-      @shop-recovered="handleShopRecovered" />
+    <recycle
+      v-if="recycleState"
+      :recycle-state="recycleState"
+      :shop-type="currentShopType"
+      :shop-type-str="getShopTypeStr(currentShopType)"
+      @close-recycle="closeRecycle"
+      @shop-recovered="handleShopRecovered"
+    />
     <!-- 添加店铺相关 -->
-    <set-only-bind v-if="showShopMsgState" :add-shop-after-obj="showShopMsg" :add-shop-after-state="showShopMsgState"
-      :is-bind="isBind" @close-shop-after="closeShopAfter" />
+    <set-only-bind
+      v-if="showShopMsgState"
+      :add-shop-after-obj="showShopMsg"
+      :add-shop-after-state="showShopMsgState"
+      :is-bind="isBind"
+      @close-shop-after="closeShopAfter"
+    />
     <!-- 分组管理对话框 -->
-    <el-dialog v-model="groupManagementState" :before-close="closeGroupManagement" :destroy-on-close="true"
-      width="800px" class="group-management-dialog">
+    <el-dialog
+      v-model="groupManagementState"
+      :before-close="closeGroupManagement"
+      :destroy-on-close="true"
+      width="800px"
+      class="group-management-dialog"
+    >
       <template #header>
         <div class="group-management-header">
           <span>分组管理</span>
@@ -192,8 +295,13 @@
       </div>
     </el-dialog>
     <!-- 添加/编辑分组对话框 -->
-    <el-dialog v-model="addGroupState" :before-close="closeGroup" :destroy-on-close="true"
-      :title="groupForm.id ? '编辑分组' : '添加分组'" width="500px">
+    <el-dialog
+      v-model="addGroupState"
+      :before-close="closeGroup"
+      :destroy-on-close="true"
+      :title="groupForm.id ? '编辑分组' : '添加分组'"
+      width="500px"
+    >
       <div style="padding-bottom: 40px">
         <el-form ref="groupFormRef" label-width="100" :model="groupForm" :rules="groupRules">
           <el-form-item v-if="groupForm.parentName" label="上级分组">
@@ -211,18 +319,37 @@
       </div>
     </el-dialog>
     <!-- 批量续费对话框（复用即将到期的功能选择） -->
-    <BatchRenewDialog v-model="batchRenewDialogVisible" :shop-list="selectedShopsForRenew" :shop-type="currentShopType"
-      :function-code="expiringFunctionCode" :function-name="expiringFunctionName" @renew-success="handleRenewSuccess" />
+    <BatchRenewDialog
+      v-model="batchRenewDialogVisible"
+      :shop-list="selectedShopsForRenew"
+      :shop-type="currentShopType"
+      :function-code="expiringFunctionCode"
+      :function-name="expiringFunctionName"
+      @renew-success="handleRenewSuccess"
+    />
     <!-- 执行功能对话框（店铺从批量续费模式下的已选店铺传入） -->
-    <ExecuteFuncDialog v-model="executeFuncDialogVisible" :shop-type="currentShopType"
-      :function-code="expiringFunctionCode" :function-name="expiringFunctionName" :shop-list="selectedShopsForExecute"
-      @success="() => { }" />
+    <ExecuteFuncDialog
+      v-model="executeFuncDialogVisible"
+      :shop-type="currentShopType"
+      :function-code="expiringFunctionCode"
+      :function-name="expiringFunctionName"
+      :shop-list="selectedShopsForExecute"
+      @success="() => {}"
+    />
     <!-- 任务执行中心对话框 -->
-    <FuncRunTaskCenterDialog v-model="funcRunTaskCenterVisible" :shop-type="currentShopType"
-      :function-options="functionOptions" />
+    <FuncRunTaskCenterDialog
+      v-model="funcRunTaskCenterVisible"
+      :shop-type="currentShopType"
+      :function-options="functionOptions"
+    />
     <!-- 即将到期店铺对话框（参考基础版实现） -->
-    <el-dialog v-model="expiringDialogVisible" :title="`${expiringFunctionName}即将到期店铺`" width="1000px"
-      :before-close="closeExpiringDialog" destroy-on-close>
+    <el-dialog
+      v-model="expiringDialogVisible"
+      :title="`${expiringFunctionName}即将到期店铺`"
+      width="1000px"
+      :before-close="closeExpiringDialog"
+      destroy-on-close
+    >
       <div class="expiring-shop-dialog">
         <div class="dialog-header">
           <span>共 {{ expiringShopTotal }} 家店铺即将到期（7天内）</span>
@@ -230,8 +357,13 @@
             批量续费 ({{ selectedExpiringShops.length }})
           </el-button>
         </div>
-        <el-table :data="expiringShopList" v-loading="expiringLoading" @selection-change="handleExpiringSelectionChange"
-          border max-height="500px">
+        <el-table
+          v-loading="expiringLoading"
+          :data="expiringShopList"
+          border
+          max-height="500px"
+          @selection-change="handleExpiringSelectionChange"
+        >
           <el-table-column type="selection" width="55" />
           <el-table-column label="店铺名称" prop="name" min-width="200" show-overflow-tooltip>
             <template #default="{ row }">
@@ -256,19 +388,29 @@
             </template>
           </el-table-column>
         </el-table>
-        <vab-pagination :current-page="expiringShopPage" :page-size="expiringShopPageSize" :total="expiringShopTotal"
-          @current-change="handleExpiringPageChange" @size-change="handleExpiringPageSizeChange"
-          style="margin-top: 16px;" />
+        <vab-pagination
+          :current-page="expiringShopPage"
+          :page-size="expiringShopPageSize"
+          :total="expiringShopTotal"
+          style="margin-top: 16px"
+          @current-change="handleExpiringPageChange"
+          @size-change="handleExpiringPageSizeChange"
+        />
       </div>
     </el-dialog>
     <!-- 授权异常店铺对话框（参考基础版实现） -->
-    <el-dialog v-model="authErrorDialogVisible" title="授权异常店铺" width="900px" :before-close="closeAuthErrorDialog"
-      destroy-on-close>
+    <el-dialog
+      v-model="authErrorDialogVisible"
+      title="授权异常店铺"
+      width="900px"
+      :before-close="closeAuthErrorDialog"
+      destroy-on-close
+    >
       <div class="auth-error-shop-dialog">
         <div class="dialog-header">
           <span>共 {{ authErrorShopTotal }} 家店铺授权异常</span>
         </div>
-        <el-table :data="authErrorShopList" v-loading="authErrorLoading" border max-height="500px">
+        <el-table v-loading="authErrorLoading" :data="authErrorShopList" border max-height="500px">
           <el-table-column label="店铺名称" prop="name" min-width="200" show-overflow-tooltip>
             <template #default="{ row }">
               <span :class="{ 'blur-text': demoMode }">{{ row.name }}</span>
@@ -282,26 +424,42 @@
           <el-table-column label="上次授权时间" prop="ck_uptime" width="180" />
           <el-table-column label="操作" width="120" align="center">
             <template #default="{ row }">
-              <el-button type="danger" size="small" @click="fixAuth(row)"
-                :loading="fixingAuthIds.includes(row.id)">修复</el-button>
+              <el-button type="danger" size="small" :loading="fixingAuthIds.includes(row.id)" @click="fixAuth(row)"
+                >修复</el-button
+              >
             </template>
           </el-table-column>
         </el-table>
-        <vab-pagination :current-page="authErrorShopPage" :page-size="authErrorShopPageSize" :total="authErrorShopTotal"
-          @current-change="handleAuthErrorPageChange" @size-change="handleAuthErrorPageSizeChange"
-          style="margin-top: 16px;" />
+        <vab-pagination
+          :current-page="authErrorShopPage"
+          :page-size="authErrorShopPageSize"
+          :total="authErrorShopTotal"
+          style="margin-top: 16px"
+          @current-change="handleAuthErrorPageChange"
+          @size-change="handleAuthErrorPageSizeChange"
+        />
       </div>
     </el-dialog>
     <!-- 查看分组店铺对话框 -->
-    <el-dialog v-model="viewGroupShopsDialogVisible" :title="`查看分组：${currentViewGroup?.name || ''}`" width="900px"
-      :before-close="closeViewGroupShopsDialog" destroy-on-close>
+    <el-dialog
+      v-model="viewGroupShopsDialogVisible"
+      :title="`查看分组：${currentViewGroup?.name || ''}`"
+      width="900px"
+      :before-close="closeViewGroupShopsDialog"
+      destroy-on-close
+    >
       <div class="view-group-shops-dialog">
         <div class="dialog-header-info">
           <span>共 {{ groupShopList.length }} 家店铺</span>
         </div>
         <div class="table-wrapper">
-          <el-table :data="groupShopList" v-loading="groupShopLoading" border height="400"
-            @selection-change="handleGroupShopSelectionChange">
+          <el-table
+            v-loading="groupShopLoading"
+            :data="groupShopList"
+            border
+            height="400"
+            @selection-change="handleGroupShopSelectionChange"
+          >
             <el-table-column type="selection" width="55" />
             <el-table-column label="店铺名称" prop="name" min-width="200" show-overflow-tooltip />
             <el-table-column label="门店ID" prop="office_id" width="150" />
@@ -318,22 +476,35 @@
             </el-table-column>
           </el-table>
         </div>
-        <div class="dialog-footer-actions" v-if="selectedGroupShops.length > 0">
-          <el-button type="primary" @click="batchChangeShopGroup">批量修改分组 ({{ selectedGroupShops.length }})</el-button>
-          <el-button type="danger" @click="batchRemoveShopFromGroup">批量移除 ({{ selectedGroupShops.length }})</el-button>
+        <div v-if="selectedGroupShops.length > 0" class="dialog-footer-actions">
+          <el-button type="primary" @click="batchChangeShopGroup"
+            >批量修改分组 ({{ selectedGroupShops.length }})</el-button
+          >
+          <el-button type="danger" @click="batchRemoveShopFromGroup"
+            >批量移除 ({{ selectedGroupShops.length }})</el-button
+          >
         </div>
       </div>
     </el-dialog>
     <!-- 修改店铺分组对话框 -->
-    <el-dialog v-model="changeShopGroupDialogVisible" title="修改分组" width="500px"
-      :before-close="closeChangeShopGroupDialog" destroy-on-close>
+    <el-dialog
+      v-model="changeShopGroupDialogVisible"
+      title="修改分组"
+      width="500px"
+      :before-close="closeChangeShopGroupDialog"
+      destroy-on-close
+    >
       <div class="change-shop-group-dialog">
         <el-form label-width="100px">
           <el-form-item label="选择分组">
             <el-select v-model="targetGroupId" placeholder="请选择分组" style="width: 100%" clearable>
               <el-option label="未分组" :value="0" />
-              <el-option v-for="group in allGroupOptions" :key="group.value" :label="group.label"
-                :value="group.value" />
+              <el-option
+                v-for="group in allGroupOptions"
+                :key="group.value"
+                :label="group.label"
+                :value="group.value"
+              />
             </el-select>
           </el-form-item>
           <el-form-item>
@@ -348,15 +519,26 @@
   </div>
 </template>
 <script setup lang="ts">
-import Screen from "/@/views/shop/componentsV2/Screen.vue";
-import { getShop, getShopFdmv, bindShop, addShop, getGroup, getFuncCount } from "/@/api/shop.ts";
+import Screen from '/@/views/shop/componentsV2/Screen.vue'
+import { getShop, getShopFdmv, bindShop, addShop, getGroup, getFuncCount } from '/@/api/shop.ts'
 import { addGroup, updateGroup, delGroup } from '/@/api/group.ts'
 import { getBindShopList, connectShopUserGroup, connectShopUserRemoveGroup } from '/@/api/group.ts'
-import ShopTable from "/@/views/shop/componentsV2/ShopTable.vue";
-import { useRoute, useRouter } from 'vue-router';
-import { watch, nextTick, computed, ref, reactive, onMounted, onActivated, onBeforeMount, onBeforeUnmount } from 'vue';
+import ShopTable from '/@/views/shop/componentsV2/ShopTable.vue'
+import { useRoute, useRouter } from 'vue-router'
+import { watch, nextTick, computed, ref, reactive, onMounted, onActivated, onBeforeMount, onBeforeUnmount } from 'vue'
 import { ShopType } from '/@/TsModel/Alien/Entity/Enums/ShopType'
-import { Key, Delete, Plus, Tickets, Check, Folder, Download, Monitor, InfoFilled, VideoPlay } from '@element-plus/icons-vue'
+import {
+  Key,
+  Delete,
+  Plus,
+  Tickets,
+  Check,
+  Folder,
+  Download,
+  Monitor,
+  InfoFilled,
+  VideoPlay
+} from '@element-plus/icons-vue'
 import { ElMessageBox } from 'element-plus'
 import { gp } from '/@vab/plugins/vab'
 import PlatformIcon from '/@/components/PlatformIcon/index.vue'
@@ -377,7 +559,7 @@ const route = useRoute()
 const router = useRouter()
 
 // 检查是否在Electron环境中
-const isElectron = !!((globalThis as any).electron)
+const isElectron = !!(globalThis as any).electron
 
 // 演示模式状态
 const settingsStore = useSettingsStore()
@@ -390,7 +572,7 @@ const shopTypeOptions = [
   { label: '美团医药', value: ShopType.美团医药 },
   { label: '饿了么餐饮', value: ShopType.饿了么 },
   { label: '饿百零售', value: ShopType.饿百零售 },
-  { label: '京东到家', value: ShopType.京东到家 },
+  { label: '京东到家', value: ShopType.京东到家 }
 ]
 
 /**
@@ -430,7 +612,11 @@ const versionType = ref('功能版')
 
 // 判断是否显示运营版按钮（美团餐饮、美团闪购、京东到家有运营版功能）
 const showOperationVersion = computed(() => {
-  return currentShopType.value === ShopType.美团 || currentShopType.value === ShopType.美团闪购 || currentShopType.value === ShopType.京东到家
+  return (
+    currentShopType.value === ShopType.美团 ||
+    currentShopType.value === ShopType.美团闪购 ||
+    currentShopType.value === ShopType.京东到家
+  )
 })
 
 // 切换到运营版
@@ -438,7 +624,7 @@ const switchToOperation = () => {
   // 进入运营版前，同步当前店铺类型给运营版页面
   try {
     sessionStorage.setItem('mtFeatureV2Operation_currentShopType', currentShopType.value.toString())
-  } catch { }
+  } catch {}
   router.push('/shop-v2/operation')
 }
 
@@ -454,7 +640,7 @@ const getShopTypeStr = (shopType: ShopType): string => {
     7: 'dy-retail-feature',
     8: 'elm-feature', // 饿了么官方使用相同的 typeStr
     1000: 'mt-feature', // 美团团购使用美团的 typeStr
-    1001: 'jd-home-feature', // 京东团购使用京东到家的 typeStr
+    1001: 'jd-home-feature' // 京东团购使用京东到家的 typeStr
   }
   return typeMap[shopType] || 'mt-feature'
 }
@@ -567,7 +753,7 @@ const restoreShopTypeState = (shopType: ShopType, skipFilterRestore: boolean = f
 
 // 功能版
 defineOptions({
-  name: 'MtFeatureV2Functional',
+  name: 'MtFeatureV2Functional'
 })
 const queryParams = reactive<{
   page: number
@@ -607,27 +793,28 @@ const queryParams = reactive<{
 
 /** 将 func_info / func_enable 展平到 item：item[code]、item[code+'time']，支持后端动态功能 */
 function updateFuncInfo(item: any, funcInfo: any): void {
-  (funcInfo || []).forEach((func: any) => {
-    if (!func?.code) return;
-    item[func.code] = func?.enable ?? false;
-    item[`${func.code}time`] = setTime(func?.end_time);
-  });
+  ;(funcInfo || []).forEach((func: any) => {
+    if (!func?.code) return
+    item[func.code] = func?.enable ?? false
+    item[`${func.code}time`] = setTime(func?.end_time)
+  })
 }
 
 const setTime = (date?: string | null): string => {
   if (date) {
-    const dateObj = new Date(date);
-    if (!isNaN(dateObj.getTime())) { // 检查是否是一个有效的日期
-      let y = dateObj.getFullYear();
-      let m: string | number = dateObj.getMonth() + 1;
-      m = m < 10 ? `0${m}` : m.toString();
-      let d: string | number = dateObj.getDate();
-      d = d < 10 ? `0${d}` : d.toString();
-      return `${y}-${m}-${d}`;
+    const dateObj = new Date(date)
+    if (!isNaN(dateObj.getTime())) {
+      // 检查是否是一个有效的日期
+      let y = dateObj.getFullYear()
+      let m: string | number = dateObj.getMonth() + 1
+      m = m < 10 ? `0${m}` : m.toString()
+      let d: string | number = dateObj.getDate()
+      d = d < 10 ? `0${d}` : d.toString()
+      return `${y}-${m}-${d}`
     }
   }
-  return '已到期';
-};
+  return '已到期'
+}
 
 const getShopList = async (data: any, keepOldData = false) => {
   // 如果正在加载中，直接返回，避免重复加载
@@ -684,7 +871,7 @@ const getShopList = async (data: any, keepOldData = false) => {
             item[code] = false
             item[`${code}time`] = '已到期'
           }
-          item.CPDTtime = ""
+          item.CPDTtime = ''
         }
 
         if (item.work_time?.WorkTimeList) {
@@ -796,7 +983,7 @@ const bindShopCode = (shopType?: ShopType) => {
         })
       }
     })
-    .catch(() => { })
+    .catch(() => {})
 }
 
 /**
@@ -897,7 +1084,7 @@ const openApp = async (name: any, shopType?: ShopType) => {
     8: 'open-elm-wm',
     1000: 'open-mt-groupbuy',
     1001: 'open-jd-home',
-    1002: 'open-dy-tuangou-capture',
+    1002: 'open-dy-tuangou-capture'
   }
 
   const params = {
@@ -905,37 +1092,37 @@ const openApp = async (name: any, shopType?: ShopType) => {
     shop_type: targetShopType
   }
 
-    ; (globalThis as any).electron.openBrowser(invokeMap[targetShopType as number], params, async (res: any) => {
-      let data = {
-        shop_type: params.shop_type,
-        shop_user: '',
-        shop_pwd: '',
-        cookies: res.cookies
-      }
+  ;(globalThis as any).electron.openBrowser(invokeMap[targetShopType as number], params, async (res: any) => {
+    let data = {
+      shop_type: params.shop_type,
+      shop_user: '',
+      shop_pwd: '',
+      cookies: res.cookies
+    }
 
-      addShop(data).then((res1: any) => {
-        if (res1.code === 200) {
-          if (params.name) {
-            gp.$baseMessage('店铺修复成功!', 'success', 'hey')
-          } else {
-            gp.$baseMessage('店铺添加成功!', 'success', 'hey')
-            showShopMsg.value = {
-              name: res1.data.name,
-              office_id: res1.data.office_id,
-              shop_type: params.shop_type,
-              shop_user: '',
-              shop_pwd: '',
-              cookies: res.cookies,
-              reset_power: false
-            }
-            showShopMsgState.value = true
-            isBind.value = false
+    addShop(data).then((res1: any) => {
+      if (res1.code === 200) {
+        if (params.name) {
+          gp.$baseMessage('店铺修复成功!', 'success', 'hey')
+        } else {
+          gp.$baseMessage('店铺添加成功!', 'success', 'hey')
+          showShopMsg.value = {
+            name: res1.data.name,
+            office_id: res1.data.office_id,
+            shop_type: params.shop_type,
+            shop_user: '',
+            shop_pwd: '',
+            cookies: res.cookies,
+            reset_power: false
           }
-          // 刷新店铺列表
-          getShopList(queryParams)
+          showShopMsgState.value = true
+          isBind.value = false
         }
-      })
+        // 刷新店铺列表
+        getShopList(queryParams)
+      }
     })
+  })
 }
 
 /**
@@ -1020,7 +1207,7 @@ const startExport = async () => {
         pageSize,
         filter: { ...queryParams.filter },
         order_by: queryParams.order_by,
-        order_direction: queryParams.order_direction,
+        order_direction: queryParams.order_direction
       }
 
       const res: any = await getShopFdmv(data)
@@ -1088,7 +1275,7 @@ const generateExcel = async (shops: any[]) => {
     { header: '备注', key: 'notes', width: 20 },
     { header: '分组', key: 'group_name', width: 16 },
     { header: '营业时间', key: 'yetime', width: 18 },
-    { header: '店铺类型', key: 'shop_type_label', width: 14 },
+    { header: '店铺类型', key: 'shop_type_label', width: 14 }
   ]
 
   // 动态添加功能列（从第一条数据的 func_info 中获取，用 functionOptions 映射中文名称）
@@ -1143,7 +1330,7 @@ const generateExcel = async (shops: any[]) => {
       yetime: shop.work_time?.WorkTimeList?.[0]
         ? `${shop.work_time.WorkTimeList[0].Start?.slice(0, 5)}-${shop.work_time.WorkTimeList[0].End?.slice(0, 5)}`
         : '',
-      shop_type_label: shopTypeLabel,
+      shop_type_label: shopTypeLabel
     }
 
     funcCodes.forEach(code => {
@@ -1236,9 +1423,9 @@ const handleFilterChange = (filterData: any) => {
   Object.keys(filterData).forEach((key: string) => {
     if (filterData[key] === undefined || filterData[key] === null) {
       // 如果值为 undefined 或 null，则清除该筛选条件
-      (queryParams.filter as any)[key] = undefined
+      ;(queryParams.filter as any)[key] = undefined
     } else {
-      (queryParams.filter as any)[key] = filterData[key]
+      ;(queryParams.filter as any)[key] = filterData[key]
     }
   })
   // 筛选时重置页码为第一页
@@ -1408,13 +1595,10 @@ const getExpiringShopCount = async () => {
       }
 
       const res: any = await getShopFdmv(data)
-      expiringShopCount.value = res?.code === 200 ? (res.data?.total || 0) : 0
+      expiringShopCount.value = res?.code === 200 ? res.data?.total || 0 : 0
     } else {
       // 其他功能使用统计接口 GetFuncCountV2
-      const result = await apiManager.shopmgApi.GetFuncCountV2(
-        currentShopType.value,
-        expiringFunctionCode.value
-      )
+      const result = await apiManager.shopmgApi.GetFuncCountV2(currentShopType.value, expiringFunctionCode.value)
 
       if (result && result[expiringFunctionCode.value]) {
         // almost_end 是即将到期的店铺数量
@@ -1438,9 +1622,9 @@ const checkExecuteFuncSupported = async () => {
   try {
     const results = await apiManager.funcRunTaskApi.GetFuncConfSchemas({
       ShopType: currentShopType.value,
-      FuncCodes: [expiringFunctionCode.value],
+      FuncCodes: [expiringFunctionCode.value]
     })
-    showExecuteFuncButton.value = (results ?? []).some((r) => r.AutoRenewRun)
+    showExecuteFuncButton.value = (results ?? []).some(r => r.AutoRenewRun)
   } catch {
     showExecuteFuncButton.value = false
   }
@@ -1513,9 +1697,11 @@ const getAllExpiringShops = async () => {
   }
 
   // 如果功能代码没有变化且已有数据，直接使用缓存的数据
-  if (lastLoadedFunctionCode.value === expiringFunctionCode.value &&
+  if (
+    lastLoadedFunctionCode.value === expiringFunctionCode.value &&
     expiringShopListAll.value.length > 0 &&
-    expiringShopTotal.value > 0) {
+    expiringShopTotal.value > 0
+  ) {
     // 只需更新当前页显示的数据
     updateExpiringShopListPage()
     return
@@ -1533,7 +1719,7 @@ const getAllExpiringShops = async () => {
       filter: {
         shopType: currentShopType.value,
         func_code: expiringFunctionCode.value,
-        func_state: FUNC_STATE_EXPIRING,
+        func_state: FUNC_STATE_EXPIRING
         // 不设置 state，这样会包含授权正常和异常的
       }
     }
@@ -1657,7 +1843,10 @@ const updateExpiringShopListPage = (): void => {
  * @param page 页码
  * @param pageSize 每页数量
  */
-const getExpiringShops = async (page: number = expiringShopPage.value, pageSize: number = expiringShopPageSize.value): Promise<void> => {
+const getExpiringShops = async (
+  page: number = expiringShopPage.value,
+  pageSize: number = expiringShopPageSize.value
+): Promise<void> => {
   // 如果还没有加载所有数据，先加载
   if (expiringShopListAll.value.length === 0 && expiringShopTotal.value === 0) {
     await getAllExpiringShops()
@@ -1677,12 +1866,12 @@ const getAuthErrorShopCount = async () => {
       pageSize: COUNT_PAGE_SIZE,
       filter: {
         shopType: currentShopType.value,
-        state: AUTH_ERROR_STATE,
+        state: AUTH_ERROR_STATE
       }
     }
 
     const res: any = await getShopFdmv(data)
-    authErrorShopCount.value = res?.code === 200 ? (res.data?.total || 0) : 0
+    authErrorShopCount.value = res?.code === 200 ? res.data?.total || 0 : 0
   } catch (error) {
     console.error('获取授权异常店铺数量失败:', error)
     authErrorShopCount.value = 0
@@ -1690,7 +1879,10 @@ const getAuthErrorShopCount = async () => {
 }
 
 // 获取授权异常的店铺列表（分页加载）
-const getAuthErrorShops = async (page: number = authErrorShopPage.value, pageSize: number = authErrorShopPageSize.value) => {
+const getAuthErrorShops = async (
+  page: number = authErrorShopPage.value,
+  pageSize: number = authErrorShopPageSize.value
+) => {
   try {
     authErrorLoading.value = true
     const data = {
@@ -1698,7 +1890,7 @@ const getAuthErrorShops = async (page: number = authErrorShopPage.value, pageSiz
       pageSize,
       filter: {
         shopType: currentShopType.value,
-        state: AUTH_ERROR_STATE,
+        state: AUTH_ERROR_STATE
       }
     }
 
@@ -1897,7 +2089,7 @@ const fixAuth = (row: any) => {
     8: 'open-elm-wm',
     1000: 'open-mt-groupbuy',
     1001: 'open-jd-home',
-    1002: 'open-dy-tuangou-capture',
+    1002: 'open-dy-tuangou-capture'
   }
 
   const params = {
@@ -1915,7 +2107,7 @@ const fixAuth = (row: any) => {
     return
   }
 
-  ; (globalThis as any).electron.openBrowser(invokeMap[row.shop_type as number], params, async (res: any) => {
+  ;(globalThis as any).electron.openBrowser(invokeMap[row.shop_type as number], params, async (res: any) => {
     try {
       const data = {
         shop_type: params.shop_type,
@@ -1970,7 +2162,7 @@ const handleRenewSuccess = () => {
 }
 
 // 监听功能代码变化，同步更新功能名称
-watch(selectedFunctionCode, (newCode) => {
+watch(selectedFunctionCode, newCode => {
   const selectedOption = functionOptions.value.find(item => item.code === newCode)
   if (selectedOption) {
     selectedFunctionName.value = selectedOption.name
@@ -2005,7 +2197,7 @@ const groupForm = reactive({
   parentName: ''
 })
 const groupRules = {
-  name: [{ required: true, message: '请输入分组名称', trigger: 'blur' }],
+  name: [{ required: true, message: '请输入分组名称', trigger: 'blur' }]
 }
 const currentGroupDetail = ref<any>({})
 
@@ -2037,7 +2229,7 @@ const confirmGroup = () => {
               id: groupForm.id,
               name: groupForm.name,
               notes: '',
-              type: groupForm.type,
+              type: groupForm.type
             })
           } else {
             // 创建分组
@@ -2045,7 +2237,7 @@ const confirmGroup = () => {
               Parent: currentGroupDetail.value ? currentGroupDetail.value.Member?.id : null,
               name: groupForm.name,
               notes: '',
-              type: groupForm.type,
+              type: groupForm.type
             })
           }
           if (res && res.code === 200) {
@@ -2131,7 +2323,7 @@ const loadGroupManagementList = async () => {
       const flatList = flattenGroups(res.data)
 
       // 获取每个分组的门店数量
-      const promises = flatList.map(async (item) => {
+      const promises = flatList.map(async item => {
         try {
           const shopRes: any = await getBindShopList({
             groupid: item.id
@@ -2180,26 +2372,28 @@ const deleteGroupItem = (row: any) => {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning'
-  }).then(async () => {
-    try {
-      const res: any = await delGroup(row.id)
-      if (res && res.code === 200) {
-        gp.$baseMessage('删除成功！', 'success', 'hey')
-        await loadGroupManagementList()
-        // 刷新分组列表
-        if (shopTableRef.value && shopTableRef.value.getGroupList) {
-          shopTableRef.value.getGroupList()
+  })
+    .then(async () => {
+      try {
+        const res: any = await delGroup(row.id)
+        if (res && res.code === 200) {
+          gp.$baseMessage('删除成功！', 'success', 'hey')
+          await loadGroupManagementList()
+          // 刷新分组列表
+          if (shopTableRef.value && shopTableRef.value.getGroupList) {
+            shopTableRef.value.getGroupList()
+          }
+          // 刷新店铺列表
+          getShopList(queryParams)
+        } else {
+          gp.$baseMessage(res?.msg || '删除失败', 'error', 'hey')
         }
-        // 刷新店铺列表
-        getShopList(queryParams)
-      } else {
-        gp.$baseMessage(res?.msg || '删除失败', 'error', 'hey')
+      } catch (error) {
+        console.error('删除分组失败:', error)
+        gp.$baseMessage('删除失败', 'error', 'hey')
       }
-    } catch (error) {
-      console.error('删除分组失败:', error)
-      gp.$baseMessage('删除失败', 'error', 'hey')
-    }
-  }).catch(() => { })
+    })
+    .catch(() => {})
 }
 
 // 查看分组店铺相关
@@ -2301,7 +2495,7 @@ const loadAllGroupOptions = async () => {
     if (res.code === 200) {
       const flattenGroups = (groups: any[], prefix = ''): any[] => {
         const result: any[] = []
-        groups.forEach((group) => {
+        groups.forEach(group => {
           const groupId = group.Member?.id || group.id
           const groupName = group.Member?.name || group.name
           const fullName = prefix ? `${prefix} / ${groupName}` : groupName
@@ -2325,7 +2519,7 @@ const loadAllGroupOptions = async () => {
 // 确认修改店铺分组（支持单个和批量）
 const confirmChangeShopGroup = async () => {
   const isBatch = !currentChangeShop.value && selectedGroupShops.value.length > 0
-  const shops = isBatch ? selectedGroupShops.value : (currentChangeShop.value ? [currentChangeShop.value] : [])
+  const shops = isBatch ? selectedGroupShops.value : currentChangeShop.value ? [currentChangeShop.value] : []
 
   if (shops.length === 0) {
     gp.$baseMessage('请选择要修改的店铺', 'warning', 'hey')
@@ -2401,39 +2595,41 @@ const removeShopFromGroup = async (row: any) => {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning'
-  }).then(async () => {
-    try {
-      if (!currentViewGroup.value) return
+  })
+    .then(async () => {
+      try {
+        if (!currentViewGroup.value) return
 
-      const shopIds = [row.id]
-      const shopOfficeIds = [row.office_id]
+        const shopIds = [row.id]
+        const shopOfficeIds = [row.office_id]
 
-      const removeRes: any = await connectShopUserRemoveGroup({
-        groupId: currentViewGroup.value.id,
-        shopIds,
-        shopOfficeIds
-      })
+        const removeRes: any = await connectShopUserRemoveGroup({
+          groupId: currentViewGroup.value.id,
+          shopIds,
+          shopOfficeIds
+        })
 
-      if (removeRes.code === 200) {
-        gp.$baseMessage('移除成功', 'success', 'hey')
-        // 刷新分组店铺列表
-        await loadGroupShopList(currentViewGroup.value.id)
-        // 刷新分组管理列表
-        await loadGroupManagementList()
-        // 刷新主店铺列表
-        getShopList(queryParams, false)
-        // 刷新分组选项
-        if (shopTableRef.value && shopTableRef.value.getGroupList) {
-          shopTableRef.value.getGroupList()
+        if (removeRes.code === 200) {
+          gp.$baseMessage('移除成功', 'success', 'hey')
+          // 刷新分组店铺列表
+          await loadGroupShopList(currentViewGroup.value.id)
+          // 刷新分组管理列表
+          await loadGroupManagementList()
+          // 刷新主店铺列表
+          getShopList(queryParams, false)
+          // 刷新分组选项
+          if (shopTableRef.value && shopTableRef.value.getGroupList) {
+            shopTableRef.value.getGroupList()
+          }
+        } else {
+          gp.$baseMessage(removeRes?.msg || '移除失败', 'error', 'hey')
         }
-      } else {
-        gp.$baseMessage(removeRes?.msg || '移除失败', 'error', 'hey')
+      } catch (error) {
+        console.error('移除店铺失败:', error)
+        gp.$baseMessage('移除失败', 'error', 'hey')
       }
-    } catch (error) {
-      console.error('移除店铺失败:', error)
-      gp.$baseMessage('移除失败', 'error', 'hey')
-    }
-  }).catch(() => { })
+    })
+    .catch(() => {})
 }
 
 // 批量修改店铺分组
@@ -2459,40 +2655,42 @@ const batchRemoveShopFromGroup = async () => {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning'
-  }).then(async () => {
-    try {
-      if (!currentViewGroup.value) return
+  })
+    .then(async () => {
+      try {
+        if (!currentViewGroup.value) return
 
-      const shopIds = selectedGroupShops.value.map((shop: any) => shop.id)
-      const shopOfficeIds = selectedGroupShops.value.map((shop: any) => shop.office_id)
+        const shopIds = selectedGroupShops.value.map((shop: any) => shop.id)
+        const shopOfficeIds = selectedGroupShops.value.map((shop: any) => shop.office_id)
 
-      const removeRes: any = await connectShopUserRemoveGroup({
-        groupId: currentViewGroup.value.id,
-        shopIds,
-        shopOfficeIds
-      })
+        const removeRes: any = await connectShopUserRemoveGroup({
+          groupId: currentViewGroup.value.id,
+          shopIds,
+          shopOfficeIds
+        })
 
-      if (removeRes.code === 200) {
-        gp.$baseMessage('批量移除成功', 'success', 'hey')
-        selectedGroupShops.value = []
-        // 刷新分组店铺列表
-        await loadGroupShopList(currentViewGroup.value.id)
-        // 刷新分组管理列表
-        await loadGroupManagementList()
-        // 刷新主店铺列表
-        getShopList(queryParams, false)
-        // 刷新分组选项
-        if (shopTableRef.value && shopTableRef.value.getGroupList) {
-          shopTableRef.value.getGroupList()
+        if (removeRes.code === 200) {
+          gp.$baseMessage('批量移除成功', 'success', 'hey')
+          selectedGroupShops.value = []
+          // 刷新分组店铺列表
+          await loadGroupShopList(currentViewGroup.value.id)
+          // 刷新分组管理列表
+          await loadGroupManagementList()
+          // 刷新主店铺列表
+          getShopList(queryParams, false)
+          // 刷新分组选项
+          if (shopTableRef.value && shopTableRef.value.getGroupList) {
+            shopTableRef.value.getGroupList()
+          }
+        } else {
+          gp.$baseMessage(removeRes?.msg || '批量移除失败', 'error', 'hey')
         }
-      } else {
-        gp.$baseMessage(removeRes?.msg || '批量移除失败', 'error', 'hey')
+      } catch (error) {
+        console.error('批量移除店铺失败:', error)
+        gp.$baseMessage('批量移除失败', 'error', 'hey')
       }
-    } catch (error) {
-      console.error('批量移除店铺失败:', error)
-      gp.$baseMessage('批量移除失败', 'error', 'hey')
-    }
-  }).catch(() => { })
+    })
+    .catch(() => {})
 }
 
 // 标记是否已经初始化过数据（按店铺类型）
@@ -3184,6 +3382,84 @@ onActivated(() => {
   .expired-text {
     color: #f56c6c;
     font-weight: 500;
+  }
+}
+
+@media (max-width: 768px) {
+  .shop-type-nav {
+    flex-direction: column;
+    align-items: stretch;
+    margin-top: 0;
+    row-gap: 12px;
+
+    .shop-type-list {
+      width: 100%;
+    }
+
+    .shop-type-search {
+      width: 100%;
+
+      :deep(.el-input) {
+        width: 100% !important;
+      }
+    }
+  }
+
+  .version-actions-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 14px;
+    row-gap: 12px;
+    margin-bottom: 10px;
+
+    .version-buttons {
+      width: 100%;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+
+      .version-button {
+        width: 100%;
+        margin-left: 0 !important;
+        border-radius: 4px !important;
+        border-right: 1px solid var(--el-border-color) !important;
+      }
+
+      .action-buttons {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+
+        :deep(.el-button) {
+          width: 100%;
+          margin-left: 0 !important;
+        }
+      }
+    }
+
+    .recycle-btn {
+      margin-left: 0;
+      width: 100%;
+    }
+
+    > :deep(.el-button) {
+      width: 100%;
+      margin-left: 0 !important;
+      margin-right: 0 !important;
+    }
+
+    .operate-status-card {
+      width: 100%;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+
+      .status-entry {
+        flex-wrap: wrap;
+        row-gap: 8px;
+      }
+    }
   }
 }
 

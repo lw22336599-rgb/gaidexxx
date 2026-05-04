@@ -4,7 +4,13 @@
       <vab-city v-model="cityCode" />
     </vab-card>
     <vab-card title="行政区划（默认）">
-      <el-cascader v-model="area" clearable filterable :options="areaOptions" :props="{ label: 'name', value: 'code' }" />
+      <el-cascader
+        v-model="area"
+        clearable
+        filterable
+        :options="areaOptions"
+        :props="{ label: 'name', value: 'code' }"
+      />
     </vab-card>
   </div>
 </template>
@@ -13,7 +19,7 @@
 import { getList } from '/@/api/area'
 
 defineOptions({
-  name: 'City',
+  name: 'City'
 })
 
 const area = ref<any>([])
@@ -22,7 +28,7 @@ const cityCode = ref<string>('110000')
 
 const fetchData = async () => {
   const {
-    data: { list },
+    data: { list }
   } = await getList()
   areaOptions.value = list
 }

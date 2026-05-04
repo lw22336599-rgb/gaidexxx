@@ -4,7 +4,7 @@ export function getTree(params?: any) {
   return request({
     url: '/dictionaryManagement/getTree',
     method: 'get',
-    params,
+    params
   })
 }
 
@@ -12,7 +12,7 @@ export function getList(params?: any) {
   return request({
     url: '/dictionaryManagement/getList',
     method: 'get',
-    params,
+    params
   })
 }
 
@@ -20,7 +20,7 @@ export const doEdit = (data: any) => {
   return request({
     url: '/dictionaryManagement/doEdit',
     method: 'post',
-    data,
+    data
   })
 }
 
@@ -28,6 +28,6 @@ export const doDelete = (data: any) => {
   return request({
     url: '/dictionaryManagement/doDelete',
     method: 'post',
-    data,
+    data
   })
 }

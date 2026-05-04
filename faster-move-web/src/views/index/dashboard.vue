@@ -10,10 +10,22 @@
         <top-card background="white" icon="bard-line" percentage="14%" title="数据挖掘" />
       </el-col>
       <el-col :lg="7" :md="12" :sm="24" :xl="7" :xs="24">
-        <top-card background="white" :count-config="countConfig1" icon="compass-2-line" percentage="32%" title="内存占用" />
+        <top-card
+          background="white"
+          :count-config="countConfig1"
+          icon="compass-2-line"
+          percentage="32%"
+          title="内存占用"
+        />
       </el-col>
       <el-col :lg="7" :md="12" :sm="24" :xl="7" :xs="24">
-        <top-card background="white" :count-config="countConfig2" icon="u-disk-line" percentage="13%" title="硬盘占用" />
+        <top-card
+          background="white"
+          :count-config="countConfig2"
+          icon="u-disk-line"
+          percentage="13%"
+          title="硬盘占用"
+        />
       </el-col>
       <el-col :lg="7" :md="12" :sm="24" :xl="7" :xs="24">
         <branch />
@@ -35,7 +47,7 @@
 import { random } from 'lodash-es'
 
 defineOptions({
-  name: 'Dashboard',
+  name: 'Dashboard'
 })
 
 const countConfig1 = {
@@ -45,7 +57,7 @@ const countConfig1 = {
   prefix: '',
   suffix: ' KB',
   separator: ',',
-  duration: 8000,
+  duration: 8000
 }
 
 const countConfig2 = {
@@ -55,7 +67,7 @@ const countConfig2 = {
   prefix: '',
   suffix: ' GB',
   separator: ',',
-  duration: 8000,
+  duration: 8000
 }
 </script>
 

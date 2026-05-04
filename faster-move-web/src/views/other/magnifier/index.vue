@@ -14,11 +14,11 @@
             :url="landscape"
             :width="width"
             :zoomer-style="{
-              'background-color': taobao ? 'transparent' : 'rgba(0,0,0,0)',
+              'background-color': taobao ? 'transparent' : 'rgba(0,0,0,0)'
             }"
           >
             <template v-if="taobao" #zoomer>
-              <div class="image-zoom-wrap"></div>
+              <div class="image-zoom-wrap" />
             </template>
           </vab-magnifier>
         </el-col>
@@ -45,7 +45,7 @@
 import landscape from '/@/assets/common_images/landscape.jpg'
 
 defineOptions({
-  name: 'Magnifier',
+  name: 'Magnifier'
 })
 
 const scale = ref<any>(2)

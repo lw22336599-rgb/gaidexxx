@@ -24,8 +24,14 @@
     </vab-card>
     <vab-card style="margin-bottom: 0">
       <div>
-        <el-table ref="tableRef" v-loading="listLoading" :data="list" height="calc(100vh - 350px)" row-key="id"
-          style="width: 100%;">
+        <el-table
+          ref="tableRef"
+          v-loading="listLoading"
+          :data="list"
+          height="calc(100vh - 350px)"
+          row-key="id"
+          style="width: 100%"
+        >
           <el-table-column align="center" label="排序" prop="index" width="90">
             <template #default="scope">
               <span class="drag-handle" title="拖拽排序">
@@ -39,7 +45,7 @@
           <el-table-column label="应用描述" prop="notes" />
           <el-table-column align="center" label="图标" prop="logo">
             <template #default="scope">
-              <img v-if="scope.row.logo" :src="scope.row.logo" style="width: 40px; height: 40px;" />
+              <img v-if="scope.row.logo" :src="scope.row.logo" style="width: 40px; height: 40px" />
             </template>
           </el-table-column>
           <el-table-column align="center" label="教程地址" prop="course">
@@ -52,7 +58,7 @@
               <span v-if="scope.row.depend_codes && scope.row.depend_codes.length > 0">
                 {{ scope.row.depend_codes.join(', ') }}
               </span>
-              <span v-else style="color: #909399;">无</span>
+              <span v-else style="color: #909399">无</span>
             </template>
           </el-table-column>
           <el-table-column align="center" label="续费按钮" width="90">
@@ -63,28 +69,41 @@
           </el-table-column>
           <el-table-column align="center" label="续费显示名" prop="renew_name" width="120">
             <template #default="scope">
-              <span v-if="scope.row.renew_name" style="color: #409EFF;">{{ scope.row.renew_name }}</span>
-              <span v-else style="color: #909399;">使用名称</span>
+              <span v-if="scope.row.renew_name" style="color: #409eff">{{ scope.row.renew_name }}</span>
+              <span v-else style="color: #909399">使用名称</span>
             </template>
           </el-table-column>
-          <el-table-column align="center" label="本月售卖" prop="sold_month" :formatter="(row, column, cellValue) => formatBalance(cellValue)" />
-          <el-table-column align="center" label="累计售卖" prop="sold_total" :formatter="(row, column, cellValue) => formatBalance(cellValue)" />
+          <el-table-column
+            align="center"
+            label="本月售卖"
+            prop="sold_month"
+            :formatter="(row, column, cellValue) => formatBalance(cellValue)"
+          />
+          <el-table-column
+            align="center"
+            label="累计售卖"
+            prop="sold_total"
+            :formatter="(row, column, cellValue) => formatBalance(cellValue)"
+          />
           <el-table-column align="center" label="今日售卖" prop="sold_today" />
           <el-table-column align="center" fixed="right" label="操作">
             <template #default="scope">
-              <el-button style="color: #2cca87" type="text" @click="editApp(scope.row)">
-                编辑
-              </el-button>
-              <el-button style="color: #fe0000" type="text" @click="stopApp(scope.row)">{{ scope.row.avtag ? '停用' : '启用'
-                }}</el-button>
+              <el-button style="color: #2cca87" type="text" @click="editApp(scope.row)"> 编辑 </el-button>
+              <el-button style="color: #fe0000" type="text" @click="stopApp(scope.row)">{{
+                scope.row.avtag ? '停用' : '启用'
+              }}</el-button>
               <el-button style="color: #fe0000" type="text" @click="handleDelete(scope.row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
       </div>
     </vab-card>
-    <el-dialog v-model="dialogFormVisible" :before-close="closeAddForm" :title="userParams.id ? '编辑应用' : '创建应用'"
-      width="500px">
+    <el-dialog
+      v-model="dialogFormVisible"
+      :before-close="closeAddForm"
+      :title="userParams.id ? '编辑应用' : '创建应用'"
+      width="500px"
+    >
       <el-form ref="ruleForm" :model="userParams" :rules="userRule">
         <el-form-item label="应用名称" prop="name">
           <el-input v-model="userParams.name" autocomplete="off" size="small" />
@@ -96,36 +115,60 @@
           <el-input v-model="userParams.code" autocomplete="off" size="small" />
         </el-form-item>
         <el-form-item label="店铺类型" prop="shop_type">
-          <el-select v-model="userParams.shop_type" placeholder="请选择平台类型" size="small" style="width: 100%"
-            @change="handleShopTypeChange">
+          <el-select
+            v-model="userParams.shop_type"
+            placeholder="请选择平台类型"
+            size="small"
+            style="width: 100%"
+            @change="handleShopTypeChange"
+          >
             <el-option v-for="item in shopTypeOptions" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
         </el-form-item>
         <el-form-item label="排序" prop="index">
-          <el-input-number v-model="userParams.index" :min="0" :precision="0" placeholder="数字越小越靠前" size="small"
-            style="width: 100%" />
+          <el-input-number
+            v-model="userParams.index"
+            :min="0"
+            :precision="0"
+            placeholder="数字越小越靠前"
+            size="small"
+            style="width: 100%"
+          />
         </el-form-item>
         <el-form-item label="依赖功能">
-          <el-select v-model="userParams.depend_codes" multiple filterable placeholder="选择依赖的功能代码" size="small"
-            style="width: 100%">
-            <el-option v-for="item in availableFunctions" :key="item.code" :label="`${item.name} (${item.code})`"
-              :value="item.code" :disabled="item.code === userParams.code" />
+          <el-select
+            v-model="userParams.depend_codes"
+            multiple
+            filterable
+            placeholder="选择依赖的功能代码"
+            size="small"
+            style="width: 100%"
+          >
+            <el-option
+              v-for="item in availableFunctions"
+              :key="item.code"
+              :label="`${item.name} (${item.code})`"
+              :value="item.code"
+              :disabled="item.code === userParams.code"
+            />
           </el-select>
-          <div style="color: #909399; font-size: 12px; margin-top: 4px;">
+          <div style="color: #909399; font-size: 12px; margin-top: 4px">
             开启此功能时，会自动检查并开启所选的依赖功能
           </div>
         </el-form-item>
         <el-form-item label="显示续费按钮">
           <el-switch v-model="userParams.show_renew_btn" active-text="显示" inactive-text="隐藏" />
-          <div style="color: #909399; font-size: 12px; margin-top: 4px;">
-            关闭后该功能不会出现在续费选项列表中
-          </div>
+          <div style="color: #909399; font-size: 12px; margin-top: 4px">关闭后该功能不会出现在续费选项列表中</div>
         </el-form-item>
         <el-form-item label="续费显示名称">
-          <el-input v-model="userParams.renew_name" autocomplete="off" clearable placeholder="为空时使用应用名称" size="small" />
-          <div style="color: #909399; font-size: 12px; margin-top: 4px;">
-            续费时显示的名称，为空则使用应用名称
-          </div>
+          <el-input
+            v-model="userParams.renew_name"
+            autocomplete="off"
+            clearable
+            placeholder="为空时使用应用名称"
+            size="small"
+          />
+          <div style="color: #909399; font-size: 12px; margin-top: 4px">续费时显示的名称，为空则使用应用名称</div>
         </el-form-item>
       </el-form>
       <template #footer>
@@ -142,13 +185,13 @@ import { Plus, Rank } from '@element-plus/icons-vue'
 import Sortable from 'sortablejs'
 import { nextTick, onMounted, watch } from 'vue'
 import { gp } from '/@vab/plugins/vab.ts'
-import type { TableInstance } from 'element-plus';
+import type { TableInstance } from 'element-plus'
 import { ElMessageBox } from 'element-plus'
 import { addFunction, deleteFunction, editFunction, getFuncList, setAvtag } from '/@/api/apply.ts'
 import { ShopType } from '@/TsModel/Alien/Entity/Enums/ShopType'
 
 defineOptions({
-  name: 'Apply',
+  name: 'Apply'
 })
 
 /**
@@ -172,19 +215,23 @@ const shopTypeOptions: ShopTypeOption[] = [
   { label: '抖店即时零售', value: ShopType.抖店即时零售 },
   { label: '饿了么官方', value: ShopType.饿了么官方 },
   { label: '美团团购', value: ShopType.美团团购 },
-  { label: '京东团购', value: ShopType.京东团购 },
+  { label: '京东团购', value: ShopType.京东团购 }
 ]
 const activeName = ref('1')
 const btnLoading = ref(false)
 
 // 监听 activeName 变化，自动更新 shoptype 并加载数据
-watch(activeName, (newValue) => {
-  const shopType = parseInt(newValue)
-  if (!isNaN(shopType)) {
-    courseParams.shoptype = shopType
-    getCourseCoursesData()
-  }
-}, { immediate: false })
+watch(
+  activeName,
+  newValue => {
+    const shopType = parseInt(newValue)
+    if (!isNaN(shopType)) {
+      courseParams.shoptype = shopType
+      getCourseCoursesData()
+    }
+  },
+  { immediate: false }
+)
 const dialogFormVisible = ref(false)
 const listLoading = ref(false)
 const ruleForm = ref<TableInstance>()
@@ -192,7 +239,7 @@ const userRule = {
   name: [{ required: true, message: '请输入名称', trigger: 'blur' }],
   notes: [{ required: true, message: '请输入介绍', trigger: 'blur' }],
   code: [{ required: true, message: '请输入引用代码', trigger: 'blur' }],
-  shop_type: [{ required: true, message: '请选择店铺类型', trigger: 'blur' }],
+  shop_type: [{ required: true, message: '请选择店铺类型', trigger: 'blur' }]
 }
 let userParams = reactive({
   id: '',
@@ -203,7 +250,7 @@ let userParams = reactive({
   index: 0,
   depend_codes: [] as string[],
   show_renew_btn: true as boolean,
-  renew_name: '' as string,
+  renew_name: '' as string
 })
 
 /**
@@ -252,13 +299,15 @@ const addAdmin = () => {
       if (valid) {
         btnLoading.value = true
         if (userParams.id) {
-          editFunction(userParams as any).then(() => {
-            gp.$baseMessage('修改成功！', 'success', 'hey')
-            getCourseCoursesData()
-            dialogFormVisible.value = false
-          }).finally(() => {
-            btnLoading.value = false
-          })
+          editFunction(userParams as any)
+            .then(() => {
+              gp.$baseMessage('修改成功！', 'success', 'hey')
+              getCourseCoursesData()
+              dialogFormVisible.value = false
+            })
+            .finally(() => {
+              btnLoading.value = false
+            })
         } else {
           addFunction(userParams as any)
             .then(() => {
@@ -287,15 +336,15 @@ const handleChangeOnline = () => {
   switch (online.value) {
     case '全部应用': {
       courseParams.avtag = undefined
-      break;
+      break
     }
     case '已上线': {
       courseParams.avtag = true
-      break;
+      break
     }
     case '已下线': {
       courseParams.avtag = false
-      break;
+      break
     }
   }
   getCourseCoursesData()
@@ -338,7 +387,7 @@ const initSortable = () => {
           handle: '.drag-handle',
           animation: 150,
           ghostClass: 'sortable-ghost',
-          onEnd: handleDragEnd,
+          onEnd: handleDragEnd
         })
       }
     }
@@ -347,12 +396,14 @@ const initSortable = () => {
 
 const getCourseCoursesData = () => {
   listLoading.value = true
-  getFuncList(courseParams).then((data) => {
-    list.value = (data || []).slice().sort((a, b) => (a.index ?? 0) - (b.index ?? 0))
-    initSortable()
-  }).finally(() => {
-    listLoading.value = false
-  })
+  getFuncList(courseParams)
+    .then(data => {
+      list.value = (data || []).slice().sort((a, b) => (a.index ?? 0) - (b.index ?? 0))
+      initSortable()
+    })
+    .finally(() => {
+      listLoading.value = false
+    })
 }
 /**
  * 处理创建应用按钮点击
@@ -397,7 +448,7 @@ const editApp = async (row: any) => {
 const stopApp = (row: any) => {
   const params = {
     id: row.id,
-    avtag: !row.avtag,
+    avtag: !row.avtag
   }
   setAvtag(params).then(() => {
     gp.$baseMessage('操作成功!', 'success', 'hey')
@@ -406,15 +457,15 @@ const stopApp = (row: any) => {
 }
 const copyData = (content: any) => {
   try {
-    const input = document.createElement('textarea');
-    input.value = content;
-    document.body.appendChild(input);
-    input.select();
-    document.execCommand('Copy');
-    input.remove();
-    return true;
-  } catch { }
-  return false;
+    const input = document.createElement('textarea')
+    input.value = content
+    document.body.appendChild(input)
+    input.select()
+    document.execCommand('Copy')
+    input.remove()
+    return true
+  } catch {}
+  return false
 }
 const copyText = (data: any) => {
   if (copyData(data.course)) {
@@ -447,17 +498,16 @@ const handleDelete = (row: any) => {
     {
       confirmButtonText: '确定',
       cancelButtonText: '取消',
-      type: 'warning',
+      type: 'warning'
     }
   )
     .then(() => {
-      deleteFunction(row.id)
-        .then(() => {
-          gp.$baseMessage('删除成功！', 'success', 'hey')
-          getCourseCoursesData()
-        })
+      deleteFunction(row.id).then(() => {
+        gp.$baseMessage('删除成功！', 'success', 'hey')
+        getCourseCoursesData()
+      })
     })
-    .catch(() => { })
+    .catch(() => {})
 }
 </script>
 <style scoped lang="scss">
@@ -508,7 +558,7 @@ const handleDelete = (row: any) => {
     .vide {
       width: 100px;
       height: 100px;
-      background: #D8D8D8;
+      background: #d8d8d8;
       border-radius: 6px;
       overflow: hidden;
     }
@@ -539,7 +589,7 @@ const handleDelete = (row: any) => {
     .vide {
       width: 100%;
       height: 228px;
-      background: #D8D8D8;
+      background: #d8d8d8;
       border-radius: 6px;
       overflow: hidden;
     }

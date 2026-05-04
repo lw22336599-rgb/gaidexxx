@@ -30,7 +30,7 @@
 import type { FormInstance } from 'element-plus'
 
 defineOptions({
-  name: 'Step1',
+  name: 'Step1'
 })
 const emit = defineEmits(['change-step'])
 
@@ -39,19 +39,19 @@ const form = reactive<any>({
   payAccount: '****************',
   gatheringAccount: '****************',
   gatheringName: '***',
-  price: '100',
+  price: '100'
 })
 const rules = reactive<any>({
   payAccount: [{ required: true, message: '请选择付款账户', trigger: 'blur' }],
   gatheringAccount: [
     { required: true, message: '请输入收款账户', trigger: 'blur' },
-    { required: true, message: '账户名应为邮箱格式', trigger: 'blur' },
+    { required: true, message: '账户名应为邮箱格式', trigger: 'blur' }
   ],
   gatheringName: [{ required: true, message: '请输入收款人姓名', trigger: 'blur' }],
   price: [
     { required: true, message: '请输入转账金额', trigger: 'blur' },
-    { pattern: /^(\d+)((?:\.\d+)?)$/, message: '请输入合法金额数字' },
-  ],
+    { pattern: /^(\d+)((?:\.\d+)?)$/, message: '请输入合法金额数字' }
+  ]
 })
 
 const handleSubmit = () => {

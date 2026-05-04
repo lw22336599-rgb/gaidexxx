@@ -1,10 +1,18 @@
 <template>
-  <el-dropdown split-button :type="buttonType" :size="size" :disabled="disabled" @click="handleAddShop"
-    @command="handleCommand" trigger="hover" class="auth-button">
+  <el-dropdown
+    split-button
+    :type="buttonType"
+    :size="size"
+    :disabled="disabled"
+    trigger="hover"
+    class="auth-button"
+    @click="handleAddShop"
+    @command="handleCommand"
+  >
     {{ buttonText }}
     <template #dropdown>
       <el-dropdown-menu>
-        <el-dropdown-item command="manual" v-if="isElectron">
+        <el-dropdown-item v-if="isElectron" command="manual">
           <el-icon style="margin-right: 4px">
             <Key />
           </el-icon>
@@ -31,8 +39,12 @@
       </el-dropdown-menu>
     </template>
   </el-dropdown>
-  <AddByCookiesDialog v-model="showCookiesDialog" :shop-type="props.shopType"
-    @shop-added="(data) => emit('shop-added', data)" @refresh="emit('refresh')" />
+  <AddByCookiesDialog
+    v-model="showCookiesDialog"
+    :shop-type="props.shopType"
+    @shop-added="data => emit('shop-added', data)"
+    @refresh="emit('refresh')"
+  />
 </template>
 
 <script setup lang="ts">
@@ -45,12 +57,12 @@ import { Key, Link, Document, Connection } from '@element-plus/icons-vue'
 import AddByCookiesDialog from './AddByCookiesDialog.vue'
 
 interface Props {
-  shopType?: ShopType  // 店铺类型，可选，不传则使用当前店铺类型
-  buttonText?: string  // 按钮文本，默认"添加门店"
-  buttonType?: any     // 按钮类型，默认"primary"
-  size?: string        // 按钮大小
-  disabled?: boolean   // 是否禁用
-  name?: string        // 店铺名称（用于修复店铺场景）
+  shopType?: ShopType // 店铺类型，可选，不传则使用当前店铺类型
+  buttonText?: string // 按钮文本，默认"添加门店"
+  buttonType?: any // 按钮类型，默认"primary"
+  size?: string // 按钮大小
+  disabled?: boolean // 是否禁用
+  name?: string // 店铺名称（用于修复店铺场景）
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -63,10 +75,10 @@ const props = withDefaults(defineProps<Props>(), {
 
 // 定义事件
 const emit = defineEmits<{
-  success: []  // 授权成功事件
-  refresh: []  // 刷新列表事件
-  'shop-added': [data: any]  // 店铺添加成功事件，传递店铺数据
-  bind: []  // 绑定门店
+  success: [] // 授权成功事件
+  refresh: [] // 刷新列表事件
+  'shop-added': [data: any] // 店铺添加成功事件，传递店铺数据
+  bind: [] // 绑定门店
 }>()
 
 // 检测是否在Electron环境
@@ -129,17 +141,17 @@ const openApp = async (name: any, shopType?: ShopType) => {
   }
 
   const invokeMap: Record<number, string> = {
-    1: 'open-mt-wm',      // 美团外卖
-    2: 'open-elm-wm',     // 饿了么
-    3: 'open-mt-wm',      // 美团闪购
-    4: 'open-mt-wm',      // 美团医药
+    1: 'open-mt-wm', // 美团外卖
+    2: 'open-elm-wm', // 饿了么
+    3: 'open-mt-wm', // 美团闪购
+    4: 'open-mt-wm', // 美团医药
     5: 'open-elm-retail', // 饿百零售
-    6: 'open-jd-home',    // 京东到家
-    7: 'open-dy-retail',  // 抖店即时零售
-    8: 'open-elm-wm',     // 饿了么官方
-    1000: 'open-mt-groupbuy',   // 美团团购
+    6: 'open-jd-home', // 京东到家
+    7: 'open-dy-retail', // 抖店即时零售
+    8: 'open-elm-wm', // 饿了么官方
+    1000: 'open-mt-groupbuy', // 美团团购
     1001: 'open-jd-home', // 京东团购
-    1002: 'open-dy-tuangou-capture', // 抖音团购
+    1002: 'open-dy-tuangou-capture' // 抖音团购
   }
 
   const userInfoStr = localStorage.getItem('userInfo')
@@ -312,17 +324,17 @@ const generateAuthLink = async () => {
     // 5. 复制到剪贴板
     if (navigator.clipboard && navigator.clipboard.writeText) {
       // 现代浏览器方式
-      navigator.clipboard.writeText(authLink).then(() => {
-        gp.$baseMessage(
-          `授权链接已复制：${authLink}\n\n请发送给商家，引导商家打开链接授权店铺`,
-          'success',
-          'hey',
-          { duration: 5000 }
-        )
-      }).catch((err) => {
-        // 降级到旧方法
-        fallbackCopyTextToClipboard(authLink)
-      })
+      navigator.clipboard
+        .writeText(authLink)
+        .then(() => {
+          gp.$baseMessage(`授权链接已复制：${authLink}\n\n请发送给商家，引导商家打开链接授权店铺`, 'success', 'hey', {
+            duration: 5000
+          })
+        })
+        .catch(err => {
+          // 降级到旧方法
+          fallbackCopyTextToClipboard(authLink)
+        })
     } else {
       // 降级方案
       fallbackCopyTextToClipboard(authLink)
@@ -349,12 +361,9 @@ const fallbackCopyTextToClipboard = (text: string) => {
   try {
     const successful = document.execCommand('copy')
     if (successful) {
-      gp.$baseMessage(
-        `授权链接已复制：${text}\n\n请发送给商家，引导商家打开链接授权店铺`,
-        'success',
-        'hey',
-        { duration: 5000 }
-      )
+      gp.$baseMessage(`授权链接已复制：${text}\n\n请发送给商家，引导商家打开链接授权店铺`, 'success', 'hey', {
+        duration: 5000
+      })
     } else {
       gp.$baseMessage('复制失败，请手动复制链接：' + text, 'warning', 'hey')
     }

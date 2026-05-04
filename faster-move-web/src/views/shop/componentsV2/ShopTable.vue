@@ -39,7 +39,7 @@
     </div>
     <div v-if="activetab_func === '1'" class="table-wrapper">
       <el-table ref="tableRef" v-loading="listLoading" :border="border" :data="props.shopList" height="100%"
-        :size="lineHeight" :stripe="stripe"
+        :size="lineHeight" :stripe="false"
         :class="['smooth-scroll-table', 'shop-table-content', { 'is-restoring-scroll': isRestoringUI }]"
         @selection-change="handleBatchSelectionChange" @sort-change="handleSortChange">
         <!-- 批量续费模式的选择列 -->
@@ -447,39 +447,40 @@
                       </el-icon>
                     </div>
                   </div>
-                  <!-- 门店ID和营业状态一排显示 -->
-                  <div class="item-id-state-row">
-                    <div class="item-office-id" style="display: flex; align-items: center; gap: 4px;">
-                      <span :class="{ 'blur-text': demoMode }">门店ID：{{ row.office_id }}</span>
-                      <el-icon style="cursor: pointer; color: #909399; font-size: 13px;"
-                        @click.stop="copyOfficeId(row.office_id)" title="复制门店ID">
-                        <DocumentCopy />
-                      </el-icon>
+                  <div v-show="isShopExtraExpanded(row)" class="shop-info-extra shop-row-aux-layer">
+                    <!-- 门店ID和营业状态一排显示 -->
+                    <div class="item-id-state-row">
+                      <div class="item-office-id" style="display: flex; align-items: center; gap: 4px;">
+                        <span :class="{ 'blur-text': demoMode }">门店ID：{{ row.office_id }}</span>
+                        <el-icon style="cursor: pointer; color: #909399; font-size: 13px;"
+                          @click.stop="copyOfficeId(row.office_id)" title="复制门店ID">
+                          <DocumentCopy />
+                        </el-icon>
+                      </div>
+                      <!-- 竖线分隔 -->
+                      <div class="divider-line"></div>
+                      <!-- 营业状态 -->
+                      <div class="item-shop-state" v-if="row.state !== 3">
+                        <vab-icon icon="award-fill"
+                          :style="`color: ${row.state === 4 ? 'rgb(238, 145, 63)' : '#909399'}`" />
+                        <span v-if="row.state === 4" class="shop-state">营业中</span>
+                        <span v-if="row.state === 5" class="shop-state round-icon">停业中</span>
+                        <span v-if="row.state === 6" class="shop-state round-icon">上线中</span>
+                        <span v-if="row.state === 7" class="shop-state round-icon">已下线</span>
+                      </div>
                     </div>
-                    <!-- 竖线分隔 -->
-                    <div class="divider-line"></div>
-                    <!-- 营业状态 -->
-                    <div class="item-shop-state" v-if="row.state !== 3">
-                      <vab-icon icon="award-fill"
-                        :style="`color: ${row.state === 4 ? 'rgb(238, 145, 63)' : '#909399'}`" />
-                      <span v-if="row.state === 4" class="shop-state">营业中</span>
-                      <span v-if="row.state === 5" class="shop-state round-icon">停业中</span>
-                      <span v-if="row.state === 6" class="shop-state round-icon">上线中</span>
-                      <span v-if="row.state === 7" class="shop-state round-icon">已下线</span>
+                    <div class="item-remark" @click="updateNotes(row)">
+                      <span class="remark-label">门店备注：</span>
+                      <el-tooltip v-if="row.notes && row.notes.trim()" :content="row.notes" placement="top"
+                        :disabled="!isRemarkOverflow(row)" effect="dark" :show-after="200">
+                        <span class="remark-content" :class="{ 'blur-text': demoMode }">{{ row.notes }}</span>
+                      </el-tooltip>
+                      <span v-else class="remark-content" :class="{ 'blur-text': demoMode }">暂无</span>
+                      <span class="edit-hint">修改</span>
                     </div>
-                  </div>
-                  <div class="item-remark" @click="updateNotes(row)">
-                    <span class="remark-label">门店备注：</span>
-                    <el-tooltip v-if="row.notes && row.notes.trim()" :content="row.notes" placement="top"
-                      :disabled="!isRemarkOverflow(row)" effect="dark" :show-after="200">
-                      <span class="remark-content" :class="{ 'blur-text': demoMode }">{{ row.notes }}</span>
-                    </el-tooltip>
-                    <span v-else class="remark-content" :class="{ 'blur-text': demoMode }">暂无</span>
-                    <span class="edit-hint">修改</span>
                   </div>
                 </div>
               </div>
-              <img v-if="row ? row.is_top : false" class="top-up-img" src="/@/assets/shop_images/icon_001.png" />
             </div>
             <div v-if="item.label === '城市天气'">
               <div v-if="row.city" class="item-office-id">
@@ -509,14 +510,20 @@
             </div>
             <!-- 店铺多开列（显示到期时间和续费按钮） -->
             <div v-if="item.label === '店铺多开'" class="multi-open-cell">
-              <div class="multi-open-expire-text">
-                功能{{ formatFuncExpireTime(row.EndTime) }}
-              </div>
-              <!-- 功能版：调用全功能续费；基础版：调用店铺多开续费 -->
-              <div class="multi-open-renew-btn"
-                @click="payFunShow(row, isFunctional ? null : 'OPENSHOP', isFunctional ? '全功能' : '店铺多开')">
-                功能续费
-              </div>
+              <template v-if="isShopExtraExpanded(row)">
+                <div class="shop-row-aux-layer multi-open-aux">
+                  <div class="multi-open-expire-text">
+                    功能{{ formatFuncExpireTime(row.EndTime) }}
+                  </div>
+                  <div class="multi-open-renew-btn"
+                    @click="payFunShow(row, isFunctional ? null : 'OPENSHOP', isFunctional ? '全功能' : '店铺多开')">
+                    功能续费
+                  </div>
+                </div>
+              </template>
+              <template v-else>
+                <div class="multi-open-collapsed-placeholder">—</div>
+              </template>
             </div>
             <div v-if="item.label === '授权状态'">
               <div class="auth-status-container" :class="{ 'is-functional': isFunctional }">
@@ -525,28 +532,20 @@
                     {{ isEleCopyShopType ? 'API授权：' : '插件授权：' }}
                   </span>
                   <div class="auth-buttons">
-                    <el-button :type="row.state == 3 ? 'danger' : 'success'" size="small" plain
-                      :class="{ 'auth-normal-btn': row.state != 3, 'auth-error-btn': row.state == 3 }">
-                      {{ row.state == 3 ? '授权异常' : '授权正常' }}
-                    </el-button>
-                    <el-button v-if="row.state == 3" type="danger" size="small" @click="openApp(row.name)"
-                      style="margin-left: 4px;">
+                    <span :class="pluginAuthPillClass(row)">{{ pluginAuthTag(row).label }}</span>
+                    <el-button v-if="row.state == 3" type="danger" size="small" @click="openApp(row.name)">
                       修复
                     </el-button>
-                    <span class="auth-time-inline">{{ formatAuthTime(row.ck_uptime) }}</span>
+                    <span v-show="isShopExtraExpanded(row)" class="auth-time-inline shop-row-aux-layer">{{
+                      formatAuthTime(row.ck_uptime) }}</span>
                   </div>
                 </div>
                 <div v-if="hasApiAuth" class="auth-status-row" style="margin-top: 4px;">
                   <span class="auth-prefix-label">API授权：</span>
                   <div class="auth-buttons">
-                    <el-button v-if="row.api_state == null" type="info" size="small" plain class="auth-normal-btn">
-                      未授权
-                    </el-button>
-                    <el-button v-else :type="row.api_state == 3 ? 'danger' : 'success'" size="small" plain
-                      :class="{ 'auth-normal-btn': row.api_state != 3, 'auth-error-btn': row.api_state == 3 }">
-                      {{ row.api_state == 3 ? '授权异常' : '授权正常' }}
-                    </el-button>
-                    <span class="auth-time-inline">{{ formatAuthTime(row.api_extime) }}</span>
+                    <span :class="apiAuthPillClass(row)">{{ apiAuthTag(row).label }}</span>
+                    <span v-show="isShopExtraExpanded(row)" class="auth-time-inline shop-row-aux-layer">{{
+                      formatAuthTime(row.api_extime) }}</span>
                   </div>
                 </div>
               </div>
@@ -572,9 +571,11 @@
               <div class="pointer" @click="openDrawer(row, item.funcCode)">
                 {{ FRONTEND_FUNC_CONFIG[item.funcCode]?.settingText || (item.label + '设置') }}
               </div>
-              <div style="font-size: 12px">{{ formatFuncExpireTime(row[item.funcCode + 'time']) }}</div>
-              <span class="pointer" style="font-size: 14px"
-                @click="payFunShow(row, item.funcCode, FRONTEND_FUNC_CONFIG[item.funcCode]?.payTypeText || item.label)">续费</span>
+              <div v-show="isShopExtraExpanded(row)" class="shop-row-aux-layer">
+                <div style="font-size: 12px">{{ formatFuncExpireTime(row[item.funcCode + 'time']) }}</div>
+                <span class="pointer" style="font-size: 14px"
+                  @click="payFunShow(row, item.funcCode, FRONTEND_FUNC_CONFIG[item.funcCode]?.payTypeText || item.label)">续费</span>
+              </div>
             </div>
             <!-- 后端动态功能且 hasBlazorUI：开关 + 功能配置 + 到期时间 + 续费，配置按钮统一为「功能配置」 -->
             <!-- 排除店铺多开（OPENSHOP），因为店铺多开列已有专门的渲染逻辑 -->
@@ -582,23 +583,27 @@
               <el-switch v-model="row[item.funcCode]" active-color="var(--el-color-primary)" inactive-color="#D8D8D8"
                 @change="setFunEnable(row, item.funcCode)" />
               <div class="pointer" @click="openDrawer(row, item.funcCode)">功能配置</div>
-              <div style="font-size: 12px">{{ formatFuncExpireTime(row[item.funcCode + 'time']) }}</div>
-              <span class="pointer" style="font-size: 14px"
-                @click="payFunShow(row, item.funcCode, item.label)">续费</span>
+              <div v-show="isShopExtraExpanded(row)" class="shop-row-aux-layer">
+                <div style="font-size: 12px">{{ formatFuncExpireTime(row[item.funcCode + 'time']) }}</div>
+                <span class="pointer" style="font-size: 14px"
+                  @click="payFunShow(row, item.funcCode, item.label)">续费</span>
+              </div>
             </div>
             <!-- 其它动态功能（无 Blazor 设置入口）：开关 + 到期时间 + 续费 -->
             <!-- 排除店铺多开（OPENSHOP），因为店铺多开列已有专门的渲染逻辑 -->
             <div v-else-if="isFunctional && item.funcCode && item.funcCode !== 'OPENSHOP'">
               <el-switch v-model="row[item.funcCode]" active-color="var(--el-color-primary)" inactive-color="#D8D8D8"
                 @change="setFunEnable(row, item.funcCode)" />
-              <div v-if="row[item.funcCode + 'time']" style="font-size: 12px">{{ formatFuncExpireTime(row[item.funcCode
-                +
-                'time']) }}</div>
-              <span v-else style="font-size: 12px">—</span>
-              <span class="pointer" style="font-size: 14px"
-                @click="payFunShow(row, item.funcCode, item.label)">续费</span>
+              <div v-show="isShopExtraExpanded(row)" class="shop-row-aux-layer">
+                <div v-if="row[item.funcCode + 'time']" style="font-size: 12px">{{ formatFuncExpireTime(row[item.funcCode
+                  +
+                  'time']) }}</div>
+                <span v-else style="font-size: 12px">—</span>
+                <span class="pointer" style="font-size: 14px"
+                  @click="payFunShow(row, item.funcCode, item.label)">续费</span>
+              </div>
             </div>
-            <div v-if="item.label === '操作'">
+            <div v-if="item.label === '操作'" class="operation-cell-wrap">
               <div class="action-buttons-grid">
                 <div class="action-item" @click="openWindow(row)">
                   <el-icon class="action-icon backend-icon">
@@ -624,6 +629,14 @@
                   </el-icon>
                   <span class="action-text delete-text">删除</span>
                 </div>
+              </div>
+              <div class="row-expand-bar" role="button" tabindex="0" :title="isShopExtraExpanded(row) ? '收起详情' : '展开详情'"
+                @click.stop="toggleShopExtra(row)" @keydown.enter.prevent="toggleShopExtra(row)"
+                @keydown.space.prevent="toggleShopExtra(row)">
+                <el-icon class="row-expand-icon" :class="{ 'is-expanded': isShopExtraExpanded(row) }"
+                  @click.stop="toggleShopExtra(row)">
+                  <ArrowDown />
+                </el-icon>
               </div>
             </div>
           </template>
@@ -701,7 +714,7 @@ import PayDialog from '/@/views/shop/PayDialog.vue'
 // EditDialog 已不再从“操作列”入口打开（改为打开后台），如需编辑功能请在其它入口实现
 import { gp } from '/@vab/plugins/vab.ts'
 import type { TableInstance } from 'element-plus'
-import { ElMessageBox } from 'element-plus'
+import { ElMessageBox, ElNotification } from 'element-plus'
 import SetOnlyBind from '/@/views/shop/componentsV2/SetOnlyBind.vue'
 import { openWindow } from '/@/utils/openShopWin.ts'
 import { getFunctionList, getShopListFunctionColumns } from '/@/utils/functionCache.ts'
@@ -711,7 +724,7 @@ import BlazorConfigDrawer from '/@/views/shop/componentsV2/BlazorConfigDrawer.vu
 import { apiManager } from '/@/TsModel/Api/ApiManager'
 import { ShopType } from '@/TsModel/Alien/Entity/Enums/ShopType'
 import type { t_wmt_function } from '@/TsModel/Alien/Entity/Tables/function/t_wmt_function'
-import { DocumentCopy, Filter, ArrowUp, Edit, Star, Share, Delete, ArrowRight, InfoFilled, Monitor, CaretTop, CaretBottom } from '@element-plus/icons-vue'
+import { DocumentCopy, Filter, ArrowUp, ArrowDown, Edit, Star, Share, Delete, ArrowRight, InfoFilled, Monitor, CaretTop, CaretBottom } from '@element-plus/icons-vue'
 import { useSettingsStore } from '/@/store/modules/settings'
 import { storeToRefs } from 'pinia'
 import { useTableScroll } from '/@/composables/useTableScroll'
@@ -1621,7 +1634,7 @@ const getFixedNonFuncColumns = (): any[] => {
 }
 
 const fixedNonFuncColumns = computed(() => getFixedNonFuncColumns())
-const fixedEndColumn = { label: '操作', checked: true, width: 130, align: 'center' as const, fixed: 'right' as const, disableCheck: true, funcCode: null as string | null }
+const fixedEndColumn = { label: '操作', checked: true, width: 148, align: 'center' as const, fixed: 'right' as const, disableCheck: true, funcCode: null as string | null }
 const columns = ref<any>([])
 const showFunctionPausedMessage = () => {
   gp.$baseMessage('功能暂停使用', 'error', 'hey')
@@ -1648,7 +1661,6 @@ const finallyColumns = computed(() => {
 const columnsInitialized = ref(false)
 const border = ref<boolean>(false)
 const lineHeight = ref<any>('default')
-const stripe = ref<boolean>(true)
 const emit = defineEmits(['updatePage', 'updateFilter', 'sortChange', 'save-scroll', 'shopSelectionChange'])
 const selectRows = ref<any>([])
 const drawerState = ref(false)
@@ -2180,6 +2192,90 @@ const formatAuthTime = (time: string | Date | undefined | null): string => {
   }
 }
 
+/** 距某日期的整天数（过去），用于判断插件授权是否「久未校验」 */
+const daysSinceDate = (time: string | Date | undefined | null): number | null => {
+  if (!time) return null
+  const t = new Date(time).getTime()
+  if (Number.isNaN(t)) return null
+  return Math.floor((Date.now() - t) / (24 * 60 * 60 * 1000))
+}
+
+/** 距某日期的整天数（未来，ceil），用于 API 授权到期前预警 */
+const daysUntilDate = (time: string | Date | undefined | null): number | null => {
+  if (!time) return null
+  const t = new Date(time).getTime()
+  if (Number.isNaN(t)) return null
+  return Math.ceil((t - Date.now()) / (24 * 60 * 60 * 1000))
+}
+
+/** 插件授权列：绿/橙/红标签（掉线视为已过期；久未更新 ck 视为即将过期） */
+const pluginAuthTag = (row: any) => {
+  if (row?.state == 3) return { label: '已过期', type: 'danger' as const }
+  const stale = daysSinceDate(row?.ck_uptime)
+  if (stale != null && stale >= 10) return { label: '即将过期', type: 'warning' as const }
+  return { label: '授权正常', type: 'success' as const }
+}
+
+/** API 授权列标签 */
+const apiAuthTag = (row: any) => {
+  if (row?.api_state == null) return { label: '未授权', type: 'info' as const }
+  if (row?.api_state == 3) return { label: '已过期', type: 'danger' as const }
+  const left = daysUntilDate(row?.api_extime)
+  if (left != null && left >= 0 && left <= 7) return { label: '即将过期', type: 'warning' as const }
+  return { label: '授权正常', type: 'success' as const }
+}
+
+/** 授权状态圆角标签 class（绿 / 橙 / 红 + 未授权灰） */
+const pluginAuthPillClass = (row: any) => {
+  const t = pluginAuthTag(row)
+  const base = 'auth-pill'
+  if (t.label === '已过期') return `${base} bg-red`
+  if (t.label === '即将过期') return `${base} bg-orange`
+  return `${base} bg-green`
+}
+
+const apiAuthPillClass = (row: any) => {
+  const t = apiAuthTag(row)
+  const base = 'auth-pill'
+  if (t.label === '未授权') return `${base} auth-pill--neutral`
+  if (t.label === '已过期') return `${base} bg-red`
+  if (t.label === '即将过期') return `${base} bg-orange`
+  return `${base} bg-green`
+}
+
+const SHOP_LIST_THEAD_CLASS = 'shop-list-thead'
+
+/** 给 el-table 渲染出的 thead 打上 class，便于按设计稿写表头样式 */
+const applyShopListTheadClass = () => {
+  nextTick(() => {
+    const root = tableRef.value?.$el as HTMLElement | undefined
+    if (!root?.querySelectorAll) return
+    root.querySelectorAll('thead').forEach((thead) => {
+      thead.classList.add(SHOP_LIST_THEAD_CLASS)
+    })
+  })
+}
+
+/** 门店行辅助信息展开键（兼容 id 为 number/string） */
+const shopRowExpandKey = (row: any): string => {
+  if (row == null) return ''
+  const k = row.id ?? row.shop_id ?? row.office_id
+  return k != null && k !== '' ? String(k) : ''
+}
+
+/** 门店行辅助信息（门店信息 + 店铺多开）展开，默认收起 */
+const shopExtraExpanded = ref<Record<string, boolean>>({})
+const isShopExtraExpanded = (row: any) => {
+  const k = shopRowExpandKey(row)
+  return k !== '' && !!shopExtraExpanded.value[k]
+}
+const toggleShopExtra = (row: any) => {
+  const k = shopRowExpandKey(row)
+  if (!k) return
+  const next = !shopExtraExpanded.value[k]
+  shopExtraExpanded.value = { ...shopExtraExpanded.value, [k]: next }
+}
+
 /**
  * 格式化功能到期时间显示
  * @param timeStr 时间字符串
@@ -2223,8 +2319,18 @@ const setShopTop = (row: any, state: boolean) => {
   setShopIsTop({ shop: row.id, top: state }).then((res: any) => {
     if (res.code === 200) {
       row.is_top = state
-      let str2 = state ? '置顶成功！' : '取消置顶成功'
-      gp.$baseMessage(str2, 'success', 'hey')
+      if (state) {
+        ElNotification({
+          title: '置顶',
+          message: `「${row.name || '门店'}」已置顶`,
+          type: 'success',
+          duration: 3000,
+          position: 'top-right',
+          showClose: true,
+        })
+      } else {
+        gp.$baseMessage('取消置顶成功', 'success', 'hey')
+      }
       queryData()
     }
   })
@@ -3023,7 +3129,10 @@ onActivated(async () => {
       restoreShopTypeScrollPosition(currentShopType)
       // 设置滚动监听器
       setupScrollListener()
+      applyShopListTheadClass()
     }, 100)
+  } else {
+    nextTick(() => applyShopListTheadClass())
   }
 })
 
@@ -3066,6 +3175,15 @@ watch(() => props.shopList, (newList) => {
     }, 0)
   }
 }, { deep: true, immediate: false, flush: 'post' })
+
+watch(
+  () => [activetab_func.value, props.shopList, props.listLoading, props.shopType],
+  () => {
+    if (activetab_func.value !== '1') return
+    applyShopListTheadClass()
+  },
+  { deep: true, flush: 'post' }
+)
 
 // 同步固定列的滚动位置（使用节流和 requestAnimationFrame 优化性能）
 let syncScrollFrameId: number | null = null
@@ -3216,6 +3334,8 @@ onMounted(async () => {
       // 监听主表格的滚动事件
       cachedMainBodyWrapper.addEventListener('scroll', syncFixedColumnScroll, { passive: true })
     }
+
+    applyShopListTheadClass()
   })
 })
 
@@ -3245,27 +3365,81 @@ defineExpose({
 })
 </script>
 <style scoped lang="scss">
-::v-deep.shop-table {
+// 根节点即有 .shop-table，子节点 el-table 需 :deep 才能命中（勿用 ::v-deep.shop-table 整块失效）
+.shop-table {
   margin-top: 8px;
   display: flex;
   flex-direction: column;
   height: 100%;
 
-  .el-table .cell {
+  :deep(.el-table .cell) {
     overflow: visible !important;
   }
 
-  .el-table {
+  :deep(.el-table) {
     margin-top: 0;
   }
 
-  .el-table td.el-table__cell {
+  :deep(.el-table td.el-table__cell) {
     padding: 2px 0;
   }
 
-  .el-table th.el-table__cell {
+  :deep(.el-table th.el-table__cell) {
     padding: 3px 0;
     color: #000 !important;
+    background-color: #f5f7fa !important;
+    border-bottom: 1px solid #e8e8e8 !important;
+    font-weight: 600;
+  }
+
+  :deep(.el-table__header-wrapper th.el-table__cell),
+  :deep(.el-table__fixed-header-wrapper th.el-table__cell) {
+    background-color: #f5f7fa !important;
+    border-bottom: 1px solid #e8e8e8 !important;
+  }
+
+  // 表头 thead 打 class 后的整体背景与分割（与 th 一致）
+  :deep(thead.shop-list-thead) {
+    background: #f5f7fa;
+  }
+
+  :deep(thead.shop-list-thead th.el-table__cell) {
+    background: #f5f7fa !important;
+    border-bottom: 1px solid #e8e8e8 !important;
+  }
+
+  // 隔行：tbody 行 + 单元格（避免 td 底色盖住 tr）
+  :deep(.el-table__body tbody tr.el-table__row:nth-child(even)) {
+    background-color: #fafafa !important;
+  }
+
+  :deep(.el-table__fixed-right .el-table__body tbody tr.el-table__row:nth-child(even)),
+  :deep(.el-table__fixed-left .el-table__body tbody tr.el-table__row:nth-child(even)) {
+    background-color: #fafafa !important;
+  }
+
+  // 表体斑马纹（关闭 el-table stripe，仅用自定义色）
+  :deep(.el-table__body tr.el-table__row:nth-child(even) > td.el-table__cell) {
+    background-color: #fafafa !important;
+  }
+
+  :deep(.el-table__body tr.el-table__row:nth-child(odd) > td.el-table__cell) {
+    background-color: #ffffff !important;
+  }
+
+  :deep(.el-table__body tr.hover-row > td.el-table__cell) {
+    background-color: #ecf5ff !important;
+  }
+
+  // 固定列内表体与主表同步斑马纹
+  :deep(.el-table__fixed-right .el-table__body tr.el-table__row:nth-child(even) > td.el-table__cell),
+  :deep(.el-table__fixed-left .el-table__body tr.el-table__row:nth-child(even) > td.el-table__cell) {
+    background-color: #fafafa !important;
+  }
+
+  :deep(.el-table__fixed-right .el-table__body tr.el-table__row:nth-child(odd) > td.el-table__cell),
+  :deep(.el-table__fixed-left .el-table__body tr.el-table__row:nth-child(odd) > td.el-table__cell) {
+    background-color: #ffffff !important;
   }
 
   // 修复固定列（右侧操作列）的偏移和卡顿问题
@@ -3300,20 +3474,20 @@ defineExpose({
 
   // 确保固定列和普通列的高度同步
   :deep(.el-table__fixed-right-patch) {
-    background-color: #fff;
+    background-color: #f5f7fa;
   }
 
   // 优化操作列单元格，防止内容溢出导致偏移
   :deep(.el-table__fixed-right) {
-    // 确保固定列的宽度固定不变（增加到130px以容纳"取消置顶"等文字）
-    width: 130px !important;
-    min-width: 130px !important;
-    max-width: 130px !important;
+    // 与操作列 width 一致（含展开行控制）
+    width: 148px !important;
+    min-width: 148px !important;
+    max-width: 148px !important;
 
     .el-table__cell {
-      width: 130px !important;
-      min-width: 130px !important;
-      max-width: 130px !important;
+      width: 148px !important;
+      min-width: 148px !important;
+      max-width: 148px !important;
       padding: 2px 4px !important;
       box-sizing: border-box !important;
       overflow: visible !important; // 允许内容完整显示
@@ -3447,9 +3621,10 @@ defineExpose({
 
     .copy-shop-tooltip {
       position: absolute;
-      top: -40px;
-      left: 25%;
-      transform: translateX(-50%);
+      top: -38px;
+      right: 0;
+      left: auto;
+      transform: none;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -3476,13 +3651,14 @@ defineExpose({
         color: #fff;
       }
 
-      // 小三角形箭头
+      // 小三角形箭头（锚在右上角）
       &::after {
         content: '';
         position: absolute;
         bottom: -6px;
-        left: 50%;
-        transform: translateX(-50%);
+        right: 16px;
+        left: auto;
+        transform: none;
         width: 0;
         height: 0;
         border-left: 6px solid transparent;
@@ -3492,7 +3668,7 @@ defineExpose({
 
       &:hover {
         background-color: rgba(0, 0, 0, 0.95);
-        transform: translateX(-50%) translateY(-2px);
+        transform: translateY(-2px);
       }
     }
 
@@ -3687,24 +3863,9 @@ defineExpose({
 
 .auth-buttons {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 0px;
-}
-
-.auth-normal-btn {
-  border-color: #67c23a !important;
-  color: #67c23a !important;
-  background-color: #fff !important;
-  padding: 2px 5px !important; // 调小内边距
-  min-width: auto !important; // 取消最小宽度限制
-}
-
-.auth-error-btn {
-  border-color: #f56c6c !important;
-  color: #f56c6c !important;
-  background-color: #fff !important;
-  padding: 2px 5px !important; // 调小内边距
-  min-width: auto !important; // 取消最小宽度限制
+  gap: 6px;
 }
 
 .auth-time-text {
@@ -3739,12 +3900,90 @@ defineExpose({
   cursor: pointer;
 }
 
-.top-up-img {
-  position: absolute;
-  top: -10px;
-  left: -12px;
-  width: 40px;
-  height: 40px;
+.shop-info-extra {
+  width: 100%;
+}
+
+.multi-open-collapsed-placeholder {
+  font-size: 12px;
+  color: #dcdfe6;
+  text-align: center;
+  padding: 8px 0;
+  user-select: none;
+}
+
+// 授权状态：inline-flex 胶囊 + 语义色 class
+.auth-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: #fff;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.auth-pill.bg-green {
+  background-color: #67c23a;
+}
+
+.auth-pill.bg-orange {
+  background-color: #e6a23c;
+}
+
+.auth-pill.bg-red {
+  background-color: #f56c6c;
+}
+
+.auth-pill.auth-pill--neutral {
+  background-color: #909399;
+  color: #fff;
+}
+
+// 行内辅助信息层（由 v-show 控制显隐，默认收起）
+.shop-row-aux-layer {
+  width: 100%;
+}
+
+.operation-cell-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2px;
+}
+
+.row-expand-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 0 2px;
+  margin-top: 2px;
+  border-top: 1px solid #ebeef5;
+  cursor: pointer;
+  color: #909399;
+  user-select: none;
+
+  &:hover {
+    color: var(--el-color-primary);
+  }
+
+  .row-expand-icon {
+    font-size: 18px;
+    padding: 4px;
+    border-radius: 50%;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+
+    &:hover {
+      background-color: #ecf5ff;
+    }
+
+    &.is-expanded {
+      transform: rotate(180deg);
+    }
+  }
 }
 
 .suc-dot {

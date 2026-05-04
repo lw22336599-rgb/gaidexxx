@@ -7,7 +7,12 @@
             <el-input v-model.trim="queryForm.taskName" clearable placeholder="请输入任务名" />
           </el-form-item>
           <el-form-item label="周期">
-            <el-date-picker v-model="queryForm.date" end-placeholder="结束日期" start-placeholder="开始日期" type="daterange" />
+            <el-date-picker
+              v-model="queryForm.date"
+              end-placeholder="结束日期"
+              start-placeholder="开始日期"
+              type="daterange"
+            />
           </el-form-item>
           <el-form-item>
             <el-button :icon="Search" type="primary" @click="queryData">查询</el-button>
@@ -57,7 +62,7 @@ import { getList } from '/@/api/taskManagement'
 import imageUrl from '/@/assets/task_image/task.png'
 
 defineOptions({
-  name: 'TaskManagement',
+  name: 'TaskManagement'
 })
 
 const list = ref<any>([])
@@ -66,7 +71,7 @@ const queryForm = reactive<any>({
   taskName: '',
   date: '',
   pageNo: 1,
-  pageSize: 11,
+  pageSize: 11
 })
 
 const fetchData = async () => {

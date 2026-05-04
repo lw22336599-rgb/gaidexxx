@@ -1,5 +1,11 @@
 <template>
-  <el-dialog v-model="dialogVisible" title="批量调整库存" width="500px" :close-on-click-modal="false" @close="handleClose">
+  <el-dialog
+    v-model="dialogVisible"
+    title="批量调整库存"
+    width="500px"
+    :close-on-click-modal="false"
+    @close="handleClose"
+  >
     <el-form ref="formRef" :model="form" :rules="rules" label-width="100px">
       <el-form-item label="调整方式" prop="AdjustType">
         <el-radio-group v-model="form.AdjustType">
@@ -37,18 +43,18 @@ const emit = defineEmits<{
 
 const dialogVisible = computed({
   get: () => props.modelValue,
-  set: (val) => emit('update:modelValue', val),
+  set: val => emit('update:modelValue', val)
 })
 
 const formRef = ref<FormInstance>()
 const form = ref<Pick<FoodManageApi.BatchUpdateStockParams, 'AdjustType' | 'AdjustStock'>>({
   AdjustType: AdjustTypeEnumStock.上下浮动,
-  AdjustStock: 0,
+  AdjustStock: 0
 })
 
 const rules = {
   AdjustType: [{ required: true, message: '请选择调整方式', trigger: 'change' }],
-  AdjustStock: [{ required: true, message: '请输入调整库存', trigger: 'blur' }],
+  AdjustStock: [{ required: true, message: '请输入调整库存', trigger: 'blur' }]
 }
 
 const adjustStockError = ref(false)
@@ -61,12 +67,12 @@ const handleClose = () => {
 
 const handleConfirm = async () => {
   if (!formRef.value) return
-  await formRef.value.validate((valid) => {
+  await formRef.value.validate(valid => {
     if (valid) {
       adjustStockError.value = false
       emit('confirm', {
         AdjustType: form.value.AdjustType,
-        AdjustStock: form.value.AdjustStock,
+        AdjustStock: form.value.AdjustStock
       } as FoodManageApi.BatchUpdateStockParams)
       handleClose()
     } else {

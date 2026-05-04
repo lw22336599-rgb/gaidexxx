@@ -13,7 +13,7 @@ interface Tree {
 const props = {
   label: 'name',
   children: 'zones',
-  isLeaf: 'leaf',
+  isLeaf: 'leaf'
 }
 
 const loadNode = (node: Node, resolve: (data: Tree[]) => void) => {
@@ -26,11 +26,11 @@ const loadNode = (node: Node, resolve: (data: Tree[]) => void) => {
     const data: Tree[] = [
       {
         name: 'leaf',
-        leaf: true,
+        leaf: true
       },
       {
-        name: 'zone',
-      },
+        name: 'zone'
+      }
     ]
 
     resolve(data)

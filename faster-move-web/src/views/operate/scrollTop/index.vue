@@ -11,7 +11,7 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'ScrollTop',
+  name: 'ScrollTop'
 })
 </script>
 

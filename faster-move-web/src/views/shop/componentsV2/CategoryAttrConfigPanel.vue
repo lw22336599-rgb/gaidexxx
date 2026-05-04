@@ -1,5 +1,5 @@
 <template>
-  <div class="category-attr-config-panel" v-loading="loading">
+  <div v-loading="loading" class="category-attr-config-panel">
     <template v-if="!firstShopId">
       <div class="no-shop-tip">请先添加续费店铺，以加载可配置的类目属性</div>
     </template>
@@ -13,14 +13,25 @@
           <div class="section-label">设置分组</div>
           <template v-if="shopGroupsMap[firstShopId] === undefined">
             <el-tooltip content="加载当前店铺的分组列表" placement="top">
-              <el-button type="primary" link size="small" :loading="loadingShopId === firstShopId"
-                @click="loadShopGroups(firstShopId)">
+              <el-button
+                type="primary"
+                link
+                size="small"
+                :loading="loadingShopId === firstShopId"
+                @click="loadShopGroups(firstShopId)"
+              >
                 加载分组
               </el-button>
             </el-tooltip>
           </template>
-          <el-select v-else v-model="defaultConf.GroupOffIds" multiple
-            placeholder="选择要限制的分组（不选则全部）" size="small" style="width: 100%">
+          <el-select
+            v-else
+            v-model="defaultConf.GroupOffIds"
+            multiple
+            placeholder="选择要限制的分组（不选则全部）"
+            size="small"
+            style="width: 100%"
+          >
             <el-option v-for="g in flatShopGroups(firstShopId)" :key="g.OfficeId" :label="g.Name" :value="g.OfficeId" />
           </el-select>
         </div>
@@ -42,20 +53,40 @@
             <div v-for="attr in propertyList" :key="attr.Prty.off_id" class="attr-item">
               <label class="attr-label">{{ attr.Prty.name }}</label>
               <el-select
-                :model-value="attr.Prty.multi_select ? getDefaultPrttyValues(attr.Prty.off_id) : (getDefaultPrttyValues(attr.Prty.off_id)[0] ?? undefined)"
-                @update:model-value="attr.Prty.multi_select ? setDefaultPrttyValues(attr.Prty.off_id, $event) : setDefaultPrttyValues(attr.Prty.off_id, $event != null ? [$event] : [])"
+                :model-value="
+                  attr.Prty.multi_select
+                    ? getDefaultPrttyValues(attr.Prty.off_id)
+                    : (getDefaultPrttyValues(attr.Prty.off_id)[0] ?? undefined)
+                "
                 :remote="!!attr.Prty.need_query"
                 :remote-method="attr.Prty.need_query ? (q: string) => handleAttrRemoteSearch(attr, q) : undefined"
-                :loading="!!attr.Prty.need_query && attrSearchLoading" :multiple="!!attr.Prty.multi_select" filterable
-                :placeholder="attr.Prty.name" size="small" style="width: 100%" clearable>
+                :loading="!!attr.Prty.need_query && attrSearchLoading"
+                :multiple="!!attr.Prty.multi_select"
+                filterable
+                :placeholder="attr.Prty.name"
+                size="small"
+                style="width: 100%"
+                clearable
+                @update:model-value="
+                  attr.Prty.multi_select
+                    ? setDefaultPrttyValues(attr.Prty.off_id, $event)
+                    : setDefaultPrttyValues(attr.Prty.off_id, $event != null ? [$event] : [])
+                "
+              >
                 <el-option v-for="v in getAttrOptions(attr)" :key="v.Office_Id" :label="v.Name" :value="v.Office_Id" />
               </el-select>
             </div>
           </div>
           <div v-if="Object.keys(requiredAttrsMap).length > 0" class="required-attrs">
             <span class="required-label">必填属性</span>
-            <el-tag v-for="(_, key) in requiredAttrsMap" :key="key" closable size="small"
-              style="margin-right: 8px; margin-top: 4px" @close="removeRequiredAttr(key)">
+            <el-tag
+              v-for="(_, key) in requiredAttrsMap"
+              :key="key"
+              closable
+              size="small"
+              style="margin-right: 8px; margin-top: 4px"
+              @close="removeRequiredAttr(key)"
+            >
               {{ getAttrName(key) }} ×
             </el-tag>
           </div>
@@ -92,7 +123,9 @@
                 </template>
               </el-table-column>
             </el-table>
-            <el-button type="primary" link size="small" style="margin-top: 6px" @click="addOtheryRow">+ 添加属性</el-button>
+            <el-button type="primary" link size="small" style="margin-top: 6px" @click="addOtheryRow"
+              >+ 添加属性</el-button
+            >
           </div>
           <!-- 勾选为必填的属性（未指定值时后端自动填第一个） -->
           <div v-if="propertyList.length > 0" class="required-check-area">
@@ -121,14 +154,26 @@
             <template #default="{ row }">
               <template v-if="shopGroupsMap[row.id] === undefined">
                 <el-tooltip content="加载当前店铺的分组列表" placement="top">
-                  <el-button type="primary" link size="small" :loading="loadingShopId === row.id"
-                    @click="loadShopGroups(row.id)">
+                  <el-button
+                    type="primary"
+                    link
+                    size="small"
+                    :loading="loadingShopId === row.id"
+                    @click="loadShopGroups(row.id)"
+                  >
                     加载分组
                   </el-button>
                 </el-tooltip>
               </template>
-              <el-select v-else v-model="getShopConf(row.id).GroupOffIds" multiple
-                placeholder="默认" clearable size="small" style="width: 100%">
+              <el-select
+                v-else
+                v-model="getShopConf(row.id).GroupOffIds"
+                multiple
+                placeholder="默认"
+                clearable
+                size="small"
+                style="width: 100%"
+              >
                 <el-option v-for="g in flatShopGroups(row.id)" :key="g.OfficeId" :label="g.Name" :value="g.OfficeId" />
               </el-select>
             </template>
@@ -137,12 +182,26 @@
             <template #header>{{ attr.Prty.name }}</template>
             <template #default="{ row }">
               <el-select
-                :model-value="attr.Prty.multi_select ? getShopPrttyValues(row.id)[attr.Prty.off_id] : (getShopPrttyValues(row.id)[attr.Prty.off_id]?.[0] ?? undefined)"
-                @update:model-value="attr.Prty.multi_select ? (getShopPrttyValues(row.id)[attr.Prty.off_id] = $event) : (getShopPrttyValues(row.id)[attr.Prty.off_id] = $event != null ? [$event] : [])"
+                :model-value="
+                  attr.Prty.multi_select
+                    ? getShopPrttyValues(row.id)[attr.Prty.off_id]
+                    : (getShopPrttyValues(row.id)[attr.Prty.off_id]?.[0] ?? undefined)
+                "
                 :remote="!!attr.Prty.need_query"
                 :remote-method="attr.Prty.need_query ? (q: string) => handleAttrRemoteSearch(attr, q) : undefined"
-                :loading="!!attr.Prty.need_query && attrSearchLoading" :multiple="!!attr.Prty.multi_select" filterable
-                placeholder="默认" clearable size="small" style="width: 100%">
+                :loading="!!attr.Prty.need_query && attrSearchLoading"
+                :multiple="!!attr.Prty.multi_select"
+                filterable
+                placeholder="默认"
+                clearable
+                size="small"
+                style="width: 100%"
+                @update:model-value="
+                  attr.Prty.multi_select
+                    ? (getShopPrttyValues(row.id)[attr.Prty.off_id] = $event)
+                    : (getShopPrttyValues(row.id)[attr.Prty.off_id] = $event != null ? [$event] : [])
+                "
+              >
                 <el-option v-for="v in getAttrOptions(attr)" :key="v.Office_Id" :label="v.Name" :value="v.Office_Id" />
               </el-select>
             </template>
@@ -186,7 +245,7 @@ const props = withDefaults(
   }>(),
   {
     defaultConf: () => ({}),
-    shopConfMap: () => ({}),
+    shopConfMap: () => ({})
   }
 )
 
@@ -238,18 +297,20 @@ function syncOtheryPrttyToConf() {
   for (const r of otheryPrttyRows.value) {
     const k = (r.key ?? '').trim()
     if (!k) continue
-    const vals = (r.values ?? []).filter((s) => (s ?? '').trim())
+    const vals = (r.values ?? []).filter(s => (s ?? '').trim())
     if (vals.length > 0) map[k] = vals
   }
   otheryPrttyFromSync = true
   props.defaultConf.OtheryPrtty = Object.keys(map).length > 0 ? map : undefined
-  setTimeout(() => { otheryPrttyFromSync = false }, 0)
+  setTimeout(() => {
+    otheryPrttyFromSync = false
+  }, 0)
 }
 
 let otherySkipSync = false
 watch(
   () => props.defaultConf.OtheryPrtty,
-  (v) => {
+  v => {
     if (otheryPrttyFromSync) return
     otherySkipSync = true
     if (!v || typeof v !== 'object') {
@@ -257,23 +318,31 @@ watch(
     } else {
       const rows = Object.entries(v).map(([key, vals]) => ({
         key,
-        values: Array.isArray(vals) ? [...vals] : [],
+        values: Array.isArray(vals) ? [...vals] : []
       }))
       if (rows.length === 0) rows.push({ key: '', values: [] })
       otheryPrttyRows.value = rows
     }
-    setTimeout(() => { otherySkipSync = false }, 0)
+    setTimeout(() => {
+      otherySkipSync = false
+    }, 0)
   },
   { immediate: true, deep: true }
 )
-watch(otheryPrttyRows, () => { if (!otherySkipSync) syncOtheryPrttyToConf() }, { deep: true })
+watch(
+  otheryPrttyRows,
+  () => {
+    if (!otherySkipSync) syncOtheryPrttyToConf()
+  },
+  { deep: true }
+)
 
 // 必填属性 id 列表（勾选则未指定时后端自动填第一个）
 const requiredAttrIds = computed({
   get: () => props.defaultConf.RequiredAttrValues ?? [],
   set: (val: string[]) => {
     props.defaultConf.RequiredAttrValues = val.length > 0 ? val : undefined
-  },
+  }
 })
 
 // 必填属性：从 Prty.required 且在 PrttyValues 中有值（展示已选中的必填）
@@ -295,7 +364,7 @@ const removeRequiredAttr = (key: string) => {
   props.defaultConf.PrttyValues = Object.keys(next).length > 0 ? next : undefined
 }
 
-const getAttrName = (offId: string) => propertyList.value.find((a) => a.Prty.off_id === offId)?.Prty.name ?? offId
+const getAttrName = (offId: string) => propertyList.value.find(a => a.Prty.off_id === offId)?.Prty.name ?? offId
 
 const getAttrOptions = (attr: PropertyAndValues) => attr.Values ?? []
 
@@ -318,7 +387,7 @@ const doAttrRemoteSearch = async (attr: PropertyAndValues, query: string) => {
     if (Array.isArray(res)) {
       attr.Values = res.map((r: any) => ({
         Name: r.ValueName ?? r.valueName ?? r.name,
-        Office_Id: String(r.Key ?? r.key ?? r.Office_Id ?? r.office_id ?? ''),
+        Office_Id: String(r.Key ?? r.key ?? r.Office_Id ?? r.office_id ?? '')
       }))
     } else {
       attr.Values = []
@@ -353,7 +422,7 @@ const callFunctionAsync = async (method: string, parmObj?: any): Promise<any> =>
     FunctionCode: CTGYPRTYMG_CODE,
     ShopId: props.firstShopId,
     Method: method,
-    ParmsObj: parmObj != null ? JSON.stringify(parmObj) : '{}',
+    ParmsObj: parmObj != null ? JSON.stringify(parmObj) : '{}'
   }
   const raw = await apiManager.functionuserApi.CallFunction(parms)
   return parseCallFunctionResult(raw)
@@ -402,7 +471,7 @@ const loadShopGroups = async (shopId: string) => {
       FunctionCode: CTGYPRTYMG_CODE,
       ShopId: shopId,
       Method: 'GetFoodGroups',
-      ParmsObj: '{}',
+      ParmsObj: '{}'
     }
     const raw = await apiManager.functionuserApi.CallFunction(parms)
     const res = parseCallFunctionResult(raw)
@@ -434,7 +503,7 @@ const getShopPrttyValues = (shopId: string): Record<string, string[]> => {
 // 确保 defaultConf 结构正确
 watch(
   () => props.defaultConf,
-  (c) => {
+  c => {
     if (!c) return
     if (!Array.isArray(c.GroupOffIds)) c.GroupOffIds = []
     if (!c.PrttyValues || typeof c.PrttyValues !== 'object') c.PrttyValues = {}
@@ -444,7 +513,7 @@ watch(
 
 watch(
   () => props.firstShopId,
-  (id) => {
+  id => {
     if (id) loadConfigOptions()
   },
   { immediate: true }

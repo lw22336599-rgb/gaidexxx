@@ -56,7 +56,7 @@
               <el-col :lg="12" :md="16" :sm="24" :xl="12" :xs="24">
                 <div class="shoplist">
                   <template v-for="(shop, index) in userInfo.count_shop_type" :key="index">
-                    <div class="shopnumiten" >
+                    <div class="shopnumiten">
                       <div>{{ shop.ShopCount }}</div>
                       <div>{{ shop.Title }}</div>
                     </div>
@@ -68,12 +68,7 @@
         </vab-card>
       </el-col>
     </el-row>
-    <el-dialog
-      v-model="dialogState"
-      :before-close="cancelDialog"
-      title="修改密码"
-      width="600"
-    >
+    <el-dialog v-model="dialogState" :before-close="cancelDialog" title="修改密码" width="600">
       <el-form ref="formRef" label-position="left" :model="form" :rules="rules" @submit.prevent>
         <el-form-item prop="phone">
           <el-input v-model.trim="form.phone" clearable disabled maxlength="11" show-word-limit type="text">
@@ -126,7 +121,7 @@ import { password } from '/@/api/user.ts'
 import { gp } from '/@vab/plugins/vab.ts'
 
 defineOptions({
-  name: 'PersonalCenter',
+  name: 'PersonalCenter'
 })
 const userInfoStr = localStorage.getItem('userInfo') as string
 const userInfo = JSON.parse(userInfoStr)
@@ -144,7 +139,7 @@ const form = reactive<FormType>({
   phone: userInfo.admin.phone,
   p: '',
   p1: '',
-  phone_code: '',
+  phone_code: ''
 })
 const validatePassword = (rule: any, value: any, callback: any) => {
   if (isPassword(value)) {
@@ -154,7 +149,7 @@ const validatePassword = (rule: any, value: any, callback: any) => {
   }
 }
 
-const validateAgainPassword  = (rule: any, value: any, callback: any) => {
+const validateAgainPassword = (rule: any, value: any, callback: any) => {
   if (isPassword(value)) {
     callback()
   } else if (value === form.p) {
@@ -175,33 +170,33 @@ const rules = reactive<FormRules<FormType>>({
     {
       required: true,
       trigger: 'blur',
-      message: translate('请输入手机号'),
+      message: translate('请输入手机号')
     },
-    { validator: validatePhone, trigger: 'blur' },
+    { validator: validatePhone, trigger: 'blur' }
   ],
   p: [
     {
       required: true,
       trigger: 'blur',
-      message: translate('请输入新密码'),
+      message: translate('请输入新密码')
     },
-    { validator: validatePassword, trigger: 'blur' },
+    { validator: validatePassword, trigger: 'blur' }
   ],
   p1: [
     {
       required: true,
       trigger: 'blur',
-      message: translate('请确认新密码'),
+      message: translate('请确认新密码')
     },
-    { validator: validateAgainPassword, trigger: 'blur' },
+    { validator: validateAgainPassword, trigger: 'blur' }
   ],
   phone_code: [
     {
       required: true,
       trigger: 'blur',
-      message: translate('请输入手机验证码'),
-    },
-  ],
+      message: translate('请输入手机验证码')
+    }
+  ]
 })
 const openDialog = () => {
   dialogState.value = true
@@ -232,43 +227,45 @@ const getPhoneCode = async () => {
   }
 }
 const startGetPhoneCodeTimer = () => {
-  isGetPhone.value = true;
-  let n = 60;
+  isGetPhone.value = true
+  let n = 60
   // 清除可能存在的旧定时器
   if (timer) {
-    clearInterval(timer);
+    clearInterval(timer)
   }
   timer = setInterval(() => {
-    console.log(phoneCode.value);
+    console.log(phoneCode.value)
     if (n > 0) {
-      n--;
-      phoneCode.value = `${translate('获取验证码 ') + n}s`;
+      n--
+      phoneCode.value = `${translate('获取验证码 ') + n}s`
     } else {
       stopGetPhoneCodeTimer()
-      isGetPhone.value = false;
+      isGetPhone.value = false
     }
-  }, 1000);
-};
+  }, 1000)
+}
 const stopGetPhoneCodeTimer = () => {
   if (timer) {
-    clearInterval(timer);
-    timer = null; // 确保清除后将 timer 设置为 null
+    clearInterval(timer)
+    timer = null // 确保清除后将 timer 设置为 null
   }
-  phoneCode.value = translate('获取验证码');
-  isGetPhone.value = false;
-};
+  phoneCode.value = translate('获取验证码')
+  isGetPhone.value = false
+}
 const handleRegister = () => {
   formRef.value?.validate(async (valid: any) => {
     if (valid) {
       loading.value = true
       const { phone, p, p1, phone_code } = form
-      await password({ phone, p, p1, phone_code }).then((res: any) => {
-        if (res.code === 200 && (res.data.ResultType === 5 || res.data.ResultType === 0)) {
-          gp.$baseMessage('修改成功', 'success', 'hey')
-        }
-      }).finally(() => {
-        loading.value = false
-      })
+      await password({ phone, p, p1, phone_code })
+        .then((res: any) => {
+          if (res.code === 200 && (res.data.ResultType === 5 || res.data.ResultType === 0)) {
+            gp.$baseMessage('修改成功', 'success', 'hey')
+          }
+        })
+        .finally(() => {
+          loading.value = false
+        })
     }
   })
 }
@@ -359,7 +356,6 @@ onUnmounted(() => {
     margin-bottom: 4px;
   }
   .msg-item {
-
   }
 }
 .shoplist {

@@ -2,7 +2,7 @@
   <vab-card class="goods-card" :class="'top-card-' + background">
     {{ title }}
     <template v-if="$slots.tag">
-      <slot name="tag"></slot>
+      <slot name="tag" />
     </template>
     <p>
       <vab-count
@@ -24,7 +24,7 @@
       <vab-icon icon="arrow-up-line" />
       <span>{{ percentage }}</span>
       <template v-if="$slots.chart">
-        <slot name="chart"></slot>
+        <slot name="chart" />
       </template>
     </div>
   </vab-card>
@@ -34,31 +34,31 @@
 import { random } from 'lodash-es'
 
 defineOptions({
-  name: 'GoodsCard',
+  name: 'GoodsCard'
 })
 
 defineProps({
   background: {
     type: String,
-    default: 'white',
+    default: 'white'
   },
   title: {
     type: String,
-    default: 'Test',
+    default: 'Test'
   },
   icon: {
     type: String,
-    default: '',
+    default: ''
   },
   iconStyle: {
     type: Object,
     default: () => {
       return {}
-    },
+    }
   },
   percentage: {
     type: String,
-    default: '10%',
+    default: '10%'
   },
   countConfig: {
     type: Object,
@@ -70,10 +70,10 @@ defineProps({
         prefix: '',
         suffix: '',
         separator: ',',
-        duration: 8000,
+        duration: 8000
       }
-    },
-  },
+    }
+  }
 })
 </script>
 

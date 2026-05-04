@@ -155,8 +155,8 @@ export default defineFlatConfig([
     processor: pluginVue.processors['.vue'],
     rules: {
       ...pluginVue.configs.base.rules,
-      ...pluginVue.configs['vue3-essential'].rules,
-      ...pluginVue.configs['vue3-recommended'].rules,
+      ...pluginVue.configs.essential.rules,
+      ...pluginVue.configs.recommended.rules,
       'no-undef': 'off',
       'no-unused-vars': 'off',
       'vue/no-unused-vars': 'off',

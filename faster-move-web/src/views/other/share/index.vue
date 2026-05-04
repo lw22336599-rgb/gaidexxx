@@ -23,7 +23,7 @@ import VabQrCode from '/@/plugins/VabQrCode'
 import clip from '/@/utils/clipboard'
 
 defineOptions({
-  name: 'Share',
+  name: 'Share'
 })
 
 const { share } = useShare()
@@ -31,12 +31,12 @@ const { share } = useShare()
 function startShare() {
   share({
     title: 'Vue shop Vite',
-    url: 'https://vuejs-core.cn/shop-vite',
+    url: 'https://vuejs-core.cn/shop-vite'
   })
 }
 
 const form = reactive<any>({
-  url: 'https://vuejs-core.cn/shop-vite',
+  url: 'https://vuejs-core.cn/shop-vite'
 })
 
 const copy = () => {

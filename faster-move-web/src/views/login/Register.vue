@@ -6,16 +6,27 @@
         <div class="title">hello !</div>
         <div class="title-tips">{{ title }} {{ translate('账号注册') }}</div>
         <el-form-item prop="phone">
-          <el-input v-model.trim="form.phone" clearable maxlength="11" :placeholder="translate('请输入手机号')"
-            show-word-limit type="text">
+          <el-input
+            v-model.trim="form.phone"
+            clearable
+            maxlength="11"
+            :placeholder="translate('请输入手机号')"
+            show-word-limit
+            type="text"
+          >
             <template #prefix>
               <vab-icon icon="smartphone-line" />
             </template>
           </el-input>
         </el-form-item>
         <el-form-item prop="codeOrTeamId">
-          <el-input v-model.trim="form.codeOrTeamId" auto-complete="off" clearable :placeholder="translate('请输入邀请码')"
-            type="text">
+          <el-input
+            v-model.trim="form.codeOrTeamId"
+            auto-complete="off"
+            clearable
+            :placeholder="translate('请输入邀请码')"
+            type="text"
+          >
             <template #prefix>
               <vab-icon icon="barcode-box-line" />
             </template>
@@ -55,7 +66,7 @@
 </template>
 
 <script lang="ts" setup>
-import { gp } from "/@vab/plugins/vab.ts";
+import { gp } from '/@vab/plugins/vab.ts'
 import type { FormInstance, FormRules } from 'element-plus'
 import { register } from '/@/api/user'
 import leftImg from '/@/assets/login_images/left_img_5.png'
@@ -65,7 +76,7 @@ import { useUserStore } from '/@/store/modules/user'
 import { isPassword, isPhone } from '/@/utils/validate'
 
 defineOptions({
-  name: 'Register',
+  name: 'Register'
 })
 
 interface FormType {
@@ -88,7 +99,7 @@ const form = reactive<FormType>({
   codeOrTeamId: '',
   p: '',
   p1: '',
-  is_boss: false,
+  is_boss: false
 })
 
 const validatePassword = (rule: any, value: any, callback: any) => {
@@ -120,33 +131,33 @@ const rules = reactive<FormRules<FormType>>({
     {
       required: true,
       trigger: 'blur',
-      message: translate('请输入手机号'),
+      message: translate('请输入手机号')
     },
-    { validator: validatePhone, trigger: 'blur' },
+    { validator: validatePhone, trigger: 'blur' }
   ],
   codeOrTeamId: [
     {
       required: true,
       trigger: 'blur',
-      message: '请输入邀请码',
-    },
+      message: '请输入邀请码'
+    }
   ],
   p: [
     {
       required: true,
       trigger: 'blur',
-      message: translate('请输入密码'),
+      message: translate('请输入密码')
     },
-    { validator: validatePassword, trigger: 'blur' },
+    { validator: validatePassword, trigger: 'blur' }
   ],
   p1: [
     {
       required: true,
       trigger: 'blur',
-      message: translate('请再次输入密码'),
+      message: translate('请再次输入密码')
     },
-    { validator: validateAgainPassword, trigger: 'blur' },
-  ],
+    { validator: validateAgainPassword, trigger: 'blur' }
+  ]
 })
 
 const redirect = ref<any>(undefined)
@@ -161,27 +172,30 @@ const handleRegister = async () => {
   formRef.value?.validate(async (valid: any) => {
     if (valid) {
       loading.value = true
-      await register(form).then(async (res: any) => {
-        if (res.code === 200 && (res.data.ResultType === 5 || res.data.ResultType === 0)) {
-          gp.$baseMessage('注册成功', 'success', 'hey')
-          setTimeout(() => {
-            router.push('/login')
-          }, 500)
-          const { phone, p } = form
-          await login({ phone, pwd: p }).then((res: any) => {
-            if (res.code === 200 && (res.data.ResultType === 5 || res.data.ResultType === 0)) {
-              gp.$baseMessage('登录成功', 'success', 'hey')
-            }
-          }).catch(() => {
-            loading.value = false
-          })
-          await router.push(handleRoute())
-        }
-      }).finally(() => {
-        loading.value = false
-      })
+      await register(form)
+        .then(async (res: any) => {
+          if (res.code === 200 && (res.data.ResultType === 5 || res.data.ResultType === 0)) {
+            gp.$baseMessage('注册成功', 'success', 'hey')
+            setTimeout(() => {
+              router.push('/login')
+            }, 500)
+            const { phone, p } = form
+            await login({ phone, pwd: p })
+              .then((res: any) => {
+                if (res.code === 200 && (res.data.ResultType === 5 || res.data.ResultType === 0)) {
+                  gp.$baseMessage('登录成功', 'success', 'hey')
+                }
+              })
+              .catch(() => {
+                loading.value = false
+              })
+            await router.push(handleRoute())
+          }
+        })
+        .finally(() => {
+          loading.value = false
+        })
     }
   })
 }
-
 </script>

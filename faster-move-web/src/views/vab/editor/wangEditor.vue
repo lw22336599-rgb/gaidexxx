@@ -7,7 +7,7 @@
       <el-button type="primary" @click="handleSave">保存</el-button>
     </div>
     <vab-dialog v-model="dialogVisible" append-to-body class="wang-editor-dialog" width="500px">
-      <div v-html="html"></div>
+      <div v-html="html" />
       <template #footer>
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
@@ -22,7 +22,7 @@ import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
 import '@wangeditor/editor/dist/css/style.css'
 
 defineOptions({
-  name: 'WangEditor',
+  name: 'WangEditor'
 })
 
 const dialogVisible = ref<any>(false)
@@ -38,9 +38,9 @@ const editorConfig = reactive<any>({
       server: '', // 您的服务器地址，注意：当前接口格式特殊与其他vab接口不同，请查看vip文档
       fieldName: 'vab-file-name',
       allowedFileTypes: ['image/*'],
-      headers: {}, // 如需传递token请写到在这里
-    },
-  },
+      headers: {} // 如需传递token请写到在这里
+    }
+  }
 })
 
 const handleCreated = (editor: IDomEditor) => {

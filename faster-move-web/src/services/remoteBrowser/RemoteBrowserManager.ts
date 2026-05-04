@@ -8,7 +8,7 @@ import { getSignalRBasePath } from '/@/utils/apiConfig'
 import { apiManager } from '/@/TsModel/Api/ApiManager'
 import type {
   RemoteBrowserClosingDto,
-  RemoteBrowserNotificationDto,
+  RemoteBrowserNotificationDto
 } from '/@/TsModel/Alien/Entity/WebView/RemoteBrowserDtos'
 import type { RemoteBrowserPageDescriptor } from '/@/TsModel/Alien/Entity/WebView/RemoteBrowserDtos'
 
@@ -37,7 +37,7 @@ export class RemoteBrowserManager {
   onStateChange(cb: OnStateChangeCallback): () => void {
     this.onStateChangeCallbacks.push(cb)
     return () => {
-      this.onStateChangeCallbacks = this.onStateChangeCallbacks.filter((c) => c !== cb)
+      this.onStateChangeCallbacks = this.onStateChangeCallbacks.filter(c => c !== cb)
     }
   }
 
@@ -45,21 +45,21 @@ export class RemoteBrowserManager {
     const info = this.shopConnections.get(shopId)
     if (info) {
       info.state = state
-      this.onStateChangeCallbacks.forEach((cb) => cb(shopId))
+      this.onStateChangeCallbacks.forEach(cb => cb(shopId))
     }
   }
 
   onClosing(cb: OnClosingCallback): () => void {
     this.onClosingCallbacks.push(cb)
     return () => {
-      this.onClosingCallbacks = this.onClosingCallbacks.filter((c) => c !== cb)
+      this.onClosingCallbacks = this.onClosingCallbacks.filter(c => c !== cb)
     }
   }
 
   onNotify(cb: OnNotifyCallback): () => void {
     this.onNotifyCallbacks.push(cb)
     return () => {
-      this.onNotifyCallbacks = this.onNotifyCallbacks.filter((c) => c !== cb)
+      this.onNotifyCallbacks = this.onNotifyCallbacks.filter(c => c !== cb)
     }
   }
 
@@ -87,7 +87,7 @@ export class RemoteBrowserManager {
 
     const connection = new signalR.HubConnectionBuilder()
       .withUrl(hubUrl, {
-        accessTokenFactory: () => token,
+        accessTokenFactory: () => token
       })
       .withAutomaticReconnect([0, 2000, 5000, 10000])
       .configureLogging(signalR.LogLevel.Information)
@@ -98,16 +98,16 @@ export class RemoteBrowserManager {
       shopType,
       shopName,
       state: 'connecting',
-      connection,
+      connection
     })
     this.setShopState(key, 'connecting')
 
     connection.on('RemoteBrowserClosing', (dto: RemoteBrowserClosingDto) => {
-      this.onClosingCallbacks.forEach((cb) => cb(dto))
+      this.onClosingCallbacks.forEach(cb => cb(dto))
     })
 
     connection.on('Notify', (dto: RemoteBrowserNotificationDto) => {
-      this.onNotifyCallbacks.forEach((cb) => cb(dto))
+      this.onNotifyCallbacks.forEach(cb => cb(dto))
     })
 
     connection.on('ForceDisconnect', () => {
@@ -170,7 +170,9 @@ export class RemoteBrowserManager {
     connection.on('Ping', async () => invoke('Ping'))
     connection.on('HttpRequest', async (request: any) => invoke('HttpRequest', request))
     connection.on('HttpRequestSharPage', async (item: any) => invoke('HttpRequestSharPage', item))
-    connection.on('ExecuteScript', async (pageKey: string | null, script: string) => invoke('ExecuteScript', pageKey, script))
+    connection.on('ExecuteScript', async (pageKey: string | null, script: string) =>
+      invoke('ExecuteScript', pageKey, script)
+    )
     connection.on('Navigate', async (pageKey: string | null, url: string) => invoke('Navigate', pageKey, url))
     connection.on('GetCookieString', async (pageKey: string | null) => invoke('GetCookieString', pageKey))
     connection.on('GetCookieResult', async (request: any) => invoke('GetCookieResult', request))

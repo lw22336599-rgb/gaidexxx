@@ -81,9 +81,7 @@ class SignalRManager {
 
     // 优先使用 WebAudio 解锁（更稳定）
     try {
-      const Ctx = (window.AudioContext || (window as any).webkitAudioContext) as
-        | (new () => AudioContext)
-        | undefined
+      const Ctx = (window.AudioContext || (window as any).webkitAudioContext) as (new () => AudioContext) | undefined
       if (Ctx) {
         if (!this.audioContext) {
           this.audioContext = new Ctx()
@@ -112,9 +110,7 @@ class SignalRManager {
 
   private async playBeepFallback(): Promise<void> {
     try {
-      const Ctx = (window.AudioContext || (window as any).webkitAudioContext) as
-        | (new () => AudioContext)
-        | undefined
+      const Ctx = (window.AudioContext || (window as any).webkitAudioContext) as (new () => AudioContext) | undefined
       if (!Ctx) {
         return
       }
@@ -272,7 +268,6 @@ class SignalRManager {
         this.messageCallbacks.forEach(callback => {
           try {
             callback(message)
-
           } catch (error) {
             // 忽略回调错误
           }
@@ -345,7 +340,6 @@ class SignalRManager {
         })
       })
 
-
       // 监听重连事件
       this.imConnection.onreconnected(async () => {
         try {
@@ -384,10 +378,10 @@ class SignalRManager {
    */
   async connectNotification(userId: string): Promise<boolean> {
     if (this.notificationConnection?.state === signalR.HubConnectionState.Connected) {
-      return true;
+      return true
     }
     if (!userId) {
-      return false;
+      return false
     }
     this.notificationRequested = true
 
@@ -396,48 +390,44 @@ class SignalRManager {
         .withUrl(this.buildHubUrl('notification'))
         .withAutomaticReconnect()
         .configureLogging(signalR.LogLevel.Warning)
-        .build();
+        .build()
 
       // 监听系统通知
       this.notificationConnection.on('ReceiveNotification', (notification: any) => {
         this.notificationCallbacks.forEach(callback => {
           try {
-            callback({ type: 'notification', data: notification });
-          } catch (error) {
-          }
-        });
-      });
+            callback({ type: 'notification', data: notification })
+          } catch (error) {}
+        })
+      })
 
       // 监听广播消息
       this.notificationConnection.on('ReceiveMessage', (message: any) => {
         this.notificationCallbacks.forEach(callback => {
           try {
-            callback({ type: 'broadcast', data: message });
-          } catch (error) {
-          }
-        });
-      });
+            callback({ type: 'broadcast', data: message })
+          } catch (error) {}
+        })
+      })
 
       this.notificationConnection.onreconnected(async () => {
         try {
           // 重连后需要重新加入用户组
           await this.notificationConnection!.invoke('JoinUser', userId)
-        } catch (error) {
-        }
-      });
+        } catch (error) {}
+      })
 
-      this.notificationConnection.onclose(() => {
-      });
+      this.notificationConnection.onclose(() => {})
 
-      await this.notificationConnection.start();
+      await this.notificationConnection.start()
 
       // 连接成功后，调用 JoinUser 加入用户组
-      await this.notificationConnection.invoke('JoinUser', userId);
+      await this.notificationConnection.invoke('JoinUser', userId)
       this.currentUserId = userId
 
-      return true;
+      return true
     } catch (error) {
-      return false;
+      return false
     }
   }
 
@@ -449,8 +439,7 @@ class SignalRManager {
     if (this.imConnection) {
       try {
         await this.imConnection.stop()
-      } catch (error) {
-      }
+      } catch (error) {}
       this.imConnection = null
     }
     this.messageCallbacks = []
@@ -460,8 +449,7 @@ class SignalRManager {
     if (this.notificationConnection) {
       try {
         await this.notificationConnection.stop()
-      } catch (error) {
-      }
+      } catch (error) {}
       this.notificationConnection = null
     }
     this.notificationCallbacks = []

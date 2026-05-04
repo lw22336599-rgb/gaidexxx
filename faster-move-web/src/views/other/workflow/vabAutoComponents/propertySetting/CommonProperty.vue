@@ -22,12 +22,12 @@ export default defineComponent({
   props: {
     nodeData: {
       type: Object,
-      default: () => {},
+      default: () => {}
     },
     lf: {
       type: Object || String,
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   emits: ['onClose'],
   data() {
@@ -35,8 +35,8 @@ export default defineComponent({
       formData: {
         name: '',
         region: '',
-        type: '',
-      },
+        type: ''
+      }
     }
   },
   mounted() {
@@ -50,7 +50,7 @@ export default defineComponent({
       const { id } = this.$props.nodeData
       this.$props.lf.setProperties(id, this.$data.formData)
       this.$emit('onClose')
-    },
-  },
+    }
+  }
 })
 </script>

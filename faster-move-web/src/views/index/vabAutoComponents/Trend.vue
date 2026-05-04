@@ -17,26 +17,26 @@ const { theme } = storeToRefs(settingsStore)
 const option = reactive<any>({
   tooltip: {
     trigger: 'axis',
-    extraCssText: 'z-index:1',
+    extraCssText: 'z-index:1'
   },
   grid: {
     top: '4%',
     left: '2%',
     right: '2%',
     bottom: '0%',
-    containLabel: true,
+    containLabel: true
   },
   xAxis: [
     {
       type: 'category',
       data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-      boundaryGap: false,
-    },
+      boundaryGap: false
+    }
   ],
   yAxis: [
     {
-      type: 'value',
-    },
+      type: 'value'
+    }
   ],
   series: [
     {
@@ -48,8 +48,8 @@ const option = reactive<any>({
       yAxisIndex: 0,
       showSymbol: false,
       areaStyle: {
-        opacity: 0.8,
-      },
+        opacity: 0.8
+      }
     },
     {
       name: '回款',
@@ -60,10 +60,10 @@ const option = reactive<any>({
       yAxisIndex: 0,
       showSymbol: false,
       areaStyle: {
-        opacity: 0.8,
-      },
-    },
-  ],
+        opacity: 0.8
+      }
+    }
+  ]
 })
 
 watch(

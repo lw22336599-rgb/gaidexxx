@@ -1,22 +1,39 @@
 <template>
   <div class="food-table">
-    <el-table ref="tableRef" :data="foods" :loading="loading" @selection-change="handleSelectionChange" row-key="id"
-      :expand-row-keys="expandedRows" @row-click="handleRowClick">
-
+    <el-table
+      ref="tableRef"
+      :data="foods"
+      :loading="loading"
+      row-key="id"
+      :expand-row-keys="expandedRows"
+      @selection-change="handleSelectionChange"
+      @row-click="handleRowClick"
+    >
       <el-table-column type="selection" width="30" />
       <el-table-column type="expand" width="40">
         <!-- SKU子表 -->
         <template #default="{ row }">
-          <el-table :data="row.SkuList" border
-            @selection-change="(selection) => handleSkuSelectionChange(row, selection)">
+          <el-table
+            :data="row.SkuList"
+            border
+            @selection-change="selection => handleSkuSelectionChange(row, selection)"
+          >
             <el-table-column type="selection" width="55" />
             <el-table-column prop="SkuPath" label="规格名称" />
             <el-table-column prop="Price" label="原价" width="120">
               <template #default="{ row: sku }">
                 <div v-if="editingSkuCell?.skuId === sku.SkuId && editingSkuCell.field === 'Price'" class="cell-edit">
-                  <el-input-number v-model="sku.Price" :min="0" :precision="2" :step="0.1" controls-position="right"
-                    size="small" class="auto-width-input" @change="(val) => handleSkuPriceChange(row, sku, val)"
-                    @blur="() => handleSkuPriceBlur(row, sku)" />
+                  <el-input-number
+                    v-model="sku.Price"
+                    :min="0"
+                    :precision="2"
+                    :step="0.1"
+                    controls-position="right"
+                    size="small"
+                    class="auto-width-input"
+                    @change="val => handleSkuPriceChange(row, sku, val)"
+                    @blur="() => handleSkuPriceBlur(row, sku)"
+                  />
                 </div>
                 <div v-else class="cell-content" @click="startEditSkuCell(sku, 'Price')">
                   {{ sku.Price }}
@@ -25,12 +42,22 @@
             </el-table-column>
             <el-table-column prop="ActPrice" label="活动价" width="120">
               <template #default="{ row: sku }">
-                <div v-if="editingSkuCell?.skuId === sku.SkuId && editingSkuCell.field === 'ActPrice'"
-                  class="cell-edit">
-                  <el-input-number :model-value="getZheKouField(sku, 'ActPrice')"
-                    @change="(val) => handleSkuActPriceChange(row, sku, val)"
-                    @blur="() => handleSkuActPriceBlur(row, sku)" :min="0" :max="sku.Price" :precision="2" :step="0.1"
-                    controls-position="right" size="small" class="auto-width-input" />
+                <div
+                  v-if="editingSkuCell?.skuId === sku.SkuId && editingSkuCell.field === 'ActPrice'"
+                  class="cell-edit"
+                >
+                  <el-input-number
+                    :model-value="getZheKouField(sku, 'ActPrice')"
+                    :min="0"
+                    :max="sku.Price"
+                    :precision="2"
+                    :step="0.1"
+                    controls-position="right"
+                    size="small"
+                    class="auto-width-input"
+                    @change="val => handleSkuActPriceChange(row, sku, val)"
+                    @blur="() => handleSkuActPriceBlur(row, sku)"
+                  />
                 </div>
                 <div v-else class="cell-content" @click="startEditSkuCell(sku, 'ActPrice')">
                   {{ getZheKouField(sku, 'ActPrice') }}
@@ -40,9 +67,17 @@
             <el-table-column prop="Stock" label="库存" width="120">
               <template #default="{ row: sku }">
                 <div v-if="editingSkuCell?.skuId === sku.SkuId && editingSkuCell.field === 'Stock'" class="cell-edit">
-                  <el-input-number v-model="sku.Stock" :min="0" :precision="0" :step="1" controls-position="right"
-                    size="small" class="auto-width-input" @change="(val) => handleSkuStockChange(row, sku, val)"
-                    @blur="() => handleSkuStockBlur(row, sku)" />
+                  <el-input-number
+                    v-model="sku.Stock"
+                    :min="0"
+                    :precision="0"
+                    :step="1"
+                    controls-position="right"
+                    size="small"
+                    class="auto-width-input"
+                    @change="val => handleSkuStockChange(row, sku, val)"
+                    @blur="() => handleSkuStockBlur(row, sku)"
+                  />
                 </div>
                 <div v-else class="cell-content" @click="startEditSkuCell(sku, 'Stock')">
                   {{ sku.Stock }}
@@ -52,9 +87,17 @@
             <el-table-column prop="MinBuy" label="起购" width="120">
               <template #default="{ row: sku }">
                 <div v-if="editingSkuCell?.skuId === sku.SkuId && editingSkuCell.field === 'MinBuy'" class="cell-edit">
-                  <el-input-number v-model="sku.MinBuy" :min="1" :precision="0" :step="1" controls-position="right"
-                    size="small" class="auto-width-input" @change="(val) => handleSkuMinBuyChange(row, sku, val)"
-                    @blur="() => handleSkuMinBuyBlur(row, sku)" />
+                  <el-input-number
+                    v-model="sku.MinBuy"
+                    :min="1"
+                    :precision="0"
+                    :step="1"
+                    controls-position="right"
+                    size="small"
+                    class="auto-width-input"
+                    @change="val => handleSkuMinBuyChange(row, sku, val)"
+                    @blur="() => handleSkuMinBuyBlur(row, sku)"
+                  />
                 </div>
                 <div v-else class="cell-content" @click="startEditSkuCell(sku, 'MinBuy')">
                   {{ sku.MinBuy }}
@@ -69,16 +112,33 @@
             <el-table-column prop="OrderLimit" label="每单限购" width="100">
               <template #default="{ row: sku }">
                 <div
-                  v-if="editingSkuCell?.skuId === sku.SkuId && editingSkuCell.field === 'OrderLimit' && sku.Discount?.FoodItems"
-                  class="cell-edit">
+                  v-if="
+                    editingSkuCell?.skuId === sku.SkuId &&
+                    editingSkuCell.field === 'OrderLimit' &&
+                    sku.Discount?.FoodItems
+                  "
+                  class="cell-edit"
+                >
                   <el-input-number
-                    :model-value="sku.Discount?.FoodItems?.find((i: ActivityType_ZheKou_Item) => i.SkuId === sku.SkuId)?.OrderLimit || 0"
-                    @change="(val) => handleSkuOrderLimitChange(row, sku, val)"
-                    @blur="() => handleSkuOrderLimitBlur(row, sku)" :min="0" :precision="0" :step="1"
-                    controls-position="right" size="small" class="auto-width-input" />
+                    :model-value="
+                      sku.Discount?.FoodItems?.find((i: ActivityType_ZheKou_Item) => i.SkuId === sku.SkuId)
+                        ?.OrderLimit || 0
+                    "
+                    :min="0"
+                    :precision="0"
+                    :step="1"
+                    controls-position="right"
+                    size="small"
+                    class="auto-width-input"
+                    @change="val => handleSkuOrderLimitChange(row, sku, val)"
+                    @blur="() => handleSkuOrderLimitBlur(row, sku)"
+                  />
                 </div>
-                <div v-else class="cell-content"
-                  @click="sku.Discount?.FoodItems ? startEditSkuCell(sku, 'OrderLimit') : null">
+                <div
+                  v-else
+                  class="cell-content"
+                  @click="sku.Discount?.FoodItems ? startEditSkuCell(sku, 'OrderLimit') : null"
+                >
                   {{ getZheKouField(sku, 'OrderLimit') }}
                 </div>
               </template>
@@ -86,16 +146,33 @@
             <el-table-column prop="DayLimit" label="每日库存" width="100">
               <template #default="{ row: sku }">
                 <div
-                  v-if="editingSkuCell?.skuId === sku.SkuId && editingSkuCell.field === 'DayLimit' && sku.Discount?.FoodItems"
-                  class="cell-edit">
+                  v-if="
+                    editingSkuCell?.skuId === sku.SkuId &&
+                    editingSkuCell.field === 'DayLimit' &&
+                    sku.Discount?.FoodItems
+                  "
+                  class="cell-edit"
+                >
                   <el-input-number
-                    :model-value="sku.Discount?.FoodItems?.find((i: ActivityType_ZheKou_Item) => i.SkuId === sku.SkuId)?.DayLimit || 0"
-                    @change="(val) => handleSkuDayLimitChange(row, sku, val)"
-                    @blur="() => handleSkuDayLimitBlur(row, sku)" :min="0" :precision="0" :step="1"
-                    controls-position="right" size="small" class="auto-width-input" />
+                    :model-value="
+                      sku.Discount?.FoodItems?.find((i: ActivityType_ZheKou_Item) => i.SkuId === sku.SkuId)?.DayLimit ||
+                      0
+                    "
+                    :min="0"
+                    :precision="0"
+                    :step="1"
+                    controls-position="right"
+                    size="small"
+                    class="auto-width-input"
+                    @change="val => handleSkuDayLimitChange(row, sku, val)"
+                    @blur="() => handleSkuDayLimitBlur(row, sku)"
+                  />
                 </div>
-                <div v-else class="cell-content"
-                  @click="sku.Discount?.FoodItems ? startEditSkuCell(sku, 'DayLimit') : null">
+                <div
+                  v-else
+                  class="cell-content"
+                  @click="sku.Discount?.FoodItems ? startEditSkuCell(sku, 'DayLimit') : null"
+                >
                   {{ getZheKouField(sku, 'DayLimit') }}
                 </div>
               </template>
@@ -109,7 +186,7 @@
             </el-table-column>
             <el-table-column prop="Status" label="状态" width="150">
               <template #default="{ row }">
-                <el-select v-model="row.Status" @change="(val) => handleStatusChange(row, val)">
+                <el-select v-model="row.Status" @change="val => handleStatusChange(row, val)">
                   <el-option :value="FoodManageApi.FoodStatusType.已上架" label="上架" />
                   <el-option :value="FoodManageApi.FoodStatusType.已下架" label="下架" />
                 </el-select>
@@ -120,9 +197,14 @@
       </el-table-column>
       <el-table-column label="商品图片" width="100">
         <template #default="{ row }">
-          <el-image :src="row.ImageUrls?.find((img: ImageUrlItem) => img.IsMaster)?.Img || row.ImageUrls?.[0]?.Img"
-            :preview-src-list="row.ImageUrls?.map((img: ImageUrlItem) => img.Img)" fit="cover" class="food-image"
-            :initial-index="0" :preview-teleported="true">
+          <el-image
+            :src="row.ImageUrls?.find((img: ImageUrlItem) => img.IsMaster)?.Img || row.ImageUrls?.[0]?.Img"
+            :preview-src-list="row.ImageUrls?.map((img: ImageUrlItem) => img.Img)"
+            fit="cover"
+            class="food-image"
+            :initial-index="0"
+            :preview-teleported="true"
+          >
             <template #error>
               <div class="image-error">
                 <el-icon>
@@ -137,11 +219,9 @@
         <template #default="{ row }">
           <div v-if="editingCell?.rowId === row.id && editingCell.field === 'Name'" class="cell-edit">
             <el-input v-model="row.Name" @change="handleNameChange(row)" @blur="handleNameBlur(row)" />
-
           </div>
           <div v-else class="cell-content" @click="startEditCell(row, 'Name')">
             <div>{{ row.Name }}</div>
-
           </div>
           <div v-if="row.Msg" class="error-message">{{ row.Msg }}</div>
         </template>
@@ -171,9 +251,17 @@
       <el-table-column prop="MinBuyCount" label="起购" width="100">
         <template #default="{ row }">
           <div v-if="editingCell?.rowId === row.id && editingCell.field === 'MinBuyCount'" class="cell-edit">
-            <el-input-number v-model="row.MinBuyCount" :min="1" :precision="0" :step="1" controls-position="right"
-              size="small" class="auto-width-input" @change="(val) => handleMinBuyChange(row, val)"
-              @blur="handleMinBuyBlur(row)" />
+            <el-input-number
+              v-model="row.MinBuyCount"
+              :min="1"
+              :precision="0"
+              :step="1"
+              controls-position="right"
+              size="small"
+              class="auto-width-input"
+              @change="val => handleMinBuyChange(row, val)"
+              @blur="handleMinBuyBlur(row)"
+            />
           </div>
           <div v-else class="cell-content" @click="startEditCell(row, 'MinBuyCount')">
             {{ row.MinBuyCount }}
@@ -182,7 +270,7 @@
       </el-table-column>
       <el-table-column prop="Status" label="状态" width="150">
         <template #default="{ row }">
-          <el-select v-model="row.Status" @change="(val) => handleStatusChange(row, val)">
+          <el-select v-model="row.Status" @change="val => handleStatusChange(row, val)">
             <el-option :value="FoodManageApi.FoodStatusType.已上架" label="上架" />
             <el-option :value="FoodManageApi.FoodStatusType.已下架" label="下架" />
           </el-select>
@@ -192,25 +280,22 @@
         <template #default="{ row }">
           <el-button-group>
             <template v-if="props.tabType === 'batch-price'">
-
-              <el-button type="primary" link @click="handleOfflineDiscount(row)"
-                :disabled="!row.SkuList?.some((sku: FoodManageApi.FoodSkuItem) => sku.Discount)">
+              <el-button
+                type="primary"
+                link
+                :disabled="!row.SkuList?.some((sku: FoodManageApi.FoodSkuItem) => sku.Discount)"
+                @click="handleOfflineDiscount(row)"
+              >
                 下线折扣
               </el-button>
-              <el-button type="primary" link @click="handleDelete(row)">
-                删除
-              </el-button>
+              <el-button type="primary" link @click="handleDelete(row)"> 删除 </el-button>
             </template>
             <template v-else-if="props.tabType === 'updat-foodimg'">
-              <el-button type="primary" link @click="handleUpdateImage(row)"
-                :disabled="!row.ImageUrls?.length">主图框</el-button>
-
-
-
+              <el-button type="primary" link :disabled="!row.ImageUrls?.length" @click="handleUpdateImage(row)"
+                >主图框</el-button
+              >
             </template>
-            <el-button type="primary" link @click="handleRecover(row)">
-              恢复
-            </el-button>
+            <el-button type="primary" link @click="handleRecover(row)"> 恢复 </el-button>
             <!-- <el-button type="primary" link @click="handleViewDetail(row)">
               商品详情
             </el-button> -->
@@ -303,8 +388,14 @@ const handleSkuSelectionChange = (food: FoodManageApi.FoodItemVo, selection: Foo
 
 // 处理选中状态变化
 const handleSelectionChange = (selection: FoodManageApi.FoodItemVo[]) => {
-  emit('update:selectedFoods', selection.map(item => item.SpuId))
-  emit('update:selectedFoodIds', selection.map(item => item.id))
+  emit(
+    'update:selectedFoods',
+    selection.map(item => item.SpuId)
+  )
+  emit(
+    'update:selectedFoodIds',
+    selection.map(item => item.id)
+  )
 }
 
 // 处理商品名称变化
@@ -349,10 +440,12 @@ const handleMinBuyChange = (row: FoodManageApi.FoodItemVo, value: number | undef
     ShopId: props.shopId,
     SyncSite: props.syncSite,
     GroupOffids: null,
-    Targets: [{
-      Spu: row.SpuId,
-      SkuIds: row.SkuList?.map(sku => sku.SkuId) || []
-    }],
+    Targets: [
+      {
+        Spu: row.SpuId,
+        SkuIds: row.SkuList?.map(sku => sku.SkuId) || []
+      }
+    ],
     AdjustType: FoodManageApi.AdjustTypeEnum.一口价,
     AdjustMinBuy: row.MinBuyCount
   })
@@ -384,36 +477,42 @@ const handleStatusChange = (row: FoodManageApi.FoodItemVo, value: number | strin
 }
 
 // 处理SKU价格变化
-const handleSkuPriceChange = (food: FoodManageApi.FoodItemVo, sku: FoodManageApi.FoodSkuItem, value: number | undefined) => {
+const handleSkuPriceChange = (
+  food: FoodManageApi.FoodItemVo,
+  sku: FoodManageApi.FoodSkuItem,
+  value: number | undefined
+) => {
   if (!value || value <= 0) {
-    ElMessage.error('价格必须大于0');
-    return;
+    ElMessage.error('价格必须大于0')
+    return
   }
 
   // 验证必要的参数
   if (!food?.SpuId) {
-    ElMessage.error('商品ID不能为空');
-    return;
+    ElMessage.error('商品ID不能为空')
+    return
   }
 
   if (!sku?.SkuId) {
-    ElMessage.error('SKU ID不能为空');
-    return;
+    ElMessage.error('SKU ID不能为空')
+    return
   }
 
-  editingSkuCell.value = null;
+  editingSkuCell.value = null
   emit('update-price', {
     TaskId: props.taskId,
     ShopId: props.shopId,
     SyncSite: props.syncSite,
     GroupOffids: null,
-    Targets: [{
-      Spu: food.SpuId,
-      SkuIds: [sku.SkuId]
-    }],
+    Targets: [
+      {
+        Spu: food.SpuId,
+        SkuIds: [sku.SkuId]
+      }
+    ],
     ChangeType: FoodManageApi.ChangePriceTypeEnum.固定价格,
     Value: value
-  });
+  })
 }
 
 // 处理SKU价格失焦
@@ -422,7 +521,11 @@ const handleSkuPriceBlur = (food: FoodManageApi.FoodItemVo, sku: FoodManageApi.F
 }
 
 // 处理SKU库存变化
-const handleSkuStockChange = (food: FoodManageApi.FoodItemVo, sku: FoodManageApi.FoodSkuItem, value: number | undefined) => {
+const handleSkuStockChange = (
+  food: FoodManageApi.FoodItemVo,
+  sku: FoodManageApi.FoodSkuItem,
+  value: number | undefined
+) => {
   if (typeof sku.Stock !== 'number' || sku.Stock < 0) {
     ElMessage.error('库存数量无效')
     return
@@ -434,10 +537,12 @@ const handleSkuStockChange = (food: FoodManageApi.FoodItemVo, sku: FoodManageApi
     ShopId: props.shopId,
     SyncSite: props.syncSite,
     GroupOffids: null,
-    Targets: [{
-      Spu: food.SpuId,
-      SkuIds: [sku.SkuId]
-    }],
+    Targets: [
+      {
+        Spu: food.SpuId,
+        SkuIds: [sku.SkuId]
+      }
+    ],
     AdjustType: FoodManageApi.AdjustTypeEnumStock.固定数量,
     AdjustStock: sku.Stock
   })
@@ -449,7 +554,11 @@ const handleSkuStockBlur = (food: FoodManageApi.FoodItemVo, sku: FoodManageApi.F
 }
 
 // 处理SKU折扣变化
-const handleSkuDiscountChange = (food: FoodManageApi.FoodItemVo, sku: FoodManageApi.FoodSkuItem, value: number | undefined) => {
+const handleSkuDiscountChange = (
+  food: FoodManageApi.FoodItemVo,
+  sku: FoodManageApi.FoodSkuItem,
+  value: number | undefined
+) => {
   // 只记录变化,不触发更新
 }
 
@@ -457,22 +566,26 @@ const handleSkuDiscountChange = (food: FoodManageApi.FoodItemVo, sku: FoodManage
 const handleSkuDiscountBlur = (food: FoodManageApi.FoodItemVo, sku: FoodManageApi.FoodSkuItem) => {
   editingSkuCell.value = null
   // 调用更新折扣接口
-  const discount = sku.Discount?.FoodItems?.find(i => i.SkuId === sku.SkuId)?.Discount || 0;
-  const dailyStockLimitType = sku.Discount?.FoodItems?.find(i => i.SkuId === sku.SkuId)?.DayLimit > 0
-    ? FoodManageApi.LimitTypeEnum.限购
-    : FoodManageApi.LimitTypeEnum.不限;
-  const orderLimitType = sku.Discount?.FoodItems?.find(i => i.SkuId === sku.SkuId)?.OrderLimit > 0
-    ? FoodManageApi.LimitTypeEnum.限购
-    : FoodManageApi.LimitTypeEnum.不限;
+  const discount = sku.Discount?.FoodItems?.find(i => i.SkuId === sku.SkuId)?.Discount || 0
+  const dailyStockLimitType =
+    sku.Discount?.FoodItems?.find(i => i.SkuId === sku.SkuId)?.DayLimit > 0
+      ? FoodManageApi.LimitTypeEnum.限购
+      : FoodManageApi.LimitTypeEnum.不限
+  const orderLimitType =
+    sku.Discount?.FoodItems?.find(i => i.SkuId === sku.SkuId)?.OrderLimit > 0
+      ? FoodManageApi.LimitTypeEnum.限购
+      : FoodManageApi.LimitTypeEnum.不限
   emit('update-discount', {
     TaskId: props.taskId,
     ShopId: props.shopId,
     SyncSite: props.syncSite,
     GroupOffids: null,
-    Targets: [{
-      Spu: food.SpuId,
-      SkuIds: [sku.SkuId]
-    }],
+    Targets: [
+      {
+        Spu: food.SpuId,
+        SkuIds: [sku.SkuId]
+      }
+    ],
     DiscountType: FoodManageApi.DiscountTypeEnum.折扣率,
     AdjustType: FoodManageApi.AdjustTypeEnum.一口价,
     DiscountRate: discount,
@@ -485,7 +598,7 @@ const handleSkuDiscountBlur = (food: FoodManageApi.FoodItemVo, sku: FoodManageAp
     StartTime: new Date().toISOString(),
     EndTime: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
     RoundType: FoodManageApi.RoundTypeEnum.不改变
-  } as FoodManageApi.BatchUpdateDiscountParams);
+  } as FoodManageApi.BatchUpdateDiscountParams)
 
   // 更新本地折扣对象
   if (!sku.Discount) {
@@ -500,16 +613,16 @@ const handleSkuDiscountBlur = (food: FoodManageApi.FoodItemVo, sku: FoodManageAp
       OverConf: true,
       PickType: PickType.DeliveryAndSelfPickup,
       FoodItems: []
-    };
+    }
   }
 
   // 确保FoodItems数组存在
   if (!sku.Discount.FoodItems) {
-    sku.Discount.FoodItems = [];
+    sku.Discount.FoodItems = []
   }
 
   // 查找或创建对应的FoodItem
-  let foodItem = sku.Discount.FoodItems.find(i => i.SkuId === sku.SkuId);
+  let foodItem = sku.Discount.FoodItems.find(i => i.SkuId === sku.SkuId)
   if (!foodItem) {
     foodItem = {
       SpuId: food.SpuId,
@@ -521,23 +634,29 @@ const handleSkuDiscountBlur = (food: FoodManageApi.FoodItemVo, sku: FoodManageAp
       OriginPrice: sku.Price,
       SkuName: sku.SkuPath,
       SpecPath: sku.ForSpec.map(s => s.OptionName)
-    };
-    sku.Discount.FoodItems.push(foodItem);
+    }
+    sku.Discount.FoodItems.push(foodItem)
   }
 }
 
 // 处理SKU起购变化
-const handleSkuMinBuyChange = (food: FoodManageApi.FoodItemVo, sku: FoodManageApi.FoodSkuItem, value: number | undefined) => {
+const handleSkuMinBuyChange = (
+  food: FoodManageApi.FoodItemVo,
+  sku: FoodManageApi.FoodSkuItem,
+  value: number | undefined
+) => {
   editingSkuCell.value = null
   emit('update-minbuy', {
     TaskId: props.taskId,
     ShopId: props.shopId,
     SyncSite: props.syncSite,
     GroupOffids: null,
-    Targets: [{
-      Spu: food.SpuId,
-      SkuIds: [sku.SkuId]
-    }],
+    Targets: [
+      {
+        Spu: food.SpuId,
+        SkuIds: [sku.SkuId]
+      }
+    ],
     AdjustType: FoodManageApi.AdjustTypeEnum.一口价,
     AdjustMinBuy: sku.MinBuy
   })
@@ -549,7 +668,11 @@ const handleSkuMinBuyBlur = (food: FoodManageApi.FoodItemVo, sku: FoodManageApi.
 }
 
 // 处理SKU状态变化
-const handleSkuStatusChange = (food: FoodManageApi.FoodItemVo, sku: FoodManageApi.FoodSkuItem, value: number | string | boolean) => {
+const handleSkuStatusChange = (
+  food: FoodManageApi.FoodItemVo,
+  sku: FoodManageApi.FoodSkuItem,
+  value: number | string | boolean
+) => {
   emit('update-status', {
     TaskId: props.taskId,
     ShopId: props.shopId,
@@ -561,7 +684,11 @@ const handleSkuStatusChange = (food: FoodManageApi.FoodItemVo, sku: FoodManageAp
 }
 
 // 处理SKU每单限购变化
-const handleSkuOrderLimitChange = (food: FoodManageApi.FoodItemVo, sku: FoodManageApi.FoodSkuItem, value: number | undefined) => {
+const handleSkuOrderLimitChange = (
+  food: FoodManageApi.FoodItemVo,
+  sku: FoodManageApi.FoodSkuItem,
+  value: number | undefined
+) => {
   if (!sku.Discount || !sku.Discount.FoodItems) {
     sku.Discount = {
       ActType: 1,
@@ -574,10 +701,10 @@ const handleSkuOrderLimitChange = (food: FoodManageApi.FoodItemVo, sku: FoodMana
       OverConf: true,
       PickType: 0,
       FoodItems: []
-    };
+    }
   }
 
-  let foodItem = sku.Discount.FoodItems.find(i => i.SkuId === sku.SkuId);
+  let foodItem = sku.Discount.FoodItems.find(i => i.SkuId === sku.SkuId)
   if (!foodItem) {
     foodItem = {
       SpuId: food.SpuId,
@@ -589,16 +716,20 @@ const handleSkuOrderLimitChange = (food: FoodManageApi.FoodItemVo, sku: FoodMana
       OriginPrice: sku.Price,
       SkuName: sku.SkuPath,
       SpecPath: sku.ForSpec.map(s => s.OptionName)
-    };
-    sku.Discount.FoodItems.push(foodItem);
+    }
+    sku.Discount.FoodItems.push(foodItem)
   }
 
   // 设置每单限购数量
-  foodItem.OrderLimit = value || 0;
+  foodItem.OrderLimit = value || 0
 }
 
 // 处理SKU每日库存变化
-const handleSkuDayLimitChange = (food: FoodManageApi.FoodItemVo, sku: FoodManageApi.FoodSkuItem, value: number | undefined) => {
+const handleSkuDayLimitChange = (
+  food: FoodManageApi.FoodItemVo,
+  sku: FoodManageApi.FoodSkuItem,
+  value: number | undefined
+) => {
   if (!sku.Discount || !sku.Discount.FoodItems) {
     sku.Discount = {
       ActType: 1,
@@ -611,10 +742,10 @@ const handleSkuDayLimitChange = (food: FoodManageApi.FoodItemVo, sku: FoodManage
       OverConf: true,
       PickType: 0,
       FoodItems: []
-    };
+    }
   }
 
-  let foodItem = sku.Discount.FoodItems.find(i => i.SkuId === sku.SkuId);
+  let foodItem = sku.Discount.FoodItems.find(i => i.SkuId === sku.SkuId)
   if (!foodItem) {
     foodItem = {
       SpuId: food.SpuId,
@@ -626,28 +757,26 @@ const handleSkuDayLimitChange = (food: FoodManageApi.FoodItemVo, sku: FoodManage
       OriginPrice: sku.Price,
       SkuName: sku.SkuPath,
       SpecPath: sku.ForSpec.map(s => s.OptionName)
-    };
-    sku.Discount.FoodItems.push(foodItem);
+    }
+    sku.Discount.FoodItems.push(foodItem)
   }
 
-  foodItem.DayLimit = value || 0;
+  foodItem.DayLimit = value || 0
 }
 
 // 处理SKU每单限购失焦
 const handleSkuOrderLimitBlur = (food: FoodManageApi.FoodItemVo, sku: FoodManageApi.FoodSkuItem) => {
-  editingSkuCell.value = null;
+  editingSkuCell.value = null
 
   // 获取当前SKU的折扣项
-  const foodItem = sku.Discount?.FoodItems?.find(i => i.SkuId === sku.SkuId);
+  const foodItem = sku.Discount?.FoodItems?.find(i => i.SkuId === sku.SkuId)
   if (!foodItem) {
-    ElMessage.error('未找到对应的折扣信息');
-    return;
+    ElMessage.error('未找到对应的折扣信息')
+    return
   }
 
   // 根据OrderLimit值判断是否限购
-  const orderLimitType = foodItem.OrderLimit > 0
-    ? FoodManageApi.LimitTypeEnum.限购
-    : FoodManageApi.LimitTypeEnum.不限;
+  const orderLimitType = foodItem.OrderLimit > 0 ? FoodManageApi.LimitTypeEnum.限购 : FoodManageApi.LimitTypeEnum.不限
 
   // 调用更新折扣接口
   emit('update-discount', {
@@ -655,10 +784,12 @@ const handleSkuOrderLimitBlur = (food: FoodManageApi.FoodItemVo, sku: FoodManage
     ShopId: props.shopId,
     SyncSite: props.syncSite,
     GroupOffids: null,
-    Targets: [{
-      Spu: food.SpuId,
-      SkuIds: [sku.SkuId]
-    }],
+    Targets: [
+      {
+        Spu: food.SpuId,
+        SkuIds: [sku.SkuId]
+      }
+    ],
     DiscountType: FoodManageApi.DiscountTypeEnum.折扣率,
     AdjustType: FoodManageApi.AdjustTypeEnum.一口价,
     DiscountRate: foodItem.Discount,
@@ -669,29 +800,26 @@ const handleSkuOrderLimitBlur = (food: FoodManageApi.FoodItemVo, sku: FoodManage
     StartTime: new Date().toISOString(),
     EndTime: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
     RoundType: FoodManageApi.RoundTypeEnum.不改变
-  });
+  })
 }
 
 // 处理SKU每日库存失焦
 const handleSkuDayLimitBlur = (food: FoodManageApi.FoodItemVo, sku: FoodManageApi.FoodSkuItem) => {
-  editingSkuCell.value = null;
+  editingSkuCell.value = null
 
   // 获取当前SKU的折扣项
-  const foodItem = sku.Discount?.FoodItems?.find(i => i.SkuId === sku.SkuId);
+  const foodItem = sku.Discount?.FoodItems?.find(i => i.SkuId === sku.SkuId)
   if (!foodItem) {
-    ElMessage.error('未找到对应的折扣信息');
-    return;
+    ElMessage.error('未找到对应的折扣信息')
+    return
   }
 
   // 根据DayLimit值判断是否限购
-  const dailyStockLimitType = foodItem.DayLimit > 0
-    ? FoodManageApi.LimitTypeEnum.限购
-    : FoodManageApi.LimitTypeEnum.不限;
+  const dailyStockLimitType =
+    foodItem.DayLimit > 0 ? FoodManageApi.LimitTypeEnum.限购 : FoodManageApi.LimitTypeEnum.不限
 
   // 根据OrderLimit值判断是否限购
-  const orderLimitType = foodItem.OrderLimit > 0
-    ? FoodManageApi.LimitTypeEnum.限购
-    : FoodManageApi.LimitTypeEnum.不限;
+  const orderLimitType = foodItem.OrderLimit > 0 ? FoodManageApi.LimitTypeEnum.限购 : FoodManageApi.LimitTypeEnum.不限
 
   // 调用更新折扣接口
   emit('update-discount', {
@@ -699,10 +827,12 @@ const handleSkuDayLimitBlur = (food: FoodManageApi.FoodItemVo, sku: FoodManageAp
     ShopId: props.shopId,
     SyncSite: props.syncSite,
     GroupOffids: null,
-    Targets: [{
-      Spu: food.SpuId,
-      SkuIds: [sku.SkuId]
-    }],
+    Targets: [
+      {
+        Spu: food.SpuId,
+        SkuIds: [sku.SkuId]
+      }
+    ],
     DiscountType: FoodManageApi.DiscountTypeEnum.折扣率,
     AdjustType: FoodManageApi.AdjustTypeEnum.一口价,
     DiscountRate: foodItem.Discount,
@@ -715,7 +845,7 @@ const handleSkuDayLimitBlur = (food: FoodManageApi.FoodItemVo, sku: FoodManageAp
     StartTime: new Date().toISOString(),
     EndTime: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
     RoundType: FoodManageApi.RoundTypeEnum.不改变
-  } as FoodManageApi.BatchUpdateDiscountParams);
+  } as FoodManageApi.BatchUpdateDiscountParams)
 }
 
 // 处理下线折扣
@@ -724,10 +854,12 @@ const handleOfflineDiscount = (row: FoodManageApi.FoodItemVo) => {
   emit('update:selectedFoods', [row.SpuId])
   emit('update:selectedFoodIds', [row.id])
   // 构建 Targets
-  const targets = [{
-    Spu: row.SpuId,
-    SkuIds: row.SkuList?.filter(sku => sku.Discount)?.map(sku => sku.SkuId) || []
-  }]
+  const targets = [
+    {
+      Spu: row.SpuId,
+      SkuIds: row.SkuList?.filter(sku => sku.Discount)?.map(sku => sku.SkuId) || []
+    }
+  ]
   // 触发下线折扣事件
   emit('offline-discount', {
     TaskId: props.taskId,
@@ -778,48 +910,61 @@ const handleRowClick = (row: FoodManageApi.FoodItemVo, column: any, event: Mouse
 
 // 获取折扣活动字段
 function getZheKouField(sku: FoodManageApi.FoodSkuItem, field: string, formatSettingType = false) {
-
-  const discount = sku.Discount;
-  if (!discount || !discount.FoodItems) return '-';
-  const item = discount.FoodItems.find(i => i.SkuId === sku.SkuId);
-  if (!item) return '-';
+  const discount = sku.Discount
+  if (!discount || !discount.FoodItems) return '-'
+  const item = discount.FoodItems.find(i => i.SkuId === sku.SkuId)
+  if (!item) return '-'
 
   if (field === 'Discount') {
     // 显示折扣率
-    return item.Discount ? `${item.Discount}折` : '-';
+    return item.Discount ? `${item.Discount}折` : '-'
   }
 
   if (field === 'SettingType' && formatSettingType) {
     switch (item.SettingType) {
-      case ActivityType_ZheKou_SetType.按折扣: return '按折扣';
-      case ActivityType_ZheKou_SetType.按折后价: return '按折后价';
-      default: return '无';
+      case ActivityType_ZheKou_SetType.按折扣:
+        return '按折扣'
+      case ActivityType_ZheKou_SetType.按折后价:
+        return '按折后价'
+      default:
+        return '无'
     }
   }
 
   // 只允许有效字段
   const validFields: (keyof ActivityType_ZheKou_Item)[] = [
-    'ActPrice', 'OrderLimit', 'DayLimit', 'SettingType', 'OriginPrice',
-    'SpuId', 'SkuId', 'Stock', 'Discount', 'PoiCharge', 'SkuName', 'SpecPath', 'OtherValues'
-  ];
+    'ActPrice',
+    'OrderLimit',
+    'DayLimit',
+    'SettingType',
+    'OriginPrice',
+    'SpuId',
+    'SkuId',
+    'Stock',
+    'Discount',
+    'PoiCharge',
+    'SkuName',
+    'SpecPath',
+    'OtherValues'
+  ]
   if (validFields.includes(field as keyof ActivityType_ZheKou_Item)) {
-    return (item as any)[field] ?? '-';
+    return (item as any)[field] ?? '-'
   }
-  return '-';
+  return '-'
 }
 
 function getZheKouActivityDate(sku: FoodManageApi.FoodSkuItem) {
   // 优先取 Discount.OtherValues.ActivityDate
-  const discount = sku.Discount;
+  const discount = sku.Discount
   if (discount && discount.OtherValues && discount.OtherValues.ActivityDate) {
-    return discount.OtherValues.ActivityDate;
+    return discount.OtherValues.ActivityDate
   }
   // 也可尝试从 FoodItems 里找
-  const item = discount?.FoodItems?.find(i => i.SkuId === sku.SkuId);
+  const item = discount?.FoodItems?.find(i => i.SkuId === sku.SkuId)
   if (item && item.OtherValues && item.OtherValues.ActivityDate) {
-    return item.OtherValues.ActivityDate;
+    return item.OtherValues.ActivityDate
   }
-  return '-';
+  return '-'
 }
 
 /**
@@ -828,12 +973,12 @@ function getZheKouActivityDate(sku: FoodManageApi.FoodSkuItem) {
  * @returns 价格范围字符串，如 "10~100"
  */
 function getPriceRange(row: FoodManageApi.FoodItemVo) {
-  if (!row.SkuList?.length) return '-';
-  const prices = row.SkuList.map(sku => sku.Price).filter(price => price !== undefined);
-  if (prices.length === 0) return '-';
-  const min = Math.min(...prices);
-  const max = Math.max(...prices);
-  return min === max ? min.toFixed(2) : `${min.toFixed(2)}~${max.toFixed(2)}`;
+  if (!row.SkuList?.length) return '-'
+  const prices = row.SkuList.map(sku => sku.Price).filter(price => price !== undefined)
+  if (prices.length === 0) return '-'
+  const min = Math.min(...prices)
+  const max = Math.max(...prices)
+  return min === max ? min.toFixed(2) : `${min.toFixed(2)}~${max.toFixed(2)}`
 }
 
 /**
@@ -842,8 +987,8 @@ function getPriceRange(row: FoodManageApi.FoodItemVo) {
  * @returns 总库存数量
  */
 function getTotalStock(row: FoodManageApi.FoodItemVo) {
-  if (!row.SkuList?.length) return 0;
-  return row.SkuList.reduce((sum, sku) => sum + (sku.Stock || 0), 0);
+  if (!row.SkuList?.length) return 0
+  return row.SkuList.reduce((sum, sku) => sum + (sku.Stock || 0), 0)
 }
 
 /**
@@ -852,34 +997,38 @@ function getTotalStock(row: FoodManageApi.FoodItemVo) {
  * @returns 活动价范围字符串，如 "8~80"
  */
 function getDiscountRange(row: FoodManageApi.FoodItemVo) {
-  if (!row.SkuList?.length) return '-';
-  const actPrices: number[] = [];
+  if (!row.SkuList?.length) return '-'
+  const actPrices: number[] = []
 
   row.SkuList.forEach(sku => {
     if (sku.Discount?.FoodItems) {
-      const item = sku.Discount.FoodItems.find(i => i.SkuId === sku.SkuId);
+      const item = sku.Discount.FoodItems.find(i => i.SkuId === sku.SkuId)
       if (item?.ActPrice) {
-        actPrices.push(item.ActPrice);
+        actPrices.push(item.ActPrice)
       }
     }
-  });
+  })
 
-  if (actPrices.length === 0) return '-';
-  const min = Math.min(...actPrices);
-  const max = Math.max(...actPrices);
-  return min === max ? min.toFixed(2) : `${min.toFixed(2)}~${max.toFixed(2)}`;
+  if (actPrices.length === 0) return '-'
+  const min = Math.min(...actPrices)
+  const max = Math.max(...actPrices)
+  return min === max ? min.toFixed(2) : `${min.toFixed(2)}~${max.toFixed(2)}`
 }
 
 // 处理SKU活动价变化
-const handleSkuActPriceChange = (food: FoodManageApi.FoodItemVo, sku: FoodManageApi.FoodSkuItem, value: number | undefined) => {
+const handleSkuActPriceChange = (
+  food: FoodManageApi.FoodItemVo,
+  sku: FoodManageApi.FoodSkuItem,
+  value: number | undefined
+) => {
   if (!value || value <= 0) {
-    ElMessage.error('活动价必须大于0');
-    return;
+    ElMessage.error('活动价必须大于0')
+    return
   }
 
   if (value >= sku.Price) {
-    ElMessage.error('活动价必须小于原价');
-    return;
+    ElMessage.error('活动价必须小于原价')
+    return
   }
 
   // 初始化折扣对象
@@ -895,16 +1044,16 @@ const handleSkuActPriceChange = (food: FoodManageApi.FoodItemVo, sku: FoodManage
       OverConf: true,
       PickType: PickType.DeliveryAndSelfPickup,
       FoodItems: []
-    };
+    }
   }
 
   // 确保FoodItems数组存在
   if (!sku.Discount.FoodItems) {
-    sku.Discount.FoodItems = [];
+    sku.Discount.FoodItems = []
   }
 
   // 查找或创建对应的FoodItem
-  let foodItem = sku.Discount.FoodItems.find(i => i.SkuId === sku.SkuId);
+  let foodItem = sku.Discount.FoodItems.find(i => i.SkuId === sku.SkuId)
   if (!foodItem) {
     foodItem = {
       SpuId: food.SpuId,
@@ -916,39 +1065,36 @@ const handleSkuActPriceChange = (food: FoodManageApi.FoodItemVo, sku: FoodManage
       OriginPrice: sku.Price,
       SkuName: sku.SkuPath,
       SpecPath: sku.ForSpec.map(s => s.OptionName)
-    };
-    sku.Discount.FoodItems.push(foodItem);
+    }
+    sku.Discount.FoodItems.push(foodItem)
   }
 
   // 设置活动价
-  foodItem.ActPrice = Number(value.toFixed(2));
+  foodItem.ActPrice = Number(value.toFixed(2))
 
   // 计算折扣率
   // 折扣率范围：0-10
   // 10 = 原价（不打折）
   // 5 = 5折
   // 1 = 1折
-  const discount = Number(((foodItem.ActPrice / sku.Price) * 10).toFixed(2));
+  const discount = Number(((foodItem.ActPrice / sku.Price) * 10).toFixed(2))
 
   // 验证折扣率是否在有效范围内
   if (discount < 0 || discount > 10) {
-    ElMessage.error('折扣率计算错误，请检查活动价设置');
-    return;
+    ElMessage.error('折扣率计算错误，请检查活动价设置')
+    return
   }
 
-  foodItem.Discount = discount;
+  foodItem.Discount = discount
 
-  editingSkuCell.value = null;
+  editingSkuCell.value = null
 
   // 根据DayLimit值判断是否限购
-  const dailyStockLimitType = foodItem.DayLimit > 0
-    ? FoodManageApi.LimitTypeEnum.限购
-    : FoodManageApi.LimitTypeEnum.不限;
+  const dailyStockLimitType =
+    foodItem.DayLimit > 0 ? FoodManageApi.LimitTypeEnum.限购 : FoodManageApi.LimitTypeEnum.不限
 
   // 根据OrderLimit值判断是否限购
-  const orderLimitType = foodItem.OrderLimit > 0
-    ? FoodManageApi.LimitTypeEnum.限购
-    : FoodManageApi.LimitTypeEnum.不限;
+  const orderLimitType = foodItem.OrderLimit > 0 ? FoodManageApi.LimitTypeEnum.限购 : FoodManageApi.LimitTypeEnum.不限
 
   // 调用更新折扣接口
   emit('update-discount', {
@@ -956,10 +1102,12 @@ const handleSkuActPriceChange = (food: FoodManageApi.FoodItemVo, sku: FoodManage
     ShopId: props.shopId,
     SyncSite: props.syncSite,
     GroupOffids: null,
-    Targets: [{
-      Spu: food.SpuId,
-      SkuIds: [sku.SkuId]
-    }],
+    Targets: [
+      {
+        Spu: food.SpuId,
+        SkuIds: [sku.SkuId]
+      }
+    ],
     DiscountType: FoodManageApi.DiscountTypeEnum.折扣率,
     AdjustType: FoodManageApi.AdjustTypeEnum.一口价,
     DiscountRate: discount,
@@ -972,7 +1120,7 @@ const handleSkuActPriceChange = (food: FoodManageApi.FoodItemVo, sku: FoodManage
     StartTime: new Date().toISOString(),
     EndTime: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
     RoundType: FoodManageApi.RoundTypeEnum.不改变
-  } as FoodManageApi.BatchUpdateDiscountParams);
+  } as FoodManageApi.BatchUpdateDiscountParams)
 }
 
 // 处理SKU活动价失焦

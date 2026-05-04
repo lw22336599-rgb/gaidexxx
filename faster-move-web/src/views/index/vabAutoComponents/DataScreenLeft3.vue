@@ -14,7 +14,7 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'DataScreenLeft3',
+  name: 'DataScreenLeft3'
 })
 
 const speed = ref(30)
@@ -23,73 +23,73 @@ const listData = reactive<any>([
   {
     avatar: 'https://i.gtimg.cn/club/item/face/img/2/16022_100.gif',
     name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles'
   },
   {
     avatar: 'https://i.gtimg.cn/club/item/face/img/2/16022_100.gif',
     name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles'
   },
   {
     avatar: 'https://i.gtimg.cn/club/item/face/img/2/16022_100.gif',
     name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles'
   },
   {
     avatar: 'https://i.gtimg.cn/club/item/face/img/2/16022_100.gif',
     name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles'
   },
   {
     avatar: 'https://i.gtimg.cn/club/item/face/img/2/16022_100.gif',
     name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles'
   },
   {
     avatar: 'https://i.gtimg.cn/club/item/face/img/2/16022_100.gif',
     name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles'
   },
   {
     avatar: 'https://i.gtimg.cn/club/item/face/img/2/16022_100.gif',
     name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles'
   },
   {
     avatar: 'https://i.gtimg.cn/club/item/face/img/2/16022_100.gif',
     name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles'
   },
   {
     avatar: 'https://i.gtimg.cn/club/item/face/img/2/16022_100.gif',
     name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles'
   },
   {
     avatar: 'https://i.gtimg.cn/club/item/face/img/2/16022_100.gif',
     name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles'
   },
   {
     avatar: 'https://i.gtimg.cn/club/item/face/img/2/16022_100.gif',
     name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles'
   },
   {
     avatar: 'https://i.gtimg.cn/club/item/face/img/2/16022_100.gif',
     name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles'
   },
   {
     avatar: 'https://i.gtimg.cn/club/item/face/img/2/16022_100.gif',
     name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
+    address: 'No. 189, Grove St, Los Angeles'
   },
   {
     avatar: 'https://i.gtimg.cn/club/item/face/img/2/16022_100.gif',
     name: 'Tom',
-    address: 'No. 189, Grove St, Los Angeles',
-  },
+    address: 'No. 189, Grove St, Los Angeles'
+  }
 ])
 
 const handleMouseEnter = () => {

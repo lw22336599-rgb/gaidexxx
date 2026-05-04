@@ -18,11 +18,18 @@
           >
             立即购买
           </el-button>
-          <el-button href="https://vuejs-core.cn/shop-vite" plain rel="noopener noreferrer" tag="a" target="_blank" type="primary">
+          <el-button
+            href="https://vuejs-core.cn/shop-vite"
+            plain
+            rel="noopener noreferrer"
+            tag="a"
+            target="_blank"
+            type="primary"
+          >
             进入产品
           </el-button>
 
-          <div class="image-bg hidden-xs-only"></div>
+          <div class="image-bg hidden-xs-only" />
           <el-image class="hidden-xs-only" :src="logo" />
         </main>
       </div>
@@ -59,7 +66,7 @@
       <vab-footer />
     </div>
 
-    <div class="hidden-sm-and-up"></div>
+    <div class="hidden-sm-and-up" />
     <el-backtop target="#app .scroll-wrap-product" />
     <vab-theme-setting />
   </el-scrollbar>
@@ -69,55 +76,55 @@
 import logo from '/@/assets/avatar.svg'
 
 defineOptions({
-  name: 'Product',
+  name: 'Product'
 })
 
 const list = ref<any>([
   {
     title: '商务服务',
     description: '全生命周期服务管理',
-    icon: 'lllustration/IconPark03',
+    icon: 'lllustration/IconPark03'
   },
   {
     title: '在线零售',
     description: '打造全域营销运营闭环',
-    icon: 'lllustration/IconPark05',
+    icon: 'lllustration/IconPark05'
   },
   {
     title: '珠宝首饰',
     description: '沉淀私域消费者数据资产',
-    icon: 'lllustration/IconPark07',
+    icon: 'lllustration/IconPark07'
   },
   {
     title: '商用软件',
     description: '深度洞察企业客户需求',
-    icon: 'lllustration/IconPark08',
+    icon: 'lllustration/IconPark08'
   },
   {
     title: '消费电子',
     description: '用户精准营销与智能触达通路',
-    icon: 'lllustration/IconPark04',
+    icon: 'lllustration/IconPark04'
   },
   {
     title: '智能家居',
     description: '智能家居场景化运营',
-    icon: 'lllustration/IconPark02',
-  },
+    icon: 'lllustration/IconPark02'
+  }
 ])
 
 const list2 = ref<any>([
   {
     title: '全链路监控营销推广',
-    description: '全链路监控营销推广',
+    description: '全链路监控营销推广'
   },
   {
     title: '全方位优化产品体验',
-    description: '全方位优化产品体验',
+    description: '全方位优化产品体验'
   },
   {
     title: '精准刻画用户画像',
-    description: '精准刻画用户画像',
-  },
+    description: '精准刻画用户画像'
+  }
 ])
 </script>
 

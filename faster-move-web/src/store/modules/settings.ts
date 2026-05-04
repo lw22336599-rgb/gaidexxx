@@ -36,7 +36,7 @@ import {
   tabDrag,
   tabsBarStyle,
   themeName,
-  title,
+  title
 } from '/@/config'
 import { colorRgba, lightenColorChrome } from '/@/utils/lightenColor'
 import { getLocalStorage } from '/@/utils/localStorage'
@@ -71,7 +71,7 @@ const defaultTheme: ThemeType = {
   showFontSize,
   tabDrag,
   fontSize,
-  rightToolsDrag,
+  rightToolsDrag
 }
 
 const { collapse = foldSidebar } = getLocalStorage('collapse')
@@ -90,20 +90,20 @@ const getThemeConfig = () => {
   if (savedTheme && isElectron && isDev) {
     // 定义关键配置项列表（这些配置会影响页面布局和显示）
     const criticalConfigKeys: (keyof ThemeType)[] = [
-      'layout',        // 布局类型
-      'menuWidth',     // 菜单宽度（影响页面布局宽度）
-      'columnStyle',   // 分栏风格
-      'fixedHeader',   // 是否固定头部
-      'showTabs',      // 是否显示标签页
-      'showFooter',   // 是否显示页脚
-      'foldSidebar',  // 是否默认收起侧边栏
+      'layout', // 布局类型
+      'menuWidth', // 菜单宽度（影响页面布局宽度）
+      'columnStyle', // 分栏风格
+      'fixedHeader', // 是否固定头部
+      'showTabs', // 是否显示标签页
+      'showFooter', // 是否显示页脚
+      'foldSidebar' // 是否默认收起侧边栏
     ]
 
     // 检查关键配置项是否与默认配置不一致
     const inconsistentKeys: string[] = []
     const forcedConfig: Partial<ThemeType> = {}
 
-    criticalConfigKeys.forEach((key) => {
+    criticalConfigKeys.forEach(key => {
       const savedValue = savedTheme[key]
       const defaultValue = defaultTheme[key]
 
@@ -118,12 +118,14 @@ const getThemeConfig = () => {
     if (inconsistentKeys.length > 0) {
       console.warn(
         `[Electron Dev] 检测到主题配置不一致，将使用 theme.config.ts 中的默认配置：\n` +
-        inconsistentKeys.map(key => {
-          const saved = savedTheme[key]
-          const def = defaultTheme[key]
-          return `  - ${key}: localStorage="${saved}" → 使用默认值="${def}"`
-        }).join('\n') +
-        `\n提示：已自动更新 localStorage 中的配置，下次启动将不再显示此警告。`
+          inconsistentKeys
+            .map(key => {
+              const saved = savedTheme[key]
+              const def = defaultTheme[key]
+              return `  - ${key}: localStorage="${saved}" → 使用默认值="${def}"`
+            })
+            .join('\n') +
+          `\n提示：已自动更新 localStorage 中的配置，下次启动将不再显示此警告。`
       )
 
       // 强制使用默认配置的关键项，但保留其他非关键的自定义配置
@@ -156,24 +158,24 @@ export const useSettingsStore = defineStore('settings', {
     theme: getThemeConfig(),
     title: getLocalStorage('title').title || title,
     scrollTop: JSON.parse(localStorage.getItem('scrollTop') || '[]'),
-    demoMode: getLocalStorage('demoMode').demoMode || false,
+    demoMode: getLocalStorage('demoMode').demoMode || false
   }),
   getters: {
-    getCollapse: (state) => state.collapse,
-    getDevice: (state) => state.device,
-    getPersistenceTab: (state) => state.persistenceTab,
-    getLanguage: (state) => state.language,
-    getLock: (state) => state.lock,
-    getLogo: (state) => state.logo,
-    getMode: (state) => state.mode,
-    getTheme: (state) => state.theme,
-    getTitle: (state) => state.title,
-    getScrollTop: (state) => state.scrollTop,
-    getDemoMode: (state) => state.demoMode,
+    getCollapse: state => state.collapse,
+    getDevice: state => state.device,
+    getPersistenceTab: state => state.persistenceTab,
+    getLanguage: state => state.language,
+    getLock: state => state.lock,
+    getLogo: state => state.logo,
+    getMode: state => state.mode,
+    getTheme: state => state.theme,
+    getTitle: state => state.title,
+    getScrollTop: state => state.scrollTop,
+    getDemoMode: state => state.demoMode
   },
   actions: {
     updateState(obj: any) {
-      Object.getOwnPropertyNames(obj).forEach((key) => {
+      Object.getOwnPropertyNames(obj).forEach(key => {
         // @ts-ignore
         this[key] = obj[key]
         localStorage.setItem(key, typeof obj[key] == 'string' ? `{"${key}":"${obj[key]}"}` : `{"${key}":${obj[key]}}`)
@@ -192,7 +194,7 @@ export const useSettingsStore = defineStore('settings', {
       if (this.device === 'mobile')
         this.theme = {
           ...defaultTheme,
-          layout: 'vertical',
+          layout: 'vertical'
         }
       localStorage.removeItem('shop-vite-theme')
       this.updateTheme()
@@ -221,7 +223,8 @@ export const useSettingsStore = defineStore('settings', {
       const el = ref<HTMLElement | null>(null)
 
       //菜单宽度
-      if (this.theme.menuWidth && this.theme.menuWidth.endsWith('px')) useCssVar('--el-left-menu-width', el).value = this.theme.menuWidth
+      if (this.theme.menuWidth && this.theme.menuWidth.endsWith('px'))
+        useCssVar('--el-left-menu-width', el).value = this.theme.menuWidth
       else useCssVar('--el-left-menu-width', el).value = '266px'
       //tabs处理
       if (this.theme.showTabs) {
@@ -300,12 +303,12 @@ export const useSettingsStore = defineStore('settings', {
 
       function updateArray(arr: Item[], routeNameToCheck: string, newScrollTopValue: number): Item[] {
         let found = false
-        const newArr = arr.map((item) => {
+        const newArr = arr.map(item => {
           if (item.routeName === routeNameToCheck) {
             found = true
             return {
               ...item,
-              scrollTop: newScrollTopValue,
+              scrollTop: newScrollTopValue
             }
           }
           return item
@@ -317,7 +320,7 @@ export const useSettingsStore = defineStore('settings', {
       }
       const modifiedArray = updateArray(originalArray, routeName, scrollTop)
       function removeItemsWithZeroScrollTop(arr: Item[]): Item[] {
-        return arr.filter((item) => item.scrollTop !== 0)
+        return arr.filter(item => item.scrollTop !== 0)
       }
 
       const filteredArray = removeItemsWithZeroScrollTop(modifiedArray)
@@ -327,6 +330,6 @@ export const useSettingsStore = defineStore('settings', {
     updateDemoMode(value: boolean) {
       this.demoMode = value
       localStorage.setItem('demoMode', JSON.stringify({ demoMode: value }))
-    },
-  },
+    }
+  }
 })

@@ -90,7 +90,7 @@ import { useTabsStore } from '/@/store/modules/tabs'
 import { handleMatched, handleTabs } from '/@/utils/routes'
 
 defineOptions({
-  name: 'TabsTable',
+  name: 'TabsTable'
 })
 
 const activeName = ref<string>('first')
@@ -113,7 +113,7 @@ const queryForm = reactive<any>({
   checked1: true,
   checked2: false,
   checked3: false,
-  checked4: false,
+  checked4: false
 })
 
 const onChange1 = (status: boolean) => {
@@ -164,7 +164,7 @@ const statusFilter = (status: string | number) => {
   const statusMap: any = {
     published: 'success',
     draft: 'primary',
-    deleted: 'danger',
+    deleted: 'danger'
   }
   return statusMap[status]
 }
@@ -208,15 +208,15 @@ const handleDetailStayTable = async () => {
       const matched = handleMatched(allRoutes.value, '/vab/table/defaultTableDetail')
       const tab = handleTabs({
         ...matched.at(-1),
-        query: selectRows.value[i],
+        query: selectRows.value[i]
       })
       if (tab) {
         await addVisitedRoute(tab)
         await changeTabsMeta({
           title: '详情页',
           meta: {
-            title: `${tab.query.title} 详情页`,
-          },
+            title: `${tab.query.title} 详情页`
+          }
         })
       }
     }
@@ -229,8 +229,8 @@ const handleDetail = (row: any) => {
       path: '/vab/table/defaultTableDetail',
       query: {
         ...row,
-        timestamp: Date.now(), //允许同一个详情页同时打开多次，否则会触发路由被缓存下次无法刷新的bug
-      },
+        timestamp: Date.now() //允许同一个详情页同时打开多次，否则会触发路由被缓存下次无法刷新的bug
+      }
     })
   else {
     if (selectRows.value.length === 1)
@@ -238,8 +238,8 @@ const handleDetail = (row: any) => {
         path: '/vab/table/defaultTableDetail',
         query: {
           ...selectRows.value[0],
-          timestamp: Date.now(), //允许同一个详情页同时打开多次，否则会触发路由被缓存下次无法刷新的bug
-        },
+          timestamp: Date.now() //允许同一个详情页同时打开多次，否则会触发路由被缓存下次无法刷新的bug
+        }
       })
     else $baseMessage('请选择一行进行详情页跳转', 'warning', 'hey')
   }

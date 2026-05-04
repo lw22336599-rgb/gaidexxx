@@ -1,75 +1,91 @@
 <template>
   <div class="glshop">
     <el-tabs v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane label="未关联店铺" name="0"></el-tab-pane>
-      <el-tab-pane label="已关联店铺" name="1"></el-tab-pane>
+      <el-tab-pane label="未关联店铺" name="0" />
+      <el-tab-pane label="已关联店铺" name="1" />
     </el-tabs>
-    <div class="contenbox" style="height:600px" v-show="activeName == 0">
-      <el-table v-loading="shopgrouload" :data="shopgrouobj" height="560px" style="width: 100%;">
+    <div v-show="activeName == 0" class="contenbox" style="height: 600px">
+      <el-table v-loading="shopgrouload" :data="shopgrouobj" height="560px" style="width: 100%">
         <el-table-column size="medium " prop="check" width="80px" label="">
-          <template slot-scope="scope">
-            <div class="imgbox" style="width:80px">
-              <el-checkbox v-model="scope.row.check"></el-checkbox>
+          <template v-slot="scope">
+            <div class="imgbox" style="width: 80px">
+              <el-checkbox v-model="scope.row.check" />
             </div>
           </template>
         </el-table-column>
 
         <el-table-column prop="img" width="120px" label="门店图片">
-          <template slot-scope="scope">
+          <template v-slot="scope">
             <div class="imgbox">
               <el-image :src="scope.row.img">
-                <div slot="placeholder" class="image-slot">
-                  <i class="el-icon-loading"></i>
-                </div>
+                <template v-slot:placeholder>
+                  <div class="image-slot">
+                    <i class="el-icon-loading" />
+                  </div>
+                </template>
               </el-image>
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="name" width="200px" label="店铺名称"></el-table-column>
-        <el-table-column prop="shop_id" label="店铺ID"></el-table-column>
-        <el-table-column prop="city" label="城市"></el-table-column>
+        <el-table-column prop="name" width="200px" label="店铺名称" />
+        <el-table-column prop="shop_id" label="店铺ID" />
+        <el-table-column prop="city" label="城市" />
       </el-table>
-      <el-pagination @current-change="shopCurrentChange" :current-page="shoppageNo" :page-size="shoppageSize"
-        layout="total, prev, pager, next" background :total="shoptotal">
-      </el-pagination>
+      <el-pagination
+        :current-page="shoppageNo"
+        :page-size="shoppageSize"
+        layout="total, prev, pager, next"
+        background
+        :total="shoptotal"
+        @current-change="shopCurrentChange"
+      />
     </div>
-    <div class="contenbox" style="height:600px" v-show="activeName == 1">
-      <el-table v-loading="shopgrouload" :data="shopgrouobj1" height="560px" style="width: 100%;">
+    <div v-show="activeName == 1" class="contenbox" style="height: 600px">
+      <el-table v-loading="shopgrouload" :data="shopgrouobj1" height="560px" style="width: 100%">
         <el-table-column size="medium " prop="check" width="80px" label="">
-          <template slot-scope="scope">
-            <div class="imgbox" style="width:80px">
-              <el-checkbox v-model="scope.row.check"></el-checkbox>
+          <template v-slot="scope">
+            <div class="imgbox" style="width: 80px">
+              <el-checkbox v-model="scope.row.check" />
             </div>
           </template>
         </el-table-column>
 
         <el-table-column prop="img" width="120px" label="门店图片">
-          <template slot-scope="scope">
+          <template v-slot="scope">
             <div class="imgbox">
               <el-image :src="scope.row.img">
-                <div slot="placeholder" class="image-slot">
-                  <i class="el-icon-loading"></i>
-                </div>
+                <template v-slot:placeholder>
+                  <div class="image-slot">
+                    <i class="el-icon-loading" />
+                  </div>
+                </template>
               </el-image>
             </div>
           </template>
         </el-table-column>
-        <el-table-column prop="name" width="200px" label="店铺名称"></el-table-column>
-        <el-table-column prop="shop_id" label="店铺ID"></el-table-column>
-        <el-table-column prop="city" label="城市"></el-table-column>
+        <el-table-column prop="name" width="200px" label="店铺名称" />
+        <el-table-column prop="shop_id" label="店铺ID" />
+        <el-table-column prop="city" label="城市" />
       </el-table>
-      <el-pagination @current-change="shopCurrentChange1" :current-page="shoppageNo1" :page-size="shoppageSize1"
-        layout="total, prev, pager, next" background :total="shoptotal1">
-      </el-pagination>
+      <el-pagination
+        :current-page="shoppageNo1"
+        :page-size="shoppageSize1"
+        layout="total, prev, pager, next"
+        background
+        :total="shoptotal1"
+        @current-change="shopCurrentChange1"
+      />
     </div>
     <div class="butbox">
-      <el-button :loading="loading" class="addmdbut" @click="submi">确定{{ activeName == 0 ? '关联' : '解除关联' }}</el-button>
+      <el-button :loading="loading" class="addmdbut" @click="submi"
+        >确定{{ activeName == 0 ? '关联' : '解除关联' }}</el-button
+      >
     </div>
   </div>
 </template>
 
 <script>
-import { getshoplist, getshoptaglist, unbindshoptag, bindshoptag } from "@/api/table.js"
+import { getshoplist, getshoptaglist, unbindshoptag, bindshoptag } from '@/api/table.js'
 export default {
   props: {
     guanlianobj: {
@@ -77,18 +93,6 @@ export default {
       default: () => {
         return {}
       }
-    }
-  },
-  watch: {
-    guanlianobj: {
-      handler(val) {
-        if (val && val != {}) {
-          this.grouobj = val
-          this.getlist()
-        }
-      },
-      deep: true,
-      immediate: true,
     }
   },
   data() {
@@ -104,7 +108,19 @@ export default {
       shoppageSize1: 20,
       shoppageNo1: 1,
       shoptotal1: 0,
-      loading: false,
+      loading: false
+    }
+  },
+  watch: {
+    guanlianobj: {
+      handler(val) {
+        if (val && val != {}) {
+          this.grouobj = val
+          this.getlist()
+        }
+      },
+      deep: true,
+      immediate: true
     }
   },
   methods: {
@@ -115,18 +131,18 @@ export default {
           pageindex: this.shoppageNo,
           pagesize: this.shoppageSize
         }
-        this.shopgrouload = true;
-        this.shopgrouload = false;
-        let res = await getshoplist(data);
+        this.shopgrouload = true
+        this.shopgrouload = false
+        let res = await getshoplist(data)
         if (res.code == 200) {
           this.shopgrouobj = res.data.rows.map(item => {
             if (item.img && item.img.indexOf('http') <= -1) {
               item.img = 'http:' + item.img
             }
-            item.check = false;
+            item.check = false
             return item
-          });
-          this.shoptotal = res.data.total;
+          })
+          this.shoptotal = res.data.total
         } else {
           this.$message.warning(res.message)
         }
@@ -136,54 +152,53 @@ export default {
           pageindex: this.shoppageNo1,
           pagesize: this.shoppageSize1
         }
-        console.log(data, this.grouobj);
+        console.log(data, this.grouobj)
 
         // return
-        this.shopgrouload = true;
-        let res = await getshoptaglist(data);
-        this.shopgrouload = false;
+        this.shopgrouload = true
+        let res = await getshoptaglist(data)
+        this.shopgrouload = false
         if (res.code == 200) {
           this.shopgrouobj1 = res.data.rows.map(item => {
             if (item.img && item.img.indexOf('http') <= -1) {
               item.img = 'http:' + item.img
             }
-            item.check = false;
+            item.check = false
             return item
-          });
-          this.shoptotal1 = res.data.total;
+          })
+          this.shoptotal1 = res.data.total
         } else {
           this.$message.warning(res.message)
         }
       }
-
     },
     handleClick() {
-      this.getlist();
+      this.getlist()
     },
     shopCurrentChange(val) {
-      this.shoppageNo = val;
-      this.getlist();
+      this.shoppageNo = val
+      this.getlist()
     },
     shopCurrentChange1(val) {
-      this.shoppageNo1 = val;
-      this.getlist();
+      this.shoppageNo1 = val
+      this.getlist()
     },
     async submi() {
-      console.log(this.activeName, "this.activeName");
+      console.log(this.activeName, 'this.activeName')
 
       if (this.activeName == '0') {
         // console.log(this.shopgrouobj);
-        let arr = this.shopgrouobj.filter(item => item.check);
+        let arr = this.shopgrouobj.filter(item => item.check)
         if (!arr.length) {
           return this.$message.warning('请选中后进行操作')
         }
-        this.loading = true;
+        this.loading = true
         // let text=arr.map(item=>{
         //     return `shop=${item.id}`
         // })
         // text=`tagid=${this.grouobj.id}&${text}`
         // console.log(text);
-        let poall = arr.map(async (item) => {
+        let poall = arr.map(async item => {
           let res = await bindshoptag(`tagid=${this.grouobj.id}&shop=${item.id}`)
           if (res.code == 200) {
             return { success: true, name: item.name }
@@ -191,12 +206,12 @@ export default {
             return { success: false, name: item.name }
           }
         })
-        console.log(poall, "poall");
+        console.log(poall, 'poall')
 
         Promise.all(poall).then(res => {
-          console.log(res, "res");
+          console.log(res, 'res')
 
-          this.loading = false;
+          this.loading = false
           let brr = res.filter(item => !item.success)
           if (brr.length) {
             let text = brr.map(item => item.name).join(',')
@@ -206,15 +221,15 @@ export default {
           }
           this.$emit('setguanlianshow')
         })
-        this.loading = false;
+        this.loading = false
       } else {
         // console.log(this.shopgrouobj1);
-        let arr = this.shopgrouobj1.filter(item => item.check);
+        let arr = this.shopgrouobj1.filter(item => item.check)
         if (!arr.length) {
           return this.$message.warning('请选中后进行操作')
         }
-        this.loading = true;
-        let poall = arr.map(async (item) => {
+        this.loading = true
+        let poall = arr.map(async item => {
           let res = await unbindshoptag(`tagid=${this.grouobj.id}&shop=${item.id}`)
           if (res.code == 200) {
             return { success: true, name: item.name }
@@ -222,10 +237,10 @@ export default {
             return { success: false, name: item.name }
           }
         })
-        console.log(poall, "poall");
+        console.log(poall, 'poall')
         Promise.all(poall).then(res => {
-          this.loading = false;
-          console.log(res, "res");
+          this.loading = false
+          console.log(res, 'res')
           let brr = res.filter(item => !item.success)
           if (brr.length) {
             let text = brr.map(item => item.name).join(',')
@@ -235,8 +250,7 @@ export default {
           }
           this.$emit('setguanlianshow')
         })
-        this.loading = false;
-
+        this.loading = false
       }
     }
   }
@@ -266,8 +280,8 @@ export default {
     .btn-prev,
     .btn-next,
     .number {
-      background: #FFFFFF;
-      border: 1px solid #D0D5E3;
+      background: #ffffff;
+      border: 1px solid #d0d5e3;
     }
 
     .el-table__row {
@@ -275,7 +289,7 @@ export default {
     }
 
     .active {
-      background-color: #FE0000 !important;
+      background-color: #fe0000 !important;
       border: none;
     }
   }

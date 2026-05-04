@@ -1,4 +1,4 @@
 export interface UpdateSpuInSkuItem {
-		Spu: string;
-		SkuIds: string[];
+  Spu: string
+  SkuIds: string[]
 }

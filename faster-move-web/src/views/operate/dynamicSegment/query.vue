@@ -10,7 +10,7 @@ import VabJsonViewer from 'vue-json-viewer'
 import { useTabsStore } from '/@/store/modules/tabs'
 
 defineOptions({
-  name: 'Query',
+  name: 'Query'
 })
 
 const route = useRoute()
@@ -19,7 +19,7 @@ const { changeTabsMeta } = tabsStore
 const finalRoute = reactive<any>({
   name: '',
   path: '',
-  query: {},
+  query: {}
 })
 
 const handleQuery = () => {
@@ -29,8 +29,8 @@ const handleQuery = () => {
   changeTabsMeta({
     title: 'Query',
     meta: {
-      title: `Query id=${route.query.id} `,
-    },
+      title: `Query id=${route.query.id} `
+    }
   })
 }
 
@@ -40,7 +40,7 @@ watch(
     handleQuery()
   },
   {
-    immediate: true,
+    immediate: true
   }
 )
 

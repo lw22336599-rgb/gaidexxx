@@ -20,6 +20,6 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'Segmented',
+  name: 'Segmented'
 })
 </script>

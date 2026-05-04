@@ -1,5 +1,11 @@
 <template>
-  <el-dialog v-model="dialogVisible" title="调整商品名" width="500px" :close-on-click-modal="false" @close="handleClose">
+  <el-dialog
+    v-model="dialogVisible"
+    title="调整商品名"
+    width="500px"
+    :close-on-click-modal="false"
+    @close="handleClose"
+  >
     <el-form ref="formRef" :model="form" :rules="rules" label-width="100px">
       <el-form-item label="修改方式" prop="Mode">
         <el-radio-group v-model="form.Mode">
@@ -57,7 +63,7 @@ const emit = defineEmits<{
 
 const dialogVisible = computed({
   get: () => props.modelValue,
-  set: (val) => emit('update:modelValue', val),
+  set: val => emit('update:modelValue', val)
 })
 
 const formRef = ref<FormInstance>()
@@ -66,7 +72,7 @@ const form = ref<Partial<FoodManageApi.UpdateFoodNameParms>>({
   Prefix: '',
   Suffix: '',
   OriginalText: '',
-  ReplacementText: '',
+  ReplacementText: ''
 })
 
 const rules = {
@@ -87,7 +93,7 @@ const rules = {
         }
       }
     }
-  ],
+  ]
 }
 
 const handleClose = () => {
@@ -97,7 +103,7 @@ const handleClose = () => {
 
 const handleConfirm = async () => {
   if (!formRef.value) return
-  await formRef.value.validate((valid) => {
+  await formRef.value.validate(valid => {
     if (valid) {
       emit('confirm', form.value)
       handleClose()

@@ -10,7 +10,7 @@ import VabJsonViewer from 'vue-json-viewer'
 import { useTabsStore } from '/@/store/modules/tabs'
 
 defineOptions({
-  name: 'Params',
+  name: 'Params'
 })
 
 const route = useRoute()
@@ -21,12 +21,12 @@ const finalRoute = reactive<any>({
   name: '',
   path: '',
   params: {
-    id: '111',
-  },
+    id: '111'
+  }
 })
 
 const handleParams = () => {
-  const _route: any = route.matched[0].children.find((item) => item.name === 'Params')
+  const _route: any = route.matched[0].children.find(item => item.name === 'Params')
   id.value = route.path.substring(route.path.lastIndexOf('/') + 1, route.path.length)
   finalRoute.name = _route.name
   finalRoute.path = _route.path
@@ -35,8 +35,8 @@ const handleParams = () => {
   changeTabsMeta({
     title: 'Params',
     meta: {
-      title: `Params id=${id.value}`,
-    },
+      title: `Params id=${id.value}`
+    }
   })
 }
 
@@ -46,7 +46,7 @@ watch(
     handleParams()
   },
   {
-    immediate: true,
+    immediate: true
   }
 )
 </script>

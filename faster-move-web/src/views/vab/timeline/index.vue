@@ -6,7 +6,12 @@
           <template #header>常规风格</template>
 
           <el-timeline>
-            <el-timeline-item v-for="(item, index) in activities" :key="index" :color="item.color" :timestamp="item.timestamp">
+            <el-timeline-item
+              v-for="(item, index) in activities"
+              :key="index"
+              :color="item.color"
+              :timestamp="item.timestamp"
+            >
               <template v-if="!item.color" #dot>
                 <vab-icon v-if="item.icon" :icon="item.icon" />
                 <vab-dot v-if="item.waver" :type="item.waver" />
@@ -26,7 +31,12 @@
           <template #header>卡片风格</template>
 
           <el-timeline>
-            <el-timeline-item v-for="(item, index) in activities" :key="index" :color="item.color" :timestamp="item.timestamp">
+            <el-timeline-item
+              v-for="(item, index) in activities"
+              :key="index"
+              :color="item.color"
+              :timestamp="item.timestamp"
+            >
               <template v-if="!item.color" #dot>
                 <vab-icon v-if="item.icon" :icon="item.icon" />
                 <vab-dot v-if="item.waver" :type="item.waver" />
@@ -44,7 +54,7 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'Timeline',
+  name: 'Timeline'
 })
 
 const activities = ref<any>([
@@ -52,35 +62,35 @@ const activities = ref<any>([
     content: '支持使用默认图标',
     timestamp: '2021-04-12 20:46',
     icon: 'account-circle-line',
-    cardType: 'warning',
+    cardType: 'warning'
   },
   {
     content: '支持使用默认图标',
     timestamp: '2021-04-18 20:46',
     icon: 'archive-line',
-    cardType: 'error',
+    cardType: 'error'
   },
   {
     content: '支持自定义颜色',
     timestamp: '2021-04-03 20:46',
     color: '#13ce66',
-    cardType: 'success',
+    cardType: 'success'
   },
   {
     content: '支持默认颜色',
     timestamp: '2021-04-03 20:46',
-    color: '#e4e7ed',
+    color: '#e4e7ed'
   },
   {
     content: '支持success闪动',
     timestamp: '2021-04-05 20:46',
-    waver: 'success',
+    waver: 'success'
   },
   {
     content: '支持error闪动',
     timestamp: '2021-04-05 20:46',
-    waver: 'error',
-  },
+    waver: 'error'
+  }
 ])
 </script>
 

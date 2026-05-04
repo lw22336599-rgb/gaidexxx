@@ -15,44 +15,44 @@ const iconList = ref<any>([
   {
     icon: 'baidu-line',
     title: '百科',
-    color: '#5b38b9',
+    color: '#5b38b9'
   },
   {
     icon: 'cast-line',
     title: '订阅',
-    color: '#f46e53',
+    color: '#f46e53'
   },
   {
     icon: 'award-line',
     title: '收藏',
-    color: '#6a59f4',
+    color: '#6a59f4'
   },
   {
     icon: 'ball-pen-line',
     title: 'OKR',
-    color: '#2a7bff',
+    color: '#2a7bff'
   },
   {
     icon: 'video-line',
     title: '学习',
-    color: '#eb6d0b',
+    color: '#eb6d0b'
   },
   {
     icon: 'cellphone-line',
     title: '汇报',
-    color: '#138eee',
+    color: '#138eee'
   },
   {
     icon: 'code-box-line',
     title: '动态',
-    color: '#21df97',
+    color: '#21df97'
   },
   {
     click: 'handleMore',
     icon: 'chat-1-line',
     title: '帮助',
-    color: '#ff3256',
-  },
+    color: '#ff3256'
+  }
 ])
 
 const handleMore = () => {

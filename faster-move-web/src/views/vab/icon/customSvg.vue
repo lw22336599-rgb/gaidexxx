@@ -17,7 +17,7 @@
             is-custom-svg
             :style="{
               width: queryForm.num + 'px',
-              height: queryForm.num + 'px',
+              height: queryForm.num + 'px'
             }"
           />
         </vab-card>
@@ -27,7 +27,7 @@
           <notification
             :style="{
               width: queryForm.num + 'px',
-              height: queryForm.num + 'px',
+              height: queryForm.num + 'px'
             }"
           />
         </vab-card>
@@ -40,7 +40,7 @@
 import { Notification } from '@element-plus/icons-vue'
 
 defineOptions({
-  name: 'CustomSvg',
+  name: 'CustomSvg'
 })
 
 interface QueryFormType {
@@ -49,7 +49,7 @@ interface QueryFormType {
 
 const iconList = ref<any>(['vite', 'vab', 'mall-fill', 'article', 'video', 'wenda', 'wtt'])
 const queryForm = reactive<QueryFormType>({
-  num: 28,
+  num: 28
 })
 </script>
 

@@ -1,7 +1,7 @@
-import {StarType} from "@/TsModel/Alien/Entity/Function/PFYC/StarType";
+import type { StarType } from '@/TsModel/Alien/Entity/Function/PFYC/StarType'
 
 export interface ScoreForecast_item {
-		StartType: StarType;
-		Num: number;
-		TargetScore: number;
+  StartType: StarType
+  Num: number
+  TargetScore: number
 }

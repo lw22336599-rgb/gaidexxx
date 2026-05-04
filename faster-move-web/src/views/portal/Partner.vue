@@ -6,7 +6,9 @@
         <div class="banner">
           <main>
             <div class="banner-title">合作伙伴计划</div>
-            <div class="banner-description">虚位以待，合作共赢，国内Vue3前端付费模板连续多年销量Top1，Vue Shop Vite期待与您共同成长</div>
+            <div class="banner-description">
+              虚位以待，合作共赢，国内Vue3前端付费模板连续多年销量Top1，Vue Shop Vite期待与您共同成长
+            </div>
 
             <el-button
               href="https://vuejs-core.cn/authorization/shop-vite.html"
@@ -17,11 +19,18 @@
             >
               立即购买
             </el-button>
-            <el-button href="https://vuejs-core.cn/shop-vite" plain rel="noopener noreferrer" tag="a" target="_blank" type="primary">
+            <el-button
+              href="https://vuejs-core.cn/shop-vite"
+              plain
+              rel="noopener noreferrer"
+              tag="a"
+              target="_blank"
+              type="primary"
+            >
               进入产品
             </el-button>
 
-            <div class="image-bg hidden-xs-only"></div>
+            <div class="image-bg hidden-xs-only" />
             <el-image class="hidden-xs-only" :src="avatar" />
           </main>
         </div>
@@ -53,7 +62,7 @@
 import avatar from '/@/assets/partner_images/copilot.svg'
 
 defineOptions({
-  name: 'Partner',
+  name: 'Partner'
 })
 
 const list = reactive<any>([
@@ -61,20 +70,20 @@ const list = reactive<any>([
     logo: avatar,
     name: '某某科技有限公司',
     label:
-      '致力于成为全球电力行业数字化转型的优选伙伴，随着能源转型的不断深入，新型电力系统源侧低碳化、网侧数字化、荷侧电气化的趋势已经成为行业共识，坚持平台+生态战略，把创新ICT技术、电力数字平台与行业实践经验深度结合。',
+      '致力于成为全球电力行业数字化转型的优选伙伴，随着能源转型的不断深入，新型电力系统源侧低碳化、网侧数字化、荷侧电气化的趋势已经成为行业共识，坚持平台+生态战略，把创新ICT技术、电力数字平台与行业实践经验深度结合。'
   },
   {
     logo: avatar,
     name: '某某科技有限公司',
     label:
-      '致力于为客户提供在线数据监测、数据整合、数据分析与挖掘、数据产品和智能应用以及数据化运营决策支持体系建设相关的工具、技术开发、咨询服务及企业培训。为国内众多知名企业输出高质量的数据分析服务，在业内获得广泛好评。',
+      '致力于为客户提供在线数据监测、数据整合、数据分析与挖掘、数据产品和智能应用以及数据化运营决策支持体系建设相关的工具、技术开发、咨询服务及企业培训。为国内众多知名企业输出高质量的数据分析服务，在业内获得广泛好评。'
   },
   {
     logo: avatar,
     name: '某某科技有限公司',
     label:
-      '致力于成为全球电力行业数字化转型的优选伙伴，随着能源转型的不断深入，新型电力系统源侧低碳化、网侧数字化、荷侧电气化的趋势已经成为行业共识，坚持平台+生态战略，把创新ICT技术、电力数字平台与行业实践经验深度结合。',
-  },
+      '致力于成为全球电力行业数字化转型的优选伙伴，随着能源转型的不断深入，新型电力系统源侧低碳化、网侧数字化、荷侧电气化的趋势已经成为行业共识，坚持平台+生态战略，把创新ICT技术、电力数字平台与行业实践经验深度结合。'
+  }
 ])
 </script>
 

@@ -67,7 +67,7 @@ import { Search } from '@element-plus/icons-vue'
 import { getList } from '/@/api/tables'
 
 defineOptions({
-  name: 'List',
+  name: 'List'
 })
 
 const list = ref<any>([])
@@ -75,7 +75,7 @@ const total = ref<number>(0)
 const queryForm = reactive<any>({
   pageNo: 1,
   pageSize: 20,
-  title: '',
+  title: ''
 })
 
 const listLoading = ref<boolean>(true)
@@ -105,7 +105,7 @@ const statusFilter = (status: string | number) => {
   const statusMap: any = {
     published: 'success',
     draft: 'primary',
-    deleted: 'danger',
+    deleted: 'danger'
   }
   return statusMap[status]
 }

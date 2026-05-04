@@ -7,7 +7,7 @@ const List = [
     password: 'admin',
     email: '@email',
     roles: ['admin'],
-    datetime: '@datetime',
+    datetime: '@datetime'
   },
   {
     id: '@id',
@@ -15,7 +15,7 @@ const List = [
     password: 'editor',
     email: '@email',
     roles: ['editor'],
-    datetime: '@datetime',
+    datetime: '@datetime'
   },
   {
     id: '@id',
@@ -23,8 +23,8 @@ const List = [
     password: 'test',
     email: '@email',
     roles: ['admin', 'editor'],
-    datetime: '@datetime',
-  },
+    datetime: '@datetime'
+  }
 ]
 
 export default [
@@ -33,14 +33,14 @@ export default [
     method: 'get',
     response({ query }: any) {
       const { username, pageNo = 1, pageSize = 20 } = query
-      const mockList = List.filter((item) => !(username && !item.username.includes(username)))
+      const mockList = List.filter(item => !(username && !item.username.includes(username)))
       const list = mockList.filter((item, index) => index < pageSize * pageNo && index >= pageSize * (pageNo - 1))
       return {
         code: 200,
         msg: 'success',
-        data: { list, total: mockList.length },
+        data: { list, total: mockList.length }
       }
-    },
+    }
   },
   {
     url: '/userManagement/doEdit',
@@ -48,9 +48,9 @@ export default [
     response() {
       return {
         code: 200,
-        msg: '模拟保存成功',
+        msg: '模拟保存成功'
       }
-    },
+    }
   },
   {
     url: '/userManagement/doDelete',
@@ -58,8 +58,8 @@ export default [
     response() {
       return {
         code: 200,
-        msg: '模拟删除成功',
+        msg: '模拟删除成功'
       }
-    },
-  },
+    }
+  }
 ] as MockMethod[]

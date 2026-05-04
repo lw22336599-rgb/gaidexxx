@@ -26,7 +26,7 @@ import { doEdit } from '/@/api/dictionaryManagement'
 import { uuid } from '/@/utils'
 
 defineOptions({
-  name: 'DictionaryManagementEdit',
+  name: 'DictionaryManagementEdit'
 })
 
 const emit = defineEmits(['fetch-data'])
@@ -36,7 +36,7 @@ const form = reactive<any>({
   parentKey: '',
   id: uuid(),
   key: '',
-  value: '',
+  value: ''
 })
 const title = ref<string>('')
 const dialogFormVisible = ref<boolean>(false)
@@ -51,7 +51,7 @@ const showEdit = (row: any) => {
 }
 
 defineExpose({
-  showEdit,
+  showEdit
 })
 
 const close = () => {

@@ -22,8 +22,10 @@ const MAX_ACCOUNTS = 3
  * 检测是否在 Electron 环境中
  */
 function isElectron(): boolean {
-  return typeof (globalThis as any).electron !== 'undefined' &&
+  return (
+    typeof (globalThis as any).electron !== 'undefined' &&
     typeof (globalThis as any).electron?.saveTokenFile === 'function'
+  )
 }
 
 /**
@@ -227,11 +229,16 @@ export async function deleteAccount(username: string): Promise<void> {
 
     if (isElectron()) {
       // Electron 环境：只保存账号列表（不包含密钥）
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(filteredAccounts.map(acc => ({
-        username: acc.username,
-        gaSecret: undefined,
-        lastLoginTime: acc.lastLoginTime
-      }))))
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(
+          filteredAccounts.map(acc => ({
+            username: acc.username,
+            gaSecret: undefined,
+            lastLoginTime: acc.lastLoginTime
+          }))
+        )
+      )
     } else {
       // 非 Electron 环境：加密密钥后保存
       const accountsToStore = filteredAccounts.map(account => ({

@@ -38,50 +38,50 @@ const iconList = ref<iconListType[]>([
     title: '工商建议',
     tips: '工商建议快捷入口',
     value: 1,
-    link: '',
+    link: ''
   },
   {
     icon: 'copyright-line',
     title: '商标管理',
     tips: '商标管理快捷入口',
-    link: '',
+    link: ''
   },
   {
     icon: 'book-3-line',
     title: '专利查询',
     tips: '专利查询快捷入口',
-    link: '',
+    link: ''
   },
   {
     icon: 'check-double-line',
     title: '著作权查询',
     tips: '著作权查询快捷入口',
-    link: '',
+    link: ''
   },
   {
     icon: 'codepen-line',
     title: '证照管理',
     tips: '证照管理快捷入口',
-    link: '',
+    link: ''
   },
   {
     icon: 'discuss-line',
     title: '纳税提醒',
     tips: '纳税提醒快捷入口',
-    link: '',
+    link: ''
   },
   {
     icon: 'emotion-unhappy-line',
     title: '违规查询',
     tips: '违规查询快捷入口',
-    link: '',
+    link: ''
   },
   {
     icon: 'apps-2-line',
     title: '全部应用',
     tips: '全部应用快捷入口',
-    link: '',
-  },
+    link: ''
+  }
 ])
 </script>
 

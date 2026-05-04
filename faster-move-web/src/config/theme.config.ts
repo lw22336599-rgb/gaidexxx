@@ -61,5 +61,5 @@ export const themeConfig: ThemeType = {
   // 默认字体大小
   fontSize: '14px',
   // 顶部右侧图标是否允许拖拽（影响性能建议关闭）
-  rightToolsDrag: false,
+  rightToolsDrag: false
 }

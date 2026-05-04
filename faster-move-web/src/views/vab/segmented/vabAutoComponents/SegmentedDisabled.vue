@@ -16,33 +16,33 @@ const options = [
   {
     label: '周一',
     value: 'Mon',
-    disabled: true,
+    disabled: true
   },
   {
     label: '周二',
-    value: 'Tue',
+    value: 'Tue'
   },
   {
     label: '周三',
     value: 'Wed',
-    disabled: true,
+    disabled: true
   },
   {
     label: '周四',
-    value: 'Thu',
+    value: 'Thu'
   },
   {
     label: '周五',
     value: 'Fri',
-    disabled: true,
+    disabled: true
   },
   {
     label: '周六',
-    value: 'Sat',
+    value: 'Sat'
   },
   {
     label: '周日',
-    value: 'Sun',
-  },
+    value: 'Sun'
+  }
 ]
 </script>

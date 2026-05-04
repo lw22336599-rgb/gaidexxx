@@ -1,11 +1,23 @@
 <template>
-  <el-dialog v-model="visible" :title="dialogTitle" width="640px" :close-on-click-modal="false"
-    :before-close="handleClose" destroy-on-close>
+  <el-dialog
+    v-model="visible"
+    :title="dialogTitle"
+    width="640px"
+    :close-on-click-modal="false"
+    :before-close="handleClose"
+    destroy-on-close
+  >
     <div class="batch-select-content">
       <div class="import-section">
         <div class="import-tip">每行一个门店编号，最多200个</div>
         <div class="import-row">
-          <el-input v-model="inputText" type="textarea" :rows="4" placeholder="请输入门店编号，每行一个" class="import-textarea" />
+          <el-input
+            v-model="inputText"
+            type="textarea"
+            :rows="4"
+            placeholder="请输入门店编号，每行一个"
+            class="import-textarea"
+          />
           <el-button type="primary" :loading="loading" @click="handleFetchShops">加载门店</el-button>
         </div>
       </div>
@@ -41,28 +53,29 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
-  'confirm': [shops: ShopList_ResulItem_Extra[]]
+  confirm: [shops: ShopList_ResulItem_Extra[]]
 }>()
 
 const visible = computed({
   get: () => props.modelValue,
-  set: (val) => emit('update:modelValue', val)
+  set: val => emit('update:modelValue', val)
 })
 
-const dialogTitle = computed(
-  () => props.actionTitle ? `${props.actionTitle} - 选择店铺` : '选择要操作的店铺'
-)
+const dialogTitle = computed(() => (props.actionTitle ? `${props.actionTitle} - 选择店铺` : '选择要操作的店铺'))
 
 const inputText = ref('')
 const loading = ref(false)
 const shopList = ref<ShopList_ResulItem_Extra[]>([])
 
-watch(() => props.modelValue, (val) => {
-  if (val) {
-    inputText.value = ''
-    shopList.value = []
+watch(
+  () => props.modelValue,
+  val => {
+    if (val) {
+      inputText.value = ''
+      shopList.value = []
+    }
   }
-})
+)
 
 const handleClose = () => {
   visible.value = false
@@ -71,8 +84,8 @@ const handleClose = () => {
 const parseOfficeIds = (text: string): string[] => {
   const ids = text
     .split(/\r?\n/)
-    .map((line) => line.trim())
-    .filter((line) => line.length > 0)
+    .map(line => line.trim())
+    .filter(line => line.length > 0)
   return [...new Set(ids)]
 }
 
@@ -97,8 +110,8 @@ const handleFetchShops = async () => {
       FunctionCode: props.functionCode ?? undefined
     })
     const shops = res.Shops ?? []
-    const byId = new Map<string, typeof shops[0]>()
-    shops.forEach((s) => {
+    const byId = new Map<string, (typeof shops)[0]>()
+    shops.forEach(s => {
       const id = s.id ?? (s as { shop?: string }).shop ?? ''
       if (id) byId.set(id, s)
     })

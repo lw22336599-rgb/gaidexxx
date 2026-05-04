@@ -15,7 +15,7 @@ const settingsStore = useSettingsStore()
 const { theme } = storeToRefs(settingsStore)
 const option = reactive<any>({
   tooltip: {
-    trigger: 'item',
+    trigger: 'item'
   },
   series: [
     {
@@ -25,17 +25,17 @@ const option = reactive<any>({
       itemStyle: {
         borderRadius: 10,
         borderColor: '#fff',
-        borderWidth: 2,
+        borderWidth: 2
       },
       data: [
         { value: 1048, name: '搜索引擎' },
         { value: 735, name: '直接访问' },
         { value: 580, name: '邮件营销' },
         { value: 484, name: '联盟广告' },
-        { value: 300, name: '视频广告' },
-      ],
-    },
-  ],
+        { value: 300, name: '视频广告' }
+      ]
+    }
+  ]
 })
 
 watch(

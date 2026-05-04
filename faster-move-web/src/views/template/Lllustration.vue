@@ -21,7 +21,7 @@
             is-custom-svg
             :style="{
               width: queryForm.num + 'px',
-              height: queryForm.num + 'px',
+              height: queryForm.num + 'px'
             }"
           />
         </vab-card>
@@ -37,7 +37,7 @@ const lllustrationsArray: string[] = []
 const span = ref<number>(4)
 
 const files: any = import.meta.glob('../../icon/lllustration/*.svg', {
-  eager: true,
+  eager: true
 })
 
 for (const key in files) {
@@ -46,7 +46,7 @@ for (const key in files) {
 }
 
 const queryForm = reactive<any>({
-  num: 150,
+  num: 150
 })
 
 const handleCopyIcon = (item: any) => {

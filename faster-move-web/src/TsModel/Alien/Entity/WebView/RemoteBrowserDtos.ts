@@ -24,7 +24,7 @@ export interface RemoteBrowserClosingDto {
 
 export enum RemoteBrowserClosingReason {
   ReplacedByNewConnection = 1,
-  ServerShutdown = 2,
+  ServerShutdown = 2
 }
 
 /** Hub 下发的统一指令信封 */
@@ -47,5 +47,5 @@ export enum CreateTaskTypeEnum {
   None = 0,
   老到新复制 = 1,
   竞对复制 = 2,
-  商品批量管理 = 3,
+  商品批量管理 = 3
 }

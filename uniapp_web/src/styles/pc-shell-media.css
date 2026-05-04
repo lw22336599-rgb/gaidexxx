@@ -1,0 +1,13 @@
+/**
+ * H5 内嵌或跳转 PC 管理端时，宿主壳层的通用窄屏约束（不替代 PC 工程内 layout 的 mobile 断点）。
+ * 若日后有少量与 PC 同构的页面片段，可挂 class：pc-shell-flow
+ */
+@media (max-width: 991.98px) {
+  .pc-shell-flow {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}

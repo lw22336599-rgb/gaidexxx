@@ -23,6 +23,48 @@ import { createVitePlugin, createWatch } from '/@vab/build'
 
 const lastBuildTime = dayjs().format('YYYY-MM-DD HH:mm:ss')
 
+/** PC 开发机与手机 H5 对齐的局域网 bridge 根地址（仅 dev server 代理用） */
+const DEFAULT_BRIDGE = 'http://10.10.10.177:3000/'
+
+/** PC dev：`/` 通配 → bridge；放行 Vite 模块、源码与静态 */
+function pcBridgeRootBypass(req: {
+  url?: string;
+  method?: string;
+  headers: Record<string, string | string[] | undefined>;
+}) {
+  const raw = req.url || "";
+  const pathOnly = raw.split("?")[0] || "";
+  if (
+    raw.startsWith("/@vite") ||
+    raw.startsWith("/@fs") ||
+    raw.startsWith("/@id") ||
+    raw.startsWith("/__")
+  ) {
+    return raw;
+  }
+  if (
+    raw.startsWith("/node_modules") ||
+    raw.startsWith("/@/") ||
+    raw.startsWith("/src/") ||
+    raw.startsWith("/library/") ||
+    raw.startsWith("/public/")
+  ) {
+    return raw;
+  }
+  if (
+    /\.(vue|tsx?|jsx?|mjs|js|ts|css|scss|sass|less|json|svg|png|jpe?g|gif|webp|ico|woff2?|ttf|eot|map|wasm)(\?|$)/i.test(
+      pathOnly,
+    )
+  ) {
+    return raw;
+  }
+  if (req.method === "GET" && (req.headers.accept || "").includes("text/html")) {
+    return raw;
+  }
+  // Vite bypass：仅 `string` 改写后走本地中间件；`false` 会令 dev server 直接 404，从不转发到 target
+  return undefined;
+}
+
 export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
   process.env['VITE_APP_UPDATE_TIME'] = lastBuildTime
   process.env['VITE_USER_NODE_ENV'] = mode
@@ -30,16 +72,36 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
   const env = loadEnv(mode, root)
   createWatch(env)
 
+  const bridge = (env.VITE_PROXY_TARGET || DEFAULT_BRIDGE).trim()
+  const bridgeTarget = bridge.endsWith('/') ? bridge : `${bridge}/`
+  const bridgeOrigin = bridgeTarget.replace(/\/$/, '')
+  const pcDevBind = (env.VITE_PC_DEV_BIND || '10.10.10.177').trim()
+
   return {
     base,
     root,
     server: {
       open,
       port,
+      /** 手机 H5（5173 等）跨源打 5200 时，放宽 dev CORS（代理链仍由 bridge 回写 ACAO） */
+      cors: true,
       hmr: {
         overlay: true,
       },
-      host: '0.0.0.0',
+      host: pcDevBind,
+      proxy: {
+        // 具体 API 前缀优先匹配，避免仅靠 `/` + bypass 时序问题；无 bypass，一律透传 bridge
+        '/admin': { target: bridgeOrigin, changeOrigin: true },
+        '/homedata': { target: bridgeOrigin, changeOrigin: true },
+        '/seed': { target: bridgeOrigin, changeOrigin: true },
+        '/userManagement': { target: bridgeOrigin, changeOrigin: true },
+        '/api': { target: bridgeOrigin, changeOrigin: true },
+        '/': {
+          target: bridgeOrigin,
+          changeOrigin: true,
+          bypass: pcBridgeRootBypass,
+        },
+      },
       warmup: {
         clientFiles: ['./index.html', './library/{components,layouts}/*', './src/{views,plugins}/*'],
       },

@@ -44,7 +44,9 @@
           <el-button v-permissions="['Admin']" type="primary">拥有["Admin"]的按钮</el-button>
           <el-button v-permissions="{ role: ['Admin'], mode: 'except' }" type="danger">未拥有["Admin"]的按钮</el-button>
           <el-button v-permissions="['Editor']" type="primary">拥有["Editor"]的按钮</el-button>
-          <el-button v-permissions="{ role: ['Editor'], mode: 'except' }" type="danger">未拥有["Editor"]的按钮</el-button>
+          <el-button v-permissions="{ role: ['Editor'], mode: 'except' }" type="danger"
+            >未拥有["Editor"]的按钮</el-button
+          >
           <el-button v-permissions="{ role: ['Admin', 'Editor'], mode: 'allOf' }" type="primary">
             同时拥有["Admin","Editor"]的按钮
           </el-button>
@@ -54,11 +56,21 @@
       <!--  注意其中:后面的单词为你要控制页面权限的页面name，这样可以区分到具体页面 -->
       <el-form-item label="RBAC 权限点控制">
         <el-space wrap>
-          <el-button v-permissions="{ permission: ['read:system'] }" type="primary">拥有["read:system"]的按钮</el-button>
-          <el-button v-permissions="{ permission: ['read:system'], mode: 'except' }" type="danger">未拥有["'read:system'"]的按钮</el-button>
-          <el-button v-permissions="{ permission: ['write:system'] }" type="primary">拥有["write:system"]的按钮</el-button>
-          <el-button v-permissions="{ permission: ['write:system'], mode: 'except' }" type="danger">未拥有["write:system"]的按钮</el-button>
-          <el-button v-permissions="{ permission: ['delete:system'] }" type="primary">拥有["delete:system"]的按钮</el-button>
+          <el-button v-permissions="{ permission: ['read:system'] }" type="primary"
+            >拥有["read:system"]的按钮</el-button
+          >
+          <el-button v-permissions="{ permission: ['read:system'], mode: 'except' }" type="danger"
+            >未拥有["'read:system'"]的按钮</el-button
+          >
+          <el-button v-permissions="{ permission: ['write:system'] }" type="primary"
+            >拥有["write:system"]的按钮</el-button
+          >
+          <el-button v-permissions="{ permission: ['write:system'], mode: 'except' }" type="danger"
+            >未拥有["write:system"]的按钮</el-button
+          >
+          <el-button v-permissions="{ permission: ['delete:system'] }" type="primary"
+            >拥有["delete:system"]的按钮</el-button
+          >
           <el-button v-permissions="{ permission: ['delete:system'], mode: 'except' }" type="danger">
             未拥有["delete:system"]的按钮
           </el-button>
@@ -73,7 +85,7 @@
             v-permissions="{
               role: ['Editor'],
               permission: ['read:system'],
-              mode: 'allOf',
+              mode: 'allOf'
             }"
             type="primary"
           >
@@ -83,7 +95,7 @@
             v-permissions="{
               role: ['Admin'],
               permission: ['delete:system'],
-              mode: 'except',
+              mode: 'except'
             }"
             type="danger"
           >
@@ -95,10 +107,16 @@
       <el-form-item label="RBAC 自定义按钮&表格列权限控制">
         <!-- hasPermission()是更加底层的方法，它可以使用 v-permissions 自定义指令中的所有格式的参数，非必要不建议使用，表格列隐藏展示可能用到下述代码 -->
         <el-button v-if="hasPermission(['Admin'])" type="primary">拥有["Admin"]的按钮</el-button>
-        <el-button v-if="hasPermission({ role: ['Admin'], mode: 'except' })" type="danger">未拥有["Admin"]的按钮</el-button>
+        <el-button v-if="hasPermission({ role: ['Admin'], mode: 'except' })" type="danger"
+          >未拥有["Admin"]的按钮</el-button
+        >
         <el-table border :data="tableData" style="display: block; margin-top: var(--el-margin)">
           <el-table-column v-if="hasPermission(['Admin'])" label="拥有['Admin']的表格列" prop="yes" />
-          <el-table-column v-if="hasPermission({ role: ['Admin'], mode: 'except' })" label="未拥有['Admin']的表格列" prop="no" />
+          <el-table-column
+            v-if="hasPermission({ role: ['Admin'], mode: 'except' })"
+            label="未拥有['Admin']的表格列"
+            prop="no"
+          />
         </el-table>
       </el-form-item>
       <el-form-item label="后端code指令强制开启锁屏">
@@ -106,7 +124,13 @@
       </el-form-item>
     </el-form>
     <el-tour v-model="open" :type="type">
-      <el-tour-step v-for="step in steps" :key="step" :description="step.description" :target="step.target" :title="step.title" />
+      <el-tour-step
+        v-for="step in steps"
+        :key="step"
+        :description="step.description"
+        :target="step.target"
+        :title="step.title"
+      />
     </el-tour>
   </div>
 </template>
@@ -121,7 +145,7 @@ import { uuid } from '/@/utils'
 import { hasPermission } from '/@/utils/permission'
 
 defineOptions({
-  name: 'Permission',
+  name: 'Permission'
 })
 
 const aclStore = useAclStore()
@@ -133,12 +157,12 @@ const showAlert = ref<boolean>(false)
 const tableData = [
   {
     yes: 'yes-1',
-    no: 'no-1',
+    no: 'no-1'
   },
   {
     yes: 'yes-2',
-    no: 'no-2',
-  },
+    no: 'no-2'
+  }
 ]
 const tips = ref<string>('当前登录的账号非admin，如需查看演示地址全部功能，请使用admin账号登录。')
 const open = ref<boolean>(false)
@@ -147,8 +171,8 @@ const steps = ref<any>([
   {
     target: '#vsv-admin',
     title: '切换账号',
-    description: tips.value,
-  },
+    description: tips.value
+  }
 ])
 
 const handleOpen = () => {
@@ -170,7 +194,7 @@ const handleLock = async () => {
   await lock()
 }
 
-watch(token, (value) => {
+watch(token, value => {
   $baseMessage(`token：${value}，刷新成功！`, 'success', 'hey')
 })
 

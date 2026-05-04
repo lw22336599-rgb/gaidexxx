@@ -7,7 +7,7 @@ import { graphic } from 'echarts/core'
 import { random } from 'lodash-es'
 
 defineOptions({
-  name: 'DataScreenRight1',
+  name: 'DataScreenRight1'
 })
 
 const option = reactive<any>({
@@ -16,10 +16,10 @@ const option = reactive<any>({
     right: '0',
     bottom: '20px',
     top: '40px',
-    containLabel: true,
+    containLabel: true
   },
   tooltip: {
-    trigger: 'axis',
+    trigger: 'axis'
   },
   xAxis: [
     {
@@ -27,33 +27,33 @@ const option = reactive<any>({
       axisLine: {
         show: true,
         lineStyle: {
-          color: '#00a1ff',
-        },
+          color: '#00a1ff'
+        }
       },
       splitLine: {
-        show: false,
+        show: false
       },
       axisLabel: {
-        color: '#eee',
-      },
-    },
+        color: '#eee'
+      }
+    }
   ],
   yAxis: [
     {
       type: 'value',
       axisLabel: {
-        color: '#eee',
+        color: '#eee'
       },
       axisLine: {
         show: true,
         lineStyle: {
-          color: '#00a1ff',
-        },
+          color: '#00a1ff'
+        }
       },
       splitLine: {
-        show: false,
-      },
-    },
+        show: false
+      }
+    }
   ],
   series: {
     symbolSize: 10,
@@ -66,17 +66,17 @@ const option = reactive<any>({
         [
           {
             offset: 0,
-            color: '#2fc4d1',
+            color: '#2fc4d1'
           },
           {
             offset: 1,
-            color: 'rgba(0,179,244, 0.9)',
-          },
+            color: 'rgba(0,179,244, 0.9)'
+          }
         ],
         false
       ),
       shadowColor: 'rgba(0,179,244, 0.9)',
-      shadowBlur: 20,
+      shadowBlur: 20
     },
     data: [
       [random(1, 20), random(1, 20)],
@@ -101,10 +101,10 @@ const option = reactive<any>({
       [random(1, 20), random(1, 20)],
       [random(1, 20), random(1, 20)],
       [random(1, 20), random(1, 20)],
-      [random(1, 20), random(1, 20)],
+      [random(1, 20), random(1, 20)]
     ],
-    type: 'scatter',
-  },
+    type: 'scatter'
+  }
 })
 
 setInterval(() => {
@@ -131,7 +131,7 @@ setInterval(() => {
     [random(1, 20), random(1, 20)],
     [random(1, 20), random(1, 20)],
     [random(1, 20), random(1, 20)],
-    [random(1, 20), random(1, 20)],
+    [random(1, 20), random(1, 20)]
   ]
 }, 1000 * 5)
 </script>

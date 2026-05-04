@@ -10,13 +10,20 @@
     </vab-card>
     <vab-card title="动态标题">
       <el-space wrap>
-        <el-button type="primary" @click="handleMeta('DynamicMeta', { title: 'vab-demo' })">标题变更为 vab-demo</el-button>
+        <el-button type="primary" @click="handleMeta('DynamicMeta', { title: 'vab-demo' })"
+          >标题变更为 vab-demo</el-button
+        >
         <el-button type="warning" @click="handleMeta('DynamicMeta', { title: '动态Meta' })">重置</el-button>
       </el-space>
     </vab-card>
     <vab-card title="动态徽章">
       <el-space wrap>
-        <el-select v-model="badgeType" placeholder="徽章类型" style="min-width: 95px" @change="handleBadgeType('DynamicMeta')">
+        <el-select
+          v-model="badgeType"
+          placeholder="徽章类型"
+          style="min-width: 95px"
+          @change="handleBadgeType('DynamicMeta')"
+        >
           <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
         </el-select>
         <el-badge :hidden="hidden" style="margin-right: 10px" :type="badgeType" :value="badge">
@@ -55,7 +62,7 @@ import { useTabsStore } from '/@/store/modules/tabs'
 import getPageTitle from '/@/utils/pageTitle'
 
 defineOptions({
-  name: 'DynamicMeta',
+  name: 'DynamicMeta'
 })
 
 const route = useRoute()
@@ -74,20 +81,20 @@ const badgeType = ref<any>('success')
 const options = [
   {
     value: 'primary',
-    label: 'primary',
+    label: 'primary'
   },
   {
     value: 'success',
-    label: 'success',
+    label: 'success'
   },
   {
     value: 'warning',
-    label: 'warning',
+    label: 'warning'
   },
   {
     value: 'danger',
-    label: 'danger',
-  },
+    label: 'danger'
+  }
 ]
 
 const handleBadge = (name: any) => {
@@ -97,8 +104,8 @@ const handleBadge = (name: any) => {
     name,
     meta: {
       badge: badge.value,
-      badgeType: badgeType.value,
-    },
+      badgeType: badgeType.value
+    }
   })
 }
 
@@ -106,8 +113,8 @@ const handleBadgeType = (name: any) => {
   changeMenuMeta({
     name,
     meta: {
-      badgeType: badgeType.value,
-    },
+      badgeType: badgeType.value
+    }
   })
 }
 

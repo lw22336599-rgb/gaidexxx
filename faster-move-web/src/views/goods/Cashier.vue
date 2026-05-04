@@ -21,7 +21,7 @@
 import _QR from '/@/assets/qr_images/QR.png'
 
 defineOptions({
-  name: 'Cashier',
+  name: 'Cashier'
 })
 const QR = ref<any>(_QR)
 let timer: ReturnType<typeof setInterval>

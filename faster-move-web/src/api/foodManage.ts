@@ -1,6 +1,6 @@
 import request from '/@/utils/request-move.ts'
-import { FoodManageApi } from '/@/views/foodManage/types/api'
-import { FoodMoveConf } from '/@/types/foodMove'
+import type { FoodManageApi } from '/@/views/foodManage/types/api'
+import type { FoodMoveConf } from '/@/types/foodMove'
 import { ElMessage } from 'element-plus'
 import { useUserStore } from '/@/store/modules/user'
 import axios from 'axios'
@@ -19,15 +19,15 @@ let host = 'http://localhost:5130'
 //   console.log("商品管理地址为:" + host)
 // }
 let baseUrl = JSON.parse(localStorage.getItem('baseUrl') as string)
-console.log(baseUrl);
-var urlType = JSON.parse(localStorage.getItem('urlType'));
+console.log(baseUrl)
+var urlType = JSON.parse(localStorage.getItem('urlType'))
 
 if (urlType == 'custom') {
   baseUrl = JSON.parse(localStorage.getItem('customUrl') as string)
-  console.log("url模式为自定义：", urlType);
+  console.log('url模式为自定义：', urlType)
 }
 host = baseUrl.food_manage.replace(/\/$/, '')
-console.log("商品管理地址为:" + host)
+console.log('商品管理地址为:' + host)
 // 存储所有活动的流式请求
 const activeStreams = new Map<string, AbortController>()
 
@@ -62,7 +62,7 @@ const checkStreamSupport = async (url: string, method: string, params: any): Pro
 
     const response = await fetch(url, {
       method: 'HEAD',
-      headers,
+      headers
     })
     const contentType = response.headers.get('content-type')
     return contentType?.includes('text/event-stream') || false
@@ -98,9 +98,7 @@ const handleStreamResponse = async (
     const { token } = userStore
 
     // 构建请求URL
-    const requestUrl = useQueryParams && method === 'post'
-      ? `${url}?${new URLSearchParams(params).toString()}`
-      : url
+    const requestUrl = useQueryParams && method === 'post' ? `${url}?${new URLSearchParams(params).toString()}` : url
 
     // 使用 fetchEventSource 替代 EventSource
     await fetchEventSource(requestUrl, {
@@ -108,10 +106,10 @@ const handleStreamResponse = async (
       method: method.toUpperCase(),
       headers: {
         ...baseHeaders,
-        'Authorization': token ? `Bearer ${token}` : '',
-        "Content-Type": "application/json",
+        Authorization: token ? `Bearer ${token}` : '',
+        'Content-Type': 'application/json',
         // 添加连接保持头部
-        'Connection': 'keep-alive',
+        Connection: 'keep-alive',
         'Keep-Alive': 'timeout=60, max=1000',
         'client-version': version
       },
@@ -196,11 +194,11 @@ const handleStreamResponse = async (
         method: method.toUpperCase(),
         headers: {
           ...baseHeaders,
-          'Authorization': token ? `Bearer ${token}` : '',
+          Authorization: token ? `Bearer ${token}` : '',
           'Content-Type': 'application/json',
           'client-version': version
         },
-        body: method === 'post' && !useQueryParams ? JSON.stringify(params) : undefined,
+        body: method === 'post' && !useQueryParams ? JSON.stringify(params) : undefined
       })
 
       if (response.ok) {
@@ -247,7 +245,7 @@ const makeRequest = async <T>(
   useQueryParams: boolean = false
 ): Promise<T> => {
   if (onProgress && requestId) {
-    const isStreamSupported = true;//不管了 //await checkStreamSupport(url, method, params)
+    const isStreamSupported = true //不管了 //await checkStreamSupport(url, method, params)
     if (isStreamSupported) {
       await handleStreamResponse(url, method, params, onProgress, requestId, useQueryParams)
       return {} as T
@@ -259,8 +257,8 @@ const makeRequest = async <T>(
   return request({
     url,
     method,
-    data: (!useQueryParams && method === 'post') ? params : undefined,
-    params: (useQueryParams || method === 'get') ? params : undefined,
+    data: !useQueryParams && method === 'post' ? params : undefined,
+    params: useQueryParams || method === 'get' ? params : undefined,
     headers: baseHeaders
   })
 }
@@ -276,17 +274,29 @@ export const createTask = (params: FoodMoveConf) => {
 }
 
 // 测试进度
-export const progressTest = (params: { taskId: string }, onProgress?: (progress: FoodManageApi.ProgressInfo) => void, requestId?: string) => {
+export const progressTest = (
+  params: { taskId: string },
+  onProgress?: (progress: FoodManageApi.ProgressInfo) => void,
+  requestId?: string
+) => {
   return makeRequest(`${host}/foodmanage/ProgressTest`, 'post', params, onProgress, requestId, true)
 }
 
 // 从平台拉取商品数据
-export const pullShopFoods = (params: FoodManageApi.PullShopFoodsParams, onProgress?: (progress: FoodManageApi.ProgressInfo) => void, requestId?: string) => {
+export const pullShopFoods = (
+  params: FoodManageApi.PullShopFoodsParams,
+  onProgress?: (progress: FoodManageApi.ProgressInfo) => void,
+  requestId?: string
+) => {
   return makeRequest(`${host}/foodmanage/pullshopfoods`, 'post', params, onProgress, requestId, true)
 }
 
 // 强制从平台重新拉取商品数据
-export const pullShopFoodsV2 = (params: FoodManageApi.PullShopFoodsV2Params, onProgress?: (progress: FoodManageApi.ProgressInfo) => void, requestId?: string) => {
+export const pullShopFoodsV2 = (
+  params: FoodManageApi.PullShopFoodsV2Params,
+  onProgress?: (progress: FoodManageApi.ProgressInfo) => void,
+  requestId?: string
+) => {
   return makeRequest(`${host}/foodmanage/v2/pullshopfoods`, 'post', params, onProgress, requestId)
 }
 
@@ -301,7 +311,9 @@ export const getFoodGroups = (taskId: string): Promise<FoodManageApi.RestResult<
 }
 
 // 获取商品列表
-export const getFoodList = (params: FoodManageApi.GetFoodListParams): Promise<FoodManageApi.RestResult<FoodManageApi.PageResultVo<FoodManageApi.FoodItemVo>>> => {
+export const getFoodList = (
+  params: FoodManageApi.GetFoodListParams
+): Promise<FoodManageApi.RestResult<FoodManageApi.PageResultVo<FoodManageApi.FoodItemVo>>> => {
   return request({
     url: `${host}/foodmanage/queryfoodspage`,
     method: 'post',
@@ -311,7 +323,11 @@ export const getFoodList = (params: FoodManageApi.GetFoodListParams): Promise<Fo
 }
 
 // 批量修改商品价格
-export const batchUpdatePrice = (params: FoodManageApi.UpdateFoodPriceParms, onProgress?: (progress: FoodManageApi.ProgressInfo) => void, requestId?: string) => {
+export const batchUpdatePrice = (
+  params: FoodManageApi.UpdateFoodPriceParms,
+  onProgress?: (progress: FoodManageApi.ProgressInfo) => void,
+  requestId?: string
+) => {
   return makeRequest(`${host}/foodmanage/updatefoodprice`, 'post', params, onProgress, requestId)
 }
 
@@ -326,53 +342,93 @@ export const batchUpdateImage = (params: FoodManageApi.BatchUpdateImageParams) =
 }
 
 // 批量删除商品
-export const batchDeleteFood = (params: FoodManageApi.BatchDeleteFoodParams, onProgress?: (progress: FoodManageApi.ProgressInfo) => void, requestId?: string) => {
+export const batchDeleteFood = (
+  params: FoodManageApi.BatchDeleteFoodParams,
+  onProgress?: (progress: FoodManageApi.ProgressInfo) => void,
+  requestId?: string
+) => {
   return makeRequest(`${host}/foodmanage/deletefoods`, 'post', params, onProgress, requestId)
 }
 
 // 批量上下架商品
-export const batchUpdateStatus = (params: FoodManageApi.BatchUpdateStatusParams, onProgress?: (progress: FoodManageApi.ProgressInfo) => void, requestId?: string) => {
+export const batchUpdateStatus = (
+  params: FoodManageApi.BatchUpdateStatusParams,
+  onProgress?: (progress: FoodManageApi.ProgressInfo) => void,
+  requestId?: string
+) => {
   console.log('foodManage.ts - 发送到后端的状态值:', params.IsOnSale)
   return makeRequest(`${host}/foodmanage/updatefoodstate`, 'post', params, onProgress, requestId)
 }
 
 // 批量修改库存
-export const batchUpdateStock = (params: FoodManageApi.BatchUpdateStockParams, onProgress?: (progress: FoodManageApi.ProgressInfo) => void, requestId?: string) => {
+export const batchUpdateStock = (
+  params: FoodManageApi.BatchUpdateStockParams,
+  onProgress?: (progress: FoodManageApi.ProgressInfo) => void,
+  requestId?: string
+) => {
   return makeRequest(`${host}/foodmanage/updatefoodstock`, 'post', params, onProgress, requestId)
 }
 
 // 批量修改折扣
-export const batchUpdateDiscount = (params: FoodManageApi.BatchUpdateDiscountParams, onProgress?: (progress: FoodManageApi.ProgressInfo) => void, requestId?: string) => {
+export const batchUpdateDiscount = (
+  params: FoodManageApi.BatchUpdateDiscountParams,
+  onProgress?: (progress: FoodManageApi.ProgressInfo) => void,
+  requestId?: string
+) => {
   return makeRequest(`${host}/foodmanage/updatefooddiscount`, 'post', params, onProgress, requestId)
 }
 
 // 批量下线折扣
-export const batchOfflineDiscount = (params: FoodManageApi.BatchOfflineDiscountParams, onProgress?: (progress: FoodManageApi.ProgressInfo) => void, requestId?: string) => {
+export const batchOfflineDiscount = (
+  params: FoodManageApi.BatchOfflineDiscountParams,
+  onProgress?: (progress: FoodManageApi.ProgressInfo) => void,
+  requestId?: string
+) => {
   return makeRequest(`${host}/foodmanage/offlinediscount`, 'post', params, onProgress, requestId)
 }
 
 // 批量修改起购数量
-export const batchUpdateMinBuy = (params: FoodManageApi.BatchUpdateMinBuyParams, onProgress?: (progress: FoodManageApi.ProgressInfo) => void, requestId?: string) => {
+export const batchUpdateMinBuy = (
+  params: FoodManageApi.BatchUpdateMinBuyParams,
+  onProgress?: (progress: FoodManageApi.ProgressInfo) => void,
+  requestId?: string
+) => {
   return makeRequest(`${host}/foodmanage/updatefoodminbuy`, 'post', params, onProgress, requestId)
 }
 
 // 批量修改商品名称
-export const batchUpdateName = (params: FoodManageApi.UpdateFoodNameParms, onProgress?: (progress: FoodManageApi.ProgressInfo) => void, requestId?: string) => {
+export const batchUpdateName = (
+  params: FoodManageApi.UpdateFoodNameParms,
+  onProgress?: (progress: FoodManageApi.ProgressInfo) => void,
+  requestId?: string
+) => {
   return makeRequest(`${host}/foodmanage/updatefoodname`, 'post', params, onProgress, requestId)
 }
 
 // 批量更新商品图片边框
-export const batchUpdateImageBorder = (params: FoodManageApi.BatchUpdateImageBorderParams, onProgress?: (progress: FoodManageApi.ProgressInfo) => void, requestId?: string) => {
+export const batchUpdateImageBorder = (
+  params: FoodManageApi.BatchUpdateImageBorderParams,
+  onProgress?: (progress: FoodManageApi.ProgressInfo) => void,
+  requestId?: string
+) => {
   return makeRequest(`${host}/foodmanage/updatefoodimageborder`, 'post', params, onProgress, requestId)
 }
 
 // 删除第一张主图
-export const deleteFirstFoodImage = (params: FoodManageApi.DeleteFirstFoodImageParams, onProgress?: (progress: FoodManageApi.ProgressInfo) => void, requestId?: string) => {
+export const deleteFirstFoodImage = (
+  params: FoodManageApi.DeleteFirstFoodImageParams,
+  onProgress?: (progress: FoodManageApi.ProgressInfo) => void,
+  requestId?: string
+) => {
   return makeRequest(`${host}/foodmanage/deletefirstfoodimage`, 'post', params, onProgress, requestId)
 }
 
 // 恢复商品
-export const recoverFoods = (params: FoodManageApi.RecoverFoodParams, onProgress?: (progress: FoodManageApi.ProgressInfo) => void, requestId?: string) => {
+export const recoverFoods = (
+  params: FoodManageApi.RecoverFoodParams,
+  onProgress?: (progress: FoodManageApi.ProgressInfo) => void,
+  requestId?: string
+) => {
   return makeRequest(`${host}/foodmanage/recoverfoods`, 'post', params, onProgress, requestId)
 }
 
@@ -386,6 +442,10 @@ export const disposetask = (taskid: any) => {
 }
 
 // 强制从平台拉取活动
-export const pullShopAct = (params: FoodManageApi.BaseParams, onProgress?: (progress: FoodManageApi.ProgressInfo) => void, requestId?: string) => {
+export const pullShopAct = (
+  params: FoodManageApi.BaseParams,
+  onProgress?: (progress: FoodManageApi.ProgressInfo) => void,
+  requestId?: string
+) => {
   return makeRequest(`${host}/foodmanage/pullshopact`, 'post', params, onProgress, requestId)
 }

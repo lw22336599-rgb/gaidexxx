@@ -1,5 +1,13 @@
 <template>
-  <el-tree ref="treeRef" :data="data" default-expand-all highlight-current node-key="id" :props="defaultProps" show-checkbox />
+  <el-tree
+    ref="treeRef"
+    :data="data"
+    default-expand-all
+    highlight-current
+    node-key="id"
+    :props="defaultProps"
+    show-checkbox
+  />
 
   <div style="margin-top: 20px">
     <el-button type="primary" @click="getCheckedNodes">按节点获取</el-button>
@@ -35,12 +43,12 @@ const setCheckedNodes = () => {
     [
       {
         id: 5,
-        label: '二级 2-1',
+        label: '二级 2-1'
       },
       {
         id: 9,
-        label: '三级 1-1-1',
-      },
+        label: '三级 1-1-1'
+      }
     ] as Node[],
     false
   )
@@ -56,7 +64,7 @@ const resetChecked = () => {
 
 const defaultProps = {
   children: 'children',
-  label: 'label',
+  label: 'label'
 }
 
 const data: Tree[] = [
@@ -70,15 +78,15 @@ const data: Tree[] = [
         children: [
           {
             id: 9,
-            label: '三级 1-1-1',
+            label: '三级 1-1-1'
           },
           {
             id: 10,
-            label: '三级 1-1-2',
-          },
-        ],
-      },
-    ],
+            label: '三级 1-1-2'
+          }
+        ]
+      }
+    ]
   },
   {
     id: 2,
@@ -86,13 +94,13 @@ const data: Tree[] = [
     children: [
       {
         id: 5,
-        label: '二级 2-1',
+        label: '二级 2-1'
       },
       {
         id: 6,
-        label: '二级 2-2',
-      },
-    ],
+        label: '二级 2-2'
+      }
+    ]
   },
   {
     id: 3,
@@ -100,14 +108,14 @@ const data: Tree[] = [
     children: [
       {
         id: 7,
-        label: '二级 3-1',
+        label: '二级 3-1'
       },
       {
         id: 8,
-        label: '二级 3-2',
-      },
-    ],
-  },
+        label: '二级 3-2'
+      }
+    ]
+  }
 ]
 </script>
 

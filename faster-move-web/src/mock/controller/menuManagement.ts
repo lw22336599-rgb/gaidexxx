@@ -18,19 +18,19 @@ export default [
                 {
                   id: '@id',
                   role: 'admin',
-                  label: 'admin角色',
+                  label: 'admin角色'
                 },
                 {
                   id: '@id',
                   role: 'editor',
-                  label: 'editor角色',
-                },
-              ],
-            },
-          ],
-        },
+                  label: 'editor角色'
+                }
+              ]
+            }
+          ]
+        }
       }
-    },
+    }
   },
   {
     url: '/menuManagement/doEdit',
@@ -38,9 +38,9 @@ export default [
     response() {
       return {
         code: 200,
-        msg: '模拟保存成功',
+        msg: '模拟保存成功'
       }
-    },
+    }
   },
   {
     url: '/menuManagement/doDelete',
@@ -48,8 +48,8 @@ export default [
     response() {
       return {
         code: 200,
-        msg: '模拟删除成功',
+        msg: '模拟删除成功'
       }
-    },
-  },
+    }
+  }
 ] as MockMethod[]

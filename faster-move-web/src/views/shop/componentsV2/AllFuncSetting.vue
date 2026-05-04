@@ -1,14 +1,22 @@
 <template>
-  <el-drawer :class="{ 'custom-header': true }" v-if="drawerStateCom" v-model="drawerStateCom"
-    :before-close="handleClose" direction="rtl" size="auto" :title="funSetName">
+  <el-drawer
+    v-if="drawerStateCom"
+    v-model="drawerStateCom"
+    :class="{ 'custom-header': true }"
+    :before-close="handleClose"
+    direction="rtl"
+    size="auto"
+    :title="funSetName"
+  >
     <div class="funczdzzbox">
-      <div class="shop-name"><PlatformIcon class="logo" :shop-type="props.currentRow?.shop_type" :size="20" />
+      <div class="shop-name">
+        <PlatformIcon class="logo" :shop-type="props.currentRow?.shop_type" :size="20" />
         <div class="name-text">{{ currentRow.name }}</div>
       </div>
-      <div class="zdcc" v-if="props.drawerFun === 'ZDCC'">
+      <div v-if="props.drawerFun === 'ZDCC'" class="zdcc">
         <func-z-d-c-c :current-row="currentRow" />
       </div>
-      <div class="hfbox" v-if="props.drawerFun === 'IMZDHF'">
+      <div v-if="props.drawerFun === 'IMZDHF'" class="hfbox">
         <func-z-d-h-f :current-row="currentRow" />
       </div>
       <div v-if="props.drawerFun === 'ZDHP'">
@@ -26,26 +34,26 @@
 
 <script setup lang="ts">
 import PlatformIcon from '/@/components/PlatformIcon/index.vue'
-import FuncCPDT from "/@/views/shop/componentsV2/FuncCPDT.vue";
-import FuncZDCC from "/@/views/shop/componentsV2/FuncZDCC.vue";
-import FuncZDHF from "/@/views/shop/componentsV2/FuncZDHF.vue";
-import FuncZDHP from "/@/views/shop/componentsV2/FuncZDHP.vue";
-import FuncZDTG from "/@/views/shop/componentsV2/FuncZDTG.vue";
+import FuncCPDT from '/@/views/shop/componentsV2/FuncCPDT.vue'
+import FuncZDCC from '/@/views/shop/componentsV2/FuncZDCC.vue'
+import FuncZDHF from '/@/views/shop/componentsV2/FuncZDHF.vue'
+import FuncZDHP from '/@/views/shop/componentsV2/FuncZDHP.vue'
+import FuncZDTG from '/@/views/shop/componentsV2/FuncZDTG.vue'
 
 const props = defineProps({
   drawerState: Boolean,
   currentRow: Object,
   drawerFun: String,
-  icon: { type: String, required: false }, // 已废弃，图标由 currentRow.shop_type 通过 PlatformIcon 渲染
+  icon: { type: String, required: false } // 已废弃，图标由 currentRow.shop_type 通过 PlatformIcon 渲染
 })
-const drawerStateCom = computed(() => props.drawerState);
+const drawerStateCom = computed(() => props.drawerState)
 const funSetName = ref('')
 onMounted(() => {
-  funSetName.value = `${funcList.find((item) => item.code === props.drawerFun)?.name}设置`
+  funSetName.value = `${funcList.find(item => item.code === props.drawerFun)?.name}设置`
 })
-const emit = defineEmits(['closeDrawer']);
+const emit = defineEmits(['closeDrawer'])
 const handleClose = () => {
-  emit('closeDrawer');
+  emit('closeDrawer')
 }
 const funcList = [
   {

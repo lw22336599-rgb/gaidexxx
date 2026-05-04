@@ -11,14 +11,14 @@ import { random } from 'lodash-es'
 import { useSettingsStore } from '/@/store/modules/settings'
 
 defineOptions({
-  name: 'VabChartTreemap',
+  name: 'VabChartTreemap'
 })
 
 defineProps({
   title: {
     type: String,
-    default: '',
-  },
+    default: ''
+  }
 })
 
 const settingsStore = useSettingsStore()
@@ -30,10 +30,10 @@ const option = reactive<any>({
     top: 20,
     right: 20,
     bottom: 60,
-    left: 40,
+    left: 40
   },
   tooltip: {
-    trigger: 'item',
+    trigger: 'item'
   },
   series: {
     type: 'treemap',
@@ -44,16 +44,16 @@ const option = reactive<any>({
         children: [
           {
             name: 'nodeAa',
-            value: random(0, 10),
+            value: random(0, 10)
           },
           {
             name: 'nodeAb',
-            value: random(0, 10),
-          },
-        ],
-      },
-    ],
-  },
+            value: random(0, 10)
+          }
+        ]
+      }
+    ]
+  }
 })
 
 watch(
@@ -75,14 +75,14 @@ onMounted(() => {
         children: [
           {
             name: 'nodeAa',
-            value: random(0, 10),
+            value: random(0, 10)
           },
           {
             name: 'nodeAb',
-            value: random(0, 10),
-          },
-        ],
-      },
+            value: random(0, 10)
+          }
+        ]
+      }
     ]
   }, 3000)
 })

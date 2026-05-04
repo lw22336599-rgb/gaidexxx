@@ -45,7 +45,7 @@ for (let i = 0; i < count; i++) {
     wechatPaymentNo: '@uuid',
     'paymentScene|1': ['公众号支付', '线下支付', '京东支付', '淘宝支付'],
     'transactionStatus|1': ['已支付', '未支付', '已退款', '申请退款中'],
-    orderAmount: '@integer(1000,9999)',
+    orderAmount: '@integer(1000,9999)'
   })
 }
 
@@ -56,14 +56,16 @@ export default [
     response: ({ query }: any) => {
       const { title, pageNo = 1, pageSize = 20 } = query
       const mockList = List.filter((item: { title: string | any[] }) => !(title && !item.title.includes(title)))
-      const list = mockList.filter((item: any, index: number) => index < pageSize * pageNo && index >= pageSize * (pageNo - 1))
+      const list = mockList.filter(
+        (item: any, index: number) => index < pageSize * pageNo && index >= pageSize * (pageNo - 1)
+      )
       list.sort(() => Math.random() - 0.5)
       return {
         code: 200,
         msg: 'success',
-        data: { list, total: mockList.length },
+        data: { list, total: mockList.length }
       }
-    },
+    }
   },
   {
     url: '/trade/doEdit',
@@ -71,9 +73,9 @@ export default [
     response: () => {
       return {
         code: 200,
-        msg: '模拟保存成功',
+        msg: '模拟保存成功'
       }
-    },
+    }
   },
   {
     url: '/trade/doRefund',
@@ -81,8 +83,8 @@ export default [
     response: () => {
       return {
         code: 200,
-        msg: '模拟退款成功',
+        msg: '模拟退款成功'
       }
-    },
-  },
+    }
+  }
 ] as MockMethod[]

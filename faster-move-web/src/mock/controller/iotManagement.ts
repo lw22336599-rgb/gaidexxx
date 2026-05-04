@@ -20,7 +20,7 @@ for (let i = 0; i < count; i++) {
     'account|1': ['admin', 'editor', 'test'],
     'executeResult|1': ['登录成功', '登录成功', '登录失败', '接口异常', 'dos攻击'],
     ip: '@ip',
-    datetime: '@datetime',
+    datetime: '@datetime'
   })
 }
 
@@ -31,12 +31,14 @@ export default [
     response: ({ query }: any) => {
       const { taskName, pageNo = 1, pageSize = 20 } = query
       const mockList = List.filter((item: any) => !(taskName && !item.taskName.includes(taskName)))
-      const list = mockList.filter((item: any, index: any) => index < pageSize * pageNo && index >= pageSize * (pageNo - 1))
+      const list = mockList.filter(
+        (item: any, index: any) => index < pageSize * pageNo && index >= pageSize * (pageNo - 1)
+      )
       return {
         code: 200,
         msg: 'success',
-        data: { list, total: mockList.length },
+        data: { list, total: mockList.length }
       }
-    },
-  },
+    }
+  }
 ] as MockMethod[]

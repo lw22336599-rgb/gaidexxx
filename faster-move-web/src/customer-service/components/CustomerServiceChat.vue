@@ -8,8 +8,12 @@
           <span class="header-title">{{ translate('客服系统') }}</span>
           <div class="header-actions">
             <el-tooltip content="开启IM客服功能后,您将自动获得客服角色并连接到客服系统" placement="bottom">
-              <el-switch v-model="imServiceEnabled" :loading="enableImServiceLoading" active-text="开启IM客服"
-                @change="handleEnableImService" />
+              <el-switch
+                v-model="imServiceEnabled"
+                :loading="enableImServiceLoading"
+                active-text="开启IM客服"
+                @change="handleEnableImService"
+              />
             </el-tooltip>
           </div>
         </div>
@@ -43,28 +47,53 @@
         </div>
 
         <!-- 会话列表 -->
-        <div ref="conversationListRef" v-loading="sessionListLoading" class="conversation-list"
-          @scroll="handleConversationListScroll">
-          <div v-for="session in conversationList" :key="session.id" class="conversation-item" :class="{
-            active: activeConversation?.id === session.id,
-            selected: selectedSessions.has(session.id),
-            'batch-mode': batchMode
-          }" @click="handleConversationClick(session)" @contextmenu="handleContextMenu($event, session)"
-            @mousedown="(e) => handleLongPressStart(e, session)" @mouseup="handleLongPressEnd"
-            @mouseleave="handleLongPressEnd" @touchstart="(e) => handleLongPressStart(e, session)"
-            @touchend="handleLongPressEnd" @touchcancel="handleLongPressEnd">
+        <div
+          ref="conversationListRef"
+          v-loading="sessionListLoading"
+          class="conversation-list"
+          @scroll="handleConversationListScroll"
+        >
+          <div
+            v-for="session in conversationList"
+            :key="session.id"
+            class="conversation-item"
+            :class="{
+              active: activeConversation?.id === session.id,
+              selected: selectedSessions.has(session.id),
+              'batch-mode': batchMode
+            }"
+            @click="handleConversationClick(session)"
+            @contextmenu="handleContextMenu($event, session)"
+            @mousedown="e => handleLongPressStart(e, session)"
+            @mouseup="handleLongPressEnd"
+            @mouseleave="handleLongPressEnd"
+            @touchstart="e => handleLongPressStart(e, session)"
+            @touchend="handleLongPressEnd"
+            @touchcancel="handleLongPressEnd"
+          >
             <!-- 批量模式复选框 -->
             <div v-if="batchMode" class="conversation-checkbox">
-              <el-checkbox :model-value="selectedSessions.has(session.id)"
-                @click.stop="toggleSessionSelection(session.id)" />
+              <el-checkbox
+                :model-value="selectedSessions.has(session.id)"
+                @click.stop="toggleSessionSelection(session.id)"
+              />
             </div>
 
             <div class="conversation-avatar">
-              <img v-if="session.shop_img" :src="session.shop_img" :alt="session.shop_name || translate('未知店铺')"
-                class="shop-avatar" @error="(e) => handleShopImageError(e, session)" />
-              <img v-else-if="getPlatformIcon(session.site_type)" :src="getPlatformIcon(session.site_type)!"
-                :alt="getPlatformName(session.site_type)" class="platform-icon"
-                @error="(e) => (e.target as HTMLImageElement).style.display = 'none'" />
+              <img
+                v-if="session.shop_img"
+                :src="session.shop_img"
+                :alt="session.shop_name || translate('未知店铺')"
+                class="shop-avatar"
+                @error="e => handleShopImageError(e, session)"
+              />
+              <img
+                v-else-if="getPlatformIcon(session.site_type)"
+                :src="getPlatformIcon(session.site_type)!"
+                :alt="getPlatformName(session.site_type)"
+                class="platform-icon"
+                @error="e => ((e.target as HTMLImageElement).style.display = 'none')"
+              />
               <div v-else class="avatar-placeholder">
                 <el-icon>
                   <User />
@@ -105,15 +134,23 @@
 
         <!-- 批量操作按钮栏 -->
         <div v-if="batchMode" class="batch-action-bar">
-          <el-button type="danger" :disabled="selectedSessions.size === 0" :loading="batchCloseLoading"
-            @click="handleBatchClose">
+          <el-button
+            type="danger"
+            :disabled="selectedSessions.size === 0"
+            :loading="batchCloseLoading"
+            @click="handleBatchClose"
+          >
             <el-icon>
               <CircleClose />
             </el-icon>
             {{ translate('批量关闭') }}
           </el-button>
-          <el-button type="primary" :disabled="selectedSessions.size === 0" :loading="batchTransferLoading"
-            @click="handleBatchTransfer">
+          <el-button
+            type="primary"
+            :disabled="selectedSessions.size === 0"
+            :loading="batchTransferLoading"
+            @click="handleBatchTransfer"
+          >
             <el-icon>
               <Switch />
             </el-icon>
@@ -134,12 +171,16 @@
           <!-- 聊天头部 -->
           <div class="chat-header">
             <div class="customer-info">
-              <img v-if="getPlatformIcon(activeConversation.site_type)"
+              <img
+                v-if="getPlatformIcon(activeConversation.site_type)"
                 :src="getPlatformIcon(activeConversation.site_type)!"
-                :alt="getPlatformName(activeConversation.site_type)" class="platform-icon-header" />
+                :alt="getPlatformName(activeConversation.site_type)"
+                class="platform-icon-header"
+              />
               <div class="header-text">
-                <span class="customer-name">{{ activeConversation.customer_name || activeConversation.customer_id ||
-                  translate('未知客户') }}</span>
+                <span class="customer-name">{{
+                  activeConversation.customer_name || activeConversation.customer_id || translate('未知客户')
+                }}</span>
                 <span class="shop-name-small">{{ shopConversationTitle }}</span>
               </div>
             </div>
@@ -166,12 +207,19 @@
                 {{ translate('没有更多消息了') }}
               </div>
 
-              <div v-for="message in activeSessionMessages" :key="message.id" class="message-item"
-                :class="message.direction === 1 ? 'customer' : 'agent'">
+              <div
+                v-for="message in activeSessionMessages"
+                :key="message.id"
+                class="message-item"
+                :class="message.direction === 1 ? 'customer' : 'agent'"
+              >
                 <div class="message-avatar">
-                  <img v-if="activeConversation && getPlatformIcon(activeConversation.site_type)"
+                  <img
+                    v-if="activeConversation && getPlatformIcon(activeConversation.site_type)"
                     :src="getPlatformIcon(activeConversation.site_type)!"
-                    :alt="getPlatformName(activeConversation.site_type)" class="platform-icon" />
+                    :alt="getPlatformName(activeConversation.site_type)"
+                    class="platform-icon"
+                  />
                   <div v-else class="avatar-placeholder">
                     <el-icon>
                       <User />
@@ -191,8 +239,13 @@
                     <!-- 图片消息 -->
                     <template v-else-if="message.msg_type === ImMsgType.Image">
                       <div v-if="getMediaUrl(message)" class="media-image">
-                        <el-image :src="getMediaUrl(message)" :preview-src-list="[getMediaUrl(message)]"
-                          :hide-on-click-modal="true" fit="cover" lazy>
+                        <el-image
+                          :src="getMediaUrl(message)"
+                          :preview-src-list="[getMediaUrl(message)]"
+                          :hide-on-click-modal="true"
+                          fit="cover"
+                          lazy
+                        >
                           <template #error>
                             <div class="image-error">
                               <el-icon>
@@ -215,8 +268,12 @@
                     <!-- 视频消息 -->
                     <template v-else-if="message.msg_type === ImMsgType.Video">
                       <div v-if="getMediaUrl(message)" class="media-video">
-                        <video :src="getMediaUrl(message)" :poster="getVideoThumbnail(message)" controls
-                          preload="metadata">
+                        <video
+                          :src="getMediaUrl(message)"
+                          :poster="getVideoThumbnail(message)"
+                          controls
+                          preload="metadata"
+                        >
                           {{ translate('您的浏览器不支持视频播放') }}
                         </video>
                       </div>
@@ -230,8 +287,11 @@
 
                     <!-- 语音消息 -->
                     <template v-else-if="message.msg_type === ImMsgType.Voice">
-                      <div v-if="getMediaUrl(message)" class="media-audio"
-                        :class="{ playing: currentPlayingAudioId === 'audio-' + message.id }">
+                      <div
+                        v-if="getMediaUrl(message)"
+                        class="media-audio"
+                        :class="{ playing: currentPlayingAudioId === 'audio-' + message.id }"
+                      >
                         <el-icon class="audio-icon">
                           <Headset />
                         </el-icon>
@@ -248,12 +308,22 @@
                             </template>
                           </div>
                           <div class="audio-actions">
-                            <el-button v-if="currentPlayingAudioId === 'audio-' + message.id" size="small" type="danger"
-                              @click.stop="playAudio(message)">
+                            <el-button
+                              v-if="currentPlayingAudioId === 'audio-' + message.id"
+                              size="small"
+                              type="danger"
+                              @click.stop="playAudio(message)"
+                            >
                               {{ translate('停止') }}
                             </el-button>
-                            <el-button v-else size="small" type="primary" :icon="VideoPlay"
-                              :loading="loadingAudioId === 'audio-' + message.id" @click.stop="playAudio(message)">
+                            <el-button
+                              v-else
+                              size="small"
+                              type="primary"
+                              :icon="VideoPlay"
+                              :loading="loadingAudioId === 'audio-' + message.id"
+                              @click.stop="playAudio(message)"
+                            >
                               {{ translate('播放') }}
                             </el-button>
                             <el-button size="small" :icon="Download" @click.stop="downloadFile(message)">
@@ -321,7 +391,7 @@
 
           <!-- 输入区域 -->
           <div ref="inputAreaRef" class="input-area" :style="{ height: `${inputAreaHeight}px` }">
-            <div class="input-resize-handle" @mousedown="handleInputResizeMouseDown"></div>
+            <div class="input-resize-handle" @mousedown="handleInputResizeMouseDown" />
             <!-- 工具栏 -->
             <div class="input-toolbar">
               <div class="toolbar-left">
@@ -378,7 +448,7 @@
 
             <!-- 录音提示 -->
             <div v-if="isRecording" class="recording-indicator">
-              <div class="recording-dot"></div>
+              <div class="recording-dot" />
               <span>{{ translate('正在录音...') }} {{ recordingTime }}s</span>
               <el-button size="small" type="danger" @click="stopRecording">
                 {{ translate('停止录音') }}
@@ -386,14 +456,20 @@
             </div>
 
             <!-- 输入框 -->
-            <div class="input-wrapper" ref="inputWrapperRef">
-              <el-input ref="inputTextareaRef" v-model="inputMessage" type="textarea" class="input-textarea"
-                :placeholder="translate('点击输入 (Shift + Enter换行、Enter发送，Ctrl+V粘贴截图)')" :rows="3"
-                @keydown.enter="handleEnterKey" 
+            <div ref="inputWrapperRef" class="input-wrapper">
+              <el-input
+                ref="inputTextareaRef"
+                v-model="inputMessage"
+                type="textarea"
+                class="input-textarea"
+                :placeholder="translate('点击输入 (Shift + Enter换行、Enter发送，Ctrl+V粘贴截图)')"
+                :rows="3"
+                @keydown.enter="handleEnterKey"
                 @paste="handlePaste"
                 @input="handleMessageInput"
                 @keydown.down.prevent="handleAutocompleteKeyDown"
-                @keydown.up.prevent="handleAutocompleteKeyUp" />
+                @keydown.up.prevent="handleAutocompleteKeyUp"
+              />
             </div>
           </div>
         </div>
@@ -415,7 +491,7 @@
               <div class="item-left">
                 <span v-if="match.shortcut" class="item-shortcut">{{ match.shortcut }}</span>
                 <span v-if="match.shortcut" class="item-separator">-</span>
-                <span class="item-content" v-html="highlightKeyword(match.content, inputMessage.trim())"></span>
+                <span class="item-content" v-html="highlightKeyword(match.content, inputMessage.trim())" />
               </div>
               <div class="item-right">
                 <span class="item-type">{{ match.type === 1 ? translate('个人话术') : translate('团队话术') }}</span>
@@ -450,12 +526,26 @@
             <div class="detail-section">
               <div class="section-title">{{ translate('标签') }}</div>
               <div class="tags-container">
-                <el-tag v-for="(tag, index) in customerTags" :key="index" size="small" closable class="customer-tag"
-                  @close="handleTagClose(tag)">
+                <el-tag
+                  v-for="(tag, index) in customerTags"
+                  :key="index"
+                  size="small"
+                  closable
+                  class="customer-tag"
+                  @close="handleTagClose(tag)"
+                >
                   {{ tag }}
                 </el-tag>
-                <el-input v-if="showTagInput" ref="tagInputRef" v-model="newTagInput" size="small" class="tag-input"
-                  maxlength="10" @blur="handleTagInputConfirm" @keyup.enter="handleTagInputConfirm" />
+                <el-input
+                  v-if="showTagInput"
+                  ref="tagInputRef"
+                  v-model="newTagInput"
+                  size="small"
+                  class="tag-input"
+                  maxlength="10"
+                  @blur="handleTagInputConfirm"
+                  @keyup.enter="handleTagInputConfirm"
+                />
                 <el-button v-else size="small" type="primary" text @click="handleAddTag">
                   <el-icon>
                     <Plus />
@@ -469,10 +559,22 @@
             <div class="detail-section">
               <div class="section-title">{{ translate('备注') }}</div>
               <div class="remarks-container">
-                <el-input v-model="customerRemarks" type="textarea" :rows="4" :placeholder="translate('请输入备注信息')"
-                  resize="none" maxlength="500" show-word-limit />
-                <el-button type="primary" size="small" style="margin-top: 8px; width: 100%;" :loading="savingRemarks"
-                  @click="handleSaveRemarks">
+                <el-input
+                  v-model="customerRemarks"
+                  type="textarea"
+                  :rows="4"
+                  :placeholder="translate('请输入备注信息')"
+                  resize="none"
+                  maxlength="500"
+                  show-word-limit
+                />
+                <el-button
+                  type="primary"
+                  size="small"
+                  style="margin-top: 8px; width: 100%"
+                  :loading="savingRemarks"
+                  @click="handleSaveRemarks"
+                >
                   {{ translate('保存备注') }}
                 </el-button>
               </div>
@@ -531,9 +633,13 @@
                   </div>
                   <div
                     v-if="activeConversation.order_info.FoodItems && activeConversation.order_info.FoodItems.length > 0"
-                    class="food-items">
-                    <div v-for="(item, index) in activeConversation.order_info.FoodItems" :key="index"
-                      class="food-item">
+                    class="food-items"
+                  >
+                    <div
+                      v-for="(item, index) in activeConversation.order_info.FoodItems"
+                      :key="index"
+                      class="food-item"
+                    >
                       <span class="food-name">{{ item.FoodName }}</span>
                       <span v-if="item.SpecInfo" class="food-spec">{{ item.SpecInfo }}</span>
                       <span class="food-quantity">×{{ item.Quantity }}</span>
@@ -546,20 +652,32 @@
                 <div class="info-group">
                   <div class="group-title">{{ translate('金额信息') }}</div>
                   <div
-                    v-if="activeConversation.order_info.FoodAmount !== null && activeConversation.order_info.FoodAmount !== undefined"
-                    class="info-row">
+                    v-if="
+                      activeConversation.order_info.FoodAmount !== null &&
+                      activeConversation.order_info.FoodAmount !== undefined
+                    "
+                    class="info-row"
+                  >
                     <span class="info-label">{{ translate('商品金额') }}:</span>
                     <span class="info-value">¥{{ activeConversation.order_info.FoodAmount.toFixed(2) }}</span>
                   </div>
                   <div
-                    v-if="activeConversation.order_info.BoxFee !== null && activeConversation.order_info.BoxFee !== undefined"
-                    class="info-row">
+                    v-if="
+                      activeConversation.order_info.BoxFee !== null &&
+                      activeConversation.order_info.BoxFee !== undefined
+                    "
+                    class="info-row"
+                  >
                     <span class="info-label">{{ translate('打包费') }}:</span>
                     <span class="info-value">¥{{ activeConversation.order_info.BoxFee.toFixed(2) }}</span>
                   </div>
                   <div
-                    v-if="activeConversation.order_info.ShippingFee !== null && activeConversation.order_info.ShippingFee !== undefined"
-                    class="info-row">
+                    v-if="
+                      activeConversation.order_info.ShippingFee !== null &&
+                      activeConversation.order_info.ShippingFee !== undefined
+                    "
+                    class="info-row"
+                  >
                     <span class="info-label">{{ translate('配送费') }}:</span>
                     <span class="info-value">¥{{ activeConversation.order_info.ShippingFee.toFixed(2) }}</span>
                   </div>
@@ -568,16 +686,22 @@
                     <span class="info-value price">¥{{ activeConversation.order_info.UserPayAmount.toFixed(2) }}</span>
                   </div>
                   <div
-                    v-if="activeConversation.order_info.SettleAmount !== null && activeConversation.order_info.SettleAmount !== undefined"
-                    class="info-row">
+                    v-if="
+                      activeConversation.order_info.SettleAmount !== null &&
+                      activeConversation.order_info.SettleAmount !== undefined
+                    "
+                    class="info-row"
+                  >
                     <span class="info-label">{{ translate('商家收入') }}:</span>
                     <span class="info-value">¥{{ activeConversation.order_info.SettleAmount.toFixed(2) }}</span>
                   </div>
                 </div>
 
                 <!-- 配送信息 -->
-                <div v-if="activeConversation.order_info.DeliveryTag || activeConversation.order_info.RiderName"
-                  class="info-group">
+                <div
+                  v-if="activeConversation.order_info.DeliveryTag || activeConversation.order_info.RiderName"
+                  class="info-group"
+                >
                   <div class="group-title">{{ translate('配送信息') }}</div>
                   <div v-if="activeConversation.order_info.DeliveryTag" class="info-row">
                     <span class="info-label">{{ translate('配送方式') }}:</span>
@@ -646,11 +770,11 @@
                 </template>
               </el-input>
               <div class="toolbar-buttons">
-                <el-button type="primary" size="small" @click="handleAddGroup" style="flex: 1;">
+                <el-button type="primary" size="small" style="flex: 1" @click="handleAddGroup">
                   <el-icon><FolderAdd /></el-icon>
                   {{ translate('添加分组') }}
                 </el-button>
-                <el-button type="primary" size="small" @click="handleAddScript" style="flex: 1;">
+                <el-button type="primary" size="small" style="flex: 1" @click="handleAddScript">
                   <el-icon><Plus /></el-icon>
                   {{ translate('新增话术') }}
                 </el-button>
@@ -658,15 +782,11 @@
             </div>
 
             <!-- 话术分组列表 -->
-            <div class="quick-reply-groups" v-loading="quickReplyLoading">
+            <div v-loading="quickReplyLoading" class="quick-reply-groups">
               <div v-if="filteredQuickReplyGroups.length === 0" class="empty-state">
                 <el-empty :description="translate('暂无话术')" />
               </div>
-              <div
-                v-for="(group, groupIndex) in filteredQuickReplyGroups"
-                :key="group.groupName"
-                class="reply-group"
-              >
+              <div v-for="(group, groupIndex) in filteredQuickReplyGroups" :key="group.groupName" class="reply-group">
                 <!-- 分组标题 -->
                 <div class="group-header">
                   <div class="group-title-area" @click="toggleGroup(group.groupName, group.groupId)">
@@ -676,13 +796,13 @@
                     <span class="group-name">{{ group.groupName || translate('未分组') }}</span>
                     <span class="group-count">({{ group.items.length }})</span>
                   </div>
-                  <div class="group-actions" v-if="group.groupName">
+                  <div v-if="group.groupName" class="group-actions">
                     <el-button
                       text
                       size="small"
                       :disabled="groupIndex === 0"
-                      @click.stop="handleMoveGroupUp(groupIndex)"
                       :title="translate('上移')"
+                      @click.stop="handleMoveGroupUp(groupIndex)"
                     >
                       <el-icon><Top /></el-icon>
                     </el-button>
@@ -690,24 +810,24 @@
                       text
                       size="small"
                       :disabled="groupIndex === filteredQuickReplyGroups.length - 1"
-                      @click.stop="handleMoveGroupDown(groupIndex)"
                       :title="translate('下移')"
+                      @click.stop="handleMoveGroupDown(groupIndex)"
                     >
                       <el-icon><Bottom /></el-icon>
                     </el-button>
                     <el-button
                       text
                       size="small"
-                      @click.stop="handleAddScriptToGroup(group.groupName)"
                       :title="translate('添加话术')"
+                      @click.stop="handleAddScriptToGroup(group.groupName)"
                     >
                       <el-icon><Plus /></el-icon>
                     </el-button>
                     <el-button
                       text
                       size="small"
-                      @click.stop="handleEditGroup(group.groupName)"
                       :title="translate('编辑分组')"
+                      @click.stop="handleEditGroup(group.groupName)"
                     >
                       <el-icon><Edit /></el-icon>
                     </el-button>
@@ -715,8 +835,8 @@
                       text
                       size="small"
                       type="danger"
-                      @click.stop="handleDeleteGroup(group.groupName)"
                       :title="translate('删除分组')"
+                      @click.stop="handleDeleteGroup(group.groupName)"
                     >
                       <el-icon><Delete /></el-icon>
                     </el-button>
@@ -733,23 +853,19 @@
                       </el-button>
                     </el-empty>
                   </div>
-                  <div
-                    v-for="item in group.items"
-                    :key="item.id"
-                    class="reply-item"
-                  >
+                  <div v-for="item in group.items" :key="item.id" class="reply-item">
                     <div class="item-content" @click="handleQuickSend(item.content)">{{ item.content }}</div>
                     <div class="item-actions">
-                      <el-button 
-                        text 
-                        size="small" 
+                      <el-button
+                        text
+                        size="small"
                         class="send-btn"
-                        @click.stop="handleQuickSend(item.content)"
                         :title="translate('一键发送')"
+                        @click.stop="handleQuickSend(item.content)"
                       >
                         <el-icon><Promotion /></el-icon>
                       </el-button>
-                      <el-dropdown trigger="click" @command="(cmd) => handleItemCommand(cmd, item)">
+                      <el-dropdown trigger="click" @command="cmd => handleItemCommand(cmd, item)">
                         <el-button text size="small" class="more-btn">
                           <el-icon><MoreFilled /></el-icon>
                         </el-button>
@@ -782,8 +898,12 @@
 
     <!-- 右键菜单 -->
     <teleport to="body">
-      <div v-if="contextMenuVisible" class="context-menu"
-        :style="{ left: contextMenuPosition.x + 'px', top: contextMenuPosition.y + 'px' }" @click.stop>
+      <div
+        v-if="contextMenuVisible"
+        class="context-menu"
+        :style="{ left: contextMenuPosition.x + 'px', top: contextMenuPosition.y + 'px' }"
+        @click.stop
+      >
         <div class="context-menu-item" @click="handleCloseSession">
           {{ translate('关闭会话') }}
         </div>
@@ -792,7 +912,7 @@
         </div>
       </div>
       <!-- 点击外部关闭菜单 -->
-      <div v-if="contextMenuVisible" class="context-menu-overlay" @click="closeContextMenu"></div>
+      <div v-if="contextMenuVisible" class="context-menu-overlay" @click="closeContextMenu" />
     </teleport>
 
     <!-- 转交会话对话框 -->
@@ -802,38 +922,43 @@
           <el-select v-model="selectedAdminId" :placeholder="translate('请选择目标客服')" style="width: 100%">
             <el-option v-for="admin in onlineAdmins" :key="admin.id" :label="admin.userName" :value="admin.id">
               <span>{{ admin.userName }}</span>
-              <span v-if="admin.isOnline" style="color: var(--el-color-success); margin-left: 8px;">●</span>
+              <span v-if="admin.isOnline" style="color: var(--el-color-success); margin-left: 8px">●</span>
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item :label="translate('转交备注')">
-          <el-input v-model="transferRemark" type="textarea" :rows="3" :placeholder="translate('请输入转交备注（可选）')"
-            maxlength="200" show-word-limit />
+          <el-input
+            v-model="transferRemark"
+            type="textarea"
+            :rows="3"
+            :placeholder="translate('请输入转交备注（可选）')"
+            maxlength="200"
+            show-word-limit
+          />
         </el-form-item>
       </el-form>
       <template #footer>
         <el-button @click="handleCancelTransfer">{{ translate('取消') }}</el-button>
-        <el-button type="primary" :loading="batchMode ? batchTransferLoading : transferLoading"
-          @click="batchMode ? handleConfirmBatchTransfer() : handleConfirmTransfer()">
+        <el-button
+          type="primary"
+          :loading="batchMode ? batchTransferLoading : transferLoading"
+          @click="batchMode ? handleConfirmBatchTransfer() : handleConfirmTransfer()"
+        >
           {{ translate('确定') }}
         </el-button>
       </template>
     </el-dialog>
 
     <!-- 新增/编辑分组对话框 -->
-    <el-dialog 
-      v-model="groupDialogVisible" 
+    <el-dialog
+      v-model="groupDialogVisible"
       :title="editingGroupName ? translate('编辑分组') : translate('新增分组')"
       width="400px"
       append-to-body
     >
       <el-form label-width="80px">
         <el-form-item :label="translate('分组名称')" required>
-          <el-input 
-            v-model="groupFormName" 
-            :placeholder="translate('请输入分组名称')"
-            maxlength="50"
-          />
+          <el-input v-model="groupFormName" :placeholder="translate('请输入分组名称')" maxlength="50" />
         </el-form-item>
       </el-form>
       <template #footer>
@@ -845,16 +970,16 @@
     </el-dialog>
 
     <!-- 新增/编辑话术对话框 -->
-    <el-dialog 
-      v-model="scriptDialogVisible" 
+    <el-dialog
+      v-model="scriptDialogVisible"
       :title="editingScriptId ? translate('编辑话术') : translate('新增话术')"
       width="600px"
       append-to-body
     >
       <el-form :model="scriptForm" label-width="100px">
         <el-form-item :label="translate('快捷命令')">
-          <el-input 
-            v-model="scriptForm.shortcut" 
+          <el-input
+            v-model="scriptForm.shortcut"
             :placeholder="translate('输入快捷命令，如：abc（输入/abc快速匹配）')"
             maxlength="20"
             show-word-limit
@@ -871,22 +996,17 @@
           />
         </el-form-item>
         <el-form-item :label="translate('所属分组')">
-          <el-select 
-            v-model="scriptForm.group_name" 
+          <el-select
+            v-model="scriptForm.group_name"
             :placeholder="translate('选择分组，留空表示未分组')"
             clearable
             filterable
             allow-create
             style="width: 100%"
           >
-            <el-option
-              v-for="group in allGroups"
-              :key="group.id"
-              :label="group.name"
-              :value="group.name"
-            />
+            <el-option v-for="group in allGroups" :key="group.id" :label="group.name" :value="group.name" />
           </el-select>
-          <div style="color: var(--el-text-color-secondary); font-size: 12px; margin-top: 4px;">
+          <div style="color: var(--el-text-color-secondary); font-size: 12px; margin-top: 4px">
             {{ translate('可以选择已有分组，或输入新分组名称') }}
           </div>
         </el-form-item>
@@ -915,7 +1035,35 @@ export default {
 
 <script lang="ts" setup>
 import { ref, watch, onMounted, onUnmounted, nextTick, computed } from 'vue'
-import { Plus, Position, User, Headset, Document, Download, Picture, ShoppingCart, VideoPlay, VideoCamera, Microphone, Loading, Close, CircleClose, Switch, DArrowLeft, DArrowRight, Search, ArrowDown, Promotion, Edit, Delete, FolderAdd, Top, Bottom, MoreFilled, DocumentCopy } from '@element-plus/icons-vue'
+import {
+  Plus,
+  Position,
+  User,
+  Headset,
+  Document,
+  Download,
+  Picture,
+  ShoppingCart,
+  VideoPlay,
+  VideoCamera,
+  Microphone,
+  Loading,
+  Close,
+  CircleClose,
+  Switch,
+  DArrowLeft,
+  DArrowRight,
+  Search,
+  ArrowDown,
+  Promotion,
+  Edit,
+  Delete,
+  FolderAdd,
+  Top,
+  Bottom,
+  MoreFilled,
+  DocumentCopy
+} from '@element-plus/icons-vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 // import { useSiteTypeStore } from '/@/store/modules/siteType'
 // 项目中没有 siteTypeStore，暂时移除平台图标功能
@@ -948,8 +1096,6 @@ defineOptions({
 
 // 移除国际化支持，直接使用中文
 const translate = (text: string) => text
-
-
 
 // 定义 emits
 const emit = defineEmits<{
@@ -1217,16 +1363,106 @@ let signalRSessionEventOff: (() => void) | null = null
 
 // Emoji 表情列表
 const emojiList = ref([
-  '😀', '😃', '😄', '😁', '😆', '😅', '🤣', '😂', '🙂', '🙃',
-  '😉', '😊', '😇', '🥰', '😍', '🤩', '😘', '😗', '😚', '😙',
-  '😋', '😛', '😜', '🤪', '😝', '🤑', '🤗', '🤭', '🤫', '🤔',
-  '🤐', '🤨', '😐', '😑', '😶', '😏', '😒', '🙄', '😬', '🤥',
-  '😌', '😔', '😪', '🤤', '😴', '😷', '🤒', '🤕', '🤢', '🤮',
-  '🤧', '🥵', '🥶', '😶‍🌫️', '🥴', '😵', '🤯', '🤠', '🥳', '😎',
-  '🤓', '🧐', '😕', '😟', '🙁', '☹️', '😮', '😯', '😲', '😳',
-  '🥺', '😦', '😧', '😨', '😰', '😥', '😢', '😭', '😱', '😖',
-  '😣', '😞', '😓', '😩', '😫', '🥱', '😤', '😡', '😠', '🤬',
-  '👍', '👎', '👌', '✌️', '🤞', '🤝', '🙏', '💪', '👏', '🎉'
+  '😀',
+  '😃',
+  '😄',
+  '😁',
+  '😆',
+  '😅',
+  '🤣',
+  '😂',
+  '🙂',
+  '🙃',
+  '😉',
+  '😊',
+  '😇',
+  '🥰',
+  '😍',
+  '🤩',
+  '😘',
+  '😗',
+  '😚',
+  '😙',
+  '😋',
+  '😛',
+  '😜',
+  '🤪',
+  '😝',
+  '🤑',
+  '🤗',
+  '🤭',
+  '🤫',
+  '🤔',
+  '🤐',
+  '🤨',
+  '😐',
+  '😑',
+  '😶',
+  '😏',
+  '😒',
+  '🙄',
+  '😬',
+  '🤥',
+  '😌',
+  '😔',
+  '😪',
+  '🤤',
+  '😴',
+  '😷',
+  '🤒',
+  '🤕',
+  '🤢',
+  '🤮',
+  '🤧',
+  '🥵',
+  '🥶',
+  '😶‍🌫️',
+  '🥴',
+  '😵',
+  '🤯',
+  '🤠',
+  '🥳',
+  '😎',
+  '🤓',
+  '🧐',
+  '😕',
+  '😟',
+  '🙁',
+  '☹️',
+  '😮',
+  '😯',
+  '😲',
+  '😳',
+  '🥺',
+  '😦',
+  '😧',
+  '😨',
+  '😰',
+  '😥',
+  '😢',
+  '😭',
+  '😱',
+  '😖',
+  '😣',
+  '😞',
+  '😓',
+  '😩',
+  '😫',
+  '🥱',
+  '😤',
+  '😡',
+  '😠',
+  '🤬',
+  '👍',
+  '👎',
+  '👌',
+  '✌️',
+  '🤞',
+  '🤝',
+  '🙏',
+  '💪',
+  '👏',
+  '🎉'
 ])
 
 // 会话列表数据
@@ -1259,7 +1495,6 @@ const updateSessionTotalByTab = (tab: SessionTab, total?: number) => {
 const getOnlyServingByTab = (tab: SessionTab): boolean => {
   return tab === 'unreplied'
 }
-
 
 interface FetchSessionListOptions {
   refreshOtherTotals?: boolean
@@ -1375,10 +1610,7 @@ const selectConversation = async (session: CustomerServiceSession) => {
     const sessionDetail = transformSession(await apiManager.imSessionApi.GetSessionDetail(session.id))
     activeConversation.value = sessionDetail
 
-    const messages = await apiManager.imSessionApi.GetSessionMessagesStream(
-      session.id,
-      undefined
-    )
+    const messages = await apiManager.imSessionApi.GetSessionMessagesStream(session.id, undefined)
     activeSessionMessages.value = messages ? [...messages].reverse() : []
 
     if (messages.length < 50) {
@@ -1411,10 +1643,7 @@ const sendMessage = async () => {
       MsgType: 1
     }
 
-    await apiManager.imSessionApi.ReplyToCustomer(
-      activeConversation.value.id,
-      replyRequest
-    )
+    await apiManager.imSessionApi.ReplyToCustomer(activeConversation.value.id, replyRequest)
 
     inputMessage.value = ''
 
@@ -1432,7 +1661,7 @@ const handleEnterKey = (event: KeyboardEvent | Event) => {
   if (keyboardEvent.shiftKey) {
     return
   }
-  
+
   // 如果下拉列表可见且有选中项，则插入选中项
   if (autocompleteVisible.value && autocompleteSelectedIndex.value >= 0) {
     const match = autocompleteMatches.value[autocompleteSelectedIndex.value]
@@ -1442,7 +1671,7 @@ const handleEnterKey = (event: KeyboardEvent | Event) => {
       return
     }
   }
-  
+
   keyboardEvent.preventDefault()
   sendMessage()
 }
@@ -1453,15 +1682,15 @@ const handleEnterKey = (event: KeyboardEvent | Event) => {
 const loadQuickReplies = async () => {
   try {
     quickReplyLoading.value = true
-    
+
     // 同时加载话术和分组
     const [replies, groups] = await Promise.all([
       apiManager.imQuickReplyApi.GetQuickReplyList(),
       apiManager.groupApi.GetGroups(GroupType.IM话术分类, true, undefined)
     ])
-    
+
     allQuickReplies.value = replies || []
-    
+
     // 提取分组数据（TreeData 转为普通数组）
     allGroups.value = groups ? flattenTreeData(groups) : []
   } catch (error) {
@@ -1475,7 +1704,7 @@ const loadQuickReplies = async () => {
 // 将 TreeData 展平为数组
 const flattenTreeData = (treeData: any[]): t_wmt_group[] => {
   const result: t_wmt_group[] = []
-  
+
   const flatten = (nodes: any[]) => {
     for (const node of nodes) {
       // API 返回的数据中，分组信息在 Member 字段中
@@ -1490,7 +1719,7 @@ const flattenTreeData = (treeData: any[]): t_wmt_group[] => {
       }
     }
   }
-  
+
   flatten(treeData)
   return result
 }
@@ -1509,16 +1738,17 @@ const filteredQuickReplyGroups = computed(() => {
   // 再过滤搜索关键词
   if (quickReplySearchKeyword.value.trim()) {
     const keyword = quickReplySearchKeyword.value.trim().toLowerCase()
-    filtered = filtered.filter(item => 
-      item.content.toLowerCase().includes(keyword) ||
-      (item.shortcut && item.shortcut.toLowerCase().includes(keyword)) ||
-      (item.group_name && item.group_name.toLowerCase().includes(keyword))
+    filtered = filtered.filter(
+      item =>
+        item.content.toLowerCase().includes(keyword) ||
+        (item.shortcut && item.shortcut.toLowerCase().includes(keyword)) ||
+        (item.group_name && item.group_name.toLowerCase().includes(keyword))
     )
   }
 
   // 按分组聚合（使用 group 字段关联分组ID）
-  const groupMap = new Map<string, { groupName: string, groupId?: string, items: QuickReplyVo[] }>()
-  
+  const groupMap = new Map<string, { groupName: string; groupId?: string; items: QuickReplyVo[] }>()
+
   // 首先，将所有分组添加到 Map 中（包括空分组）
   allGroups.value.forEach(group => {
     if (!groupMap.has(group.id)) {
@@ -1529,12 +1759,12 @@ const filteredQuickReplyGroups = computed(() => {
       })
     }
   })
-  
+
   // 然后，将话术分配到对应的分组
   filtered.forEach(item => {
     const groupId = item.group || ''
     const groupName = item.group_name || ''
-    
+
     if (!groupMap.has(groupId)) {
       // 如果分组不存在（比如未分组的话术），创建一个临时分组
       groupMap.set(groupId, {
@@ -1548,8 +1778,8 @@ const filteredQuickReplyGroups = computed(() => {
 
   // 转换为数组格式并排序
   const groups: QuickReplyGroup[] = []
-  
-  groupMap.forEach((value) => {
+
+  groupMap.forEach(value => {
     groups.push({
       groupName: value.groupName,
       groupId: value.groupId,
@@ -1563,23 +1793,23 @@ const filteredQuickReplyGroups = computed(() => {
     // 未分组永远放最后
     if (!a.groupName) return 1
     if (!b.groupName) return -1
-    
+
     // 获取分组的 index 值
     const aGroupData = allGroups.value.find(g => g.id === a.groupId)
     const bGroupData = allGroups.value.find(g => g.id === b.groupId)
-    
+
     const aIndex = aGroupData?.index
     const bIndex = bGroupData?.index
-    
+
     // 如果都有 index，按 index 排序
     if (aIndex != null && bIndex != null) {
       return aIndex - bIndex
     }
-    
+
     // 如果只有一个有 index，有 index 的在前
     if (aIndex != null) return -1
     if (bIndex != null) return 1
-    
+
     // 都没有 index，按名称排序
     return a.groupName.localeCompare(b.groupName, 'zh-CN')
   })
@@ -1587,13 +1817,13 @@ const filteredQuickReplyGroups = computed(() => {
   // 设置折叠状态（第一个分组展开，其他折叠）
   sortedGroups.forEach((group, index) => {
     const groupKey = group.groupId || group.groupName || 'ungrouped'
-    
+
     // 如果该分组没有折叠状态记录，设置默认值
     if (!groupCollapsedState.value.has(groupKey)) {
       // 第一个分组默认展开(false)，其他分组默认折叠(true)
       groupCollapsedState.value.set(groupKey, index !== 0)
     }
-    
+
     // 从状态中读取折叠值
     group.collapsed = groupCollapsedState.value.get(groupKey) || false
   })
@@ -1617,7 +1847,7 @@ const handleQuickSend = async (content: string) => {
 
   const originalInput = inputMessage.value
   inputMessage.value = content
-  
+
   try {
     await sendMessage()
   } catch (error) {
@@ -1666,7 +1896,7 @@ const searchQuickReply = (keyword: string, isSlashCommand: boolean) => {
   autocompleteMatches.value = matches.slice(0, 10)
   autocompleteVisible.value = matches.length > 0
   autocompleteSelectedIndex.value = -1
-  
+
   // 计算下拉框位置
   if (autocompleteVisible.value) {
     nextTick(() => {
@@ -1678,9 +1908,9 @@ const searchQuickReply = (keyword: string, isSlashCommand: boolean) => {
 // 更新自动完成下拉框的位置
 const updateAutocompletePosition = () => {
   if (!inputWrapperRef.value) return
-  
+
   const rect = inputWrapperRef.value.getBoundingClientRect()
-  
+
   autocompletePosition.value = {
     left: `${rect.left}px`,
     top: `${rect.top - 8}px`, // 距离输入框上方8px
@@ -1696,7 +1926,7 @@ const handleMessageInput = () => {
   }
 
   const input = inputMessage.value.trim()
-  
+
   if (input.startsWith('/')) {
     // 快捷命令匹配
     const keyword = input.substring(1)
@@ -1741,10 +1971,10 @@ const handleAutocompleteKeyUp = () => {
 const scrollToSelectedItem = () => {
   const dropdown = document.querySelector('.autocomplete-dropdown-overlay')
   if (!dropdown) return
-  
+
   const selectedItem = dropdown.querySelector('.autocomplete-item.active')
   if (!selectedItem) return
-  
+
   selectedItem.scrollIntoView({
     block: 'nearest',
     behavior: 'auto' // 使用 auto 替代 smooth，响应更快
@@ -1762,9 +1992,14 @@ const handleSelectAutocomplete = (match: QuickReplyVo) => {
 // 高亮关键词
 const highlightKeyword = (text: string, keyword: string): string => {
   if (!keyword || !text || keyword.trim().length === 0) {
-    return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;')
+    return text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;')
   }
-  
+
   const escapeHtml = (str: string) => {
     return str
       .replace(/&/g, '&amp;')
@@ -1773,14 +2008,14 @@ const highlightKeyword = (text: string, keyword: string): string => {
       .replace(/"/g, '&quot;')
       .replace(/'/g, '&#039;')
   }
-  
+
   const escapeRegex = (str: string) => {
     return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
   }
-  
+
   const escapedText = escapeHtml(text)
   const escapedKeyword = escapeRegex(escapeHtml(keyword.trim()))
-  
+
   try {
     const regex = new RegExp(`(${escapedKeyword})`, 'gi')
     return escapedText.replace(regex, '<span class="keyword-highlight">$1</span>')
@@ -1809,7 +2044,7 @@ const handleEditGroup = (groupName: string) => {
 // 保存分组
 const handleSaveGroup = async () => {
   const newGroupName = groupFormName.value.trim()
-  
+
   if (!newGroupName) {
     ElMessage.warning(translate('请输入分组名称'))
     return
@@ -1821,7 +2056,7 @@ const handleSaveGroup = async () => {
     if (editingGroupName.value) {
       // 编辑分组：找到对应的分组并更新
       const group = allGroups.value.find(g => g.name === editingGroupName.value)
-      
+
       if (!group) {
         ElMessage.error(translate('分组不存在'))
         return
@@ -1834,9 +2069,7 @@ const handleSaveGroup = async () => {
       })
 
       // 批量更新该分组下所有话术的 group_name
-      const itemsInGroup = allQuickReplies.value.filter(
-        item => item.group === group.id
-      )
+      const itemsInGroup = allQuickReplies.value.filter(item => item.group === group.id)
 
       for (const item of itemsInGroup) {
         await apiManager.imQuickReplyApi.UpdateQuickReply({
@@ -1866,7 +2099,7 @@ const handleSaveGroup = async () => {
 
       const createdGroup = await apiManager.groupApi.AddGroup(newGroup)
       ElMessage.success(translate('分组创建成功'))
-      
+
       // 重新加载分组列表
       allGroups.value.push(createdGroup)
     }
@@ -1885,15 +2118,13 @@ const handleSaveGroup = async () => {
 const handleDeleteGroup = async (groupName: string) => {
   try {
     const group = allGroups.value.find(g => g.name === groupName)
-    
+
     if (!group) {
       ElMessage.error(translate('分组不存在'))
       return
     }
 
-    const itemsInGroup = allQuickReplies.value.filter(
-      item => item.group === group.id
-    )
+    const itemsInGroup = allQuickReplies.value.filter(item => item.group === group.id)
 
     await ElMessageBox.confirm(
       translate(`确定要删除分组"${groupName}"吗？该分组下有${itemsInGroup.length}条话术，删除后话术将移至未分组。`),
@@ -1929,33 +2160,33 @@ const handleDeleteGroup = async (groupName: string) => {
 // 分组上移
 const handleMoveGroupUp = async (groupIndex: number) => {
   if (groupIndex === 0) return
-  
+
   try {
     const groups = filteredQuickReplyGroups.value
     const currentGroup = groups[groupIndex]
     const prevGroup = groups[groupIndex - 1]
-    
+
     if (!currentGroup.groupId || !prevGroup.groupId) {
       ElMessage.warning(translate('无法移动未分组'))
       return
     }
-    
+
     // 获取上一个分组的数据
     const prevGroupData = allGroups.value.find(g => g.id === prevGroup.groupId)
-    
+
     if (!prevGroupData) {
       ElMessage.error(translate('分组数据不存在'))
       return
     }
-    
-    const targetIndex = prevGroupData.index ?? (groupIndex - 1)
-    
+
+    const targetIndex = prevGroupData.index ?? groupIndex - 1
+
     // 将当前分组的 index 设置为上一个分组的 index
     // 后端会自动处理其他分组的排序
     await apiManager.groupApi.UpdateGroupIndex(currentGroup.groupId, targetIndex)
-    
+
     ElMessage.success(translate('分组上移成功'))
-    
+
     // 重新加载以刷新排序
     await loadQuickReplies()
   } catch (error) {
@@ -1968,32 +2199,32 @@ const handleMoveGroupUp = async (groupIndex: number) => {
 const handleMoveGroupDown = async (groupIndex: number) => {
   const groups = filteredQuickReplyGroups.value
   if (groupIndex >= groups.length - 1) return
-  
+
   try {
     const currentGroup = groups[groupIndex]
     const nextGroup = groups[groupIndex + 1]
-    
+
     if (!currentGroup.groupId || !nextGroup.groupId) {
       ElMessage.warning(translate('无法移动未分组'))
       return
     }
-    
+
     // 获取下一个分组的数据
     const nextGroupData = allGroups.value.find(g => g.id === nextGroup.groupId)
-    
+
     if (!nextGroupData) {
       ElMessage.error(translate('分组数据不存在'))
       return
     }
-    
-    const targetIndex = (nextGroupData.index ?? (groupIndex + 1)) + 1
-    
+
+    const targetIndex = (nextGroupData.index ?? groupIndex + 1) + 1
+
     // 将当前分组的 index 设置为下一个分组的 index + 1
     // 后端会自动处理其他分组的排序
     await apiManager.groupApi.UpdateGroupIndex(currentGroup.groupId, targetIndex)
-    
+
     ElMessage.success(translate('分组下移成功'))
-    
+
     // 重新加载以刷新排序
     await loadQuickReplies()
   } catch (error) {
@@ -2005,7 +2236,7 @@ const handleMoveGroupDown = async (groupIndex: number) => {
 // 添加话术到指定分组
 const handleAddScriptToGroup = (groupName: string) => {
   const group = allGroups.value.find(g => g.name === groupName)
-  
+
   editingScriptId.value = null
   scriptForm.value = {
     shortcut: '',
@@ -2013,12 +2244,12 @@ const handleAddScriptToGroup = (groupName: string) => {
     group_name: groupName,
     type: activeQuickReplyTab.value === 'personal' ? QuickReplyType.Personal : QuickReplyType.Team
   }
-  
+
   // 如果找到分组，保存分组ID
   if (group) {
-    (scriptForm.value as any).group_id = group.id
+    ;(scriptForm.value as any).group_id = group.id
   }
-  
+
   scriptDialogVisible.value = true
 }
 
@@ -2072,12 +2303,12 @@ const handleEditScript = (item: QuickReplyVo) => {
     group_name: item.group_name || '',
     type: item.type
   }
-  
+
   // 保存分组ID
   if (item.group) {
-    (scriptForm.value as any).group_id = item.group
+    ;(scriptForm.value as any).group_id = item.group
   }
-  
+
   scriptDialogVisible.value = true
 }
 
@@ -2090,21 +2321,21 @@ const handleSaveScript = async () => {
 
   try {
     scriptSaving.value = true
-    
+
     // 查找或创建分组
     let groupId: string | null = null
     let groupName: string | null = null
-    
+
     if (scriptForm.value.group_name.trim()) {
       groupName = scriptForm.value.group_name.trim()
-      
+
       // 如果有分组ID，直接使用
       if ((scriptForm.value as any).group_id) {
         groupId = (scriptForm.value as any).group_id
       } else {
         // 通过分组名称查找
         const existingGroup = allGroups.value.find(g => g.name === groupName)
-        
+
         if (existingGroup) {
           groupId = existingGroup.id
         } else {
@@ -2131,7 +2362,7 @@ const handleSaveScript = async () => {
         }
       }
     }
-    
+
     if (editingScriptId.value) {
       // 编辑
       await apiManager.imQuickReplyApi.UpdateQuickReply({
@@ -2153,7 +2384,7 @@ const handleSaveScript = async () => {
       })
       ElMessage.success(translate('话术新增成功'))
     }
-    
+
     // 重新加载话术列表
     await loadQuickReplies()
     scriptDialogVisible.value = false
@@ -2167,19 +2398,15 @@ const handleSaveScript = async () => {
 // 删除话术
 const handleDeleteScript = async (item: QuickReplyVo) => {
   try {
-    await ElMessageBox.confirm(
-      translate('确定要删除这条话术吗？'),
-      translate('提示'),
-      {
-        confirmButtonText: translate('确定'),
-        cancelButtonText: translate('取消'),
-        type: 'warning'
-      }
-    )
-    
+    await ElMessageBox.confirm(translate('确定要删除这条话术吗？'), translate('提示'), {
+      confirmButtonText: translate('确定'),
+      cancelButtonText: translate('取消'),
+      type: 'warning'
+    })
+
     await apiManager.imQuickReplyApi.DeleteQuickReply(item.id)
     ElMessage.success(translate('删除成功'))
-    
+
     // 重新加载话术列表
     await loadQuickReplies()
   } catch (error: any) {
@@ -2239,10 +2466,7 @@ const handlePaste = async (event: ClipboardEvent) => {
           MediaUrls: [result.url]
         }
 
-        await apiManager.imSessionApi.ReplyToCustomer(
-          activeConversation.value.id,
-          replyRequest
-        )
+        await apiManager.imSessionApi.ReplyToCustomer(activeConversation.value.id, replyRequest)
 
         ElMessage.success(translate('图片发送成功'))
 
@@ -2309,10 +2533,7 @@ const triggerImageUpload = () => {
         MediaUrls: [result.url]
       }
 
-      await apiManager.imSessionApi.ReplyToCustomer(
-        activeConversation.value!.id,
-        replyRequest
-      )
+      await apiManager.imSessionApi.ReplyToCustomer(activeConversation.value!.id, replyRequest)
 
       ElMessage.success(translate('图片发送成功'))
 
@@ -2382,10 +2603,7 @@ const triggerVideoUpload = () => {
         MediaUrls: [result.url]
       }
 
-      await apiManager.imSessionApi.ReplyToCustomer(
-        activeConversation.value!.id,
-        replyRequest
-      )
+      await apiManager.imSessionApi.ReplyToCustomer(activeConversation.value!.id, replyRequest)
 
       ElMessage.success(translate('视频发送成功'))
 
@@ -2430,7 +2648,7 @@ const startRecording = async () => {
     mediaRecorder.value = new MediaRecorder(stream, options)
     recordedChunks.value = []
 
-    mediaRecorder.value.ondataavailable = (event) => {
+    mediaRecorder.value.ondataavailable = event => {
       if (event.data.size > 0) {
         recordedChunks.value.push(event.data)
       }
@@ -2498,10 +2716,7 @@ const handleRecordingComplete = async () => {
       MediaUrls: [result.url]
     }
 
-    await apiManager.imSessionApi.ReplyToCustomer(
-      activeConversation.value.id,
-      replyRequest
-    )
+    await apiManager.imSessionApi.ReplyToCustomer(activeConversation.value.id, replyRequest)
 
     ElMessage.success(translate('语音发送成功'))
 
@@ -2544,10 +2759,7 @@ const loadMoreMessages = async () => {
 
     const oldScrollHeight = scrollContainer.scrollHeight
 
-    const messages = await apiManager.imSessionApi.GetSessionMessagesStream(
-      activeConversation.value.id,
-      beforeTime
-    )
+    const messages = await apiManager.imSessionApi.GetSessionMessagesStream(activeConversation.value.id, beforeTime)
 
     if (messages.length < 50) {
       hasMoreMessages.value = false
@@ -2705,29 +2917,24 @@ const handleCloseSession = async () => {
   if (!contextMenuSession.value) return
 
   try {
-    await ElMessageBox.prompt(
-      translate('请输入完结说明'),
-      translate('关闭会话'),
-      {
-        confirmButtonText: translate('确定'),
-        cancelButtonText: translate('取消'),
-        inputPattern: /.+/,
-        inputErrorMessage: translate('完结说明不能为空')
+    await ElMessageBox.prompt(translate('请输入完结说明'), translate('关闭会话'), {
+      confirmButtonText: translate('确定'),
+      cancelButtonText: translate('取消'),
+      inputPattern: /.+/,
+      inputErrorMessage: translate('完结说明不能为空')
+    }).then(async ({ value }) => {
+      const closeRequest: CloseSessionRequest = {
+        CloseReason: value
       }
-    )
-      .then(async ({ value }) => {
-        const closeRequest: CloseSessionRequest = {
-          CloseReason: value
-        }
-        await apiManager.imSessionApi.CloseSession(contextMenuSession.value!.id, closeRequest)
+      await apiManager.imSessionApi.CloseSession(contextMenuSession.value!.id, closeRequest)
 
-        ElMessage.success(translate('关闭会话成功'))
-        await refreshSessionData({ refreshTotals: true })
-        if (activeConversation.value?.id === contextMenuSession.value!.id) {
-          activeConversation.value = null
-          activeSessionMessages.value = []
-        }
-      })
+      ElMessage.success(translate('关闭会话成功'))
+      await refreshSessionData({ refreshTotals: true })
+      if (activeConversation.value?.id === contextMenuSession.value!.id) {
+        activeConversation.value = null
+        activeSessionMessages.value = []
+      }
+    })
   } catch (error) {
     if (error !== 'cancel') {
       ElMessage.error(translate('关闭会话失败'))
@@ -2912,16 +3119,12 @@ const handleBatchClose = async () => {
   }
 
   try {
-    const { value } = await ElMessageBox.prompt(
-      translate('请输入完结说明'),
-      translate('批量关闭会话'),
-      {
-        confirmButtonText: translate('确定'),
-        cancelButtonText: translate('取消'),
-        inputPattern: /.+/,
-        inputErrorMessage: translate('完结说明不能为空')
-      }
-    )
+    const { value } = await ElMessageBox.prompt(translate('请输入完结说明'), translate('批量关闭会话'), {
+      confirmButtonText: translate('确定'),
+      cancelButtonText: translate('取消'),
+      inputPattern: /.+/,
+      inputErrorMessage: translate('完结说明不能为空')
+    })
 
     batchCloseLoading.value = true
 
@@ -3035,7 +3238,7 @@ const getMediaUrl = (message: t_wmt_im_message): string => {
   } else {
     // 兼容对象格式（旧数据可能是对象）
     const values = Object.values(message.media_urls)
-    url = values.find(v => v && typeof v === 'string') as string || ''
+    url = (values.find(v => v && typeof v === 'string') as string) || ''
   }
 
   if (!url) {
@@ -3053,7 +3256,7 @@ const getMediaUrl = (message: t_wmt_im_message): string => {
   const host = urlObj.host.toLowerCase()
   const isNeixinHost = host === 'file.neixin.cn' || host.endsWith('.file.neixin.cn')
   const elemeOssHosts = ['paas-file-eleme.oss-cn-zhangjiakou.aliyuncs.com']
-  const isElemeOssHost = elemeOssHosts.some((elemeHost) => host === elemeHost || host.endsWith(`.${elemeHost}`))
+  const isElemeOssHost = elemeOssHosts.some(elemeHost => host === elemeHost || host.endsWith(`.${elemeHost}`))
 
   const pathWithQuery = url.replace(/^https?:\/\/[^/]+/, '') || `${urlObj.pathname}${urlObj.search}`
 
@@ -3108,7 +3311,12 @@ const getVideoThumbnail = (message: t_wmt_im_message): string => {
 // 获取文件名
 const getFileName = (message: t_wmt_im_message): string => {
   // 处理对象格式（旧数据可能将文件名存储在对象中）
-  if (message.media_urls && typeof message.media_urls !== 'string' && !Array.isArray(message.media_urls) && (message.media_urls as any)['filename']) {
+  if (
+    message.media_urls &&
+    typeof message.media_urls !== 'string' &&
+    !Array.isArray(message.media_urls) &&
+    (message.media_urls as any)['filename']
+  ) {
     return (message.media_urls as any)['filename']
   }
   const url = getMediaUrl(message)
@@ -3188,7 +3396,6 @@ const playAudio = async (message: t_wmt_im_message) => {
 
     amrPlayer.value.play()
     console.log('开始播放AMR音频')
-
   } catch (error) {
     console.error('播放音频失败:', error)
     ElMessage.warning(translate('语音播放失败，请尝试下载收听'))
@@ -3379,7 +3586,7 @@ onMounted(async () => {
 
   // 加载会话列表及统计
   await refreshSessionData({ refreshTotals: true })
-  
+
   // 加载快捷回复列表
   await loadQuickReplies()
 
@@ -3680,7 +3887,6 @@ onUnmounted(() => {
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
-
               }
 
               .platform-info {
@@ -3732,7 +3938,6 @@ onUnmounted(() => {
                 overflow: hidden;
                 text-overflow: ellipsis;
                 white-space: nowrap;
-
               }
             }
 
@@ -3861,7 +4066,6 @@ onUnmounted(() => {
         }
 
         .messages-list {
-
           .loading-more-tip,
           .no-more-tip {
             text-align: center;
@@ -4083,7 +4287,6 @@ onUnmounted(() => {
                 }
 
                 @keyframes audioPlaying {
-
                   0%,
                   100% {
                     transform: scale(1);
@@ -4814,7 +5017,6 @@ onUnmounted(() => {
 
 // 录音动画
 @keyframes pulse {
-
   0%,
   100% {
     opacity: 1;
@@ -4826,7 +5028,6 @@ onUnmounted(() => {
 }
 
 @keyframes blink {
-
   0%,
   100% {
     opacity: 1;

@@ -10,12 +10,15 @@ import VabSliderVerify from 'vue3-puzzle-vcode'
 import landscape from '/@/assets/common_images/landscape.jpg'
 
 defineOptions({
-  name: 'SliderVerify',
+  name: 'SliderVerify'
 })
 
 const isShow = ref<any>(false)
 
-const imgs = ref<any>(['https://res.hc-cdn.com/tiny-vue-web-doc/3.10.5.20230903162611/static/images/mountain.png', landscape])
+const imgs = ref<any>([
+  'https://res.hc-cdn.com/tiny-vue-web-doc/3.10.5.20230903162611/static/images/mountain.png',
+  landscape
+])
 
 const onShow = () => {
   isShow.value = true

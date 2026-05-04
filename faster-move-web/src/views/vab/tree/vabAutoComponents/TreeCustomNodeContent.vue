@@ -47,7 +47,7 @@ const append = (data: Tree) => {
 const remove = (node: Node, data: Tree) => {
   const parent = node.parent
   const children: Tree[] = parent.data.children || parent.data
-  const index = children.findIndex((d) => d.id === data.id)
+  const index = children.findIndex(d => d.id === data.id)
   children.splice(index, 1)
   dataSource.value = [...dataSource.value]
 }
@@ -56,7 +56,7 @@ const renderContent = (
   h: any,
   {
     node,
-    data,
+    data
   }: {
     node: Node
     data: Tree
@@ -66,7 +66,7 @@ const renderContent = (
   return h(
     'span',
     {
-      class: 'custom-tree-node',
+      class: 'custom-tree-node'
     },
     h('span', null, node.label),
     h(
@@ -75,7 +75,7 @@ const renderContent = (
       h(
         'a',
         {
-          onClick: () => append(data),
+          onClick: () => append(data)
         },
         '添加 '
       ),
@@ -83,7 +83,7 @@ const renderContent = (
         'a',
         {
           style: 'margin-left: 8px',
-          onClick: () => remove(node, data),
+          onClick: () => remove(node, data)
         },
         '删除'
       )
@@ -102,15 +102,15 @@ const dataSource = ref<Tree[]>([
         children: [
           {
             id: 9,
-            label: '三级 1-1-1',
+            label: '三级 1-1-1'
           },
           {
             id: 10,
-            label: '三级 1-1-2',
-          },
-        ],
-      },
-    ],
+            label: '三级 1-1-2'
+          }
+        ]
+      }
+    ]
   },
   {
     id: 2,
@@ -118,13 +118,13 @@ const dataSource = ref<Tree[]>([
     children: [
       {
         id: 5,
-        label: '二级 2-1',
+        label: '二级 2-1'
       },
       {
         id: 6,
-        label: '二级 2-2',
-      },
-    ],
+        label: '二级 2-2'
+      }
+    ]
   },
   {
     id: 3,
@@ -132,14 +132,14 @@ const dataSource = ref<Tree[]>([
     children: [
       {
         id: 7,
-        label: '二级 3-1',
+        label: '二级 3-1'
       },
       {
         id: 8,
-        label: '二级 3-2',
-      },
-    ],
-  },
+        label: '二级 3-2'
+      }
+    ]
+  }
 ])
 </script>
 

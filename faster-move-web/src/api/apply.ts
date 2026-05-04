@@ -1,8 +1,8 @@
 import { apiManager } from '@/TsModel/Api/ApiManager'
-import { ShopType } from '@/TsModel/Alien/Entity/Enums/ShopType'
-import { t_wmt_function } from '@/TsModel/Alien/Entity/Tables/function/t_wmt_function'
-import { FunctionSaveVo } from '@/TsModel/Alien/Controllers/Function/FunctionSaveVo'
-import { GetFuncListItemVo } from '@/TsModel/Alien/Controllers/Function/GetFuncListItemVo'
+import type { ShopType } from '@/TsModel/Alien/Entity/Enums/ShopType'
+import type { t_wmt_function } from '@/TsModel/Alien/Entity/Tables/function/t_wmt_function'
+import type { FunctionSaveVo } from '@/TsModel/Alien/Controllers/Function/FunctionSaveVo'
+import type { GetFuncListItemVo } from '@/TsModel/Alien/Controllers/Function/GetFuncListItemVo'
 
 /**
  * 获取功能列表

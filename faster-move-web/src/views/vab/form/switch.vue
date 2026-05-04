@@ -18,7 +18,7 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'Switch',
+  name: 'Switch'
 })
 
 const value = ref<boolean>(true)

@@ -11,14 +11,14 @@ import { random } from 'lodash-es'
 import { useSettingsStore } from '/@/store/modules/settings'
 
 defineOptions({
-  name: 'VabChartLine',
+  name: 'VabChartLine'
 })
 
 defineProps({
   title: {
     type: String,
-    default: '',
-  },
+    default: ''
+  }
 })
 
 const settingsStore = useSettingsStore()
@@ -30,22 +30,30 @@ const option = reactive<any>({
     top: 20,
     right: 20,
     bottom: 40,
-    left: 40,
+    left: 40
   },
   tooltip: {
-    trigger: 'item',
+    trigger: 'item'
   },
   xAxis: {
     type: 'category',
-    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
   },
   yAxis: {
-    type: 'value',
+    type: 'value'
   },
   series: {
-    data: [random(50, 100), random(10, 100), random(10, 100), random(10, 100), random(10, 100), random(50, 100), random(50, 200)],
-    type: 'line',
-  },
+    data: [
+      random(50, 100),
+      random(10, 100),
+      random(10, 100),
+      random(10, 100),
+      random(10, 100),
+      random(50, 100),
+      random(50, 200)
+    ],
+    type: 'line'
+  }
 })
 
 watch(
@@ -65,7 +73,7 @@ onMounted(() => {
       random(10, 100),
       random(10, 100),
       random(50, 100),
-      random(50, 200),
+      random(50, 200)
     ]
   }, 3000)
 })

@@ -3,7 +3,13 @@
     <el-row :gutter="20">
       <el-col :lg="4" :md="8" :sm="24" :xl="4" :xs="24">
         <vab-card class="auto-height-card">
-          <el-tree :data="treeList" :default-expanded-keys="['root']" node-key="id" :props="defaultProps" @node-click="handleNodeClick" />
+          <el-tree
+            :data="treeList"
+            :default-expanded-keys="['root']"
+            node-key="id"
+            :props="defaultProps"
+            @node-click="handleNodeClick"
+          />
         </vab-card>
       </el-col>
       <el-col :lg="20" :md="16" :sm="24" :xl="20" :xs="24">
@@ -38,7 +44,13 @@
                     {{ row.meta.levelHidden ? '是' : '否' }}
                   </template>
                 </el-table-column> -->
-            <el-table-column align="center" label="vue文件路径" min-width="120" prop="component" show-overflow-tooltip />
+            <el-table-column
+              align="center"
+              label="vue文件路径"
+              min-width="120"
+              prop="component"
+              show-overflow-tooltip
+            />
             <!-- <el-table-column align="center" label="重定向">
                 <template #default="{ row }">
                   {{ row.redirect || '无' }}
@@ -95,7 +107,7 @@ import { doDelete, getTree } from '/@/api/menuManagement'
 import { getList } from '/@/api/router'
 
 defineOptions({
-  name: 'MenuManagement',
+  name: 'MenuManagement'
 })
 
 const tableRef = ref<TableInstance>()
@@ -103,7 +115,7 @@ const editRef = ref<any>(null)
 const treeList = ref<any>([])
 const defaultProps = reactive<any>({
   children: 'children',
-  label: 'label',
+  label: 'label'
 })
 const list = ref<any>([])
 const listLoading = ref<boolean>(true)

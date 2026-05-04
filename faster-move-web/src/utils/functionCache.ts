@@ -3,8 +3,8 @@
  * 使用全局变量缓存功能列表，不持久化到浏览器存储
  */
 
-import { ShopType } from '@/TsModel/Alien/Entity/Enums/ShopType'
-import { t_wmt_function } from '@/TsModel/Alien/Entity/Tables/function/t_wmt_function'
+import type { ShopType } from '@/TsModel/Alien/Entity/Enums/ShopType'
+import type { t_wmt_function } from '@/TsModel/Alien/Entity/Tables/function/t_wmt_function'
 import type { ShopListFunctionColumnVo } from '@/TsModel/Alien/Controllers/Function/ShopListFunctionColumnVo'
 import { apiManager } from '@/TsModel/Api/ApiManager'
 
@@ -48,7 +48,8 @@ export async function getFunctionList(shopType: ShopType): Promise<t_wmt_functio
 
   // 3. 发起新请求
   console.log('📡 [getFunctionList] 发起新请求，shopType:', shopType)
-  const requestPromise = apiManager.functionpriceApi.GetFuncList(shopType)
+  const requestPromise = apiManager.functionpriceApi
+    .GetFuncList(shopType)
     .then(funcList => {
       // 请求成功，缓存结果
       functionListCache.set(shopType, funcList)
@@ -75,9 +76,7 @@ export async function getFunctionList(shopType: ShopType): Promise<t_wmt_functio
  * @param shopType 平台/门店类型
  * @returns ShopListFunctionColumnVo[]
  */
-export async function getShopListFunctionColumns(
-  shopType: ShopType
-): Promise<ShopListFunctionColumnVo[]> {
+export async function getShopListFunctionColumns(shopType: ShopType): Promise<ShopListFunctionColumnVo[]> {
   // 1. 检查缓存
   if (shopListFunctionColumnsCache.has(shopType)) {
     console.log('🚀 [getShopListFunctionColumns] 使用缓存，shopType:', shopType)
@@ -92,7 +91,8 @@ export async function getShopListFunctionColumns(
 
   // 3. 发起新请求
   console.log('📡 [getShopListFunctionColumns] 发起新请求，shopType:', shopType)
-  const requestPromise = apiManager.functionappApi.GetShopListFunctionColumns(shopType)
+  const requestPromise = apiManager.functionappApi
+    .GetShopListFunctionColumns(shopType)
     .then(list => {
       // 请求成功，缓存结果
       shopListFunctionColumnsCache.set(shopType, list)
@@ -135,7 +135,7 @@ export async function getRenewFunctionList(shopType: ShopType): Promise<RenewFun
     .map(func => ({
       code: func.code,
       name: func.renew_name || func.name,
-      rawName: func.name,
+      rawName: func.name
     }))
 }
 
@@ -147,7 +147,7 @@ export async function getRenewFunctionList(shopType: ShopType): Promise<RenewFun
  */
 export async function hasFunction(shopType: ShopType, funcCode: string): Promise<boolean> {
   const funcList = await getFunctionList(shopType)
-  return funcList.some((func) => func.code === funcCode)
+  return funcList.some(func => func.code === funcCode)
 }
 
 /**

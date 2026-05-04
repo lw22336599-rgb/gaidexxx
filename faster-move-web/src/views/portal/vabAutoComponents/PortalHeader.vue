@@ -2,7 +2,7 @@
   <header>
     <div class="index-nav">
       <div class="logo">
-        <a href="#/portal"></a>
+        <a href="#/portal" />
         <span class="logo-title">极狐</span>
       </div>
 
@@ -36,14 +36,14 @@ import { ref } from 'vue'
 import router from '~/src/router'
 
 defineOptions({
-  name: 'PortalHeader',
+  name: 'PortalHeader'
 })
 
 const props = defineProps({
   activeMenu: {
     type: String,
-    default: 'portal',
-  },
+    default: 'portal'
+  }
 })
 
 // const el = ref<any>(null)
@@ -51,20 +51,20 @@ const activeName = ref<any>(props.activeMenu)
 const tabsList = reactive<any>([
   {
     label: '主页',
-    name: 'portal',
+    name: 'portal'
   },
   {
     label: '产品简介',
-    name: 'product',
+    name: 'product'
   },
   {
     label: '合作伙伴',
-    name: 'partner',
+    name: 'partner'
   },
   {
     label: '后台管理',
-    name: 'index',
-  },
+    name: 'index'
+  }
 ])
 
 const handleClick = (tab: TabsPaneContext) => {

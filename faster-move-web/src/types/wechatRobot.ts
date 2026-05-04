@@ -1,4 +1,4 @@
-import { t_chat_push_list } from '/@/TsModel/Alien/Entity/Tables/function/chat_push/t_chat_push_list'
+import type { t_chat_push_list } from '/@/TsModel/Alien/Entity/Tables/function/chat_push/t_chat_push_list'
 
 /**
  * 微信机器人扩展类型（包含前端计算字段）

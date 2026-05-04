@@ -11,8 +11,13 @@
     </div>
 
     <!-- 添加机器人对话框 -->
-    <AddRobotDialog v-model:visible="addDialogVisible" @connect="handleStartConnect" @success="handleAddSuccess"
-      @cancel="handleCancelConnect" @confirm-login="handleUserConfirmLogin" />
+    <AddRobotDialog
+      v-model:visible="addDialogVisible"
+      @connect="handleStartConnect"
+      @success="handleAddSuccess"
+      @cancel="handleCancelConnect"
+      @confirm-login="handleUserConfirmLogin"
+    />
   </div>
 </template>
 
@@ -51,11 +56,7 @@ let loginConfirmResolver: (() => void) | null = null
 
 // 检查是否是 Webhook 类型
 const isWebhookType = (chatType: ChatType): boolean => {
-  return [
-    ChatType.WechatWebHook,
-    ChatType.DingdingWebHook,
-    ChatType.FeishuWebHook,
-  ].includes(chatType)
+  return [ChatType.WechatWebHook, ChatType.DingdingWebHook, ChatType.FeishuWebHook].includes(chatType)
 }
 
 // 返回上一页
@@ -98,7 +99,7 @@ const debugTestMessageServer = async (port: number) => {
 
 // 暴露调试方法到全局，方便在控制台调用
 if (typeof window !== 'undefined') {
-  ; (window as any).debugWxMessageServer = {
+  ;(window as any).debugWxMessageServer = {
     printServers: debugPrintMessageServers,
     testServer: debugTestMessageServer,
     help: () => {
@@ -152,23 +153,18 @@ const handleStartConnect = async (chatType: ChatType) => {
     workPackageManager = new WxWorkPackageManager()
 
     // 步骤1: 准备工作包
-    wechatRobotStore.updateConnectStep(
-      ConnectStep.PreparePackage,
-      '正在检查工作包...',
-      { canCancel: true }
-    )
+    wechatRobotStore.updateConnectStep(ConnectStep.PreparePackage, '正在检查工作包...', { canCancel: true })
 
     console.log('[RobotManagement] 开始准备工作包，设置进度回调')
 
-    const workDir = await workPackageManager.prepareWorkPackage((progress) => {
+    const workDir = await workPackageManager.prepareWorkPackage(progress => {
       console.log('[RobotManagement] 进度回调被调用:', progress)
 
       // 步骤2: 下载工作包
-      wechatRobotStore.updateConnectStep(
-        ConnectStep.DownloadPackage,
-        '正在下载工作包...',
-        { canCancel: true, downloadProgress: progress }
-      )
+      wechatRobotStore.updateConnectStep(ConnectStep.DownloadPackage, '正在下载工作包...', {
+        canCancel: true,
+        downloadProgress: progress
+      })
 
       console.log('[RobotManagement] 已更新 store 进度')
     })
@@ -176,18 +172,10 @@ const handleStartConnect = async (chatType: ChatType) => {
     console.log('[RobotManagement] 工作包准备完成')
 
     // 步骤3: 解压完成
-    wechatRobotStore.updateConnectStep(
-      ConnectStep.ExtractPackage,
-      '工作包准备完成',
-      { canCancel: false }
-    )
+    wechatRobotStore.updateConnectStep(ConnectStep.ExtractPackage, '工作包准备完成', { canCancel: false })
 
     // 步骤4: 启动微信客户端
-    wechatRobotStore.updateConnectStep(
-      ConnectStep.StartWechat,
-      '正在启动微信客户端...',
-      { canCancel: false }
-    )
+    wechatRobotStore.updateConnectStep(ConnectStep.StartWechat, '正在启动微信客户端...', { canCancel: false })
 
     const { port: httpPort } = await workPackageManager.startWechatProcess()
     workPackageManager.setProcessState(3) // WaitingForScan
@@ -202,11 +190,7 @@ const handleStartConnect = async (chatType: ChatType) => {
     })
 
     // 步骤5: 等待扫码登录（不再检测HTTP服务，避免未登录时调用导致崩溃）
-    wechatRobotStore.updateConnectStep(
-      ConnectStep.WaitingScan,
-      '请使用手机微信扫码登录',
-      { canCancel: true }
-    )
+    wechatRobotStore.updateConnectStep(ConnectStep.WaitingScan, '请使用手机微信扫码登录', { canCancel: true })
 
     console.log('等待用户扫码并确认登录...')
 
@@ -214,11 +198,7 @@ const handleStartConnect = async (chatType: ChatType) => {
     await waitForWechatLogin()
 
     // 步骤6: 同步账号信息
-    wechatRobotStore.updateConnectStep(
-      ConnectStep.SyncAccountInfo,
-      '正在同步账号信息...',
-      { canCancel: false }
-    )
+    wechatRobotStore.updateConnectStep(ConnectStep.SyncAccountInfo, '正在同步账号信息...', { canCancel: false })
 
     // 启动聊天Hook服务
     await wxHttpService.startChat()
@@ -243,15 +223,11 @@ const handleStartConnect = async (chatType: ChatType) => {
       notes: `微信PC客户端 - ${chatInfo.Name}`, // 备注
       ExTime: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // 过期时间：1年后
       crtim: new Date(), // 创建时间
-      uptim: new Date(), // 更新时间
+      uptim: new Date() // 更新时间
     } as t_chat_push_list)
 
     // 步骤7: 建立SignalR连接
-    wechatRobotStore.updateConnectStep(
-      ConnectStep.ConnectSignalR,
-      '正在建立SignalR连接...',
-      { canCancel: false }
-    )
+    wechatRobotStore.updateConnectStep(ConnectStep.ConnectSignalR, '正在建立SignalR连接...', { canCancel: false })
 
     // 获取 SignalR 服务器地址（参考 ApiManager 的做法）
     let serverUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5265'
@@ -297,11 +273,7 @@ const handleStartConnect = async (chatType: ChatType) => {
     }
 
     // 创建SignalR管理器
-    signalRManager = new SignalRClientManager(
-      { serverUrl },
-      wxHttpService,
-      robot
-    )
+    signalRManager = new SignalRClientManager({ serverUrl }, wxHttpService, robot)
 
     // 更新 SignalR 连接状态：连接中
     wechatRobotStore.updateSignalRState(robot.id, 1) // SignalRConnectionState.Connecting
@@ -315,11 +287,7 @@ const handleStartConnect = async (chatType: ChatType) => {
     console.log('SignalR 连接成功')
 
     // 步骤7.5: 启动消息接收服务
-    wechatRobotStore.updateConnectStep(
-      ConnectStep.ConnectSignalR,
-      '正在启动消息接收服务...',
-      { canCancel: false }
-    )
+    wechatRobotStore.updateConnectStep(ConnectStep.ConnectSignalR, '正在启动消息接收服务...', { canCancel: false })
 
     try {
       // 请求主进程启动HTTP服务器（首次连接，不指定固定端口，由主进程自动分配）
@@ -371,11 +339,7 @@ const handleStartConnect = async (chatType: ChatType) => {
     }
 
     // 步骤8: 同步联系人数据
-    wechatRobotStore.updateConnectStep(
-      ConnectStep.SyncContacts,
-      '正在同步联系人数据...',
-      { canCancel: false }
-    )
+    wechatRobotStore.updateConnectStep(ConnectStep.SyncContacts, '正在同步联系人数据...', { canCancel: false })
 
     const friends = await wxHttpService.getFriendList()
     const groups = await wxHttpService.getGroupList()
@@ -388,11 +352,7 @@ const handleStartConnect = async (chatType: ChatType) => {
     wechatRobotStore.updateGroups(robot.id, groups)
 
     // 步骤9: 完成
-    wechatRobotStore.updateConnectStep(
-      ConnectStep.Completed,
-      '连接成功！',
-      { canCancel: false }
-    )
+    wechatRobotStore.updateConnectStep(ConnectStep.Completed, '连接成功！', { canCancel: false })
   } catch (error) {
     console.error('连接失败:', error)
     const errorMsg = error instanceof Error ? error.message : '连接失败'
@@ -479,7 +439,7 @@ const handleCancelConnect = async () => {
     {
       confirmButtonText: '选择本地文件',
       cancelButtonText: '取消',
-      type: 'info',
+      type: 'info'
     }
   ).catch(() => 'cancel')
 
@@ -495,11 +455,7 @@ const handleCancelConnect = async () => {
       workPackageManager = new WxWorkPackageManager()
 
       // 更新进度状态
-      wechatRobotStore.updateConnectStep(
-        ConnectStep.PreparePackage,
-        '正在导入工作包...',
-        { canCancel: false }
-      )
+      wechatRobotStore.updateConnectStep(ConnectStep.PreparePackage, '正在导入工作包...', { canCancel: false })
 
       // 手动导入工作包（会弹出文件选择对话框）
       const workDir = await workPackageManager.importWorkPackage()
@@ -507,15 +463,10 @@ const handleCancelConnect = async () => {
       console.log('工作包导入成功:', workDir)
 
       // 继续后续流程（从步骤3开始）
-      wechatRobotStore.updateConnectStep(
-        ConnectStep.ExtractPackage,
-        '工作包准备完成',
-        { canCancel: false }
-      )
+      wechatRobotStore.updateConnectStep(ConnectStep.ExtractPackage, '工作包准备完成', { canCancel: false })
 
       // 重新进入连接流程
       await continueConnectAfterWorkPackage(workDir)
-
     } catch (error) {
       console.error('手动导入失败:', error)
       const errorMsg = error instanceof Error ? error.message : '导入失败'
@@ -535,11 +486,7 @@ const handleCancelConnect = async () => {
 const continueConnectAfterWorkPackage = async (workDir: string) => {
   try {
     // 步骤4: 启动微信客户端
-    wechatRobotStore.updateConnectStep(
-      ConnectStep.StartWechat,
-      '正在启动微信客户端...',
-      { canCancel: false }
-    )
+    wechatRobotStore.updateConnectStep(ConnectStep.StartWechat, '正在启动微信客户端...', { canCancel: false })
 
     const { port: httpPort } = await workPackageManager!.startWechatProcess()
     workPackageManager!.setProcessState(3) // WaitingForScan
@@ -554,11 +501,7 @@ const continueConnectAfterWorkPackage = async (workDir: string) => {
     })
 
     // 步骤5: 等待扫码登录
-    wechatRobotStore.updateConnectStep(
-      ConnectStep.WaitingScan,
-      '请使用手机微信扫码登录',
-      { canCancel: true }
-    )
+    wechatRobotStore.updateConnectStep(ConnectStep.WaitingScan, '请使用手机微信扫码登录', { canCancel: true })
 
     console.log('等待用户扫码并确认登录...')
 
@@ -566,11 +509,7 @@ const continueConnectAfterWorkPackage = async (workDir: string) => {
     await waitForWechatLogin()
 
     // 步骤6: 同步账号信息
-    wechatRobotStore.updateConnectStep(
-      ConnectStep.SyncAccountInfo,
-      '正在同步账号信息...',
-      { canCancel: false }
-    )
+    wechatRobotStore.updateConnectStep(ConnectStep.SyncAccountInfo, '正在同步账号信息...', { canCancel: false })
 
     // 启动聊天Hook服务
     await wxHttpService.startChat()
@@ -595,15 +534,11 @@ const continueConnectAfterWorkPackage = async (workDir: string) => {
       notes: `微信PC客户端 - ${chatInfo.Name}`,
       ExTime: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000),
       crtim: new Date(),
-      uptim: new Date(),
+      uptim: new Date()
     } as t_chat_push_list)
 
     // 步骤7: 建立SignalR连接
-    wechatRobotStore.updateConnectStep(
-      ConnectStep.ConnectSignalR,
-      '正在建立SignalR连接...',
-      { canCancel: false }
-    )
+    wechatRobotStore.updateConnectStep(ConnectStep.ConnectSignalR, '正在建立SignalR连接...', { canCancel: false })
 
     // 获取 SignalR 服务器地址
     let serverUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5265'
@@ -612,11 +547,7 @@ const continueConnectAfterWorkPackage = async (workDir: string) => {
     }
 
     // 创建SignalR管理器
-    signalRManager = new SignalRClientManager(
-      { serverUrl },
-      wxHttpService,
-      robot
-    )
+    signalRManager = new SignalRClientManager({ serverUrl }, wxHttpService, robot)
 
     // 更新 SignalR 连接状态：连接中
     wechatRobotStore.updateSignalRState(robot.id, 1) // SignalRConnectionState.Connecting
@@ -668,11 +599,7 @@ const continueConnectAfterWorkPackage = async (workDir: string) => {
     }
 
     // 步骤8: 同步联系人数据
-    wechatRobotStore.updateConnectStep(
-      ConnectStep.SyncContacts,
-      '正在同步联系人数据...',
-      { canCancel: false }
-    )
+    wechatRobotStore.updateConnectStep(ConnectStep.SyncContacts, '正在同步联系人数据...', { canCancel: false })
 
     const friends = await wxHttpService.getGroupList()
     const groups = await wxHttpService.getGroupList()
@@ -685,11 +612,7 @@ const continueConnectAfterWorkPackage = async (workDir: string) => {
     wechatRobotStore.updateGroups(robot.id, groups)
 
     // 步骤9: 完成
-    wechatRobotStore.updateConnectStep(
-      ConnectStep.Completed,
-      '连接成功！',
-      { canCancel: false }
-    )
+    wechatRobotStore.updateConnectStep(ConnectStep.Completed, '连接成功！', { canCancel: false })
   } catch (error) {
     console.error('连接失败:', error)
     const errorMsg = error instanceof Error ? error.message : '连接失败'
@@ -796,10 +719,7 @@ const cleanup = async () => {
     // 停止消息服务器
     if (wechatRobotStore.currentRobotId) {
       try {
-        await window.electron.ipcRenderer.invoke(
-          'wx-stop-message-server',
-          wechatRobotStore.currentRobotId
-        )
+        await window.electron.ipcRenderer.invoke('wx-stop-message-server', wechatRobotStore.currentRobotId)
         console.log('消息服务器已停止')
       } catch (err) {
         console.warn('停止消息服务器失败:', err)

@@ -7,5 +7,5 @@ export enum PickType {
   /** 外卖和到店自取 */
   DeliveryAndSelfPickup = 1,
   /** 仅到店自取 */
-  SelfPickup = 2,
+  SelfPickup = 2
 }

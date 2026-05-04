@@ -1,18 +1,12 @@
 <template>
   <div class="tutorial-page-container">
     <div v-if="!loading && tutorialUrl" class="tutorial-content">
-      <iframe 
-        :src="tutorialUrl" 
-        frameborder="0" 
-        class="tutorial-iframe"
-        @load="handleIframeLoad"
-      ></iframe>
+      <iframe :src="tutorialUrl" frameborder="0" class="tutorial-iframe" @load="handleIframeLoad" />
     </div>
     <div v-else-if="!loading && !tutorialUrl" class="tutorial-empty">
       <el-empty description="暂未配置教程连接，请联系管理员配置" />
     </div>
-    <div v-if="loading" class="tutorial-loading" v-loading="loading" element-loading-text="正在加载教程...">
-    </div>
+    <div v-if="loading" v-loading="loading" class="tutorial-loading" element-loading-text="正在加载教程..." />
   </div>
 </template>
 
@@ -23,7 +17,7 @@ import { apiManager } from '@/TsModel/Api/ApiManager'
 import { ElMessage } from 'element-plus'
 
 defineOptions({
-  name: 'Tutorial',
+  name: 'Tutorial'
 })
 
 const route = useRoute()
@@ -42,7 +36,7 @@ const loadTutorialUrl = async () => {
   try {
     const configKey = getTutorialConfigKey()
     const url = await apiManager.systemconfigApi.GetConfigByKey(configKey)
-    
+
     if (url) {
       tutorialUrl.value = url
     } else {

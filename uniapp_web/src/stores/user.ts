@@ -19,6 +19,7 @@ interface LoginPayload {
 const token = ref(getToken());
 const username = ref("游客");
 const avatar = ref("");
+const roles = ref<string[]>([]);
 
 function setToken(t: string) {
   token.value = t;
@@ -65,10 +66,22 @@ async function login(userInfo: LoginPayload, remember: boolean, vlogin: boolean)
   return inner;
 }
 
-async function getUserInfo() {
+async function getUserInfo(opts?: { silent?: boolean }) {
+  const silent = opts?.silent === true;
   const res = (await userApi.getUserInfo()) as {
     data?: {
-      admin?: { user_name?: string; avatar?: string; role?: unknown; id?: number };
+      admin?: {
+        user_name?: string;
+        avatar?: string;
+        role?: unknown;
+        id?: number;
+        phone?: string;
+        notes?: string;
+        balance?: string | number;
+        code?: string;
+        crtim?: string;
+        uptim?: string;
+      };
     };
   };
   const data = res.data;
@@ -88,11 +101,16 @@ async function getUserInfo() {
     (role && !isArray(role))
   ) {
     const err = "getUserInfo 返回格式异常";
-    uni.showToast({ title: err, icon: "none" });
+    if (!silent) uni.showToast({ title: err, icon: "none" });
     throw new Error(err);
   }
   if (user_name) setUsername(user_name);
   if (av) setAvatar(av);
+  if (role && isArray(role)) {
+    roles.value = role.filter((r): r is string => isString(r));
+  } else {
+    roles.value = [];
+  }
 }
 
 function resetLocal() {
@@ -100,6 +118,7 @@ function resetLocal() {
   token.value = "";
   username.value = "游客";
   avatar.value = "";
+  roles.value = [];
 }
 
 async function resetAll() {
@@ -117,6 +136,7 @@ export function useUserStore() {
     token,
     username,
     avatar,
+    roles,
     setToken,
     setUsername,
     setAvatar,

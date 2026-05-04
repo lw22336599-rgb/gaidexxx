@@ -7,7 +7,7 @@ import { graphic } from 'echarts/core'
 import { random } from 'lodash-es'
 
 defineOptions({
-  name: 'DataScreenLeft1',
+  name: 'DataScreenLeft1'
 })
 
 const option = reactive<any>({
@@ -16,21 +16,21 @@ const option = reactive<any>({
     right: '0',
     bottom: '0',
     top: '10px',
-    containLabel: true,
+    containLabel: true
   },
   tooltip: {
-    trigger: 'axis',
+    trigger: 'axis'
   },
   xAxis: {
     show: false,
     type: 'value',
     axisLabel: {
-      color: '#eee',
+      color: '#eee'
     },
     boundaryGap: false,
     splitLine: {
-      show: false,
-    },
+      show: false
+    }
   },
   yAxis: [
     {
@@ -38,18 +38,18 @@ const option = reactive<any>({
       inverse: true,
       data: ['访客数量', '订单数量', 'GPT模型数量', 'Claude模型数'],
       axisLine: {
-        show: false,
+        show: false
       },
       axisTick: {
-        show: false,
+        show: false
       },
       splitLine: {
-        show: false,
+        show: false
       },
       axisLabel: {
-        color: '#eee',
-      },
-    },
+        color: '#eee'
+      }
+    }
   ],
   series: {
     name: '',
@@ -60,22 +60,22 @@ const option = reactive<any>({
       color: new graphic.LinearGradient(0, 0, 1, 0, [
         {
           offset: 0,
-          color: 'rgb(57,89,255,1)',
+          color: 'rgb(57,89,255,1)'
         },
         {
           offset: 1,
-          color: 'rgb(46,200,207,1)',
-        },
-      ]),
+          color: 'rgb(46,200,207,1)'
+        }
+      ])
     },
     barWidth: 15,
     data: [random(100, 2000), random(100, 2000), random(100, 2000), random(100, 2000)],
     label: {
       show: true,
       position: 'inside',
-      color: '#fff',
-    },
-  },
+      color: '#fff'
+    }
+  }
 })
 
 setInterval(() => {

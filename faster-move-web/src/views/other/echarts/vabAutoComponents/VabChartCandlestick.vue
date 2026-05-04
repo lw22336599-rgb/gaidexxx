@@ -11,14 +11,14 @@ import { random } from 'lodash-es'
 import { useSettingsStore } from '/@/store/modules/settings'
 
 defineOptions({
-  name: 'VabChartCandlestick',
+  name: 'VabChartCandlestick'
 })
 
 defineProps({
   title: {
     type: String,
-    default: '',
-  },
+    default: ''
+  }
 })
 
 const settingsStore = useSettingsStore()
@@ -30,13 +30,13 @@ const option = reactive<any>({
     top: 20,
     right: 20,
     bottom: 40,
-    left: 40,
+    left: 40
   },
   tooltip: {
-    trigger: 'item',
+    trigger: 'item'
   },
   xAxis: {
-    data: ['2017-10-24', '2017-10-25', '2017-10-26', '2017-10-27'],
+    data: ['2017-10-24', '2017-10-25', '2017-10-26', '2017-10-27']
   },
   yAxis: {},
   series: {
@@ -45,15 +45,15 @@ const option = reactive<any>({
       [random(50, 100), random(50, 100), random(50, 100), random(50, 100)],
       [random(50, 100), random(50, 100), random(50, 100), random(50, 100)],
       [random(50, 100), random(50, 100), random(50, 100), random(50, 100)],
-      [random(50, 100), random(50, 100), random(50, 100), random(50, 100)],
+      [random(50, 100), random(50, 100), random(50, 100), random(50, 100)]
     ],
     itemStyle: {
       color: theme.value.color,
       borderColor: theme.value.color,
       color0: '#f2637b',
-      borderColor0: '#f2637b',
-    },
-  },
+      borderColor0: '#f2637b'
+    }
+  }
 })
 
 watch(
@@ -71,7 +71,7 @@ onMounted(() => {
       [random(50, 100), random(50, 100), random(50, 100), random(50, 100)],
       [random(50, 100), random(50, 100), random(50, 100), random(50, 100)],
       [random(50, 100), random(50, 100), random(50, 100), random(50, 100)],
-      [random(50, 100), random(50, 100), random(50, 100), random(50, 100)],
+      [random(50, 100), random(50, 100), random(50, 100), random(50, 100)]
     ]
   }, 3000)
 })

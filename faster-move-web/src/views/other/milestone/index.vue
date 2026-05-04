@@ -8,7 +8,7 @@
 import { Milestone as TinyMilestone } from '@opentiny/vue'
 
 defineOptions({
-  name: 'Milestone',
+  name: 'Milestone'
 })
 
 // 里程碑样式
@@ -17,7 +17,7 @@ const statusMap = ref({
   completed: 'var(--el-color-primary)',
   doing: 'var(--el-color-success)',
   back: 'var(--el-color-danger)',
-  end: 'var(--el-color-warning)',
+  end: 'var(--el-color-warning)'
 })
 const milestoneData = ref([
   {
@@ -28,9 +28,9 @@ const milestoneData = ref([
       {
         status: 'completed',
         name: 'test1',
-        content: '已完成',
-      },
-    ],
+        content: '已完成'
+      }
+    ]
   },
   {
     name: 'POR2',
@@ -39,9 +39,9 @@ const milestoneData = ref([
     flags: [
       {
         status: 'back',
-        content: 'test2',
-      },
-    ],
+        content: 'test2'
+      }
+    ]
   },
   { name: 'POR3', time: '2023-9-10', status: 'doing', content: null },
   {
@@ -52,13 +52,13 @@ const milestoneData = ref([
       {
         status: 'back',
         content: '',
-        name: 'test3',
+        name: 'test3'
       },
       {
         status: 'doing',
-        content: 'test4',
-      },
-    ],
+        content: 'test4'
+      }
+    ]
   },
   { name: 'POR5', time: '2023-9-11', status: 'back' },
   {
@@ -68,10 +68,10 @@ const milestoneData = ref([
     flags: [
       {
         status: 'completed',
-        content: 'test4',
-      },
-    ],
-  },
+        content: 'test4'
+      }
+    ]
+  }
 ])
 </script>
 

@@ -8,7 +8,7 @@
     <el-row :gutter="20">
       <el-col :lg="12" :md="12" :sm="24" :xl="12" :xs="24">
         <vab-colorful-card :body-style="{ height: '100%' }" :style="style1">
-          <div class="parting-line parting-line-danger"></div>
+          <div class="parting-line parting-line-danger" />
           <span class="pending-title pending-title-danger">
             订单预警
             <span>产品爆单，请及时处理</span>
@@ -19,7 +19,7 @@
       </el-col>
       <el-col :lg="12" :md="12" :sm="24" :xl="12" :xs="24">
         <vab-colorful-card :body-style="{ height: '100%' }" :style="style2">
-          <div class="parting-line parting-line-primary"></div>
+          <div class="parting-line parting-line-primary" />
           <span class="pending-title pending-title-primary">
             售后工单
             <span>用户张*给予五星好评</span>
@@ -40,12 +40,12 @@ const colorTo2 = ref<string>('var(--el-color-white)')
 const style1 = {
   background: `linear-gradient(to right,${colorFrom1.value}, ${colorTo1.value}) no-repeat`,
   border: 0,
-  height: '135.19px',
+  height: '135.19px'
 }
 const style2 = {
   background: `linear-gradient(to right,${colorFrom2.value}, ${colorTo2.value}) no-repeat`,
   border: 0,
-  height: '135.19px',
+  height: '135.19px'
 }
 </script>
 

@@ -30,10 +30,7 @@
         <div class="conleft">
           <div class="conleft-top">全部商品225</div>
           <div>
-            <el-menu
-              default-active="2"
-              class="el-menu-vertical-demo"
-            >
+            <el-menu default-active="2" class="el-menu-vertical-demo">
               <el-sub-menu index="1">
                 <template #title>
                   <el-icon><CaretRight /></el-icon>
@@ -53,117 +50,145 @@
         </div>
         <div class="conright">
           <div class="righttop">
-            <el-input v-model="input" style="min-width: 240px;flex:1;margin-right:10px;height:30px" placeholder="可输入商品名称/条码/规格" />
+            <el-input
+              v-model="input"
+              style="min-width: 240px; flex: 1; margin-right: 10px; height: 30px"
+              placeholder="可输入商品名称/条码/规格"
+            />
             <el-checkbox v-model="checked" label="只选售卖中" size="large" />
             <el-checkbox v-model="checked" label="只选无折扣" size="large" />
-            <el-button type="primary" style="margin-left:10px;">搜索</el-button>
+            <el-button type="primary" style="margin-left: 10px">搜索</el-button>
           </div>
           <div class="righttwo">
             <div class="twoleft">
-              <el-button type="primary" style="margin-right:10px;" @click="setshopnamedialog(true)">节日关键词添加</el-button>
-              <el-button type="primary" style="margin-right:10px;" @click="setzkdialog(true)">勾选修改折扣</el-button>
-              <el-button type="primary" style="margin-right:10px;">勾选撤销折扣</el-button>
-              <el-button type="primary" style="margin-right:10px;" @click="setyjdialog(true)">勾选修改原价</el-button>
+              <el-button type="primary" style="margin-right: 10px" @click="setshopnamedialog(true)"
+                >节日关键词添加</el-button
+              >
+              <el-button type="primary" style="margin-right: 10px" @click="setzkdialog(true)">勾选修改折扣</el-button>
+              <el-button type="primary" style="margin-right: 10px">勾选撤销折扣</el-button>
+              <el-button type="primary" style="margin-right: 10px" @click="setyjdialog(true)">勾选修改原价</el-button>
             </div>
             <div class="twoleft">
-              <el-button bg text> <img style="width: 15px;height: 15px;margin-right: 5px" src="../../icon/upshop.svg" alt="">批量上架</el-button>
-              <el-button bg text><img style="width: 15px;height: 15px;margin-right: 5px" src="../../icon/downshop.svg" alt="">批量下架</el-button>
-              <el-button  @click="setkcdialog(true)" bg text><img style="width: 15px;height: 15px;margin-right: 5px" src="../../icon/inventory.svg" alt="">批量修改库存</el-button>
-              <el-button bg text><img style="width: 15px;height: 15px;margin-right: 5px" src="../../icon/discount.svg" alt="">导出折扣商品</el-button>
-              <el-button bg text><img style="width: 15px;height: 15px;margin-right: 5px" src="../../icon/postpone.svg" alt="">一键延期30天</el-button>
+              <el-button bg text>
+                <img
+                  style="width: 15px; height: 15px; margin-right: 5px"
+                  src="../../icon/upshop.svg"
+                  alt=""
+                />批量上架</el-button
+              >
+              <el-button bg text
+                ><img
+                  style="width: 15px; height: 15px; margin-right: 5px"
+                  src="../../icon/downshop.svg"
+                  alt=""
+                />批量下架</el-button
+              >
+              <el-button bg text @click="setkcdialog(true)"
+                ><img
+                  style="width: 15px; height: 15px; margin-right: 5px"
+                  src="../../icon/inventory.svg"
+                  alt=""
+                />批量修改库存</el-button
+              >
+              <el-button bg text
+                ><img
+                  style="width: 15px; height: 15px; margin-right: 5px"
+                  src="../../icon/discount.svg"
+                  alt=""
+                />导出折扣商品</el-button
+              >
+              <el-button bg text
+                ><img
+                  style="width: 15px; height: 15px; margin-right: 5px"
+                  src="../../icon/postpone.svg"
+                  alt=""
+                />一键延期30天</el-button
+              >
             </div>
           </div>
           <div class="tablebox">
-            <shoptable></shoptable>
+            <shoptable />
           </div>
         </div>
       </div>
     </div>
     <el-dialog v-model="zkdialog" title="修改折扣" width="600">
-      <discount></discount>
+      <discount />
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="setzkdialog(false)">取消</el-button>
-          <el-button type="primary">
-            确定
-          </el-button>
+          <el-button type="primary"> 确定 </el-button>
         </div>
       </template>
     </el-dialog>
     <el-dialog v-model="yjdialog" title="修改原价" width="500">
-      <original></original>
+      <original />
 
       <!-- <div>111</div> -->
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="setyjdialog(false)">取消</el-button>
-          <el-button type="primary">
-            确定
-          </el-button>
+          <el-button type="primary"> 确定 </el-button>
         </div>
       </template>
     </el-dialog>
     <el-dialog v-model="shopnamedialog" title="批量修改商品名称" width="500">
-      <product></product>
+      <product />
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="setshopnamedialog(false)">取消</el-button>
-          <el-button type="primary">
-            确定
-          </el-button>
+          <el-button type="primary"> 确定 </el-button>
         </div>
       </template>
     </el-dialog>
     <el-dialog v-model="kcdialog" title="批量修改库存" width="400">
-      <inventory></inventory>
+      <inventory />
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="setkcdialog(false)">取消</el-button>
-          <el-button type="primary">
-            确定
-          </el-button>
+          <el-button type="primary"> 确定 </el-button>
         </div>
       </template>
     </el-dialog>
   </div>
 </template>
 <script setup lang="ts">
-import { Management, Refresh,CaretRight} from '@element-plus/icons-vue'
-import shoptable from "./components/shoptable.vue"
+import { Management, Refresh, CaretRight } from '@element-plus/icons-vue'
+import shoptable from './components/shoptable.vue'
 import discount from './components/discount.vue'
 import original from './components/original.vue'
 import product from './components/product.vue'
-import inventory from "./components/inventory.vue"
+import inventory from './components/inventory.vue'
 // import { Picture as IconPicture } from '@element-plus/icons-vue'
 // import { getMyFunctions } from '/@/api/shop.ts'
 // import shopactivity from './components/shopactivity.vue'
 // import shoplist from "./components/shoplist.vue"
 defineOptions({
-  name: 'IntegralMt',
+  name: 'IntegralMt'
 })
 const toolState = ref(false)
-const zkdialog=ref<boolean>(false)
-const yjdialog=ref<boolean>(false)
-const shopnamedialog=ref<boolean>(false)
-const kcdialog=ref<boolean>(false)
-const setzkdialog=(val:boolean)=>{
-  zkdialog.value=val;
+const zkdialog = ref<boolean>(false)
+const yjdialog = ref<boolean>(false)
+const shopnamedialog = ref<boolean>(false)
+const kcdialog = ref<boolean>(false)
+const setzkdialog = (val: boolean) => {
+  zkdialog.value = val
 }
-const setyjdialog=(val:boolean)=>{
-  yjdialog.value=val;
+const setyjdialog = (val: boolean) => {
+  yjdialog.value = val
 }
-const setshopnamedialog=(val:boolean)=>{
-  shopnamedialog.value=val;
+const setshopnamedialog = (val: boolean) => {
+  shopnamedialog.value = val
 }
-const setkcdialog=(val:boolean)=>{
-  kcdialog.value=val;
+const setkcdialog = (val: boolean) => {
+  kcdialog.value = val
 }
 const changeToolState = () => {
   toolState.value = !toolState.value
 }
 const funcList = ref([])
 const endTime = ref('')
-const input=ref('')
+const input = ref('')
 // const getFunctionList = () => {
 //   getMyFunctions().then((res: any) => {
 //     if (res.code === 200) {
@@ -201,95 +226,91 @@ const input=ref('')
     }
   }
 }
-.shopcart{
+.shopcart {
   border: 1px solid #eee;
   padding: 10px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  .carttext{
+  .carttext {
     color: #000;
     line-height: 30px;
-    span{
+    span {
       color: #8b929b;
     }
   }
 }
-.page-container{
+.page-container {
   display: flex;
   flex-direction: column;
-
 }
-::v-deep.requicontent{
+::v-deep.requicontent {
   flex: 1;
   // background: red;
   margin-top: 20px;
-  position:relative;
+  position: relative;
   overflow: hidden;
   // padding: 10px;
-  .centcon{
+  .centcon {
     width: 100%;
     height: 100%;
     display: flex;
     position: absolute;
     // overflow-y: auto;
   }
-  .conleft{
+  .conleft {
     border-right: 1px solid #eee;
     height: 100%;
     width: 200px;
     display: flex;
     flex-direction: column;
-    .el-menu-vertical-demo{
+    .el-menu-vertical-demo {
       flex: 1;
       overflow-y: auto;
     }
-    .conleft-top{
+    .conleft-top {
       padding: 10px;
       border-bottom: 1px solid #eee;
       padding-bottom: 10px;
       //text-align: center;
     }
-    .el-sub-menu__icon-arrow{
+    .el-sub-menu__icon-arrow {
       display: none;
     }
   }
-  .conright{
+  .conright {
     height: 100%;
     flex: 1;
     padding-left: 10px;
     overflow: hidden;
-    .righttop{
+    .righttop {
       display: flex;
       flex-wrap: wrap;
     }
-    .righttwo{
+    .righttwo {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
-      .twoleft{
+      .twoleft {
         display: flex;
         margin: 10px 0;
-        div{
+        div {
           margin-right: 10px;
         }
       }
     }
-
   }
-  .menus{
+  .menus {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     color: #bbbbbb;
     font-size: 12px;
-    .menusleft{
+    .menusleft {
       color: #000;
     }
-
   }
 }
-
 </style>

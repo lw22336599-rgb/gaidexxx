@@ -19,7 +19,7 @@ const List = [
         createTime: '@datetime',
         name: '桃花坞',
         label: '桃花坞',
-        order: 0,
+        order: 0
       },
       {
         value: '2',
@@ -43,7 +43,7 @@ const List = [
             createTime: '@datetime',
             name: '达摩院',
             label: '达摩院',
-            order: 0,
+            order: 0
           },
           {
             value: '@uuid',
@@ -56,12 +56,12 @@ const List = [
             createTime: '@datetime',
             name: '戒律堂',
             label: '戒律堂',
-            order: 1,
-          },
-        ],
-      },
-    ],
-  },
+            order: 1
+          }
+        ]
+      }
+    ]
+  }
 ]
 
 export default [
@@ -70,14 +70,14 @@ export default [
     method: 'get',
     response: ({ query }: any) => {
       const { label, pageNo = 1, pageSize = 20 } = query
-      const mockList = List.filter((item) => !(label && !item.label.includes(label)))
+      const mockList = List.filter(item => !(label && !item.label.includes(label)))
       const list = mockList.filter((item, index) => index < pageSize * pageNo && index >= pageSize * (pageNo - 1))
       return {
         code: 200,
         msg: 'success',
-        data: { list, total: mockList.length },
+        data: { list, total: mockList.length }
       }
-    },
+    }
   },
   {
     url: '/departmentManagement/doEdit',
@@ -85,9 +85,9 @@ export default [
     response: () => {
       return {
         code: 200,
-        msg: '模拟保存成功',
+        msg: '模拟保存成功'
       }
-    },
+    }
   },
   {
     url: '/departmentManagement/doDelete',
@@ -95,8 +95,8 @@ export default [
     response: () => {
       return {
         code: 200,
-        msg: '模拟删除成功',
+        msg: '模拟删除成功'
       }
-    },
-  },
+    }
+  }
 ] as MockMethod[]

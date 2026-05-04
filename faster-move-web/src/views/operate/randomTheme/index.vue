@@ -9,14 +9,15 @@
 import { useSettingsStore } from '/@/store/modules/settings'
 
 defineOptions({
-  name: 'RandomTheme',
+  name: 'RandomTheme'
 })
 
 const settingsStore = useSettingsStore()
 const { theme, device } = storeToRefs(settingsStore)
 const { saveTheme, updateTheme, setCssVar } = settingsStore
 
-const shuffle = (val: any, list: any) => list.filter((item: any) => item !== val)[(Math.random() * (list.length - 1)) | 0]
+const shuffle = (val: any, list: any) =>
+  list.filter((item: any) => item !== val)[(Math.random() * (list.length - 1)) | 0]
 
 const randomTheme = async () => {
   const loading = $baseLoading()
@@ -27,7 +28,9 @@ const randomTheme = async () => {
     const tabsBarStyle = shuffle(theme.value.tabsBarStyle, ['card', 'smart', 'smooth', 'rect'])
     const showTabsIcon = shuffle(theme.value.showTabsIcon, [true, false])
     const layout =
-      device.value === 'desktop' ? shuffle(theme.value.layout, ['horizontal', 'vertical', 'column', 'comprehensive', 'fall']) : 'vertical'
+      device.value === 'desktop'
+        ? shuffle(theme.value.layout, ['horizontal', 'vertical', 'column', 'comprehensive', 'fall'])
+        : 'vertical'
     const _color = shuffle(theme.value.color, [
       '#1e90ff',
       '#4e88f3',
@@ -38,7 +41,7 @@ const randomTheme = async () => {
       '#009688',
       '#6954f0',
       '#7b40f2',
-      '#f01414',
+      '#f01414'
     ])
     const isFollow = shuffle(theme.value.isFollow, [true, false])
 

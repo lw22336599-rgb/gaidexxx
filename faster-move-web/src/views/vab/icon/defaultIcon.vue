@@ -34,7 +34,7 @@
           <el-col v-for="(item, index) in queryIcon" :key="index" :lg="3" :md="4" :sm="6" :xl="2" :xs="6">
             <vab-card
               :body-style="{
-                'min-height': '65px',
+                'min-height': '65px'
               }"
               @click="handleCopyIcon(item.icon)"
             >
@@ -43,7 +43,7 @@
                 :style="{
                   color: queryForm.colorful ? item.color : 'var(--el-color-grey)',
                   fontSize: queryForm.num + 'px',
-                  transition: 'var(--el-transition)',
+                  transition: 'var(--el-transition)'
                   // 'background-image': queryForm.colorful
                   //   ? 'linear-gradient(120deg, ' + item.color + ' 50%, ' + colorRgba(item.color, 0.3) + ')'
                   //   : '',
@@ -78,7 +78,7 @@ import { getIconList } from '/@/api/icon'
 import clip from '/@/utils/clipboard'
 
 defineOptions({
-  name: 'DefaultIcon',
+  name: 'DefaultIcon'
 })
 
 interface QueryFormType {
@@ -101,7 +101,7 @@ const queryForm = reactive<QueryFormType>({
   pageSize: 72,
   title: '',
   colorful: true,
-  num: 28,
+  num: 28
 })
 
 const emptyShow = ref<boolean>(false)

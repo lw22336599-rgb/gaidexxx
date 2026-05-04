@@ -92,12 +92,14 @@
       width: 100%;
       color: #fff;
       content: '极狐 数据大屏';
-      background-image: linear-gradient(65deg,
-          transparent 10%,
-          rgba(255, 255, 255, 1) 20%,
-          rgba(255, 255, 255, 1) 27.5%,
-          transparent 30%,
-          transparent 100%);
+      background-image: linear-gradient(
+        65deg,
+        transparent 10%,
+        rgba(255, 255, 255, 1) 20%,
+        rgba(255, 255, 255, 1) 27.5%,
+        transparent 30%,
+        transparent 100%
+      );
       background-clip: text;
       animation: flare 3s infinite;
     }
@@ -113,7 +115,6 @@
   }
 
   &.mobile-only {
-
     .data-fullscreen,
     .data-go-home {
       width: 40px;
@@ -136,12 +137,14 @@
         width: 100%;
         color: #fff;
         content: '数据大屏';
-        background-image: linear-gradient(65deg,
-            transparent 10%,
-            rgba(255, 255, 255, 1) 20%,
-            rgba(255, 255, 255, 1) 27.5%,
-            transparent 30%,
-            transparent 100%);
+        background-image: linear-gradient(
+          65deg,
+          transparent 10%,
+          rgba(255, 255, 255, 1) 20%,
+          rgba(255, 255, 255, 1) 27.5%,
+          transparent 30%,
+          transparent 100%
+        );
         background-clip: text;
         animation: flare 3s infinite;
       }

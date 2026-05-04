@@ -15,5 +15,5 @@ export enum DayType {
   /** 周六 */
   Saturday = 6,
   /** 周日 */
-  Sunday = 7,
+  Sunday = 7
 }

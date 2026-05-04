@@ -237,7 +237,6 @@
                 </div>
               </div>
             </div>
-            <img v-if="row ? row.is_top : false" class="top-up-img" src="/@/assets/shop_images/icon_001.png" />
           </div>
           <div v-if="item.label === '门店分组'" class="group-cell-wrapper">
             <!-- 直接显示选择框，不使用编辑模式，参考团队管理页面的逻辑 -->
@@ -265,23 +264,20 @@
                   {{ isEleCopyShopType ? 'API授权：' : '插件授权：' }}
                 </span>
                 <div class="auth-buttons">
-                  <el-button :type="row.state == 3 ? 'danger' : 'success'" size="small" plain
-                    :class="{ 'auth-normal-btn': row.state != 3, 'auth-error-btn': row.state == 3 }">
-                    {{ row.state == 3 ? '授权异常' : '授权正常' }}
-                  </el-button>
+                  <el-tag class="auth-state-tag auth-state-tag--solid" size="small" effect="dark"
+                    :type="pluginAuthTag(row).type">
+                    {{ pluginAuthTag(row).label }}
+                  </el-tag>
                   <span class="auth-time-inline">{{ formatAuthTime(row.ck_uptime) }}</span>
                 </div>
               </div>
               <div v-if="hasApiAuth" class="auth-status-row" style="margin-top: 4px;">
                 <span class="auth-prefix-label">API授权：</span>
                 <div class="auth-buttons">
-                  <el-button v-if="row.api_state == null" type="info" size="small" plain class="auth-normal-btn">
-                    未授权
-                  </el-button>
-                  <el-button v-else :type="row.api_state == 3 ? 'danger' : 'success'" size="small" plain
-                    :class="{ 'auth-normal-btn': row.api_state != 3, 'auth-error-btn': row.api_state == 3 }">
-                    {{ row.api_state == 3 ? '授权异常' : '授权正常' }}
-                  </el-button>
+                  <el-tag class="auth-state-tag auth-state-tag--solid" size="small" effect="dark"
+                    :type="apiAuthTag(row).type">
+                    {{ apiAuthTag(row).label }}
+                  </el-tag>
                   <span class="auth-time-inline">{{ formatAuthTime(row.api_extime) }}</span>
                 </div>
               </div>
@@ -411,7 +407,7 @@ import AllFuncSetting from '/@/views/shop/componentsV2/AllFuncSetting.vue'
 import PayDialog from '/@/views/shop/PayDialog.vue'
 import { gp } from '/@vab/plugins/vab.ts'
 import type { TableInstance } from 'element-plus'
-import { ElMessageBox } from 'element-plus'
+import { ElMessageBox, ElNotification } from 'element-plus'
 import { GetCookiesObj } from '/@/utils/tool'
 import { openWindow as openShopBackendWindow } from '/@/utils/openShopWin.ts'
 import { h, watch } from 'vue'
@@ -1000,6 +996,35 @@ const formatAuthTime = (time?: string | Date | null): string => {
   }
 }
 
+const daysSinceDateOperate = (time: string | Date | undefined | null): number | null => {
+  if (!time) return null
+  const t = new Date(time).getTime()
+  if (Number.isNaN(t)) return null
+  return Math.floor((Date.now() - t) / (24 * 60 * 60 * 1000))
+}
+
+const daysUntilDateOperate = (time: string | Date | undefined | null): number | null => {
+  if (!time) return null
+  const t = new Date(time).getTime()
+  if (Number.isNaN(t)) return null
+  return Math.ceil((t - Date.now()) / (24 * 60 * 60 * 1000))
+}
+
+const pluginAuthTag = (row: any) => {
+  if (row?.state == 3) return { label: '已过期', type: 'danger' as const }
+  const stale = daysSinceDateOperate(row?.ck_uptime)
+  if (stale != null && stale >= 10) return { label: '即将过期', type: 'warning' as const }
+  return { label: '授权正常', type: 'success' as const }
+}
+
+const apiAuthTag = (row: any) => {
+  if (row?.api_state == null) return { label: '未授权', type: 'info' as const }
+  if (row?.api_state == 3) return { label: '已过期', type: 'danger' as const }
+  const left = daysUntilDateOperate(row?.api_extime)
+  if (left != null && left >= 0 && left <= 7) return { label: '即将过期', type: 'warning' as const }
+  return { label: '授权正常', type: 'success' as const }
+}
+
 // 处理表格排序变化
 const handleSortChange = ({ prop, order }: { prop: string; order: string | null }) => {
   console.log('运营版表格排序变化:', { prop, order })
@@ -1312,8 +1337,18 @@ const setShopTop = (row: any, state: boolean) => {
     .then(() => {
       setShopIsTop({ shop: row.id, top: state }).then((res: any) => {
         if (res.code === 200) {
-          let str2 = state ? '置顶成功！' : '取消置顶成功'
-          gp.$baseMessage(str2, 'success', 'hey')
+          if (state) {
+            ElNotification({
+              title: '置顶',
+              message: `「${row.name || '门店'}」已置顶`,
+              type: 'success',
+              duration: 3000,
+              position: 'top-right',
+              showClose: true,
+            })
+          } else {
+            gp.$baseMessage('取消置顶成功', 'success', 'hey')
+          }
           queryData()
         }
       })
@@ -1774,14 +1809,6 @@ defineExpose({
   cursor: pointer;
 }
 
-.top-up-img {
-  position: absolute;
-  top: -26px;
-  left: -12px;
-  width: 40px;
-  height: 40px;
-}
-
 .suc-dot {
   position: relative;
   display: inline-block;
@@ -1964,6 +1991,12 @@ defineExpose({
       padding: 0px 0;
       color: #000 !important;
 
+      &.el-table__cell {
+        background-color: #f5f7fa !important;
+        border-bottom: 1px solid #e8e8e8 !important;
+        font-weight: 600;
+      }
+
       .cell {
         color: #000 !important;
       }
@@ -1994,6 +2027,18 @@ defineExpose({
           z-index: 99;
         }
       }
+    }
+
+    .el-table__body tr.el-table__row:nth-child(even) > td.el-table__cell {
+      background-color: #fafafa !important;
+    }
+
+    .el-table__body tr.el-table__row:nth-child(odd) > td.el-table__cell {
+      background-color: #ffffff !important;
+    }
+
+    .el-table__body tr.hover-row > td.el-table__cell {
+      background-color: #ecf5ff !important;
     }
 
     .thead-cell {
@@ -2203,25 +2248,20 @@ defineExpose({
 
     .auth-buttons {
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
     }
 
-    .auth-normal-btn {
-      border-color: #67c23a;
-      color: #67c23a;
-
-      &:hover {
-        background-color: #f0f9ff;
-        border-color: #67c23a;
-        color: #67c23a;
-      }
+    .auth-state-tag {
+      flex-shrink: 0;
     }
 
-    .auth-error-btn {
-      &:hover {
-        background-color: #fef0f0;
-      }
+    .auth-state-tag--solid {
+      border-radius: 999px !important;
+      font-weight: 500;
+      border: none !important;
+      color: #fff !important;
     }
   }
 

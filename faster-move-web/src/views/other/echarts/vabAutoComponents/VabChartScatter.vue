@@ -11,14 +11,14 @@ import { random } from 'lodash-es'
 import { useSettingsStore } from '/@/store/modules/settings'
 
 defineOptions({
-  name: 'VabChartScatter',
+  name: 'VabChartScatter'
 })
 
 defineProps({
   title: {
     type: String,
-    default: '',
-  },
+    default: ''
+  }
 })
 
 const settingsStore = useSettingsStore()
@@ -30,12 +30,12 @@ const option = reactive<any>({
     top: 20,
     right: 20,
     bottom: 40,
-    left: 40,
+    left: 40
   },
   xAxis: {},
   yAxis: {},
   tooltip: {
-    trigger: 'item',
+    trigger: 'item'
   },
   series: {
     symbolSize: 10,
@@ -61,10 +61,10 @@ const option = reactive<any>({
       [random(1, 20), random(1, 20)],
       [random(1, 20), random(1, 20)],
       [random(1, 20), random(1, 20)],
-      [random(1, 20), random(1, 20)],
+      [random(1, 20), random(1, 20)]
     ],
-    type: 'scatter',
-  },
+    type: 'scatter'
+  }
 })
 
 watch(
@@ -99,7 +99,7 @@ onMounted(() => {
       [random(1, 20), random(1, 20)],
       [random(1, 20), random(1, 20)],
       [random(1, 20), random(1, 20)],
-      [random(1, 20), random(1, 20)],
+      [random(1, 20), random(1, 20)]
     ]
   }, 3000)
 })

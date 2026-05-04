@@ -20,7 +20,6 @@ export const changefromold_http = () => {
   return request({
     url: '/fdmvmanager/changefromold',
     method: 'post'
-   
   })
 }
 
@@ -51,7 +50,7 @@ export const updateGroup = (data: any) => {
 export const delGroup = (id: any) => {
   return request({
     url: `/group/deletegroup?id=${id}`,
-    method: 'post',
+    method: 'post'
   })
 }
 
@@ -63,7 +62,7 @@ export const updateAgency = (data: any) => {
   })
 }
 export const addUser = (data: any) => {
-  const {is_boss, phone} = data
+  const { is_boss, phone } = data
   return request({
     url: `/admin/adduser?phone=${phone}&is_boss=${is_boss}`,
     method: 'post'
@@ -89,7 +88,7 @@ export const linkShopGroup = (data: any) => {
 export const getCourseGroups = () => {
   return request({
     url: `/course/getgroups`,
-    method: 'get',
+    method: 'get'
   })
 }
 
@@ -120,7 +119,7 @@ export const getFeedback = (params: any) => {
 export const getTeamInfo = () => {
   return request({
     url: `/teaminfo/getteaminfo`,
-    method: 'get',
+    method: 'get'
   })
 }
 
@@ -135,15 +134,15 @@ export const saveTeamInfo = (data: any) => {
 export const delMsg = (id: any) => {
   return request({
     url: `/bossmsg/deletemsg?id=${id}`,
-    method: 'post',
+    method: 'post'
   })
 }
 
 export const setRead = (data: any) => {
-  const {id, is_read} = data
+  const { id, is_read } = data
   return request({
     url: `/feedback/setread?id=${id}&is_read=${is_read}`,
-    method: 'post',
+    method: 'post'
   })
 }
 
@@ -174,7 +173,7 @@ export const updateCourse = (data: any) => {
 export const delCourse = (id: any) => {
   return request({
     url: `/course/deletecourse?id=${id}`,
-    method: 'post',
+    method: 'post'
   })
 }
 

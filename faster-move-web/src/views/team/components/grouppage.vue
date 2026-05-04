@@ -1,16 +1,22 @@
 <template>
   <div class="grouppage">
-    <el-form v-show="uptab.admin" :model="uptab" :rules="rules" ref="ruleForm" label-width="100px"
-      class="demo-ruleForm">
+    <el-form
+      v-show="uptab.admin"
+      ref="ruleForm"
+      :model="uptab"
+      :rules="rules"
+      label-width="100px"
+      class="demo-ruleForm"
+    >
       <el-form-item label="账号" prop="admin_name">
-        <el-input disabled v-model="uptab.admin_name"></el-input>
+        <el-input v-model="uptab.admin_name" disabled />
       </el-form-item>
       <el-form-item label="积分" prop="balance">
-        <el-input disabled v-model="uptab.balance"></el-input>
+        <el-input v-model="uptab.balance" disabled />
       </el-form-item>
       <el-form-item label="分组" prop="group" required>
         <el-select v-model="uptab.group" placeholder="请选择分组">
-          <el-option v-for="item in grouarr" :key="item.id" :label="item.name" :value="item.id"></el-option>
+          <el-option v-for="item in grouarr" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
       <el-form-item label="标签" required prop="bqidarr">
@@ -18,8 +24,9 @@
       <el-radio v-for="item in groulist" :key="item.id" :label="item.id">{{item.name}}</el-radio>
     </el-radio-group> -->
         <el-checkbox-group v-model="uptab.bqidarr">
-          <el-checkbox v-for="item in groulist" :key="item.id" :label="item.id" name="type">{{ item.name
-            }}</el-checkbox>
+          <el-checkbox v-for="item in groulist" :key="item.id" :label="item.id" name="type">{{
+            item.name
+          }}</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
       <el-form-item>
@@ -28,17 +35,23 @@
         </div>
       </el-form-item>
     </el-form>
-    <el-form v-show="!uptab.admin" :model="form" :rules="rulesform" ref="ruleForm1" label-width="100px"
-      class="demo-ruleForm">
+    <el-form
+      v-show="!uptab.admin"
+      ref="ruleForm1"
+      :model="form"
+      :rules="rulesform"
+      label-width="100px"
+      class="demo-ruleForm"
+    >
       <el-form-item label="账号" required prop="username">
-        <el-input v-model="form.username"></el-input>
+        <el-input v-model="form.username" />
       </el-form-item>
       <el-form-item label="密码" required prop="password">
-        <el-input v-model="form.password"></el-input>
+        <el-input v-model="form.password" />
       </el-form-item>
       <el-form-item label="分组" prop="group" required>
         <el-select v-model="form.group" placeholder="请选择分组">
-          <el-option v-for="item in grouarr" :key="item.id" :label="item.name" :value="item.id"></el-option>
+          <el-option v-for="item in grouarr" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
       <el-form-item label="标签" required prop="bqidarr">
@@ -46,8 +59,9 @@
       <el-radio v-for="item in groulist" :key="item.id" :label="item.id">{{item.name}}</el-radio>
     </el-radio-group> -->
         <el-checkbox-group v-model="form.bqidarr">
-          <el-checkbox v-for="item in groulist" :key="item.id" :label="item.id" name="type">{{ item.name
-            }}</el-checkbox>
+          <el-checkbox v-for="item in groulist" :key="item.id" :label="item.id" name="type">{{
+            item.name
+          }}</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
       <el-form-item>
@@ -60,7 +74,7 @@
 </template>
 
 <script>
-import { deleteadmintag, gettagpagelist, getlist, addchild, changegroup, updateadmintag } from "@/api/table.js"
+import { deleteadmintag, gettagpagelist, getlist, addchild, changegroup, updateadmintag } from '@/api/table.js'
 export default {
   props: {
     activeitem: {
@@ -82,11 +96,40 @@ export default {
       }
     }
   },
+  data() {
+    return {
+      taglistid: [],
+      loading: false,
+      obj: {},
+      grouarr: [],
+      uptab: {},
+      rules: {
+        group: [{ required: true, message: '请选择分组', trigger: 'change' }],
+        // bqid: [
+        //   { required: true, message: '请选择标签', trigger: 'change' }
+        // ],
+        bqidarr: [{ type: 'array', required: true, message: '请至少选择一个标签', trigger: 'change' }]
+      },
+      groulist: [],
+      form: {
+        username: '',
+        password: '',
+        group: '',
+        bqidarr: []
+      },
+      rulesform: {
+        username: [{ required: true, message: '请输入账号', trigger: 'blur' }],
+        password: [{ required: true, message: '请输入密码', trigger: 'blur' }],
+        group: [{ required: true, message: '请选择分组', trigger: 'change' }],
+        bqidarr: [{ type: 'array', required: true, message: '请至少选择一个标签', trigger: 'change' }]
+      }
+    }
+  },
   watch: {
     guanlianobj: {
       handler(val) {
         if (val && val != {}) {
-          this.obj = val;
+          this.obj = val
           this.uptab = {
             admin_name: this.obj.admin_name,
             group: this.obj.group,
@@ -110,59 +153,17 @@ export default {
     tableData: {
       handler(val) {
         if (val && val != []) {
-          this.grouarr = val;
+          this.grouarr = val
         }
       },
       deep: true,
       immediate: true
     }
   },
-  mounted() {
-  },
-  data() {
-    return {
-      taglistid: [],
-      loading: false,
-      obj: {},
-      grouarr: [],
-      uptab: {},
-      rules: {
-        group: [
-          { required: true, message: '请选择分组', trigger: 'change' }
-        ],
-        // bqid: [
-        //   { required: true, message: '请选择标签', trigger: 'change' }
-        // ],
-        bqidarr: [
-          { type: 'array', required: true, message: '请至少选择一个标签', trigger: 'change' }
-        ],
-      },
-      groulist: [],
-      form: {
-        username: '',
-        password: '',
-        group: '',
-        bqidarr: []
-      },
-      rulesform: {
-        username: [
-          { required: true, message: '请输入账号', trigger: 'blur' },
-        ],
-        password: [
-          { required: true, message: '请输入密码', trigger: 'blur' },
-        ],
-        group: [
-          { required: true, message: '请选择分组', trigger: 'change' }
-        ],
-        bqidarr: [
-          { type: 'array', required: true, message: '请至少选择一个标签', trigger: 'change' }
-        ],
-      }
-    }
-  },
+  mounted() {},
   methods: {
     async submitForm(formName) {
-      this.$refs[formName].validate(async (valid) => {
+      this.$refs[formName].validate(async valid => {
         if (valid) {
           if (formName == 'ruleForm') {
             // 设置
@@ -181,7 +182,7 @@ export default {
             let text = 'admin=' + this.uptab.admin + '&tag=' + this.uptab.bqidarr.join('&tag=')
             let text1 = 'admin=' + this.uptab.admin + '&tag=' + this.taglistid.join('&tag=')
             //
-            let promarr = [1, 2].map(async (item) => {
+            let promarr = [1, 2].map(async item => {
               if (item == 1) {
                 let res = await changegroup(data)
                 if (res.code == 200) {
@@ -189,9 +190,8 @@ export default {
                 } else {
                   return { success: false, message: res.message }
                 }
-
               } else {
-                let res1 = await deleteadmintag(text1);
+                let res1 = await deleteadmintag(text1)
                 if (res1.code == 200) {
                   let res = await updateadmintag(text)
                   if (res.code == 200) {
@@ -202,33 +202,33 @@ export default {
                 } else {
                   return { success: false, message: res1.message }
                 }
-
               }
             })
-            this.loading = true;
-            Promise.all(promarr).then(res => {
-              this.loading = false;
-              if (!res[0].success && res[1].success) {
-                this.$message.warning('更改分组失败' + res[0].message)
-              }
-              if (!res[1].success && res[0].success) {
-                this.$message.warning('更改标签失败' + res[1].message)
-              }
-              if (res[1].success && res[0].success) {
-                this.$message.success('更改成功')
-              }
-              this.$emit('setguanlianshow')
-
-            }).catch(() => {
-              this.loading = false
-            })
+            this.loading = true
+            Promise.all(promarr)
+              .then(res => {
+                this.loading = false
+                if (!res[0].success && res[1].success) {
+                  this.$message.warning('更改分组失败' + res[0].message)
+                }
+                if (!res[1].success && res[0].success) {
+                  this.$message.warning('更改标签失败' + res[1].message)
+                }
+                if (res[1].success && res[0].success) {
+                  this.$message.success('更改成功')
+                }
+                this.$emit('setguanlianshow')
+              })
+              .catch(() => {
+                this.loading = false
+              })
           } else {
             // 添加
             let data = {
-              "group": this.form.group,
-              "username": this.form.username,
-              "password": this.form.password,
-              "tag": [...this.form.bqidarr]
+              group: this.form.group,
+              username: this.form.username,
+              password: this.form.password,
+              tag: [...this.form.bqidarr]
             }
             this.loading = true
             let res = await addchild(data)
@@ -241,10 +241,10 @@ export default {
             }
           }
         } else {
-          console.log('error submit!!');
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
+      })
     },
     async getgrou() {
       let res = await gettagpagelist({ pageindex: 1, pagesize: 1000 })
@@ -260,9 +260,8 @@ export default {
         this.uptab.bqidarr = res.data.map(item => item.tag_id)
         this.taglistid = res.data.map(item => item.tag_id)
         // console.log(this.uptab.bqidarr,"this.uptab.bqid");
-
       }
-    },
+    }
   }
 }
 </script>

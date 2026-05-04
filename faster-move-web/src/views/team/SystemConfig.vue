@@ -4,22 +4,31 @@
       <div class="header">
         <div class="title">系统设置</div>
         <div class="actions">
-          <el-button size="small" :loading="loading" @click="loadConfig">
-            重新获取
-          </el-button>
+          <el-button size="small" :loading="loading" @click="loadConfig"> 重新获取 </el-button>
           <el-button size="small" type="warning" :loading="initLoading" @click="handleInitDefault">
             初始化默认配置
           </el-button>
-          <el-button type="primary" size="small" :loading="saving" @click="handleSave">
-            保存配置
-          </el-button>
+          <el-button type="primary" size="small" :loading="saving" @click="handleSave"> 保存配置 </el-button>
         </div>
       </div>
 
-      <el-alert title="系统配置仅管理员可编辑，修改后会影响全局菜单（门店管理、店铺调研等）与联系入口展示。" type="info" :closable="false" show-icon class="tip" />
+      <el-alert
+        title="系统配置仅管理员可编辑，修改后会影响全局菜单（门店管理、店铺调研等）与联系入口展示。"
+        type="info"
+        :closable="false"
+        show-icon
+        class="tip"
+      />
 
-      <el-form ref="formRef" :model="form" :rules="rules" label-width="140px" label-position="left"
-        v-loading="loading || saving" class="config-form">
+      <el-form
+        ref="formRef"
+        v-loading="loading || saving"
+        :model="form"
+        :rules="rules"
+        label-width="140px"
+        label-position="left"
+        class="config-form"
+      >
         <el-form-item label="在线客服地址" prop="CustomerServiceUrl">
           <el-input v-model.trim="form.CustomerServiceUrl" placeholder="请输入在线客服链接，如客服中心或工单入口" />
         </el-form-item>
@@ -48,7 +57,12 @@
         </el-form-item>
 
         <el-form-item label="店铺调研显示平台" prop="ShopResearchPlatforms">
-          <el-select v-model="form.ShopResearchPlatforms" multiple filterable placeholder="请选择在店铺调研中展示的平台">
+          <el-select
+            v-model="form.ShopResearchPlatforms"
+            multiple
+            filterable
+            placeholder="请选择在店铺调研中展示的平台"
+          >
             <el-option v-for="item in shopTypeOptions" :key="item.value" :label="item.label" :value="item.value" />
           </el-select>
         </el-form-item>
@@ -67,7 +81,7 @@ import type { SystemConfigAllDto } from '@/TsModel/Alien/Entity/Function/SystemC
 import { useSystemConfigStore } from '@/store/modules/systemConfig'
 
 defineOptions({
-  name: 'SystemConfig',
+  name: 'SystemConfig'
 })
 
 interface ShopTypeOption {
@@ -87,13 +101,13 @@ const form = reactive<SystemConfigAllDto>({
   BusinessContact: '',
   ShopManagePlatforms: [],
   ShopCopyPlatforms: [],
-  ShopResearchPlatforms: [],
+  ShopResearchPlatforms: []
 })
 
 // 教程链接独立配置（使用独立的 key 存储）
 const tutorialLinks = reactive({
   ImServiceTutorialUrl: '',
-  ShopPushTutorialUrl: '',
+  ShopPushTutorialUrl: ''
 })
 
 const shopTypeOptions: ShopTypeOption[] = [
@@ -106,7 +120,7 @@ const shopTypeOptions: ShopTypeOption[] = [
   { label: '抖店即时零售', value: ShopType.抖店即时零售 },
   { label: '饿了么官方', value: ShopType.饿了么官方 },
   { label: '美团团购', value: ShopType.美团团购 },
-  { label: '京东团购', value: ShopType.京东团购 },
+  { label: '京东团购', value: ShopType.京东团购 }
 ]
 
 const rules: FormRules = {
@@ -114,7 +128,7 @@ const rules: FormRules = {
   DownloadUrl: [{ required: true, message: '请输入软件下载地址', trigger: 'blur' }],
   BusinessContact: [{ required: true, message: '请输入商务洽谈联系方式', trigger: 'blur' }],
   ShopManagePlatforms: [{ required: true, type: 'array', message: '请选择门店管理显示平台', trigger: 'change' }],
-  ShopResearchPlatforms: [{ required: true, type: 'array', message: '请选择店铺调研显示平台', trigger: 'change' }],
+  ShopResearchPlatforms: [{ required: true, type: 'array', message: '请选择店铺调研显示平台', trigger: 'change' }]
 }
 
 const normalizePlatforms = (list: ShopType[] | null | undefined): ShopType[] => {
@@ -135,7 +149,7 @@ const loadTutorialLinks = async () => {
   try {
     const [imUrl, shopPushUrl] = await Promise.all([
       apiManager.systemconfigApi.GetConfigByKey('ImServiceTutorialUrl'),
-      apiManager.systemconfigApi.GetConfigByKey('ShopPushTutorialUrl'),
+      apiManager.systemconfigApi.GetConfigByKey('ShopPushTutorialUrl')
     ])
     tutorialLinks.ImServiceTutorialUrl = imUrl || ''
     tutorialLinks.ShopPushTutorialUrl = shopPushUrl || ''
@@ -173,7 +187,7 @@ const handleSave = async () => {
       BusinessContact: form.BusinessContact,
       ShopManagePlatforms: normalizePlatforms(form.ShopManagePlatforms),
       ShopCopyPlatforms: [],
-      ShopResearchPlatforms: normalizePlatforms(form.ShopResearchPlatforms),
+      ShopResearchPlatforms: normalizePlatforms(form.ShopResearchPlatforms)
     }
 
     await apiManager.systemconfigApi.UpdateAllConfig(payload)
@@ -183,12 +197,12 @@ const handleSave = async () => {
     await Promise.all([
       apiManager.systemconfigApi.UpdateConfigByKey('ImServiceTutorialUrl', {
         ConfigValue: tutorialLinks.ImServiceTutorialUrl,
-        Description: 'IM客服使用教程连接',
+        Description: 'IM客服使用教程连接'
       }),
       apiManager.systemconfigApi.UpdateConfigByKey('ShopPushTutorialUrl', {
         ConfigValue: tutorialLinks.ShopPushTutorialUrl,
-        Description: '门店推送使用教程连接',
-      }),
+        Description: '门店推送使用教程连接'
+      })
     ])
 
     ElMessage.success('保存成功')

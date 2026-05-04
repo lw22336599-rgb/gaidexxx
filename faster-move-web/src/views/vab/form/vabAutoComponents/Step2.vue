@@ -28,24 +28,24 @@
 import type { FormInstance } from 'element-plus'
 
 defineOptions({
-  name: 'Step2',
+  name: 'Step2'
 })
 defineProps({
   infoData: {
     type: Object,
     default: () => {
       return {}
-    },
-  },
+    }
+  }
 })
 const emit = defineEmits(['change-step'])
 
 const formRef = ref<FormInstance>()
 const form = reactive<any>({
-  password: '123456',
+  password: '123456'
 })
 const rules = reactive<any>({
-  password: [{ required: true, message: '请输入支付密码', trigger: 'blur' }],
+  password: [{ required: true, message: '请输入支付密码', trigger: 'blur' }]
 })
 const loading = ref<boolean>(false)
 

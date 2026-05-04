@@ -51,19 +51,19 @@
 
     <vab-card title="局部基础水印">
       <el-watermark :content="config.content">
-        <div style="height: 200px"></div>
+        <div style="height: 200px" />
       </el-watermark>
     </vab-card>
 
     <vab-card title="局部多行水印">
       <el-watermark :content="['Vite 4.x', 'Vue Shop Vite']">
-        <div style="height: 200px"></div>
+        <div style="height: 200px" />
       </el-watermark>
     </vab-card>
 
     <vab-card title="局部图片水印">
       <el-watermark :height="30" image="https://element-plus.org/images/element-plus-logo.svg" :width="130">
-        <div style="height: 200px"></div>
+        <div style="height: 200px" />
       </el-watermark>
     </vab-card>
   </div>
@@ -75,7 +75,7 @@ import { useSettingsStore } from '/@/store/modules/settings'
 import Watermark from '/@/utils/watermark'
 
 defineOptions({
-  value: 'Watermark',
+  value: 'Watermark'
 })
 const settingsStore = useSettingsStore()
 const { title } = storeToRefs(settingsStore)
@@ -88,7 +88,7 @@ const setCustomWatermark = () => {
   ElMessageBox.prompt('请输入自定义水印', '温馨提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
-    draggable: true,
+    draggable: true
   })
     .then(({ value }) => {
       if (value) setWatermark(value)
@@ -100,12 +100,12 @@ const config = reactive<any>({
   content: 'Vue shop Vite',
   font: {
     fontSize: 16,
-    color: 'rgba(0, 0, 0, 0.15)',
+    color: 'rgba(0, 0, 0, 0.15)'
   },
   zIndex: -1,
   rotate: -22,
   gap: [100, 100] as [number, number],
-  offset: [] as unknown as [number, number],
+  offset: [] as unknown as [number, number]
 })
 </script>
 

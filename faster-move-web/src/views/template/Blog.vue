@@ -116,7 +116,7 @@ import { getList } from '/@/api/news'
 import landscape from '/@/assets/common_images/landscape.jpg'
 
 defineOptions({
-  name: 'Blog',
+  name: 'Blog'
 })
 
 const activeName = ref<any>('first')

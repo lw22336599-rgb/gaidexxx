@@ -18,8 +18,8 @@ export default defineComponent({
   props: {
     lf: {
       type: Object || String,
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   emits: ['cat-data'],
   data() {
@@ -27,7 +27,7 @@ export default defineComponent({
       undoDisable: true,
       redoDisable: true,
       graphData: null,
-      dataVisible: false,
+      dataVisible: false
     }
   },
   mounted() {
@@ -64,7 +64,7 @@ export default defineComponent({
     },
     $_catData() {
       this.$emit('cat-data')
-    },
-  },
+    }
+  }
 })
 </script>

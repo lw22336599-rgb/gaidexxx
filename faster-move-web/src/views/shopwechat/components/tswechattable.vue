@@ -1,6 +1,12 @@
 <template>
-  <el-table ref="tableRef" :data="list" style="width: 100%" height="calc(100vh - 300px)" v-loading="listLoading"
-    @selection-change="handleSelectionChange">
+  <el-table
+    ref="tableRef"
+    v-loading="listLoading"
+    :data="list"
+    style="width: 100%"
+    height="calc(100vh - 300px)"
+    @selection-change="handleSelectionChange"
+  >
     <el-table-column v-if="funstate == 1" type="selection" width="55" />
     <!-- :header-cell-style="back" -->
     <el-table-column prop="name" label="门店名称" min-width="300">
@@ -11,13 +17,18 @@
             <img v-if="row.shop_type == 2" style="width: 15px; height: 15px" src="../../../icon/elm.svg" alt="" />
             <span class="shop-name-text" :class="{ 'blur-text': demoMode }">{{ row.name }}</span>
           </div>
-          <div style="display: flex; align-items: center; gap: 4px;">
-            <span>门店ID:<span :class="{ 'blur-text': demoMode }">{{ row.office_id }}</span></span>
-            <el-icon style="cursor: pointer; color: #909399; font-size: 14px;" @click.stop="copyOfficeId(row.office_id)"
-              title="复制门店ID">
+          <div style="display: flex; align-items: center; gap: 4px">
+            <span
+              >门店ID:<span :class="{ 'blur-text': demoMode }">{{ row.office_id }}</span></span
+            >
+            <el-icon
+              style="cursor: pointer; color: #909399; font-size: 14px"
+              title="复制门店ID"
+              @click.stop="copyOfficeId(row.office_id)"
+            >
               <DocumentCopy />
             </el-icon>
-            <span style="margin-left: 8px;">{{ row.city }}</span>
+            <span style="margin-left: 8px">{{ row.city }}</span>
           </div>
         </div>
       </template>
@@ -35,18 +46,10 @@
             </el-button>
             <template #dropdown>
               <el-dropdown-menu class="online-filter-menu">
-                <el-dropdown-item :command="4" :class="{ 'is-selected': stateFilter === 4 }">
-                  营业中
-                </el-dropdown-item>
-                <el-dropdown-item :command="5" :class="{ 'is-selected': stateFilter === 5 }">
-                  停业中
-                </el-dropdown-item>
-                <el-dropdown-item :command="6" :class="{ 'is-selected': stateFilter === 6 }">
-                  上线中
-                </el-dropdown-item>
-                <el-dropdown-item :command="7" :class="{ 'is-selected': stateFilter === 7 }">
-                  已下线
-                </el-dropdown-item>
+                <el-dropdown-item :command="4" :class="{ 'is-selected': stateFilter === 4 }"> 营业中 </el-dropdown-item>
+                <el-dropdown-item :command="5" :class="{ 'is-selected': stateFilter === 5 }"> 停业中 </el-dropdown-item>
+                <el-dropdown-item :command="6" :class="{ 'is-selected': stateFilter === 6 }"> 上线中 </el-dropdown-item>
+                <el-dropdown-item :command="7" :class="{ 'is-selected': stateFilter === 7 }"> 已下线 </el-dropdown-item>
               </el-dropdown-menu>
             </template>
           </el-dropdown>
@@ -65,7 +68,7 @@
       </template>
     </el-table-column>
 
-    <el-table-column label="微信号推送" min-width="100" align="center" v-if="funstate == 1">
+    <el-table-column v-if="funstate == 1" label="微信号推送" min-width="100" align="center">
       <template #default="scope">
         <div class="weichatts">
           <!-- <el-switch
@@ -75,7 +78,7 @@
         </div>
       </template>
     </el-table-column>
-    <el-table-column label="微信群推送" min-width="100" align="center" v-if="funstate == 1">
+    <el-table-column v-if="funstate == 1" label="微信群推送" min-width="100" align="center">
       <template #default="scope">
         <div class="weichatts">
           <!-- <el-switch
@@ -85,19 +88,19 @@
         </div>
       </template>
     </el-table-column>
-    <el-table-column label="WebHook推送" min-width="120" align="center" v-if="funstate == 1">
+    <el-table-column v-if="funstate == 1" label="WebHook推送" min-width="120" align="center">
       <template #default="scope">
         <div class="weichatts">
           <div class="xftext" @click="setwebhook(scope.row)">绑定WebHook</div>
         </div>
       </template>
     </el-table-column>
-    <el-table-column label="推送开关" width="100" align="center" v-if="funstate == 1">
+    <el-table-column v-if="funstate == 1" label="推送开关" width="100" align="center">
       <template #default="scope">
         <el-switch v-model="scope.row.chatcheck" class="ml-2" @change="chatpushchang(scope.row)" />
       </template>
     </el-table-column>
-    <el-table-column label="操作" min-width="180" align="center" v-if="funstate == 1">
+    <el-table-column v-if="funstate == 1" label="操作" min-width="180" align="center">
       <template #default="scope">
         <div class="action-buttons">
           <div class="xftext" @click="openwro(scope.row)"><vab-icon icon="settings-4-fill" />推送设置</div>
@@ -350,7 +353,8 @@ watch(
 </script>
 
 <style scoped lang="scss">
-.maine {}
+.maine {
+}
 
 .shop-name-row {
   cursor: pointer;
@@ -570,6 +574,24 @@ watch(
 
     &:hover {
       background-color: var(--el-fill-color-light);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  :deep(.el-table) {
+    .el-table__cell {
+      padding: 10px 8px;
+    }
+  }
+
+  .mdname {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    .shop-name-text {
+      font-size: 14px;
     }
   }
 }

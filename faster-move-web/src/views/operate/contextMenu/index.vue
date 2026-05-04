@@ -20,10 +20,15 @@
 </template>
 
 <script lang="ts" setup>
-import { VabContextMenu, VabContextMenuGroup, VabContextMenuItem, VabContextMenuSeparator } from '/@/plugins/VabContextMenu'
+import {
+  VabContextMenu,
+  VabContextMenuGroup,
+  VabContextMenuItem,
+  VabContextMenuSeparator
+} from '/@/plugins/VabContextMenu'
 
 defineOptions({
-  name: 'ContextMenu',
+  name: 'ContextMenu'
 })
 
 const show = ref<any>(false)

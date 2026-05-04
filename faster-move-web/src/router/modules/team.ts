@@ -6,7 +6,7 @@ const routerConfig: VabRouteRecord = {
   component: Layout,
   meta: {
     title: '团队管理',
-    icon: 'team-fill',
+    icon: 'team-fill'
   },
   children: [
     {
@@ -67,9 +67,9 @@ const routerConfig: VabRouteRecord = {
         title: '功能价格管理',
         icon: 'apply',
         isCustomSvg: true,
-        guard: ['ADMIN'],
+        guard: ['ADMIN']
       },
-      component: () => import('/@/views/team/FunctionPrice.vue'),
+      component: () => import('/@/views/team/FunctionPrice.vue')
     },
     {
       path: 'notification',
@@ -100,9 +100,9 @@ const routerConfig: VabRouteRecord = {
         title: '工具箱管理',
         icon: 'apply',
         isCustomSvg: true,
-        guard: ['ADMIN'],
+        guard: ['ADMIN']
       },
-      component: () => import('/@/views/team/ToolBox.vue'),
+      component: () => import('/@/views/team/ToolBox.vue')
     },
     {
       path: 'system-config',
@@ -111,12 +111,11 @@ const routerConfig: VabRouteRecord = {
         title: '系统设置',
         icon: 'apply',
         isCustomSvg: true,
-        guard: ['ADMIN'],
+        guard: ['ADMIN']
       },
-      component: () => import('/@/views/team/SystemConfig.vue'),
-    },
+      component: () => import('/@/views/team/SystemConfig.vue')
+    }
   ]
-};
+}
 
-
-export default routerConfig;
+export default routerConfig

@@ -1,3 +1,1 @@
-export interface Repository <T> {
-
-}
+export interface Repository<T> {}

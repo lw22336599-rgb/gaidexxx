@@ -22,7 +22,7 @@ import type { FormInstance } from 'element-plus'
 import { doEdit, getList } from '/@/api/departmentManagement'
 
 defineOptions({
-  name: 'DepartmentManagementEdit',
+  name: 'DepartmentManagementEdit'
 })
 
 const emit = defineEmits(['fetch-data'])
@@ -30,12 +30,12 @@ const emit = defineEmits(['fetch-data'])
 const formRef = ref<FormInstance>()
 const treeData = ref<any>([])
 const form = reactive<any>({
-  parentValue: '',
+  parentValue: ''
 })
 const rules = reactive<any>({
   parentValue: [{ required: true, trigger: 'blur', message: '请选择父节点' }],
   label: [{ required: true, trigger: 'blur', message: '请输入名称' }],
-  order: [{ required: true, trigger: 'blur', message: '请输入排序' }],
+  order: [{ required: true, trigger: 'blur', message: '请输入排序' }]
 })
 const title = ref<string>('')
 const dialogFormVisible = ref<boolean>(false)
@@ -59,7 +59,7 @@ const showEdit = (row: any) => {
 }
 
 defineExpose({
-  showEdit,
+  showEdit
 })
 
 const close = () => {

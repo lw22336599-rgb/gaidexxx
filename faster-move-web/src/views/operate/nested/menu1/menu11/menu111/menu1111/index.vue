@@ -14,7 +14,7 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'Menu1111',
+  name: 'Menu1111'
 })
 
 const router = useRouter()
@@ -28,7 +28,7 @@ const handleKeepAlive = () => {
   if (!value.value) value.value = '路由1.1.1.1缓存的数据'
   $baseMessage('提示结束后，跳转至首页，3秒后回到路由1.1.1.1', 'warning', 'hey', () => {
     router.push({
-      name: 'Index',
+      name: 'Index'
     })
     setTimeout(() => {
       $baseMessage('倒计时：3', 'success', 'hey')
@@ -42,7 +42,7 @@ const handleKeepAlive = () => {
     setTimeout(() => {
       $baseMessage('路由缓存已生效，即将回到路由1.1.1.1', 'success', 'hey', () => {
         router.push({
-          name: 'Menu1111',
+          name: 'Menu1111'
         })
       })
     }, 1000 * 4)

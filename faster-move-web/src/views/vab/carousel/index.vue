@@ -24,6 +24,6 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'Carousel',
+  name: 'Carousel'
 })
 </script>

@@ -4,7 +4,7 @@
       <vab-alert title="手机端不支持海报设计演示" type="warning" />
     </div>
     <div class="hidden-xs-only">
-      <iframe src="https://vuejs-core.cn/vue-fabric-editor/#/"></iframe>
+      <iframe src="https://vuejs-core.cn/vue-fabric-editor/#/" />
     </div>
   </div>
 </template>
@@ -13,7 +13,7 @@
 import { useSettingsStore } from '/@/store/modules/settings'
 
 defineOptions({
-  name: 'PosterDesign',
+  name: 'PosterDesign'
 })
 
 const route = useRoute()

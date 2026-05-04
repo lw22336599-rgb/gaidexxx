@@ -1,6 +1,12 @@
 <template>
-  <div ref="floatButtonRef" class="customer-service-float-button" :class="{ dragging: isDragging }"
-    :style="floatButtonStyle" @mousedown="handleDragStart" @touchstart="handleDragStart">
+  <div
+    ref="floatButtonRef"
+    class="customer-service-float-button"
+    :class="{ dragging: isDragging }"
+    :style="floatButtonStyle"
+    @mousedown="handleDragStart"
+    @touchstart="handleDragStart"
+  >
     <el-badge :value="unreadCount" :hidden="unreadCount === 0" :max="99">
       <el-button circle type="primary" size="large" @click="handleOpenChat">
         <el-icon :size="24">
@@ -19,7 +25,7 @@ import { signalRManager } from '/@/customer-service/utils/signalRManager'
 import { apiManager } from '/@/TsModel/Api/ApiManager'
 
 defineOptions({
-  name: 'CustomerServiceFloatButton',
+  name: 'CustomerServiceFloatButton'
 })
 
 // 定义事件
@@ -34,7 +40,7 @@ const floatButtonRef = ref<HTMLElement>()
 // 浮球位置（使用 left 和 top 坐标）
 const position = reactive({
   left: 0,
-  top: 0,
+  top: 0
 })
 
 // 拖动相关状态
@@ -46,7 +52,7 @@ const dragStartOffset = reactive({ x: 0, y: 0 })
 const floatButtonStyle = computed(() => {
   return {
     left: `${position.left}px`,
-    top: `${position.top}px`,
+    top: `${position.top}px`
   }
 })
 

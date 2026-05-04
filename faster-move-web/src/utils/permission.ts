@@ -12,7 +12,7 @@ export const hasPermission = (targetRoleOrPermission: string[] | GuardType) => {
   if (Array.isArray(targetRoleOrPermission)) {
     return can([...getRole, ...getPermission], {
       permission: targetRoleOrPermission,
-      mode: 'oneOf',
+      mode: 'oneOf'
     })
   } else {
     const { role = [], permission = [], mode = 'oneOf' } = targetRoleOrPermission
@@ -20,14 +20,14 @@ export const hasPermission = (targetRoleOrPermission: string[] | GuardType) => {
       permission: [
         can(getRole, {
           permission: role,
-          mode,
+          mode
         }),
         can(getPermission, {
           permission,
-          mode,
-        }),
+          mode
+        })
       ],
-      mode,
+      mode
     })
   }
 }

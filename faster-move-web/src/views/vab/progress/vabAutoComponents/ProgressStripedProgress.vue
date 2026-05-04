@@ -3,7 +3,14 @@
     <el-progress :percentage="50" striped :stroke-width="15" />
     <el-progress :percentage="30" status="warning" striped striped-flow :stroke-width="15" />
     <el-progress :duration="10" :percentage="100" status="success" striped striped-flow :stroke-width="15" />
-    <el-progress :duration="duration" :percentage="percentage" status="exception" striped striped-flow :stroke-width="15" />
+    <el-progress
+      :duration="duration"
+      :percentage="percentage"
+      status="exception"
+      striped
+      striped-flow
+      :stroke-width="15"
+    />
     <el-button-group>
       <el-button :icon="Minus" @click="decrease" />
       <el-button :icon="Plus" @click="increase" />

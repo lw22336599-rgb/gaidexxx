@@ -22,7 +22,7 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'Award',
+  name: 'Award'
 })
 </script>
 

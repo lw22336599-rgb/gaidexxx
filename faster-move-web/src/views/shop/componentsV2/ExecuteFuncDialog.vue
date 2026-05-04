@@ -1,6 +1,11 @@
 <template>
-  <el-dialog v-model="visible" :title="`执行功能 - ${functionName}`" width="1000px" :before-close="handleClose"
-    destroy-on-close>
+  <el-dialog
+    v-model="visible"
+    :title="`执行功能 - ${functionName}`"
+    width="1000px"
+    :before-close="handleClose"
+    destroy-on-close
+  >
     <div class="execute-func-container">
       <!-- 已选店铺列表（可折叠，支持移除） -->
       <el-card class="shop-section-card" shadow="hover">
@@ -9,7 +14,9 @@
             <div class="header-left">
               <div class="section-title-row">
                 <h4>已选店铺</h4>
-                <el-button type="primary" size="small" @click.stop="importShopsDialogVisible = true">导入门店</el-button>
+                <el-button type="primary" size="small" @click.stop="importShopsDialogVisible = true"
+                  >导入门店</el-button
+                >
               </div>
               <span class="shop-count">{{ displayShops.length }} 家</span>
             </div>
@@ -50,7 +57,7 @@
       <div v-if="schemaLoading" v-loading="true" style="min-height: 120px" />
       <template v-else>
         <div v-if="!hasSchema" class="no-params-tip">
-          <el-icon style="margin-right:4px">
+          <el-icon style="margin-right: 4px">
             <Check />
           </el-icon>
           该功能无需配置参数，直接执行即可
@@ -60,16 +67,28 @@
             <div class="section-header">
               <h4>参数配置</h4>
             </div>
-            <CategoryAttrConfigPanel v-if="functionCode === 'CTGYPRTYMG'" :shop-type="shopType"
-              :shop-list="selectedShopsForPanel" :first-shop-id="displayShops[0]?.id ?? ''"
-              :default-conf="defaultConf as any" :shop-conf-map="shopConfMap" />
-            <FuncConfSchemaForm v-else-if="schemaResult" :schema="schemaResult"
-              :default-conf="defaultConf" :shop-list="displayShops.map(s => ({ id: s.id, name: s.name }))"
-              :get-shop-conf="getShopConf" :group-options="groupOptions"
-              :group-options-loading="groupOptionsLoading" :get-shop-group-options="getShopGroupOptions"
+            <CategoryAttrConfigPanel
+              v-if="functionCode === 'CTGYPRTYMG'"
+              :shop-type="shopType"
+              :shop-list="selectedShopsForPanel"
+              :first-shop-id="displayShops[0]?.id ?? ''"
+              :default-conf="defaultConf as any"
+              :shop-conf-map="shopConfMap"
+            />
+            <FuncConfSchemaForm
+              v-else-if="schemaResult"
+              :schema="schemaResult"
+              :default-conf="defaultConf"
+              :shop-list="displayShops.map(s => ({ id: s.id, name: s.name }))"
+              :get-shop-conf="getShopConf"
+              :group-options="groupOptions"
+              :group-options-loading="groupOptionsLoading"
+              :get-shop-group-options="getShopGroupOptions"
               :get-shop-group-options-loading="getShopGroupOptionsLoading"
               :on-ensure-default-group-options="onEnsureDefaultGroupOptions"
-              :on-ensure-group-options="ensureGroupOptions" :demo-mode="demoMode" />
+              :on-ensure-group-options="ensureGroupOptions"
+              :demo-mode="demoMode"
+            />
           </div>
         </template>
       </template>
@@ -83,8 +102,12 @@
     </template>
 
     <!-- 导入门店弹窗 -->
-    <ImportShopsByOfficeIdsDialog v-model="importShopsDialogVisible" :shop-type="shopType" :function-code="functionCode"
-      @confirm="onImportShopsConfirm" />
+    <ImportShopsByOfficeIdsDialog
+      v-model="importShopsDialogVisible"
+      :shop-type="shopType"
+      :function-code="functionCode"
+      @confirm="onImportShopsConfirm"
+    />
   </el-dialog>
 </template>
 
@@ -115,7 +138,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   'update:modelValue': [value: boolean]
-  'success': []
+  success: []
 }>()
 
 const settingsStore = useSettingsStore()
@@ -123,7 +146,7 @@ const { demoMode } = storeToRefs(settingsStore)
 
 const visible = computed({
   get: () => props.modelValue,
-  set: (val) => emit('update:modelValue', val)
+  set: val => emit('update:modelValue', val)
 })
 
 // 展示的店铺列表（过滤过期、offid 去重后的已选店铺，可移除）
@@ -150,7 +173,9 @@ const submitLoading = ref(false)
 const schemaResult = ref<FuncConfSchemaResult | null>(null)
 
 const hasSchema = computed(
-  () => props.functionCode === 'CTGYPRTYMG' || (schemaResult.value != null && Object.keys(getParsedProperties(schemaResult.value)).length > 0)
+  () =>
+    props.functionCode === 'CTGYPRTYMG' ||
+    (schemaResult.value != null && Object.keys(getParsedProperties(schemaResult.value)).length > 0)
 )
 
 const onEnsureDefaultGroupOptions = () => {
@@ -170,7 +195,10 @@ function flattenGroupTree(items: FoodGroupItem[] | FoodGroupItem | null | undefi
   const list: FoodGroupItem[] = []
   const walk = (nodes: FoodGroupItem[] | FoodGroupItem | null | undefined) => {
     if (Array.isArray(nodes)) nodes.forEach(walk)
-    else if (nodes) { list.push(nodes); walk(nodes.Children) }
+    else if (nodes) {
+      list.push(nodes)
+      walk(nodes.Children)
+    }
   }
   walk(items)
   return list
@@ -292,7 +320,8 @@ const isShopFuncExpired = (shop: any): boolean => {
     const matched = shop.extra_data.func_enable.filter((item: any) => item.code === props.functionCode)
     if (matched.length > 0) {
       funcInfo = matched.reduce((a: any, b: any) =>
-        (!a?.end_time ? b : !b?.end_time ? a : new Date(b.end_time) > new Date(a.end_time) ? b : a))
+        !a?.end_time ? b : !b?.end_time ? a : new Date(b.end_time) > new Date(a.end_time) ? b : a
+      )
     }
   } else if (shop.func_info && Array.isArray(shop.func_info)) {
     funcInfo = shop.func_info.find((item: any) => item.code === props.functionCode)
@@ -309,7 +338,7 @@ const isShopFuncExpired = (shop: any): boolean => {
 const initDisplayShops = () => {
   const list = props.shopList ?? []
   const seen = new Set<string>()
-  displayShops.value = list.filter((shop) => {
+  displayShops.value = list.filter(shop => {
     const offId = shop.office_id ?? shop.off_id ?? ''
     if (!offId || seen.has(offId)) return false
     seen.add(offId)
@@ -358,9 +387,9 @@ const handleConfirm = async () => {
   try {
     const parm: TriggerFuncRunParm = {
       func_code: props.functionCode,
-      shop_ids: displayShops.value.map((s) => s.id),
+      shop_ids: displayShops.value.map(s => s.id),
       default_conf_values: hasSchema.value ? buildDefaultConfValues() : null,
-      shop_conf_values: hasSchema.value ? buildShopConfValues() : null,
+      shop_conf_values: hasSchema.value ? buildShopConfValues() : null
     }
     await apiManager.funcRunTaskApi.TriggerFuncRun(parm)
     gp.$baseMessage(`已成功触发 ${displayShops.value.length} 家店铺的任务`, 'success', 'hey')
@@ -379,7 +408,7 @@ const handleClose = () => {
 
 watch(
   () => props.modelValue,
-  (v) => {
+  v => {
     if (v) {
       initDisplayShops()
       loadSchema()
@@ -387,14 +416,17 @@ watch(
   }
 )
 
-watch(() => props.shopList, () => {
-  if (visible.value) initDisplayShops()
-}, { deep: true })
+watch(
+  () => props.shopList,
+  () => {
+    if (visible.value) initDisplayShops()
+  },
+  { deep: true }
+)
 </script>
 
 <style scoped lang="scss">
 .execute-func-container {
-
   .shop-section-card {
     margin-bottom: 16px;
 

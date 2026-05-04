@@ -7,8 +7,11 @@
           v-for="(field, key) in parsedProperties"
           :key="key"
           :class="{
-            'form-item-full': rootSchema && (isArrayOfObject(field, rootSchema) || (isObjectProperty(field, rootSchema) && !isSimpleObjectProperty(field, rootSchema))),
-            'form-item-inline': rootSchema && (isSimpleObjectProperty(field, rootSchema) || isCompactRootField(field)),
+            'form-item-full':
+              rootSchema &&
+              (isArrayOfObject(field, rootSchema) ||
+                (isObjectProperty(field, rootSchema) && !isSimpleObjectProperty(field, rootSchema))),
+            'form-item-inline': rootSchema && (isSimpleObjectProperty(field, rootSchema) || isCompactRootField(field))
           }"
         >
           <template #label>
@@ -46,11 +49,7 @@
             <span :class="{ 'blur-text': demoMode }">{{ row.name ?? row.id }}</span>
           </template>
         </el-table-column>
-        <el-table-column
-          v-for="(field, key) in parsedProperties"
-          :key="key"
-          :min-width="getColumnMinWidth(field)"
-        >
+        <el-table-column v-for="(field, key) in parsedProperties" :key="key" :min-width="getColumnMinWidth(field)">
           <template #header>
             <span class="field-label">
               {{ field.title || String(key) }}
@@ -94,7 +93,7 @@ import {
   getParsedProperties,
   isArrayOfObject,
   isObjectProperty,
-  isSimpleObjectProperty,
+  isSimpleObjectProperty
 } from './useFuncConfSchema'
 import type { SchemaProperty } from './useFuncConfSchema'
 

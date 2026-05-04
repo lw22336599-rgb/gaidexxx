@@ -51,12 +51,12 @@ export default defineComponent({
   props: {
     nodeData: {
       type: Object,
-      default: () => {},
+      default: () => {}
     },
     lf: {
       type: Object || String,
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   emits: ['onClose'],
   data() {
@@ -69,8 +69,8 @@ export default defineComponent({
         delivery: false,
         type: [],
         resource: '',
-        desc: '',
-      },
+        desc: ''
+      }
     }
   },
   mounted() {
@@ -84,7 +84,7 @@ export default defineComponent({
       const { id } = this.$props.nodeData
       this.$props.lf.setProperties(id, this.$data.form)
       this.$emit('onClose')
-    },
-  },
+    }
+  }
 })
 </script>

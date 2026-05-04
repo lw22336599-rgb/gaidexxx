@@ -5,11 +5,7 @@ export function GetCookiesObj(cookie) {
       continue
     }
     const [key, value] = item.split(/\s*=\s*/)
-    if (
-      key === undefined
-      || value === undefined
-      || key.length === 0
-    ) {
+    if (key === undefined || value === undefined || key.length === 0) {
       continue
     }
     map[key] = decodeURIComponent(value)

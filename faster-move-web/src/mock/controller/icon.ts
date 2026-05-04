@@ -2892,7 +2892,7 @@ const List = [
   'triangular-flag-fill',
   'triangular-flag-line',
   'user-minus-fill',
-  'user-minus-line',
+  'user-minus-line'
 ]
 
 List.sort((a, b) => {
@@ -2905,13 +2905,13 @@ export default [
     method: 'get',
     response({ query }: any) {
       const { title, pageNo = 1, pageSize = 72 } = query
-      const mockList = List.filter((item) => !(title && !item.includes(title)))
+      const mockList = List.filter(item => !(title && !item.includes(title)))
       const list = mockList.filter((item, index) => index < pageSize * pageNo && index >= pageSize * (pageNo - 1))
       return {
         code: 200,
         msg: 'success',
-        data: { list, total: mockList.length },
+        data: { list, total: mockList.length }
       }
-    },
-  },
+    }
+  }
 ] as MockMethod[]

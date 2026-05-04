@@ -37,6 +37,6 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'Progress',
+  name: 'Progress'
 })
 </script>

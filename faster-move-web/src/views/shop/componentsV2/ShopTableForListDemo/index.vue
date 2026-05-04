@@ -90,7 +90,7 @@ const {
   handleColumnAction,
   handleBindCode,
   copyShopInfo,
-  toggleShopTop,
+  toggleShopTop
 } = useShopActions(emit)
 
 // 计算属性
@@ -102,9 +102,7 @@ const handlePageChange = (page: number) => emit('update:page', page)
 const handleSizeChange = (size: number) => emit('update:pageSize', size)
 
 // 标签页标签渲染
-const renderTabLabel = (item: any) => {
-
-}
+const renderTabLabel = (item: any) => {}
 // 初始化
 onMounted(() => {
   checkList.value = columns.value.filter(col => col.checked).map(col => col.label)

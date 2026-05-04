@@ -18,7 +18,7 @@ for (let i = 0; i < count; i++) {
     datetime: '@datetime',
     image: handleRandomImage(),
     link: 'https://www.baidu.com',
-    'isRecommend|1': [1, 0],
+    'isRecommend|1': [1, 0]
   })
 }
 
@@ -29,14 +29,16 @@ export default [
     response({ query }: any) {
       const { name, pageNo = 1, pageSize = 20 } = query
       const mockList = List.filter((item: { name: string | any[] }) => !(name && !item.name.includes(name)))
-      const list = mockList.filter((item: any, index: number) => index < pageSize * pageNo && index >= pageSize * (pageNo - 1))
+      const list = mockList.filter(
+        (item: any, index: number) => index < pageSize * pageNo && index >= pageSize * (pageNo - 1)
+      )
       list.sort(() => Math.random() - 0.5)
       return {
         code: 200,
         msg: 'success',
-        data: { list, total: mockList.length },
+        data: { list, total: mockList.length }
       }
-    },
+    }
   },
   {
     url: '/goodsManagement/doEdit',
@@ -44,9 +46,9 @@ export default [
     response() {
       return {
         code: 200,
-        msg: '模拟保存成功',
+        msg: '模拟保存成功'
       }
-    },
+    }
   },
   {
     url: '/goodsManagement/doDelete',
@@ -54,8 +56,8 @@ export default [
     response() {
       return {
         code: 200,
-        msg: '模拟删除成功',
+        msg: '模拟删除成功'
       }
-    },
-  },
+    }
+  }
 ] as MockMethod[]

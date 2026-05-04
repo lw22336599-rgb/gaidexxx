@@ -30,7 +30,14 @@
                   <el-input v-model="queryForm.title" clearable placeholder="请输入标题" />
                 </el-form-item>
                 <el-form-item>
-                  <el-button :icon="Search" :loading="listLoading" native-type="submit" type="primary" @click="queryData">查询</el-button>
+                  <el-button
+                    :icon="Search"
+                    :loading="listLoading"
+                    native-type="submit"
+                    type="primary"
+                    @click="queryData"
+                    >查询</el-button
+                  >
                 </el-form-item>
               </el-form>
             </vab-query-form-top-panel>
@@ -81,7 +88,7 @@ import { ElTree } from 'element-plus'
 import { doDelete, getList } from '/@/api/tables'
 
 defineOptions({
-  name: 'Explorer',
+  name: 'Explorer'
 })
 
 const list = ref<any>([])
@@ -90,13 +97,13 @@ const total = ref<number>(0)
 const selectRows = ref<any>([])
 const queryForm = reactive<any>({
   pageNo: 1,
-  pageSize: 20,
+  pageSize: 20
 })
 const filterText = ref<string>('')
 const treeRef = ref<InstanceType<typeof ElTree>>()
 const previewSrcList = ref<any>([])
 
-watch(filterText, (value) => {
+watch(filterText, value => {
   treeRef.value?.filter(value)
 })
 
@@ -122,15 +129,15 @@ const data: Tree[] = [
         children: [
           {
             id: 9,
-            label: '三级 1-1-1',
+            label: '三级 1-1-1'
           },
           {
             id: 10,
-            label: '三级 1-1-2',
-          },
-        ],
-      },
-    ],
+            label: '三级 1-1-2'
+          }
+        ]
+      }
+    ]
   },
   {
     id: 2,
@@ -138,13 +145,13 @@ const data: Tree[] = [
     children: [
       {
         id: 5,
-        label: '二级 2-1',
+        label: '二级 2-1'
       },
       {
         id: 6,
-        label: '二级 2-2',
-      },
-    ],
+        label: '二级 2-2'
+      }
+    ]
   },
   {
     id: 3,
@@ -152,14 +159,14 @@ const data: Tree[] = [
     children: [
       {
         id: 7,
-        label: '二级 3-1',
+        label: '二级 3-1'
       },
       {
         id: 8,
-        label: '二级 3-2',
-      },
-    ],
-  },
+        label: '二级 3-2'
+      }
+    ]
+  }
 ]
 const handleNodeClick = () => {
   fetchData()
@@ -167,7 +174,7 @@ const handleNodeClick = () => {
 
 const defaultProps = {
   children: 'children',
-  label: 'label',
+  label: 'label'
 }
 
 const fetchData = async () => {

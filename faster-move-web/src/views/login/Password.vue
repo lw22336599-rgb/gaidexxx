@@ -6,8 +6,14 @@
         <div class="title">hello !</div>
         <div class="title-tips">{{ title }} {{ translate('忘记密码') }}</div>
         <el-form-item prop="phone">
-          <el-input v-model.trim="form.phone" clearable maxlength="11" :placeholder="translate('请输入手机号')"
-            show-word-limit type="text">
+          <el-input
+            v-model.trim="form.phone"
+            clearable
+            maxlength="11"
+            :placeholder="translate('请输入手机号')"
+            show-word-limit
+            type="text"
+          >
             <template #prefix>
               <vab-icon icon="smartphone-line" />
             </template>
@@ -29,8 +35,13 @@
         </el-form-item>
         <el-form-item prop="ga_code">
           <div class="ga-code-input-wrapper">
-            <el-input v-model.trim="form.ga_code" clearable maxlength="6" :placeholder="translate('请输入令牌验证码')"
-              type="text">
+            <el-input
+              v-model.trim="form.ga_code"
+              clearable
+              maxlength="6"
+              :placeholder="translate('请输入令牌验证码')"
+              type="text"
+            >
               <template #prefix>
                 <vab-icon icon="shield-check-line" />
               </template>
@@ -64,11 +75,11 @@
               {{ currentStepData.description }}
             </div>
             <div class="step-image-wrapper">
-              <div class="nav-button nav-button-left" @click="prevStep" v-if="currentStepIndex > 0">
+              <div v-if="currentStepIndex > 0" class="nav-button nav-button-left" @click="prevStep">
                 <vab-icon icon="arrow-left-s-line" />
               </div>
               <img :src="currentStepData.image" :alt="`步骤 ${currentStepIndex + 1}`" class="ga-code-tip-image" />
-              <div class="nav-button nav-button-right" @click="nextStep" v-if="currentStepIndex < totalSteps - 1">
+              <div v-if="currentStepIndex < totalSteps - 1" class="nav-button nav-button-right" @click="nextStep">
                 <vab-icon icon="arrow-right-s-line" />
               </div>
             </div>
@@ -97,7 +108,7 @@
 </template>
 
 <script lang="ts" setup>
-import { gp } from "/@vab/plugins/vab.ts";
+import { gp } from '/@vab/plugins/vab.ts'
 import type { FormInstance, FormRules } from 'element-plus'
 import { password, register } from '/@/api/user'
 import leftImg from '/@/assets/login_images/left_img_6.png'
@@ -115,7 +126,7 @@ import { useUserStore } from '/@/store/modules/user'
 import { isPassword, isPhone } from '/@/utils/validate'
 
 defineOptions({
-  name: 'Register',
+  name: 'Register'
 })
 
 interface FormType {
@@ -136,7 +147,7 @@ const form = reactive<FormType>({
   phone: '',
   p: '',
   p1: '',
-  ga_code: '',
+  ga_code: ''
 })
 const showGaCodeTip = ref<boolean>(false)
 // 当前步骤索引
@@ -186,7 +197,8 @@ const gaCodeTipSteps: StepData[] = [
   {
     type: 'image',
     image: bangdingImg7,
-    description: '温馨提示：令牌绑定后可通过令牌的动态验证码登录或重置密码，不可随意删除，否则将导致后续无法正常登录，请妥善保存。'
+    description:
+      '温馨提示：令牌绑定后可通过令牌的动态验证码登录或重置密码，不可随意删除，否则将导致后续无法正常登录，请妥善保存。'
   }
 ]
 
@@ -197,7 +209,7 @@ const totalSteps = computed(() => gaCodeTipSteps.length)
 const currentStepData = computed(() => gaCodeTipSteps[currentStepIndex.value])
 
 // 打开弹窗时重置步骤
-watch(showGaCodeTip, (newVal) => {
+watch(showGaCodeTip, newVal => {
   if (newVal) {
     currentStepIndex.value = 0
   }
@@ -247,25 +259,25 @@ const rules = reactive<FormRules<FormType>>({
     {
       required: true,
       trigger: 'blur',
-      message: translate('请输入手机号'),
+      message: translate('请输入手机号')
     },
-    { validator: validatePhone, trigger: 'blur' },
+    { validator: validatePhone, trigger: 'blur' }
   ],
   p: [
     {
       required: true,
       trigger: 'blur',
-      message: translate('请输入新密码'),
+      message: translate('请输入新密码')
     },
-    { validator: validatePassword, trigger: 'blur' },
+    { validator: validatePassword, trigger: 'blur' }
   ],
   p1: [
     {
       required: true,
       trigger: 'blur',
-      message: translate('请确认新密码'),
+      message: translate('请确认新密码')
     },
-    { validator: validateAgainPassword, trigger: 'blur' },
+    { validator: validateAgainPassword, trigger: 'blur' }
   ],
   ga_code: [
     {
@@ -279,8 +291,8 @@ const rules = reactive<FormRules<FormType>>({
           callback()
         }
       }
-    },
-  ],
+    }
+  ]
 })
 
 const handleRegister = () => {
@@ -288,19 +300,22 @@ const handleRegister = () => {
     if (valid) {
       loading.value = true
       const { phone, p, p1, ga_code } = form
-      await password({ phone, p, p1, ga_code }).then((res: any) => {
-        if (res.code === 200 && (res.data.ResultType === 5 || res.data.ResultType === 0)) {
-          gp.$baseMessage('修改成功', 'success', 'hey')
-        } else {
-          const resultDescription = getResultDescription(res.data.ResultType)
-          gp.$baseMessage(resultDescription, 'error', 'hey')
-        }
-      }).catch((err) => {
-        gp.$baseMessage('修改密码失败，请重试', 'error', 'hey')
-        console.error('修改密码失败:', err)
-      }).finally(() => {
-        loading.value = false
-      })
+      await password({ phone, p, p1, ga_code })
+        .then((res: any) => {
+          if (res.code === 200 && (res.data.ResultType === 5 || res.data.ResultType === 0)) {
+            gp.$baseMessage('修改成功', 'success', 'hey')
+          } else {
+            const resultDescription = getResultDescription(res.data.ResultType)
+            gp.$baseMessage(resultDescription, 'error', 'hey')
+          }
+        })
+        .catch(err => {
+          gp.$baseMessage('修改密码失败，请重试', 'error', 'hey')
+          console.error('修改密码失败:', err)
+        })
+        .finally(() => {
+          loading.value = false
+        })
       setTimeout(() => {
         router.push('/login')
       }, 500)

@@ -1,11 +1,9 @@
 <template>
   <div class="hwechat">
     <div class="center">
-      <el-table :data="porps.tableData" style="width: 100%" >
-        <el-table-column prop="Name" label="微信昵称">
-        </el-table-column>
-        <el-table-column prop="Offid" label="wxid">
-        </el-table-column>
+      <el-table :data="porps.tableData" style="width: 100%">
+        <el-table-column prop="Name" label="微信昵称" />
+        <el-table-column prop="Offid" label="wxid" />
         <!-- <el-table-column  label="操作">
           <template #default="scope">
             <div class="butlist" @click="submit(scope.row)">
@@ -17,50 +15,49 @@
     </div>
     <div class="bottom">
       <el-button @click="exidt">取消</el-button>
-      <el-button type="primary" @click="exidt" >确定</el-button>
+      <el-button type="primary" @click="exidt">确定</el-button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-const porps=defineProps({
-  tableData:Array
+const porps = defineProps({
+  tableData: Array
 })
 
-const emit = defineEmits(['setmanageshow']);
-const exidt=()=>{
-  emit('setmanageshow',false)
+const emit = defineEmits(['setmanageshow'])
+const exidt = () => {
+  emit('setmanageshow', false)
 }
 // const submit=(row:object)=>{
 //   console.log(row);
-  
+
 // }
 </script>
 
 <style scoped lang="scss">
-::v-deep.hwechat{
+::v-deep.hwechat {
   width: 100%;
   height: 250px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  .el-table{
+  .el-table {
     height: 100%;
   }
-  .top{
+  .top {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
   }
-  .center{
+  .center {
     flex: 1;
     overflow: hidden;
   }
-  .butlist{
+  .butlist {
     color: var(--el-color-primary);
   }
-  .bottom{
+  .bottom {
     width: 100%;
     display: flex;
     justify-content: flex-end;

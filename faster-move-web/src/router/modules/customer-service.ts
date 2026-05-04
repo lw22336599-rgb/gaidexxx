@@ -7,7 +7,7 @@ const routerConfig: VabRouteRecord = {
   meta: {
     title: 'IM客服',
     icon: 'customer-service',
-    isCustomSvg: true,
+    isCustomSvg: true
     //  guard: ['ADMIN', 'KEFU'],
   },
   children: [
@@ -28,20 +28,20 @@ const routerConfig: VabRouteRecord = {
       meta: {
         title: '客服管理',
         icon: 'customer-service',
-        isCustomSvg: true,
+        isCustomSvg: true
         // guard: ['ADMIN', 'KEFU'],
       },
-      component: () => import('/@/views/team/CustomerServiceManagement1.vue'),
+      component: () => import('/@/views/team/CustomerServiceManagement1.vue')
     },
     {
       path: 'shop-management',
       name: 'CustomerServiceShopManagement',
       meta: {
         title: '店铺管理',
-        icon: 'home-4-fill',
+        icon: 'home-4-fill'
         // guard: ['ADMIN', 'KEFU'],
       },
-      component: () => import('/@/views/customer-service/ShopManagement.vue'),
+      component: () => import('/@/views/customer-service/ShopManagement.vue')
     },
     {
       path: 'chat',
@@ -49,9 +49,9 @@ const routerConfig: VabRouteRecord = {
       meta: {
         title: '客服聊天',
         icon: 'chat',
-        hidden: true, // 不在菜单中显示
+        hidden: true // 不在菜单中显示
       },
-      component: () => import('/@/customer-service/views/CustomerService.vue'),
+      component: () => import('/@/customer-service/views/CustomerService.vue')
     },
     {
       path: 'tutorial',
@@ -60,10 +60,10 @@ const routerConfig: VabRouteRecord = {
       meta: {
         title: '使用教程',
         icon: 'book-3-line',
-        tutorialType: 'ImServiceTutorialUrl',
-      },
-    },
-  ],
+        tutorialType: 'ImServiceTutorialUrl'
+      }
+    }
+  ]
 }
 
 export default routerConfig

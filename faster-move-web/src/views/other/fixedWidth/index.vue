@@ -34,18 +34,18 @@
 import { useSettingsStore } from '/@/store/modules/settings'
 
 defineOptions({
-  name: 'FixedWidth',
+  name: 'FixedWidth'
 })
 const settingsStore = useSettingsStore()
 const { device } = storeToRefs(settingsStore)
 const activeName = ref<string>('first')
 const queryForm1 = reactive<any>({
   count: 1200,
-  isChecked: true,
+  isChecked: true
 })
 const queryForm2 = reactive<any>({
   count: 80,
-  isChecked: true,
+  isChecked: true
 })
 
 const handleClick = (tab: any) => {
@@ -83,7 +83,7 @@ onMounted(() => {
     handleChange2(100)
   } else {
     handleClick({
-      index: 0,
+      index: 0
     })
   }
 })

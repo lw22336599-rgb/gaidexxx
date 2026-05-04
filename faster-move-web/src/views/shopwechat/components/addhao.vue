@@ -5,11 +5,11 @@
       <div class="addwid">
         <div class="addwxidcont">
           <el-radio-group v-model="checked" @change="changegroup">
-            <div class="fleximg" v-for="item in rodiobjlist" :key="item.id">
+            <div v-for="item in rodiobjlist" :key="item.id" class="fleximg">
               <!-- <el-checkbox v-model="checked" size="large" /> -->
-              <el-radio :value="item.id" size="large"></el-radio>
+              <el-radio :value="item.id" size="large" />
               <div class="imgbox">
-                <img :src="item.head_img" alt="" :class="{ 'blur-avatar': demoMode }">
+                <img :src="item.head_img" alt="" :class="{ 'blur-avatar': demoMode }" />
               </div>
               <div class="name" :class="{ 'blur-text': demoMode }">{{ item.name }}</div>
             </div>
@@ -19,9 +19,14 @@
       </div>
     </div>
     <div class="top">
-      <el-input :prefix-icon="Search" v-model="mdname" @change="handleEnter" style="margin-right: 20px;"
-        placeholder="输入好友昵称或备注搜索" />
-      <el-checkbox style="margin-right: 20px;" v-model="bindingcheck" @change="yfilterbinding">已绑定好友</el-checkbox>
+      <el-input
+        v-model="mdname"
+        :prefix-icon="Search"
+        style="margin-right: 20px"
+        placeholder="输入好友昵称或备注搜索"
+        @change="handleEnter"
+      />
+      <el-checkbox v-model="bindingcheck" style="margin-right: 20px" @change="yfilterbinding">已绑定好友</el-checkbox>
       <el-button type="primary" @click="emitfriend">刷新好友列表</el-button>
     </div>
     <div class="center">
@@ -51,12 +56,8 @@
         </el-table-column>
         <el-table-column label="操作">
           <template #default="scope">
-            <div class="butlist" v-if="!bindingcheck" @click="binding(scope.row)">
-              绑定
-            </div>
-            <div class="butlist" v-if="bindingcheck" @click="unbinding(scope.row)">
-              解绑
-            </div>
+            <div v-if="!bindingcheck" class="butlist" @click="binding(scope.row)">绑定</div>
+            <div v-if="bindingcheck" class="butlist" @click="unbinding(scope.row)">解绑</div>
           </template>
         </el-table-column>
       </el-table>
@@ -92,12 +93,12 @@ const { demoMode } = storeToRefs(settingsStore)
 const props = defineProps({
   tableData: Array as () => any[],
   wxfriendlist: Array as () => any[],
-  friendListParams: Object as () => any,
+  friendListParams: Object as () => any
 })
 let rodiobjlist = ref<any[]>([])
 let rodiobj = reactive({
   head_img: '',
-  name: '',
+  name: ''
 })
 const checked = ref('1')
 const mdname = ref('')
@@ -109,13 +110,22 @@ const friendListParams = reactive({
   keyword: '',
   total: 0
 })
-const emit = defineEmits(['setcheckfrien', 'sethaddwechat', 'getwxfriend', 'filterfriendlist', 'bindingwx', 'filterbinding', 'initfilterbinding', 'unbindingwx']);
+const emit = defineEmits([
+  'setcheckfrien',
+  'sethaddwechat',
+  'getwxfriend',
+  'filterfriendlist',
+  'bindingwx',
+  'filterbinding',
+  'initfilterbinding',
+  'unbindingwx'
+])
 const exidt = () => {
   bindingcheck.value = false
   emit('sethaddwechat', false)
 }
 const handleEnter = () => {
-  mdname.value = mdname.value.trim();
+  mdname.value = mdname.value.trim()
   emit('filterfriendlist', mdname.value)
 }
 const emitfriend = () => {
@@ -139,7 +149,6 @@ const binding = (row: any) => {
 const yfilterbinding = () => {
   if (bindingcheck.value) {
     emit('filterbinding', 1)
-
   } else {
     emit('initfilterbinding', 1)
   }
@@ -148,29 +157,33 @@ const unbinding = (row: any) => {
   emit('unbindingwx', { type: 1, row })
 }
 const changegroup = () => {
-  rodiobj = rodiobjlist.value.find(item => item.id == checked.value);
+  rodiobj = rodiobjlist.value.find(item => item.id == checked.value)
   emit('setcheckfrien', rodiobj)
 }
-watch(() => props.friendListParams, (newVal) => {
-  if (newVal) {
-    // 确保所有字段都有值，避免 undefined
-    friendListParams.pageIndex = newVal.pageIndex ?? 1
-    friendListParams.pageSize = newVal.pageSize ?? 20
-    friendListParams.keyword = newVal.keyword ?? ''
-    friendListParams.total = newVal.total ?? 0
-  }
-}, { deep: true, immediate: true })
+watch(
+  () => props.friendListParams,
+  newVal => {
+    if (newVal) {
+      // 确保所有字段都有值，避免 undefined
+      friendListParams.pageIndex = newVal.pageIndex ?? 1
+      friendListParams.pageSize = newVal.pageSize ?? 20
+      friendListParams.keyword = newVal.keyword ?? ''
+      friendListParams.total = newVal.total ?? 0
+    }
+  },
+  { deep: true, immediate: true }
+)
 watch(
   props,
   () => {
-  rodiobjlist.value = (props.tableData as any[]) || [];
-  if (rodiobjlist.value.length > 0) {
-    checked.value = (rodiobjlist.value[0] as any).id;
-    rodiobj = rodiobjlist.value[0] as any;
-  }
-  tableData.value = (props.wxfriendlist as any[]) || [];
+    rodiobjlist.value = (props.tableData as any[]) || []
+    if (rodiobjlist.value.length > 0) {
+      checked.value = (rodiobjlist.value[0] as any).id
+      rodiobj = rodiobjlist.value[0] as any
+    }
+    tableData.value = (props.wxfriendlist as any[]) || []
   },
-  { deep: true, immediate: true },
+  { deep: true, immediate: true }
 )
 </script>
 

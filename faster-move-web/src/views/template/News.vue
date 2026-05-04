@@ -15,7 +15,7 @@
                         width: '100%',
                         height: '100%',
                         position: 'absolute',
-                        inset: 0,
+                        inset: 0
                       }
                     : ''
                 "
@@ -41,7 +41,7 @@
 import { getList } from '/@/api/news'
 
 defineOptions({
-  name: 'News',
+  name: 'News'
 })
 
 const router = useRouter()

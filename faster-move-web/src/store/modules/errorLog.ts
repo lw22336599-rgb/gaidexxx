@@ -4,10 +4,10 @@
 
 export const useErrorLogStore = defineStore('errorLog', {
   state: (): ErrorLogModuleType => ({
-    errorLogs: [],
+    errorLogs: []
   }),
   getters: {
-    getErrorLogs: (state) => state.errorLogs,
+    getErrorLogs: state => state.errorLogs
   },
   actions: {
     addErrorLog(errorLog: any) {
@@ -15,6 +15,6 @@ export const useErrorLogStore = defineStore('errorLog', {
     },
     clearErrorLog() {
       this.errorLogs.splice(0)
-    },
-  },
+    }
+  }
 })

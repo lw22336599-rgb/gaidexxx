@@ -11,7 +11,7 @@ export default function registerEnd(lf) {
             x: x - 12,
             y: y + 4,
             width: 50,
-            height: 25,
+            height: 25
           },
           '结束'
         )
@@ -25,9 +25,9 @@ export default function registerEnd(lf) {
           h('circle', {
             ...style,
             cx: x,
-            cy: y,
+            cy: y
           }),
-          this.getIconShape(),
+          this.getIconShape()
         ])
       }
     }
@@ -37,7 +37,7 @@ export default function registerEnd(lf) {
         data.text = {
           value: (data.text && data.text.value) || '',
           x: data.x,
-          y: data.y + 35,
+          y: data.y + 35
         }
         super(data, graphModel)
       }
@@ -46,7 +46,7 @@ export default function registerEnd(lf) {
         const rules = super.getConnectedSourceRules()
         const notAsTarget = {
           message: '终止节点不能作为连线的起点',
-          validate: () => false,
+          validate: () => false
         }
         rules.push(notAsTarget)
         return rules
@@ -55,7 +55,7 @@ export default function registerEnd(lf) {
 
     return {
       view: EndNode,
-      model: EndModel,
+      model: EndModel
     }
   })
 }

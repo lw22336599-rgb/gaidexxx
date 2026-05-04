@@ -36,7 +36,7 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'Count',
+  name: 'Count'
 })
 
 const form = reactive<any>({
@@ -46,7 +46,7 @@ const form = reactive<any>({
   prefix: '',
   suffix: '',
   separator: ',',
-  duration: 5000,
+  duration: 5000
 })
 </script>
 

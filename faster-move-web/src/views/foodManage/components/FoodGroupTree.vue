@@ -1,9 +1,20 @@
 <template>
   <div class="food-group-tree">
-    <el-tree ref="treeRef" :data="treeData" :props="defaultProps" show-checkbox node-key="office_id"
-      :default-expanded-keys="expandedKeys" :check-strictly="false" :check-on-click-node="false"
-      :check-on-click-leaf="false" :disabled="isNodeDisabled" @check="handleCheck" @node-click="handleNodeClick"
-      @node-contextmenu="handleNodeContextMenu" />
+    <el-tree
+      ref="treeRef"
+      :data="treeData"
+      :props="defaultProps"
+      show-checkbox
+      node-key="office_id"
+      :default-expanded-keys="expandedKeys"
+      :check-strictly="false"
+      :check-on-click-node="false"
+      :check-on-click-leaf="false"
+      :disabled="isNodeDisabled"
+      @check="handleCheck"
+      @node-click="handleNodeClick"
+      @node-contextmenu="handleNodeContextMenu"
+    />
 
     <!-- 右键菜单 -->
     <div v-show="contextMenu.visible" :style="contextMenu.style" class="context-menu">
@@ -75,7 +86,7 @@ const treeData = computed(() => {
     id: 'root',
     name: '全部分组',
     parentId: null,
-    children: [],
+    children: []
   }
 
   // 递归处理分组数据
@@ -103,7 +114,7 @@ const treeData = computed(() => {
 // 监听选中分组变化
 watch(
   () => props.selectedGroups,
-  (newVal) => {
+  newVal => {
     if (treeRef.value) {
       treeRef.value.setCheckedKeys(newVal)
     }
@@ -121,7 +132,10 @@ const isNodeDisabled = (data: FoodManageApi.FoodGroupVoItem) => {
 }
 
 // 处理选中状态变化
-const handleCheck = (data: FoodManageApi.FoodGroupVoItem, checked: { checkedKeys: string[], checkedNodes: FoodManageApi.FoodGroupVoItem[] }) => {
+const handleCheck = (
+  data: FoodManageApi.FoodGroupVoItem,
+  checked: { checkedKeys: string[]; checkedNodes: FoodManageApi.FoodGroupVoItem[] }
+) => {
   // 过滤掉根节点
   const validKeys = checked.checkedKeys.filter(key => key !== 'root')
   emit('update:selectedGroups', validKeys)
@@ -260,7 +274,7 @@ const getAllNodeKeys = (nodes: FoodManageApi.FoodGroupVoItem[]): string[] => {
   }
 
   // 选中且当前节点的样式
-  .el-tree-node.is-current>.el-tree-node__content {
+  .el-tree-node.is-current > .el-tree-node__content {
     background-color: #409eff !important;
     color: #ffffff !important;
 
@@ -270,7 +284,7 @@ const getAllNodeKeys = (nodes: FoodManageApi.FoodGroupVoItem[]): string[] => {
   }
 
   // 复选框选中的节点样式
-  .el-tree-node.is-checked>.el-tree-node__content {
+  .el-tree-node.is-checked > .el-tree-node__content {
     background-color: #e6f7ff !important;
     color: #1890ff !important;
 

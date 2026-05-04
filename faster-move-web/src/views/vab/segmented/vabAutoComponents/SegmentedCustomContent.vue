@@ -19,27 +19,27 @@ const options = ref<any>([
   {
     label: '苹果',
     value: 'Apple',
-    icon: Apple,
+    icon: Apple
   },
   {
     label: '樱桃',
     value: 'Cherry',
-    icon: Cherry,
+    icon: Cherry
   },
   {
     label: '葡萄',
     value: 'Grape',
-    icon: Grape,
+    icon: Grape
   },
   {
     label: '橘子',
     value: 'Orange',
-    icon: Orange,
+    icon: Orange
   },
   {
     label: '梨',
     value: 'Pear',
-    icon: Pear,
-  },
+    icon: Pear
+  }
 ])
 </script>

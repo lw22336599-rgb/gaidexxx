@@ -1,7 +1,7 @@
 <template>
   <div class="scroll-text-container no-transition-container">
     <tiny-scroll-text :class="'vab-scroll-text-' + form.theme" :direction="form.direction" :time="form.time">
-      <div v-html="text"></div>
+      <div v-html="text" />
     </tiny-scroll-text>
     <el-form label-position="top" :model="form">
       <el-form-item label="主题配置">
@@ -30,7 +30,7 @@ import { ScrollText as TinyScrollText } from '@opentiny/vue'
 import { getList } from '/@/api/description'
 
 defineOptions({
-  name: 'ScrollText',
+  name: 'ScrollText'
 })
 
 const text = ref<string>('')
@@ -39,18 +39,18 @@ const themeList = ref<any>([
   { label: 'success', title: '成功' },
   { label: 'warning', title: '警告' },
   { label: 'danger', title: '危险' },
-  { label: 'info', title: '信息' },
+  { label: 'info', title: '信息' }
 ])
 const directionList = ref<any>([
   { label: 'left', title: '左' },
   { label: 'right', title: '右' },
   { label: 'up', title: '上' },
-  { label: 'down', title: '下' },
+  { label: 'down', title: '下' }
 ])
 const form = reactive({
   theme: 'primary',
   direction: 'left',
-  time: 25,
+  time: 25
 })
 
 const handleDirection = (value: any) => {

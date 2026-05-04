@@ -37,6 +37,6 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'Upload',
+  name: 'Upload'
 })
 </script>

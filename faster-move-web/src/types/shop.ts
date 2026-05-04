@@ -20,19 +20,19 @@ export enum ShopType {
  */
 export interface BaseSys {
   /** 主键Id */
-  id: string;
+  id: string
 
   /** 创建时间 */
-  crtim?: Date;
+  crtim?: Date
 
   /** 更新时间 */
-  uptim?: Date;
+  uptim?: Date
 
   /** 是否可用，true可用，false不可用 */
-  avtag: boolean;
+  avtag: boolean
 
   /** 备注 */
-  notes?: string;
+  notes?: string
 }
 
 /**
@@ -47,7 +47,7 @@ export enum ShopState {
   店铺营业中 = 4,
   已暂停营业 = 5,
   店铺上线中 = 6,
-  店铺已下线 = 7,
+  店铺已下线 = 7
 }
 
 /**
@@ -55,53 +55,53 @@ export enum ShopState {
  */
 export interface ShopListItem extends BaseSys {
   /** 店铺名称 */
-  name: string;
+  name: string
 
   /** 店铺所在省份 */
-  province?: string;
+  province?: string
 
   /** 店铺所在城市 */
-  city?: string;
+  city?: string
 
   /** 创建用户 */
-  user: string;
+  user: string
 
   /** 店铺类型 */
-  shop_type: ShopType;
+  shop_type: ShopType
 
   /** 店铺用户名 */
-  shop_user?: string;
+  shop_user?: string
 
   /** 店铺密码 */
-  shop_pwd?: string;
+  shop_pwd?: string
 
   /** 平台的店铺id */
-  office_id: string;
+  office_id: string
 
   /** cookies */
-  cookies: string;
+  cookies: string
 
   /** 上次ck更新日期 */
-  ck_uptime?: Date;
+  ck_uptime?: Date
 
   /** 店铺状态 */
-  state: ShopState;
+  state: ShopState
 
   /** 店铺服务到期时间 */
-  EndTime: Date;
+  EndTime: Date
 
   /** 店铺头像 */
-  img: string;
+  img: string
 
   /** 店铺评分 */
-  score: number;
+  score: number
 
   /** 有管理权限的用户id */
-  MgAgencys: string[];
+  MgAgencys: string[]
 
   /** 如果是分店即指向主店 */
-  MainShop?: string;
+  MainShop?: string
 
   /** 当前工作的客户端 */
-  client?: string;
+  client?: string
 }

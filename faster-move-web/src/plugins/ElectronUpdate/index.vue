@@ -1,7 +1,13 @@
 <template>
-  <vab-dialog v-model="show" append-to-body class="electron-update" :show-close="false" :show-fullscreen="false"
-    width="550px">
-    <template #header></template>
+  <vab-dialog
+    v-model="show"
+    append-to-body
+    class="electron-update"
+    :show-close="false"
+    :show-fullscreen="false"
+    width="550px"
+  >
+    <template #header />
     <div class="electron-update-icon">
       <vab-icon icon="upload-cloud-2-fill" />
     </div>
@@ -26,23 +32,15 @@
         <el-button :loading="startingDownload" type="primary" @click="handleUpdate(false)">
           {{ startingDownload ? '准备下载...' : '立即更新' }}
         </el-button>
-        <el-button :loading="startingDownload" @click="handleUpdate(true)">
-          后台更新
-        </el-button>
-        <el-button type="info" text @click="handleIgnoreThisTime">
-          忽略更新
-        </el-button>
+        <el-button :loading="startingDownload" @click="handleUpdate(true)"> 后台更新 </el-button>
+        <el-button type="info" text @click="handleIgnoreThisTime"> 忽略更新 </el-button>
       </div>
       <div v-if="downloading" class="downloading-tip">
         <p v-if="isBackgroundDownload">
           {{ backgroundDownloadMode ? '正在后台下载更新...' : '正在下载更新包，下载完成后将自动安装并重启应用...' }}
         </p>
-        <p v-else>
-          正在下载更新包，下载完成后将自动安装并重启应用...
-        </p>
-        <el-button v-if="isBackgroundDownload" size="small" text @click="minimizeDialog">
-          最小化到后台
-        </el-button>
+        <p v-else>正在下载更新包，下载完成后将自动安装并重启应用...</p>
+        <el-button v-if="isBackgroundDownload" size="small" text @click="minimizeDialog"> 最小化到后台 </el-button>
       </div>
       <div v-if="errorMessage" class="error-message">
         <p>{{ errorMessage }}</p>
@@ -56,7 +54,7 @@
 import dayjs from 'dayjs'
 
 defineOptions({
-  name: 'ElectronUpdate',
+  name: 'ElectronUpdate'
 })
 
 // 更新信息
@@ -85,13 +83,13 @@ const updateInfo = ref<UpdateInfo>({
   version: '',
   releaseNotes: '',
   releaseDate: '',
-  canDownload: true,
+  canDownload: true
 })
 
 const downloadProgress = ref<DownloadProgress>({
   percent: 0,
   transferred: 0,
-  total: 0,
+  total: 0
 })
 
 const downloadStatus = computed(() => {
@@ -205,7 +203,7 @@ onMounted(() => {
 
     // 通知主进程：渲染进程已准备好接收更新通知
     if ((globalThis as any).electron?.notifyRendererReady) {
-      (globalThis as any).electron.notifyRendererReady()
+      ;(globalThis as any).electron.notifyRendererReady()
       console.log('📤 已通知主进程：渲染进程准备就绪')
     }
 

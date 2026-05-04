@@ -43,12 +43,21 @@
     </el-card>
 
     <!-- 添加/编辑对话框 -->
-    <el-dialog v-model="dialogVisible" :title="dialogTitle" width="550px" :close-on-click-modal="false"
-      @close="handleDialogClose">
+    <el-dialog
+      v-model="dialogVisible"
+      :title="dialogTitle"
+      width="550px"
+      :close-on-click-modal="false"
+      @close="handleDialogClose"
+    >
       <el-form ref="formRef" :model="formData" :rules="formRules" label-width="110px">
         <el-form-item label="机器人类型" prop="webhookType">
-          <el-select v-model="formData.webhookType" placeholder="请选择机器人类型" style="width: 100%"
-            @change="handleTypeChange">
+          <el-select
+            v-model="formData.webhookType"
+            placeholder="请选择机器人类型"
+            style="width: 100%"
+            @change="handleTypeChange"
+          >
             <el-option v-for="type in webhookTypes" :key="type.type" :label="type.name" :value="type.type" />
           </el-select>
         </el-form-item>
@@ -70,14 +79,19 @@
         </el-form-item>
 
         <el-form-item label="备注名称" prop="remark">
-          <el-input v-model="formData.remark" placeholder="请输入备注名称，如：技术运维群" maxlength="100" show-word-limit />
+          <el-input
+            v-model="formData.remark"
+            placeholder="请输入备注名称，如：技术运维群"
+            maxlength="100"
+            show-word-limit
+          />
         </el-form-item>
       </el-form>
 
       <template #footer>
         <div class="dialog-footer">
           <el-button @click="dialogVisible = false">取消</el-button>
-          <el-button type="primary" @click="handleSubmit" :loading="submitting">保存</el-button>
+          <el-button type="primary" :loading="submitting" @click="handleSubmit">保存</el-button>
         </div>
       </template>
     </el-dialog>
@@ -96,7 +110,7 @@ import { ToggleWebhookInput } from '@/TsModel/Alien/Controllers/Admin/ToggleWebh
 import { TestWebhookInput } from '@/TsModel/Alien/Controllers/Admin/TestWebhookInput'
 
 defineOptions({
-  name: 'WebhookConfigIndex',
+  name: 'WebhookConfigIndex'
 })
 
 // 状态
@@ -137,21 +151,17 @@ const formData = reactive({
   id: '',
   webhookType: undefined as number | undefined,
   webhookUrl: '',
-  remark: '' as string | undefined,
+  remark: '' as string | undefined
 })
 
 // 表单验证规则
 const formRules: FormRules = {
-  webhookType: [
-    { required: true, message: '请选择 Webhook 类型', trigger: 'change' }
-  ],
+  webhookType: [{ required: true, message: '请选择 Webhook 类型', trigger: 'change' }],
   webhookUrl: [
     { required: true, message: '请输入 Webhook URL', trigger: 'blur' },
     { max: 500, message: 'URL 长度不能超过 500 个字符', trigger: 'blur' }
   ],
-  remark: [
-    { max: 100, message: '备注长度不能超过 100 个字符', trigger: 'blur' }
-  ]
+  remark: [{ max: 100, message: '备注长度不能超过 100 个字符', trigger: 'blur' }]
 }
 
 // 计算属性：获取选中类型的帮助文档URL
@@ -194,7 +204,7 @@ const getTypeTagType = (type: number) => {
   const typeMap: Record<number, 'success' | 'primary' | 'warning' | 'info'> = {
     4: 'success', // 企业微信
     5: 'primary', // 钉钉
-    6: 'warning', // 飞书
+    6: 'warning' // 飞书
   }
   return typeMap[type] || 'info'
 }
@@ -238,25 +248,23 @@ const handleEdit = (row: WebhookConfigVo) => {
 
 // 删除
 const handleDelete = (row: WebhookConfigVo) => {
-  ElMessageBox.confirm(
-    `确定要删除 "${row.Remark || row.WebhookTypeName}" 吗？`,
-    '提示',
-    {
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
-      type: 'warning',
-    }
-  ).then(async () => {
-    try {
-      await apiManager.webhookConfigApi.DeleteWebhook(row.Id)
-      ElMessage.success('删除成功')
-      getWebhookList()
-    } catch (error: any) {
-      ElMessage.error(error.message || '删除失败')
-    }
-  }).catch(() => {
-    // 取消删除
+  ElMessageBox.confirm(`确定要删除 "${row.Remark || row.WebhookTypeName}" 吗？`, '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
   })
+    .then(async () => {
+      try {
+        await apiManager.webhookConfigApi.DeleteWebhook(row.Id)
+        ElMessage.success('删除成功')
+        getWebhookList()
+      } catch (error: any) {
+        ElMessage.error(error.message || '删除失败')
+      }
+    })
+    .catch(() => {
+      // 取消删除
+    })
 }
 
 // 启用/禁用
@@ -296,7 +304,7 @@ const handleTest = async (row: WebhookConfigVo) => {
 const handleSubmit = async () => {
   if (!formRef.value) return
 
-  await formRef.value.validate(async (valid) => {
+  await formRef.value.validate(async valid => {
     if (!valid) return
 
     submitting.value = true

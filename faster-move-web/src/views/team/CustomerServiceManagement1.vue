@@ -10,8 +10,12 @@
                   <el-button :icon="Plus" type="primary" @click="handleAddCustomerService">设置客服</el-button>
                 </el-form-item>
                 <el-form-item>
-                  <el-input v-model="queryForm.word" clearable placeholder="请输入账号或手机号搜索"
-                    @change="getCustomerServiceList" />
+                  <el-input
+                    v-model="queryForm.word"
+                    clearable
+                    placeholder="请输入账号或手机号搜索"
+                    @change="getCustomerServiceList"
+                  />
                 </el-form-item>
                 <el-form-item>
                   <el-select v-model="avtagFilter" placeholder="请选择账号状态" @change="handleAvtagChange">
@@ -21,21 +25,31 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item>
-                  <el-divider direction="vertical" style="height: 32px; margin: 0 16px;" />
-                  <span style="margin-right: 8px; color: var(--el-text-color-regular);">控制下级开启IM客服</span>
-                  <el-tooltip content="开启后,下级必须由您分配客服角色后才能使用IM客服功能;关闭后,下级可以自主开启IM客服功能" placement="top">
-                    <el-icon style="margin-right: 8px; cursor: help; color: var(--el-text-color-secondary);">
+                  <el-divider direction="vertical" style="height: 32px; margin: 0 16px" />
+                  <span style="margin-right: 8px; color: var(--el-text-color-regular)">控制下级开启IM客服</span>
+                  <el-tooltip
+                    content="开启后,下级必须由您分配客服角色后才能使用IM客服功能;关闭后,下级可以自主开启IM客服功能"
+                    placement="top"
+                  >
+                    <el-icon style="margin-right: 8px; cursor: help; color: var(--el-text-color-secondary)">
                       <QuestionFilled />
                     </el-icon>
                   </el-tooltip>
-                  <el-switch v-model="imConfig.no_auto_kefu" :loading="imConfigLoading" active-text="仅限分配"
-                    inactive-text="允许自主" @change="handleImConfigChange" />
+                  <el-switch
+                    v-model="imConfig.no_auto_kefu"
+                    :loading="imConfigLoading"
+                    active-text="仅限分配"
+                    inactive-text="允许自主"
+                    @change="handleImConfigChange"
+                  />
                 </el-form-item>
               </el-form>
             </vab-query-form-top-panel>
           </vab-query-form>
 
-          <div style="margin: 16px 0; font-size: 16px; font-weight: 500; color: #303133;">客服列表 <span :class="{ 'blur-text': demoMode }">({{ total }})</span></div>
+          <div style="margin: 16px 0; font-size: 16px; font-weight: 500; color: #303133">
+            客服列表 <span :class="{ 'blur-text': demoMode }">({{ total }})</span>
+          </div>
 
           <el-table :data="list">
             <el-table-column align="center" label="账号" prop="user_name" min-width="120">
@@ -56,13 +70,18 @@
             <!-- 备注列：文本靠左，编辑图标在右侧 -->
             <el-table-column label="备注" min-width="150">
               <template #default="{ row }">
-                <div style="display: flex; align-items: center; justify-content: flex-start;">
-                  <span :class="{ 'blur-text': demoMode }"
-                    style="text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                <div style="display: flex; align-items: center; justify-content: flex-start">
+                  <span
+                    :class="{ 'blur-text': demoMode }"
+                    style="text-align: left; overflow: hidden; text-overflow: ellipsis; white-space: nowrap"
+                  >
                     {{ filterNotes(row.notes) }}
                   </span>
-                  <el-icon class="edit-icon" style="cursor: pointer; color: #409eff; flex-shrink: 0; margin-left: 2px;"
-                    @click="handleEditNotes(row)">
+                  <el-icon
+                    class="edit-icon"
+                    style="cursor: pointer; color: #409eff; flex-shrink: 0; margin-left: 2px"
+                    @click="handleEditNotes(row)"
+                  >
                     <EditPen />
                   </el-icon>
                 </div>
@@ -88,8 +107,9 @@
             <el-table-column fixed="right" label="操作" width="200px">
               <template #default="{ row }">
                 <el-button type="text" @click="handleAssignShops(row)">分配店铺</el-button>
-                <el-button type="text" style="color: #f56c6c;"
-                  @click="handleRemoveCustomerService(row)">移除客服</el-button>
+                <el-button type="text" style="color: #f56c6c" @click="handleRemoveCustomerService(row)"
+                  >移除客服</el-button
+                >
               </template>
             </el-table-column>
             <template #empty>
@@ -97,17 +117,32 @@
             </template>
           </el-table>
 
-          <vab-pagination :current-page="queryForm.page" :page-size="queryForm.pageSize" :total="total"
-            @current-change="handleCurrentChange" @size-change="handleSizeChange" />
+          <vab-pagination
+            :current-page="queryForm.page"
+            :page-size="queryForm.pageSize"
+            :total="total"
+            @current-change="handleCurrentChange"
+            @size-change="handleSizeChange"
+          />
         </vab-card>
       </el-col>
     </el-row>
 
     <!-- 添加/编辑分组对话框 -->
-    <el-dialog v-model="adminDioal" :destroy-on-close="true" :title="currentForm.id ? '编辑分组' : '添加分组'" width="500px">
+    <el-dialog
+      v-model="adminDioal"
+      :destroy-on-close="true"
+      :title="currentForm.id ? '编辑分组' : '添加分组'"
+      width="500px"
+    >
       <div class="jifenbox">
-        <el-form ref="ruleFormRefAdmin" class="demo-ruleForm" label-width="100" :model="currentForm"
-          :rules="adminRules">
+        <el-form
+          ref="ruleFormRefAdmin"
+          class="demo-ruleForm"
+          label-width="100"
+          :model="currentForm"
+          :rules="adminRules"
+        >
           <el-form-item label="分组名称" prop="name">
             <el-input v-model="currentForm.name" />
           </el-form-item>
@@ -144,7 +179,6 @@
         <el-form-item label="手机号" prop="phone">
           <el-input v-model="employeeParams.phone" autocomplete="off" />
         </el-form-item>
-
       </el-form>
       <template #footer>
         <div class="dialog-footer">
@@ -159,27 +193,45 @@
       <div class="add-customer-service-container">
         <el-form inline :model="memberQueryForm" @submit.prevent>
           <el-form-item>
-            <el-input v-model="memberQueryForm.word" clearable placeholder="请输入账号或手机号搜索" @change="getMemberList"
-              style="width: 260px;" />
+            <el-input
+              v-model="memberQueryForm.word"
+              clearable
+              placeholder="请输入账号或手机号搜索"
+              style="width: 260px"
+              @change="getMemberList"
+            />
           </el-form-item>
           <el-form-item>
-            <el-select :model-value="memberQueryForm.avtag ?? undefined"
-              @update:model-value="(val: boolean | undefined) => { memberQueryForm.avtag = val; getMemberList() }"
-              placeholder="账号状态" clearable style="width: 150px;">
+            <el-select
+              :model-value="memberQueryForm.avtag ?? undefined"
+              placeholder="账号状态"
+              clearable
+              style="width: 150px"
+              @update:model-value="
+                (val: boolean | undefined) => {
+                  memberQueryForm.avtag = val
+                  getMemberList()
+                }
+              "
+            >
               <el-option label="启用" :value="true" />
               <el-option label="停用" :value="false" />
             </el-select>
           </el-form-item>
-          <el-form-item style="margin-left: auto;">
+          <el-form-item style="margin-left: auto">
             <el-button @click="addCustomerServiceDrawerVisible = false">取消</el-button>
-            <el-button type="primary" :loading="addLoading" @click="confirmAddCustomerService"
-              :disabled="selectedMembers.length === 0">
+            <el-button
+              type="primary"
+              :loading="addLoading"
+              :disabled="selectedMembers.length === 0"
+              @click="confirmAddCustomerService"
+            >
               确定添加 (已选 {{ selectedMembers.length }} 个)
             </el-button>
           </el-form-item>
         </el-form>
 
-        <el-table :data="memberList" v-loading="memberListLoading" @selection-change="handleMemberSelectionChange">
+        <el-table v-loading="memberListLoading" :data="memberList" @selection-change="handleMemberSelectionChange">
           <el-table-column type="selection" width="55" />
           <el-table-column label="账号" prop="user_name">
             <template #default="{ row }">
@@ -213,22 +265,34 @@
           </template>
         </el-table>
 
-        <vab-pagination :current-page="memberQueryForm.page" :page-size="memberQueryForm.pageSize" :total="memberTotal"
-          @current-change="handleMemberPageChange" @size-change="handleMemberSizeChange" />
+        <vab-pagination
+          :current-page="memberQueryForm.page"
+          :page-size="memberQueryForm.pageSize"
+          :total="memberTotal"
+          @current-change="handleMemberPageChange"
+          @size-change="handleMemberSizeChange"
+        />
       </div>
     </el-drawer>
 
     <!-- 分配店铺抽屉 -->
-    <el-drawer v-model="assignShopDrawerVisible"
-      :title="`分配店铺 - ${demoMode ? '***' : (currentCustomer?.user_name || '')}`" size="70%" :destroy-on-close="true">
+    <el-drawer
+      v-model="assignShopDrawerVisible"
+      :title="`分配店铺 - ${demoMode ? '***' : currentCustomer?.user_name || ''}`"
+      size="70%"
+      :destroy-on-close="true"
+    >
       <div class="assign-shop-container">
         <!-- 店铺类型按钮组 -->
         <div class="shop-type-buttons">
           <el-button-group>
-            <el-button v-for="type in shopTypeOptions" :key="type.value"
+            <el-button
+              v-for="type in shopTypeOptions"
+              :key="type.value"
               :type="shopQueryForm.shopType === type.value ? 'primary' : 'default'"
-              @click="handleShopTypeChange(type.value)">
-              <vab-icon :icon="type.icon" is-custom-svg style="margin-right: 4px;" />
+              @click="handleShopTypeChange(type.value)"
+            >
+              <vab-icon :icon="type.icon" is-custom-svg style="margin-right: 4px" />
               {{ type.label }}
             </el-button>
           </el-button-group>
@@ -248,19 +312,33 @@
             <div class="transfer-panel">
               <div class="transfer-panel-header">
                 <div class="panel-title-wrapper">
-                  <span class="panel-title">未分配店铺 <span :class="{ 'blur-text': demoMode }">({{ shopTotal }})</span></span>
+                  <span class="panel-title"
+                    >未分配店铺 <span :class="{ 'blur-text': demoMode }">({{ shopTotal }})</span></span
+                  >
                 </div>
-                <el-input v-model="shopQueryForm.keyword" clearable placeholder="请输入店铺名称搜索" style="width: 200px;"
-                  @change="handleShopSearch" />
+                <el-input
+                  v-model="shopQueryForm.keyword"
+                  clearable
+                  placeholder="请输入店铺名称搜索"
+                  style="width: 200px"
+                  @change="handleShopSearch"
+                />
               </div>
-              <div class="transfer-panel-body" v-loading="shopListLoading">
-                <el-table :data="availableShopList" @selection-change="handleAvailableShopSelectionChange"
-                  height="100%">
+              <div v-loading="shopListLoading" class="transfer-panel-body">
+                <el-table
+                  :data="availableShopList"
+                  height="100%"
+                  @selection-change="handleAvailableShopSelectionChange"
+                >
                   <el-table-column type="selection" width="55" />
                   <el-table-column label="店铺名称" min-width="180">
                     <template #default="{ row }">
-                      <vab-shop-info :shop-type="row.ShopType" :shop-name="row.ShopName" :icon-size="16"
-                        :class="{ 'blur-text': demoMode }" />
+                      <vab-shop-info
+                        :shop-type="row.ShopType"
+                        :shop-name="row.ShopName"
+                        :icon-size="16"
+                        :class="{ 'blur-text': demoMode }"
+                      />
                     </template>
                   </el-table-column>
                   <el-table-column label="门店ID" prop="ShopOfficeId" width="150" show-overflow-tooltip>
@@ -273,27 +351,38 @@
               </div>
               <div class="transfer-panel-footer">
                 <div class="custom-pagination">
-                  <el-button :disabled="shopQueryForm.page <= 1"
-                    @click="handleAvailableShopPageChange(shopQueryForm.page - 1)">
+                  <el-button
+                    :disabled="shopQueryForm.page <= 1"
+                    @click="handleAvailableShopPageChange(shopQueryForm.page - 1)"
+                  >
                     上一页
                   </el-button>
-                  <el-select v-model="shopQueryForm.pageSize" style="width: 120px; margin: 0 12px;"
-                    @change="handleAvailableShopSizeChange">
+                  <el-select
+                    v-model="shopQueryForm.pageSize"
+                    style="width: 120px; margin: 0 12px"
+                    @change="handleAvailableShopSizeChange"
+                  >
                     <el-option label="10条/页" :value="10" />
                     <el-option label="20条/页" :value="20" />
                     <el-option label="50条/页" :value="50" />
                     <el-option label="100条/页" :value="100" />
                   </el-select>
-                  <el-button :disabled="shopQueryForm.page >= Math.ceil(shopTotal / shopQueryForm.pageSize)"
-                    @click="handleAvailableShopPageChange(shopQueryForm.page + 1)">
+                  <el-button
+                    :disabled="shopQueryForm.page >= Math.ceil(shopTotal / shopQueryForm.pageSize)"
+                    @click="handleAvailableShopPageChange(shopQueryForm.page + 1)"
+                  >
                     下一页
                   </el-button>
-                  <div style="margin-left: auto; display: flex; align-items: center;">
-                    <span style="margin: 0 12px;">前往</span>
-                    <el-input-number v-model="shopQueryForm.page" :min="1"
-                      :max="Math.ceil(shopTotal / shopQueryForm.pageSize) || 1" style="width: 100px;"
-                      @change="(val: number | undefined) => val && handleAvailableShopPageChange(val)" />
-                    <span style="margin-left: 8px;">页</span>
+                  <div style="margin-left: auto; display: flex; align-items: center">
+                    <span style="margin: 0 12px">前往</span>
+                    <el-input-number
+                      v-model="shopQueryForm.page"
+                      :min="1"
+                      :max="Math.ceil(shopTotal / shopQueryForm.pageSize) || 1"
+                      style="width: 100px"
+                      @change="(val: number | undefined) => val && handleAvailableShopPageChange(val)"
+                    />
+                    <span style="margin-left: 8px">页</span>
                   </div>
                 </div>
               </div>
@@ -313,16 +402,22 @@
             <div class="transfer-panel">
               <div class="transfer-panel-header">
                 <div class="panel-title-wrapper">
-                  <span class="panel-title">已分配店铺 <span :class="{ 'blur-text': demoMode }">({{ assignedShopTotal }})</span></span>
+                  <span class="panel-title"
+                    >已分配店铺 <span :class="{ 'blur-text': demoMode }">({{ assignedShopTotal }})</span></span
+                  >
                 </div>
               </div>
-              <div class="transfer-panel-body" v-loading="assignedShopListLoading">
-                <el-table :data="assignedShopList" @selection-change="handleAssignedShopSelectionChange" height="100%">
+              <div v-loading="assignedShopListLoading" class="transfer-panel-body">
+                <el-table :data="assignedShopList" height="100%" @selection-change="handleAssignedShopSelectionChange">
                   <el-table-column type="selection" width="55" />
                   <el-table-column label="店铺名称" min-width="180">
                     <template #default="{ row }">
-                      <vab-shop-info :shop-type="row.ShopType" :shop-name="row.ShopName" :icon-size="16"
-                        :class="{ 'blur-text': demoMode }" />
+                      <vab-shop-info
+                        :shop-type="row.ShopType"
+                        :shop-name="row.ShopName"
+                        :icon-size="16"
+                        :class="{ 'blur-text': demoMode }"
+                      />
                     </template>
                   </el-table-column>
                   <el-table-column label="门店ID" prop="ShopOfficeId" width="150" show-overflow-tooltip>
@@ -335,28 +430,40 @@
               </div>
               <div class="transfer-panel-footer">
                 <div class="custom-pagination">
-                  <el-button :disabled="assignedShopQueryForm.page <= 1"
-                    @click="handleAssignedShopPageChange(assignedShopQueryForm.page - 1)">
+                  <el-button
+                    :disabled="assignedShopQueryForm.page <= 1"
+                    @click="handleAssignedShopPageChange(assignedShopQueryForm.page - 1)"
+                  >
                     上一页
                   </el-button>
-                  <el-select v-model="assignedShopQueryForm.pageSize" style="width: 120px; margin: 0 12px;"
-                    @change="handleAssignedShopSizeChange">
+                  <el-select
+                    v-model="assignedShopQueryForm.pageSize"
+                    style="width: 120px; margin: 0 12px"
+                    @change="handleAssignedShopSizeChange"
+                  >
                     <el-option label="10条/页" :value="10" />
                     <el-option label="20条/页" :value="20" />
                     <el-option label="50条/页" :value="50" />
                     <el-option label="100条/页" :value="100" />
                   </el-select>
                   <el-button
-                    :disabled="assignedShopQueryForm.page >= Math.ceil(assignedShopTotal / assignedShopQueryForm.pageSize)"
-                    @click="handleAssignedShopPageChange(assignedShopQueryForm.page + 1)">
+                    :disabled="
+                      assignedShopQueryForm.page >= Math.ceil(assignedShopTotal / assignedShopQueryForm.pageSize)
+                    "
+                    @click="handleAssignedShopPageChange(assignedShopQueryForm.page + 1)"
+                  >
                     下一页
                   </el-button>
-                  <div style="margin-left: auto; display: flex; align-items: center;">
-                    <span style="margin: 0 12px;">前往</span>
-                    <el-input-number v-model="assignedShopQueryForm.page" :min="1"
-                      :max="Math.ceil(assignedShopTotal / assignedShopQueryForm.pageSize) || 1" style="width: 100px;"
-                      @change="(val: number | undefined) => val && handleAssignedShopPageChange(val)" />
-                    <span style="margin-left: 8px;">页</span>
+                  <div style="margin-left: auto; display: flex; align-items: center">
+                    <span style="margin: 0 12px">前往</span>
+                    <el-input-number
+                      v-model="assignedShopQueryForm.page"
+                      :min="1"
+                      :max="Math.ceil(assignedShopTotal / assignedShopQueryForm.pageSize) || 1"
+                      style="width: 100px"
+                      @change="(val: number | undefined) => val && handleAssignedShopPageChange(val)"
+                    />
+                    <span style="margin-left: 8px">页</span>
                   </div>
                 </div>
               </div>
@@ -389,7 +496,7 @@ import { storeToRefs } from 'pinia'
 import type { ImUserConfigVo } from '/@/TsModel/Alien/Faster/Controllers/IM/ImUserConfigVo'
 
 defineOptions({
-  name: 'CustomerServiceManagement1',
+  name: 'CustomerServiceManagement1'
 })
 
 // 演示模式状态
@@ -398,7 +505,7 @@ const { demoMode } = storeToRefs(settingsStore)
 
 // IM配置相关状态
 const imConfig = ref<ImUserConfigVo>({
-  no_auto_kefu: false,
+  no_auto_kefu: false
 })
 const imConfigLoading = ref<boolean>(false)
 
@@ -419,7 +526,7 @@ let currentForm = reactive<{
 }>({
   type: 2,
   name: '',
-  notes: '',
+  notes: ''
 })
 
 // 设置客服相关状态
@@ -436,7 +543,7 @@ const addEmployeeLoading = ref<boolean>(false)
 const employeeFormRef = ref<FormInstance>()
 const employeeParams = reactive({
   phone: '',
-  is_boss: false,
+  is_boss: false
 })
 
 // 编辑备注相关状态
@@ -444,7 +551,7 @@ const editNotesDialogVisible = ref<boolean>(false)
 const editNotesLoading = ref<boolean>(false)
 const editNotesForm = reactive({
   id: '',
-  notes: '',
+  notes: ''
 })
 
 // 分配店铺相关状态
@@ -467,7 +574,7 @@ const shopTypeOptions = [
   { label: '美团闪购', value: 3, icon: 'mt-shop' },
   { label: '美团医药', value: 4, icon: 'mt-medicine' },
   { label: '饿百零售', value: 5, icon: 'tbsg_ls' },
-  { label: '京东到家', value: 6, icon: 'jd-home' },
+  { label: '京东到家', value: 6, icon: 'jd-home' }
 ]
 
 const queryForm = reactive<GetAdminListParmsVo>({
@@ -477,15 +584,15 @@ const queryForm = reactive<GetAdminListParmsVo>({
   avtag: null,
   role: 'KEFU', // 固定查询客服角色
   userType: 1,
-  groupId: '',
+  groupId: ''
 })
 const groupParams = reactive({
   grouptype: 2,
-  recursionchild: true,
+  recursionchild: true
 })
 const adminRules = {
   name: [{ required: true, message: '请输入分组名称', trigger: 'blur' }],
-  notes: [{ required: true, message: '请输入分组描述', trigger: 'blur' }],
+  notes: [{ required: true, message: '请输入分组描述', trigger: 'blur' }]
 }
 
 // 成员列表查询表单
@@ -495,7 +602,7 @@ const memberQueryForm = reactive<GetAdminListParmsVo>({
   word: '',
   avtag: undefined,
   role: undefined, // 不限定角色
-  userType: 1,
+  userType: 1
 })
 
 // 店铺查询表单
@@ -503,14 +610,14 @@ const shopQueryForm = reactive({
   page: 1,
   pageSize: 20,
   keyword: '',
-  shopType: 1, // 默认选择美团
+  shopType: 1 // 默认选择美团
 })
 
 // 已分配店铺查询表单
 const assignedShopQueryForm = reactive({
   page: 1,
   pageSize: 20,
-  shopType: undefined as ShopType | undefined,
+  shopType: undefined as ShopType | undefined
 })
 
 /**
@@ -546,10 +653,10 @@ const employeeRule = {
     {
       required: true,
       trigger: 'blur',
-      message: translate('请输入手机号'),
+      message: translate('请输入手机号')
     },
-    { validator: validatePhone, trigger: 'blur' },
-  ],
+    { validator: validatePhone, trigger: 'blur' }
+  ]
 }
 
 /**
@@ -577,7 +684,7 @@ const confirmEditNotes = () => {
   editNotesLoading.value = true
   updateAgency({
     id: editNotesForm.id,
-    notes: editNotesForm.notes,
+    notes: editNotesForm.notes
   })
     .then((res: any) => {
       if (res.code === 200) {
@@ -669,7 +776,7 @@ const handleImConfigChange = async () => {
   imConfigLoading.value = true
   try {
     await apiManager.imAdminApi.UpdateImConfig({
-      no_auto_kefu: imConfig.value.no_auto_kefu,
+      no_auto_kefu: imConfig.value.no_auto_kefu
     })
 
     gp.$baseMessage(
@@ -718,7 +825,7 @@ const getMemberList = async () => {
       word: memberQueryForm.word || undefined,
       avtag: memberQueryForm.avtag,
       role: undefined, // 不限定角色
-      userType: 1,
+      userType: 1
     })
     memberList.value = result?.rows || []
     memberTotal.value = result?.total || 0
@@ -763,15 +870,11 @@ const confirmAddCustomerService = async () => {
   try {
     // 批量为选中的成员设置客服角色
     await apiManager.adminApi.SetSubordinateRoles({
-      UserIds: selectedMembers.value.map((member) => member.id),
-      Role: 'KEFU',
+      UserIds: selectedMembers.value.map(member => member.id),
+      Role: 'KEFU'
     })
 
-    gp.$baseMessage(
-      `成功为 ${selectedMembers.value.length} 个成员设置客服角色`,
-      'success',
-      'hey'
-    )
+    gp.$baseMessage(`成功为 ${selectedMembers.value.length} 个成员设置客服角色`, 'success', 'hey')
     addCustomerServiceDrawerVisible.value = false
     await getCustomerServiceList()
   } catch (error: any) {
@@ -809,14 +912,14 @@ const handleRemoveCustomerService = async (row: GetAdminListItemInfoVo) => {
       {
         confirmButtonText: '确定移除',
         cancelButtonText: '取消',
-        type: 'warning',
+        type: 'warning'
       }
     )
 
     // 移除客服角色（批量操作接口）
     await apiManager.adminApi.RemoveSubordinateRoles({
       UserIds: [row.id],
-      Role: 'KEFU',
+      Role: 'KEFU'
     })
 
     gp.$baseMessage('移除客服成功', 'success', 'hey')
@@ -880,21 +983,17 @@ const handleBatchUnassign = async (shopIds: string[]) => {
       {
         confirmButtonText: '确定取消',
         cancelButtonText: '取消',
-        type: 'warning',
+        type: 'warning'
       }
     )
 
     assignLoading.value = true
     const result = await apiManager.shopmgApi.BatchUnassignShopsFromUser({
       UserId: currentCustomer.value.id,
-      ShopIds: shopIds,
+      ShopIds: shopIds
     })
 
-    gp.$baseMessage(
-      `成功取消 ${result.TargetUserName} 对 ${result.SuccessCount} 个店铺的管理权限`,
-      'success',
-      'hey'
-    )
+    gp.$baseMessage(`成功取消 ${result.TargetUserName} 对 ${result.SuccessCount} 个店铺的管理权限`, 'success', 'hey')
 
     // 刷新店铺列表
     await Promise.all([getAvailableShopList(), getAssignedShopList()])
@@ -906,7 +1005,6 @@ const handleBatchUnassign = async (shopIds: string[]) => {
     assignLoading.value = false
   }
 }
-
 
 /**
  * 获取可分配的店铺列表（懒加载，默认20条）
@@ -929,7 +1027,6 @@ const getAvailableShopList = async () => {
     // 直接使用接口返回的数据
     availableShopList.value = result?.rows || []
     shopTotal.value = result?.total || 0
-
   } catch (error: any) {
     gp.$baseMessage(error?.message || '获取未分配店铺列表失败', 'error', 'hey')
     availableShopList.value = []
@@ -938,7 +1035,6 @@ const getAvailableShopList = async () => {
     shopListLoading.value = false
   }
 }
-
 
 /**
  * 获取已分配的店铺列表（分页加载）
@@ -959,7 +1055,6 @@ const getAssignedShopList = async () => {
 
     assignedShopList.value = result?.rows || []
     assignedShopTotal.value = result?.total || 0
-
   } catch (error: any) {
     gp.$baseMessage(error?.message || '获取已分配店铺列表失败', 'error', 'hey')
     assignedShopList.value = []
@@ -993,14 +1088,10 @@ const handleMoveToRight = async () => {
   try {
     const result = await apiManager.shopmgApi.BatchAssignShopsToUser({
       UserId: currentCustomer.value!.id,
-      ShopIds: selectedAvailableShops.value.map(shop => shop.ShopId),
+      ShopIds: selectedAvailableShops.value.map(shop => shop.ShopId)
     })
 
-    gp.$baseMessage(
-      `成功为 ${result.TargetUserName} 分配了 ${result.SuccessCount} 个店铺`,
-      'success',
-      'hey'
-    )
+    gp.$baseMessage(`成功为 ${result.TargetUserName} 分配了 ${result.SuccessCount} 个店铺`, 'success', 'hey')
 
     selectedAvailableShops.value = []
     await Promise.all([getAvailableShopList(), getAssignedShopList()])
@@ -1024,21 +1115,17 @@ const handleMoveToLeft = async () => {
       {
         confirmButtonText: '确定取消',
         cancelButtonText: '取消',
-        type: 'warning',
+        type: 'warning'
       }
     )
 
     assignLoading.value = true
     const result = await apiManager.shopmgApi.BatchUnassignShopsFromUser({
       UserId: currentCustomer.value!.id,
-      ShopIds: selectedAssignedShops.value.map(shop => shop.ShopId),
+      ShopIds: selectedAssignedShops.value.map(shop => shop.ShopId)
     })
 
-    gp.$baseMessage(
-      `成功取消 ${result.TargetUserName} 对 ${result.SuccessCount} 个店铺的管理权限`,
-      'success',
-      'hey'
-    )
+    gp.$baseMessage(`成功取消 ${result.TargetUserName} 对 ${result.SuccessCount} 个店铺的管理权限`, 'success', 'hey')
 
     selectedAssignedShops.value = []
     await Promise.all([getAvailableShopList(), getAssignedShopList()])
@@ -1085,12 +1172,6 @@ const handleAssignedShopSizeChange = (size: number) => {
   getAssignedShopList()
 }
 
-
-
-
-
-
-
 /**
  * 获取店铺类型名称
  */
@@ -1103,7 +1184,7 @@ const getShopTypeName = (type: number) => {
     5: '饿百零售',
     6: '京东到家',
     7: '抖店即时零售',
-    8: '饿了么官方',
+    8: '饿了么官方'
   }
   return typeMap[type] || '未知'
 }
@@ -1124,7 +1205,6 @@ const handleShopPageChange = (value: number) => {
   shopQueryForm.page = value
   getAvailableShopList()
 }
-
 
 /**
  * 分页大小改变
@@ -1182,7 +1262,7 @@ const addMemberGroup = () => {
   currentForm = reactive<any>({
     type: 2,
     name: '',
-    notes: '',
+    notes: ''
   })
 }
 
@@ -1201,7 +1281,7 @@ const delGroupItem = (row: any) => {
   ElMessageBox.confirm('此操作将永久移除分组, 是否继续?', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
-    draggable: true,
+    draggable: true
   })
     .then(() => {
       delGroup(row.Member.id).then((res: any) => {
@@ -1509,11 +1589,11 @@ getCustomerServiceList()
   overflow: hidden !important;
   flex-direction: column !important;
 
-  &[style*="display: none"] {
+  &[style*='display: none'] {
     display: none !important;
   }
 
-  &:not([style*="display: none"]) {
+  &:not([style*='display: none']) {
     display: flex !important;
   }
 }

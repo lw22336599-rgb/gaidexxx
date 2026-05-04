@@ -20,6 +20,6 @@
 
 <script lang="ts" setup>
 defineOptions({
-  name: 'Drawer',
+  name: 'Drawer'
 })
 </script>

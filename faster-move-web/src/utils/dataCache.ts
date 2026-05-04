@@ -33,7 +33,7 @@ export async function getCachedGroupList<T>(fetchFn: () => Promise<T>): Promise<
   const now = Date.now()
 
   // 检查缓存是否有效
-  if (groupListCache !== null && (now - groupListCacheTime) < GROUP_LIST_CACHE_DURATION) {
+  if (groupListCache !== null && now - groupListCacheTime < GROUP_LIST_CACHE_DURATION) {
     return groupListCache as T
   }
 
@@ -59,7 +59,7 @@ export async function getCachedCityList<T>(fetchFn: () => Promise<T>): Promise<T
   const now = Date.now()
 
   // 检查缓存是否有效
-  if (cityListCache !== null && (now - cityListCacheTime) < CITY_LIST_CACHE_DURATION) {
+  if (cityListCache !== null && now - cityListCacheTime < CITY_LIST_CACHE_DURATION) {
     return cityListCache as T
   }
 
@@ -90,7 +90,7 @@ export async function getCachedBindCode(
   const cached = bindCodeCache.get(shopId)
 
   // 检查缓存是否有效
-  if (cached && (now - cached.timestamp) < BIND_CODE_CACHE_DURATION) {
+  if (cached && now - cached.timestamp < BIND_CODE_CACHE_DURATION) {
     return cached.code
   }
 

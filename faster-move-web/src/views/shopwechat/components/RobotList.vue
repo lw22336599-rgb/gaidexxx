@@ -2,9 +2,7 @@
   <div class="robot-list-container">
     <!-- 头部操作栏 -->
     <div class="list-header">
-      <el-button type="primary" :icon="Plus" @click="handleAddRobot">
-        添加机器人
-      </el-button>
+      <el-button type="primary" :icon="Plus" @click="handleAddRobot"> 添加机器人 </el-button>
       <el-button :icon="Refresh" @click="handleRefresh">刷新</el-button>
     </div>
 
@@ -13,7 +11,12 @@
       <el-table-column label="机器人信息" min-width="200">
         <template #default="{ row }">
           <div class="robot-info">
-            <el-avatar :src="row.head_img || undefined" :icon="UserFilled" :size="40" :class="{ 'blur-avatar': demoMode }" />
+            <el-avatar
+              :src="row.head_img || undefined"
+              :icon="UserFilled"
+              :size="40"
+              :class="{ 'blur-avatar': demoMode }"
+            />
             <div class="info-text">
               <div class="name" :class="{ 'blur-text': demoMode }">{{ row.name || '未命名' }}</div>
               <div class="offid" :class="{ 'blur-text': demoMode }">{{ row.offid || '-' }}</div>
@@ -44,8 +47,11 @@
 
       <el-table-column label="连接状态" width="120" align="center">
         <template #default="{ row }">
-          <el-tag v-if="getRuntimeState(row.id)" :type="getConnectionStatusTagType(row, getRuntimeState(row.id))"
-            size="small">
+          <el-tag
+            v-if="getRuntimeState(row.id)"
+            :type="getConnectionStatusTagType(row, getRuntimeState(row.id))"
+            size="small"
+          >
             {{ getConnectionStatusText(row, getRuntimeState(row.id)) }}
           </el-tag>
           <span v-else class="text-secondary">-</span>
@@ -69,19 +75,17 @@
       <el-table-column label="操作" width="240" align="center" fixed="right">
         <template #default="{ row }">
           <el-button-group>
-            <el-button v-if="!row.on_line" type="primary" size="small" @click="handleConnect(row)">
-              连接
-            </el-button>
-            <el-button v-else type="warning" size="small" @click="handleDisconnect(row)">
-              断开
-            </el-button>
-            <el-button v-if="row.chat_type === ChatType.WechatPc" type="success" size="small"
-              @click="handleViewManagers(row)">
+            <el-button v-if="!row.on_line" type="primary" size="small" @click="handleConnect(row)"> 连接 </el-button>
+            <el-button v-else type="warning" size="small" @click="handleDisconnect(row)"> 断开 </el-button>
+            <el-button
+              v-if="row.chat_type === ChatType.WechatPc"
+              type="success"
+              size="small"
+              @click="handleViewManagers(row)"
+            >
               管理员
             </el-button>
-            <el-button type="danger" size="small" @click="handleDelete(row)">
-              删除
-            </el-button>
+            <el-button type="danger" size="small" @click="handleDelete(row)"> 删除 </el-button>
           </el-button-group>
         </template>
       </el-table-column>
@@ -89,9 +93,16 @@
 
     <!-- 分页 -->
     <div class="pagination-container">
-      <el-pagination v-model:current-page="currentPage" v-model:page-size="pageSize" :total="total"
-        :page-sizes="[10, 20, 30, 50]" layout="total, sizes, prev, pager, next, jumper" @size-change="handleSizeChange"
-        @current-change="handleCurrentChange" :class="{ 'demo-mode': demoMode }" />
+      <el-pagination
+        v-model:current-page="currentPage"
+        v-model:page-size="pageSize"
+        :total="total"
+        :page-sizes="[10, 20, 30, 50]"
+        layout="total, sizes, prev, pager, next, jumper"
+        :class="{ 'demo-mode': demoMode }"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+      />
     </div>
 
     <!-- 管理员列表对话框 -->
@@ -102,13 +113,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import {
-  Plus,
-  Refresh,
-  UserFilled,
-  CircleCheck,
-  CircleClose,
-} from '@element-plus/icons-vue'
+import { Plus, Refresh, UserFilled, CircleCheck, CircleClose } from '@element-plus/icons-vue'
 import { t_chat_push_list } from '@/TsModel/Alien/Entity/Tables/function/chat_push/t_chat_push_list'
 import { ChatType } from '@/TsModel/Alien/Entity/Function/CHATPUSH/ChatType'
 import { apiManager } from '@/TsModel/Api/ApiManager'
@@ -161,7 +166,7 @@ const getChatTypeName = (type: ChatType): string => {
     [ChatType.WechatWeb]: '微信Web',
     [ChatType.WechatWebHook]: '企业微信',
     [ChatType.DingdingWebHook]: '钉钉',
-    [ChatType.FeishuWebHook]: '飞书',
+    [ChatType.FeishuWebHook]: '飞书'
   }
   return names[type] || '未知'
 }
@@ -182,7 +187,7 @@ const getSignalRStateName = (state: SignalRConnectionState): string => {
     [SignalRConnectionState.Connecting]: '连接中',
     [SignalRConnectionState.Connected]: '已连接',
     [SignalRConnectionState.Reconnecting]: '重连中',
-    [SignalRConnectionState.Failed]: '失败',
+    [SignalRConnectionState.Failed]: '失败'
   }
   return names[state] || '未知'
 }
@@ -402,20 +407,15 @@ const checkAndReconnectRobot = async (robot: t_chat_push_list): Promise<boolean>
       const callbackPort = otherValues.messageCallbackPort
 
       if (callbackPort && (window as any).electron?.ipcRenderer) {
-        console.log(
-          `[${robot.name}] 恢复消息服务器，使用上次回调端口: ${callbackPort}`
-        )
+        console.log(`[${robot.name}] 恢复消息服务器，使用上次回调端口: ${callbackPort}`)
 
-        const result = await (window as any).electron.ipcRenderer.invoke(
-          'wx-start-message-server',
-          {
-            robotId: robot.id,
-            wxHttpPort: parseInt(robot.host.split(':').pop() || '19088'),
-            wxHttpHost: robot.host,
-            robotInfo: robot,
-            fixedPort: callbackPort
-          }
-        )
+        const result = await (window as any).electron.ipcRenderer.invoke('wx-start-message-server', {
+          robotId: robot.id,
+          wxHttpPort: parseInt(robot.host.split(':').pop() || '19088'),
+          wxHttpHost: robot.host,
+          robotInfo: robot,
+          fixedPort: callbackPort
+        })
 
         if (!result.success) {
           console.warn(
@@ -423,9 +423,7 @@ const checkAndReconnectRobot = async (robot: t_chat_push_list): Promise<boolean>
             result.error || '未知错误'
           )
         } else {
-          console.log(
-            `[${robot.name}] 消息服务器恢复成功，端口: ${result.port}`
-          )
+          console.log(`[${robot.name}] 消息服务器恢复成功，端口: ${result.port}`)
         }
 
         // 无论本地端口监听是否成功，都再次调用一次 type=9，使用同一个回调端口
@@ -438,20 +436,13 @@ const checkAndReconnectRobot = async (robot: t_chat_push_list): Promise<boolean>
             timeout: '/webhook',
             enableHttp: 0
           })
-          console.log(
-            `[${robot.name}] 已重新设置微信 Hook 回调 (type=9)，端口: ${callbackPort}`
-          )
+          console.log(`[${robot.name}] 已重新设置微信 Hook 回调 (type=9)，端口: ${callbackPort}`)
         } catch (err2: any) {
           // 重复设置同一个端口时，微信可能返回失败，这里只记录告警不阻断
-          console.warn(
-            `[${robot.name}] 重新设置 Hook 回调失败（可能已设置过）:`,
-            err2?.message || err2
-          )
+          console.warn(`[${robot.name}] 重新设置 Hook 回调失败（可能已设置过）:`, err2?.message || err2)
         }
       } else {
-        console.log(
-          `[${robot.name}] 未找到已保存的回调端口（messageCallbackPort），跳过消息服务器恢复`
-        )
+        console.log(`[${robot.name}] 未找到已保存的回调端口（messageCallbackPort），跳过消息服务器恢复`)
       }
     } catch (err) {
       console.warn(`[${robot.name}] 恢复消息接收服务失败:`, err)
@@ -463,11 +454,7 @@ const checkAndReconnectRobot = async (robot: t_chat_push_list): Promise<boolean>
 
     // 创建并连接 SignalR（serverUrl 已在上面获取）
     const { SignalRClientManager } = await import('@/services/wechat/SignalRClientManager')
-    const signalRManager = new SignalRClientManager(
-      { serverUrl },
-      wxHttpService,
-      robot
-    )
+    const signalRManager = new SignalRClientManager({ serverUrl }, wxHttpService, robot)
 
     await signalRManager.connect()
 
@@ -516,13 +503,9 @@ const handleConnect = (robot: t_chat_push_list) => {
 // 处理断开
 const handleDisconnect = async (robot: t_chat_push_list) => {
   try {
-    await ElMessageBox.confirm(
-      `确定要断开机器人"${robot.name}"的连接吗？`,
-      '确认断开',
-      {
-        type: 'warning',
-      }
-    )
+    await ElMessageBox.confirm(`确定要断开机器人"${robot.name}"的连接吗？`, '确认断开', {
+      type: 'warning'
+    })
     emit('disconnect', robot)
   } catch {
     // 用户取消
@@ -538,20 +521,16 @@ const handleViewManagers = (robot: t_chat_push_list) => {
 // 处理删除
 const handleDelete = async (robot: t_chat_push_list) => {
   try {
-    await ElMessageBox.confirm(
-      `确定要删除机器人"${robot.name}"吗？此操作不可恢复。`,
-      '确认删除',
-      {
-        type: 'warning',
-        confirmButtonText: '确定删除',
-        cancelButtonText: '取消',
-      }
-    )
+    await ElMessageBox.confirm(`确定要删除机器人"${robot.name}"吗？此操作不可恢复。`, '确认删除', {
+      type: 'warning',
+      confirmButtonText: '确定删除',
+      cancelButtonText: '取消'
+    })
 
     const loadingMsg = ElMessage({
       message: '正在删除...',
       type: 'info',
-      duration: 0,
+      duration: 0
     })
 
     try {

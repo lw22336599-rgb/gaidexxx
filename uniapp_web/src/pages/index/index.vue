@@ -1,239 +1,526 @@
 <template>
   <view class="page">
-    <view class="head">
-      <text class="greet">你好，默认测试账号</text>
-      <text class="tip">纯静态首页 · 无接口请求 · 与 Mock 演示数据一致</text>
-    </view>
+    <view class="index-dashboard-shell">
+      <view v-if="loading" class="card muted load-hint">加载中…</view>
+      <view v-else-if="error" class="card err err-card">
+        <text class="err-msg">{{ error }}</text>
+        <button class="retry-btn" @tap="load">重试</button>
+      </view>
+      <template v-else>
+        <view class="notice-strip">
+          <view class="notice-alert">
+            <text class="notice-exclaim">!</text>
+          </view>
+          <view class="notice-fill" />
+          <text class="notice-bell-outline" aria-hidden="true">🔔</text>
+        </view>
 
-    <view class="card">
-      <view class="row">
-        <text class="k">用户名</text>
-        <text class="v">默认测试账号</text>
-      </view>
-      <view class="row">
-        <text class="k">角色</text>
-        <text class="v">静态占位 · 运营</text>
-      </view>
-      <view class="row">
-        <text class="k">头像</text>
-        <text class="v">—</text>
-      </view>
-      <view class="row">
-        <text class="k">Token（演示）</text>
-        <text class="v mono">uni-mock…oken</text>
-      </view>
-      <view class="row">
-        <text class="k">说明</text>
-        <text class="v small">以下为占位文案，不读取接口；若从带 mock 参数的链接进入，仍会同步写入本地 Mock 登录态。</text>
-      </view>
-    </view>
+        <!-- 今日指标：2×2 与参考稿一致；仅今日数 + 右上累计，无任何「相较于昨日」 -->
+        <view v-if="metricRows.length" class="metrics-block">
+          <view class="metric-grid">
+            <view
+              v-for="(m, i) in metricRows"
+              :key="m.key || i"
+              class="metric-top-card tappable"
+              :class="'dt-' + m.dataType"
+              hover-class="metric-hover"
+              @tap.stop="onMetricTap(m)"
+            >
+              <view class="mc-top-row">
+                <text class="mc-title">{{ m.title }}</text>
+                <text class="mc-all">{{ m.totalRight }}</text>
+              </view>
+              <view class="mc-mid">
+                <text class="mc-count">{{ m.count }}</text>
+                <text v-if="m.unit" class="mc-unit">{{ m.unit }}</text>
+              </view>
+              <text class="mc-watermark">{{ m.wm }}</text>
+            </view>
+          </view>
+        </view>
 
-    <view class="card urls">
-      <text class="url-title">手机浏览器 H5 测试</text>
-      <text class="url-tip">开发服务已监听 0.0.0.0；请把下述地址中的主机名换为你电脑的局域网 IP（与终端端口一致）。</text>
-      <view class="url-block">
-        <text class="url-label">首页（可先免登写 Mock 态）</text>
-        <text class="url-line" selectable>{{ homeWithMock }}</text>
-      </view>
-      <view class="url-block">
-        <text class="url-label">本页静态地址</text>
-        <text class="url-line" selectable>{{ homeStatic }}</text>
-      </view>
-    </view>
+        <view class="quick-card">
+          <text class="quick-title">快捷功能</text>
+          <view class="quick-row">
+            <view class="quick-item" hover-class="quick-hover" @tap="openAggregatedService">
+              <view class="quick-circle fox">
+                <text class="fox-emo">🦊</text>
+              </view>
+              <text class="quick-label">聚合客服</text>
+            </view>
+          </view>
+        </view>
 
-    <view class="actions">
-      <button class="ghost" @click="goMine">我的</button>
-      <button class="ghost" @click="goSample">分包示例</button>
+        <DashboardAccountRanks :month-member-data="monthMemberData" />
+
+        <DashboardTeamChart :team-top-list="teamTopList" />
+      </template>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { onLoad, onShow } from "@dcloudio/uni-app";
-import { MOCK_SESSION_TOKEN } from "@/config/mockAuth";
+import { computed, onBeforeUnmount, ref } from "vue";
+import { onLoad, onPullDownRefresh, onShow } from "@dcloudio/uni-app";
+import { setTabBarPageIndex } from "@/utils/tabBarIndex";
+import { getHomeData } from "@/api/home";
 import { applyMockSessionFromQuery } from "@/utils/mockSession";
+import { assertAuthedOrRedirectLogin } from "@/router/guard";
+import { useUserStore } from "@/stores/user";
+import { ALIGNED_PC_HASH, shopV2HashForPlatform } from "@/config/alignedPcRoutes";
+import { devMockBaseURL, refreshDevMockConfig, applyBridgeEvent } from "@/config/devMock";
+import { sanitizeMobileHomeTitle, useHomeDashboard } from "@/composables/useHomeDashboard";
+import DashboardAccountRanks from "@/components/home/DashboardAccountRanks.vue";
+import DashboardTeamChart from "@/components/home/DashboardTeamChart.vue";
 
-/** 仍解析 URL 参数，便于手机打开带 mockBypass/mock_token 的链接时写入与网页一致的 Mock 态（同步、无网络） */
+function goAdminPc(path: string) {
+  const p = path.startsWith("/") ? path : `/${path}`;
+  // #ifdef H5
+  uni.navigateTo({
+    url: `/pages/admin-pc/admin-pc?path=${encodeURIComponent(p)}`,
+    fail: () => {},
+  });
+  // #endif
+  // #ifndef H5
+  uni.showToast({ title: "请在 H5 中打开完整后台", icon: "none" });
+  // #endif
+}
+
+function openAggregatedService() {
+  goAdminPc(ALIGNED_PC_HASH.CUSTOMER_SERVICE_CHAT);
+}
+
 onLoad((opts) => {
   applyMockSessionFromQuery(opts as Record<string, string | undefined>);
 });
 
-const homeStatic = ref("");
-const homeWithMock = ref("");
+const {
+  topData,
+  monthMemberData,
+  teamTopList,
+  applyPayload,
+} = useHomeDashboard();
 
-onShow(() => {
-  const pages = getCurrentPages();
-  const cur = pages[pages.length - 1] as unknown as {
-    options?: Record<string, string | undefined>;
-  };
-  applyMockSessionFromQuery(cur?.options);
+let sseInstance: { close: () => void } | null = null;
+let pendingTimer: ReturnType<typeof setTimeout> | null = null;
+
+function subscribeRealtime() {
+  if (typeof window === "undefined" || typeof EventSource === "undefined") return;
+  if (sseInstance) return;
+  try {
+    const es = new EventSource(`${devMockBaseURL()}/seed/events`);
+    const reloadDebounced = () => {
+      if (pendingTimer) return;
+      pendingTimer = setTimeout(() => {
+        pendingTimer = null;
+        void load();
+      }, 600);
+    };
+    es.addEventListener("hello", (ev) => {
+      try {
+        const d = JSON.parse((ev as MessageEvent).data);
+        applyBridgeEvent("hello", d);
+      } catch {
+        /* ignore */
+      }
+    });
+    es.addEventListener("mode", (ev) => {
+      try {
+        const d = JSON.parse((ev as MessageEvent).data);
+        applyBridgeEvent("mode", d);
+        reloadDebounced();
+      } catch {
+        /* ignore */
+      }
+    });
+    es.addEventListener("change", reloadDebounced);
+    es.addEventListener("clear", reloadDebounced);
+    es.addEventListener("reset", reloadDebounced);
+    sseInstance = es as unknown as { close: () => void };
+  } catch {
+    /* ignore */
+  }
+}
+
+onBeforeUnmount(() => {
+  if (sseInstance) {
+    try {
+      sseInstance.close();
+    } catch {
+      /* ignore */
+    }
+    sseInstance = null;
+  }
+  if (pendingTimer) clearTimeout(pendingTimer);
 });
 
-function buildOrigin(): string {
-  /* #ifdef H5 */
-  if (typeof window !== "undefined" && window.location) {
-    return window.location.origin;
-  }
-  /* #endif */
-  return "";
-}
+const userStore = useUserStore();
+const loading = ref(false);
+const error = ref("");
+let loadSeq = 0;
 
-function initUrls() {
-  const origin = buildOrigin();
-  if (!origin) {
-    homeStatic.value = "（请在 H5 浏览器中打开以生成可复制地址）";
-    homeWithMock.value = `（Mock 口令）mock_token=${MOCK_SESSION_TOKEN}`;
+const WM_BY_TYPE: Record<number, string> = {
+  200: "员",
+  100: "分",
+  1: "店",
+  2: "店",
+};
+
+const metricRows = computed(() => {
+  return topData.value.map((row) => {
+    const dt = Number((row as any).data_type ?? 0);
+    const title = sanitizeMobileHomeTitle(
+      String((row as any).title ?? (row as any).name ?? (row as any).key ?? ""),
+    );
+    const count = (row as any).count !== undefined && (row as any).count !== null ? String((row as any).count) : "—";
+    const unit = String((row as any).unit ?? (row as any).suffix ?? "");
+    const allRaw = (row as any).all_total;
+    const allNum = allRaw !== undefined && allRaw !== null ? Number(allRaw) : Number((row as any).count) || 0;
+    const totalRight = `全部${allNum}${unit || ""}`;
+    return {
+      key: String((row as any).key),
+      dataType: dt,
+      title,
+      count,
+      unit,
+      totalRight,
+      wm: WM_BY_TYPE[dt] || "数",
+      target: (row as any).target as { type: "stores" | "users" | "todos"; platform?: string } | undefined,
+    };
+  });
+});
+
+const FALLBACK_METRIC_TARGET: Record<string, { type: "stores" | "users" | "todos"; platform?: string }> = {
+  mt_shop_today: { type: "stores", platform: "mt-shop-feature" },
+  elm_shop_today: { type: "stores", platform: "elm-shop-feature" },
+  member_today: { type: "users" },
+  integral_today: { type: "users" },
+};
+
+function onMetricTap(m: { key: string; target?: { type: string; platform?: string } }) {
+  const t = m.target || FALLBACK_METRIC_TARGET[m.key];
+  if (!t) {
     return;
   }
-  const base = `${origin}/#/pages/index/index`;
-  homeStatic.value = base;
-  homeWithMock.value = `${base}?mockBypass=1`;
+  // #ifdef H5
+  if (t.type === "stores") {
+    goAdminPc(shopV2HashForPlatform(t.platform));
+    return;
+  }
+  if (t.type === "users") {
+    const isIntegral = String(m.key).includes("integral");
+    goAdminPc(isIntegral ? ALIGNED_PC_HASH.TEAM_POINT : ALIGNED_PC_HASH.TEAM_MEMBER);
+    return;
+  }
+  if (t.type === "todos") {
+    goAdminPc(ALIGNED_PC_HASH.USER_OPERATE_TODOS);
+    return;
+  }
+  // #endif
+  const q: string[] = [`type=${encodeURIComponent(t.type)}`];
+  if (t.platform) q.push(`platform=${encodeURIComponent(t.platform)}`);
+  uni.navigateTo({ url: `/pages/seed-list/seed-list?${q.join("&")}` });
 }
 
-initUrls();
-
-function goMine() {
-  uni.navigateTo({ url: "/pages/mine/mine" });
+async function load() {
+  if (!assertAuthedOrRedirectLogin()) {
+    loading.value = false;
+    return;
+  }
+  const seq = ++loadSeq;
+  loading.value = true;
+  error.value = "";
+  try {
+    await userStore.getUserInfo({ silent: true });
+    const res = (await getHomeData()) as { code?: number; data?: Record<string, unknown> };
+    if (res.code !== 200 || !res.data) {
+      throw new Error("首页数据为空（/homedata/v2/gethomedata）");
+    }
+    if (seq !== loadSeq) return;
+    applyPayload(res.data);
+  } catch (e: unknown) {
+    if (seq !== loadSeq) return;
+    if (e instanceof Error) {
+      error.value = e.message;
+    } else if (e && typeof e === "object" && "errMsg" in e) {
+      error.value = String((e as { errMsg?: string }).errMsg || "加载失败");
+    } else {
+      error.value = typeof e === "string" ? e : JSON.stringify(e);
+    }
+    if (!error.value || error.value === "{}") error.value = "加载失败";
+  } finally {
+    if (seq === loadSeq) {
+      loading.value = false;
+    }
+  }
 }
 
-function goSample() {
-  uni.navigateTo({ url: "/package-demo/pages/sample/sample" });
-}
+onShow(async () => {
+  setTabBarPageIndex(0);
+  const pages = getCurrentPages();
+  const cur = pages[pages.length - 1] as unknown as { options?: Record<string, string | undefined> };
+  applyMockSessionFromQuery(cur?.options);
+  await refreshDevMockConfig();
+  void load();
+  /* 与 PC 首页一致：始终订阅 bridge SSE，用于 mode/clear/reset 及 mock 模式下的 change 实时刷新 */
+  subscribeRealtime();
+});
+
+onPullDownRefresh(() => {
+  void (async () => {
+    try {
+      await load();
+    } finally {
+      uni.stopPullDownRefresh();
+    }
+  })();
+});
 </script>
 
 <style scoped>
-/* 全 rpx：H5 手机与电脑同一套规则，随屏宽换算；宽屏居中避免卡片过散 */
+/* 外层固定为导航栏与 tabBar 之间的可视高度，禁止整页跟内容一起「长高」乱跑 */
 .page {
-  min-height: 100vh;
-  width: 100%;
-  max-width: 750rpx;
+  height: 100%;
+  min-height: 0;
+  max-width: 100%;
   margin: 0 auto;
-  padding: 36rpx 32rpx 48rpx;
+  padding: 0;
   box-sizing: border-box;
-  background: #f5f6fa;
-}
-.head {
-  margin-bottom: 36rpx;
-}
-.greet {
-  display: block;
-  font-size: 40rpx;
-  font-weight: 600;
-  color: #1c1c28;
-}
-.tip {
-  display: block;
-  margin-top: 12rpx;
-  font-size: 24rpx;
-  color: #888;
-  line-height: 1.55;
-}
-.card {
-  background: #fff;
-  border-radius: 24rpx;
-  padding: 36rpx 40rpx;
-  margin-bottom: 32rpx;
-  box-shadow: 0 6rpx 28rpx rgba(0, 0, 0, 0.06);
-}
-.card.urls {
-  padding: 36rpx 40rpx 40rpx;
-  margin-bottom: 28rpx;
-}
-.url-title {
-  display: block;
-  font-size: 30rpx;
-  font-weight: 600;
-  color: #1c1c28;
-  margin-bottom: 16rpx;
-}
-.url-tip {
-  display: block;
-  font-size: 24rpx;
-  color: #666;
-  line-height: 1.6;
-  margin-bottom: 28rpx;
-}
-.url-block {
-  margin-bottom: 28rpx;
-}
-.url-block:last-of-type {
-  margin-bottom: 0;
-}
-.url-label {
-  display: block;
-  font-size: 24rpx;
-  color: #888;
-  margin-bottom: 10rpx;
-}
-.url-line {
-  display: block;
-  font-size: 22rpx;
-  color: #2d6cdf;
-  line-height: 1.65;
-  word-break: break-all;
-}
-.row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  padding: 22rpx 0;
-  min-height: 48rpx;
-  border-bottom: 1rpx solid #f0f0f0;
-}
-.row:first-child {
-  padding-top: 4rpx;
-}
-.row:last-child {
-  border-bottom: none;
-  padding-bottom: 4rpx;
-}
-.k {
   font-size: 26rpx;
-  color: #888;
-  flex-shrink: 0;
-  margin-right: 28rpx;
-  max-width: 220rpx;
-}
-.v {
-  font-size: 28rpx;
-  color: #222;
-  text-align: right;
-  flex: 1;
-  word-break: break-all;
-}
-.v.small {
-  font-size: 24rpx;
-  color: #555;
-  text-align: right;
-  line-height: 1.55;
-}
-.v.mono {
-  font-family: ui-monospace, monospace;
-  font-size: 24rpx;
-}
-.actions {
+  background: linear-gradient(180deg, #fff9e8 0%, #fff4dc 8%, #f4f6fa 160rpx);
+  background-color: #f4f6fa;
   display: flex;
   flex-direction: column;
-  gap: 22rpx;
-  margin-top: 8rpx;
+  overflow: hidden;
 }
-/* 原默认约 28rpx，整体加大 4rpx（约两档常用步进），圆角胶囊；去 uni/button 默认描边 */
-.ghost {
-  margin-top: 0;
-  width: 100%;
-  height: 96rpx;
-  line-height: 96rpx;
-  padding: 0 32rpx;
-  font-size: 32rpx;
-  font-weight: 500;
-  border-radius: 999rpx;
+/* 仅内容区滚动；底部留白避免被 tabBar 遮挡 */
+.index-dashboard-shell {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: contain;
+  box-sizing: border-box;
+  padding: calc(12rpx + env(safe-area-inset-top)) 20rpx 28rpx;
+  padding-bottom: calc(140rpx + env(safe-area-inset-bottom));
+}
+.notice-strip {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 20rpx;
+  padding: 20rpx 24rpx;
+  min-height: 88rpx;
+  box-sizing: border-box;
+  background: linear-gradient(180deg, #fff4d6 0%, #fff9e8 100%);
+  border-radius: 20rpx;
+  border: 1rpx solid rgba(230, 180, 34, 0.22);
+}
+.notice-alert {
+  width: 64rpx;
+  height: 56rpx;
+  border-radius: 14rpx;
+  background: #fff4dd;
+  border: 1rpx solid rgba(230, 130, 40, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.notice-exclaim {
+  font-size: 34rpx;
+  font-weight: 800;
+  color: #e67e22;
+  line-height: 1;
+}
+.notice-fill {
+  flex: 1;
+}
+.notice-bell-outline {
+  font-size: 40rpx;
+  line-height: 1;
+  flex-shrink: 0;
+  opacity: 0.92;
+}
+.card {
+  background: #ffffff;
+  border-radius: 24rpx;
+  padding: 32rpx 28rpx 28rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 6rpx 28rpx rgba(28, 28, 40, 0.06);
+  border: 1rpx solid rgba(28, 28, 40, 0.04);
+}
+.card.muted,
+.card.err {
+  font-size: 28rpx;
+  color: #666;
+}
+.card.err {
+  color: #c0392b;
+  line-height: 1.55;
+}
+.err-card {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 24rpx;
+}
+.err-msg {
+  font-size: 28rpx;
+  line-height: 1.5;
+}
+.retry-btn {
+  border-radius: 16rpx;
+  font-size: 28rpx;
+  background: #409eff;
+  color: #fff;
+}
+.load-hint {
+  text-align: center;
+  padding: 48rpx 24rpx !important;
+  margin-bottom: 24rpx;
+}
+.metrics-block {
+  margin-bottom: 24rpx;
+}
+.metric-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16rpx;
+}
+.metric-top-card {
+  position: relative;
+  min-height: 200rpx;
+  border-radius: 20rpx;
+  box-shadow: 0 4rpx 20rpx rgba(28, 28, 40, 0.06);
+  border: 1rpx solid rgba(28, 28, 40, 0.06);
+  padding: 18rpx 16rpx 16rpx;
+  box-sizing: border-box;
   background: #fff;
-  color: #2d6cdf;
-  border: 2rpx solid #c8d6f5;
+  overflow: hidden;
+}
+.mc-top-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8rpx;
+}
+.mc-title {
+  flex: 1;
+  min-width: 0;
+  font-size: 24rpx;
+  color: #303133;
+  font-weight: 600;
+  line-height: 1.25;
+}
+.mc-all {
+  flex-shrink: 0;
+  font-size: 22rpx;
+  color: #909399;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+.quick-card {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 24rpx 20rpx 28rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 20rpx rgba(28, 28, 40, 0.06);
+  border: 1rpx solid rgba(28, 28, 40, 0.04);
   box-sizing: border-box;
 }
-.ghost::after {
-  border: none;
+.quick-title {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1c1c28;
+  margin-bottom: 20rpx;
+}
+.quick-row {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 32rpx;
+}
+.quick-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 120rpx;
+  padding: 8rpx;
+  margin: -8rpx;
+}
+.quick-hover {
+  opacity: 0.85;
+}
+.quick-circle {
+  width: 112rpx;
+  height: 112rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8rpx 24rpx rgba(255, 149, 0, 0.35);
+}
+.quick-circle.fox {
+  background: linear-gradient(145deg, #ff9f43 0%, #ff6b35 100%);
+}
+.fox-emo {
+  font-size: 56rpx;
+  line-height: 1;
+}
+.quick-label {
+  margin-top: 12rpx;
+  font-size: 24rpx;
+  color: #606266;
+}
+.mc-mid {
+  margin-top: 14rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: baseline;
+  flex-wrap: wrap;
+}
+.mc-count {
+  font-size: 48rpx;
+  font-weight: 700;
+  color: #1c1c28;
+  line-height: 1.1;
+}
+.mc-unit {
+  font-size: 24rpx;
+  color: #606266;
+  margin-left: 8rpx;
+  font-weight: 500;
+}
+.mc-watermark {
+  position: absolute;
+  right: 4rpx;
+  bottom: -6rpx;
+  font-size: 88rpx;
+  font-weight: 800;
+  color: rgba(48, 49, 51, 0.06);
+  line-height: 1;
+  pointer-events: none;
+}
+.tappable {
+  cursor: pointer;
+}
+.metric-hover {
+  opacity: 0.94;
+}
+.dt-1 .mc-watermark {
+  color: rgba(255, 149, 0, 0.12);
+}
+.dt-2 .mc-watermark {
+  color: rgba(0, 122, 255, 0.1);
+}
+.dt-200 .mc-watermark {
+  color: rgba(155, 89, 182, 0.1);
+}
+.dt-100 .mc-watermark {
+  color: rgba(241, 196, 15, 0.12);
 }
 </style>

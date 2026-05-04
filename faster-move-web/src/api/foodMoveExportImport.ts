@@ -16,11 +16,7 @@ const INVALID_FILENAME_CHARS = /[\\/:*?"<>|\x00-\x1f]/g
 
 function sanitizeFilenamePart(s: string, maxLen = 50): string {
   if (!s || typeof s !== 'string') return ''
-  return s
-    .replace(INVALID_FILENAME_CHARS, '_')
-    .replace(/\s+/g, ' ')
-    .trim()
-    .slice(0, maxLen) || '未命名'
+  return s.replace(INVALID_FILENAME_CHARS, '_').replace(/\s+/g, ' ').trim().slice(0, maxLen) || '未命名'
 }
 
 /**
@@ -29,10 +25,7 @@ function sanitizeFilenamePart(s: string, maxLen = 50): string {
  * @param options 可选，用于生成有意义的文件名：店铺类型+店铺名+导出日期
  * @returns 下载文件名
  */
-export async function exportTaskFoodData(
-  taskId: string,
-  options?: ExportFilenameOptions
-): Promise<string> {
+export async function exportTaskFoodData(taskId: string, options?: ExportFilenameOptions): Promise<string> {
   const axios = apiManager.getAxiosInstance()
   const moveBaseUrl = apiManager.getMoveBaseUrl()
   const url = `${moveBaseUrl}/FoodMove/ExportTaskFoodData`
@@ -41,7 +34,7 @@ export async function exportTaskFoodData(
     method: 'POST',
     url,
     params: { taskId },
-    responseType: 'blob',
+    responseType: 'blob'
   })
 
   const blob = response.data as Blob
@@ -82,10 +75,7 @@ export interface ImportTaskFoodDataResult {
  * @param newShopId 新店ID（t_wmt_shop_list.id）
  * @param file .fdmv 导出包文件
  */
-export async function importTaskFoodData(
-  newShopId: string,
-  file: File
-): Promise<ImportTaskFoodDataResult> {
+export async function importTaskFoodData(newShopId: string, file: File): Promise<ImportTaskFoodDataResult> {
   const axios = apiManager.getAxiosInstance()
   const moveBaseUrl = apiManager.getMoveBaseUrl()
   const url = `${moveBaseUrl}/FoodMove/ImportTaskFoodData`
@@ -98,7 +88,7 @@ export async function importTaskFoodData(
     method: 'POST',
     url,
     params: { newShopId },
-    data: formData,
+    data: formData
   })
 
   const data = response.data as ImportTaskFoodDataResult

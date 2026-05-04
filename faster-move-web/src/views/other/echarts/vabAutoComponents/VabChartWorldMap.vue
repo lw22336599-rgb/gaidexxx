@@ -10,14 +10,14 @@
 import { registerMap } from 'echarts/core'
 
 defineOptions({
-  name: 'VabChartWorldMap',
+  name: 'VabChartWorldMap'
 })
 
 defineProps({
   title: {
     type: String,
-    default: '',
-  },
+    default: ''
+  }
 })
 
 const option = reactive<any>({
@@ -25,15 +25,15 @@ const option = reactive<any>({
     top: 20,
     right: 20,
     bottom: 40,
-    left: 40,
-  },
+    left: 40
+  }
 })
 
 const getMap = async () => {
   const { data } = await axios({
     //url: 'static/json/china.json',
     url: 'https://unpkg.com/echarts@4.9.0/map/json/world.json',
-    method: 'get',
+    method: 'get'
   })
 
   setTimeout(() => {
@@ -43,7 +43,7 @@ const getMap = async () => {
       map: 'world',
       type: 'map',
       zoom: 1.2,
-      roam: true,
+      roam: true
     }
   }, 500)
 }

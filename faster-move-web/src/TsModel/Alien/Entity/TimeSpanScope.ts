@@ -1,5 +1,5 @@
 /** 时间范围*/
 export interface TimeSpanScope {
-		Start: any;
-		End: any;
+  Start: any
+  End: any
 }

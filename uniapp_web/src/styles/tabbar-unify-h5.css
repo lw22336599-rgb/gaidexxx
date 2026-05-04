@@ -1,0 +1,61 @@
+/**
+ * H5 底部 TabBar：首页 / 门店管理 / 微信推送 / 个人中心（pages.json）
+ * 单手可点：每项触控热区 ≥ 44×44px（iOS HIG），图标+文案，安全区适配。
+ */
+.uni-tabbar-bottom .uni-tabbar {
+  padding-top: 6px;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  display: flex;
+  box-sizing: border-box;
+  align-items: stretch;
+  min-height: calc(56px + env(safe-area-inset-bottom, 0px));
+}
+
+.uni-tabbar__item {
+  justify-content: center;
+  align-items: center;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: none;
+  /* 整列可点，高度覆盖 44px+ */
+  min-height: 56px;
+  padding: 0 2px;
+  box-sizing: border-box;
+}
+
+.uni-tabbar__bd {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* 热区：宽、高均不低于 44px */
+  min-width: 44px;
+  min-height: 44px;
+  width: 100%;
+  max-width: 100%;
+  padding: 6px 4px 8px;
+  box-sizing: border-box;
+}
+
+.uni-tabbar__icon {
+  margin-top: 0;
+  width: 24px !important;
+  height: 24px !important;
+  flex-shrink: 0;
+}
+
+.uni-tabbar__icon.uni-tabbar__icon__diff {
+  margin-top: 0;
+}
+
+.uni-tabbar__label {
+  font-size: 11px !important;
+  line-height: 1.2 !important;
+  margin-top: 4px !important;
+  max-width: 100%;
+  padding: 0 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: center;
+}

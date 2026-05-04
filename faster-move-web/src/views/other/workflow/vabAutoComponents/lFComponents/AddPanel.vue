@@ -19,12 +19,12 @@ export default defineComponent({
   props: {
     nodeData: {
       type: Object,
-      default: () => {},
+      default: () => {}
     },
     lf: {
       type: Object || String,
-      default: () => {},
-    },
+      default: () => {}
+    }
   },
   emits: ['addNodeFinish'],
   data() {
@@ -32,13 +32,13 @@ export default defineComponent({
       nodeList: [
         {
           type: 'user',
-          label: '用户',
+          label: '用户'
         },
         {
           type: 'push',
-          label: '推送',
-        },
-      ],
+          label: '推送'
+        }
+      ]
     }
   },
   methods: {
@@ -48,7 +48,7 @@ export default defineComponent({
       const nextNode = lf.addNode({
         type: item.type,
         x: x + 150,
-        y: y + 150,
+        y: y + 150
       })
       const nextId = nextNode.id
       lf.createEdge({ sourceNodeId: id, targetNodeId: nextId })
@@ -60,28 +60,28 @@ export default defineComponent({
       const timeNode = lf.addNode({
         type: 'download',
         x,
-        y: y + 150,
+        y: y + 150
       })
       const userNode = lf.addNode({
         type: 'user',
         x: x + 150,
-        y: y + 150,
+        y: y + 150
       })
       const pushNode = lf.addNode({
         type: 'push',
         x: x + 150,
         y: y + 300,
-        properties: {},
+        properties: {}
       })
       const endNode = lf.addNode({
         type: 'end',
         x: x + 300,
-        y: y + 150,
+        y: y + 150
       })
       const endNode2 = lf.addNode({
         type: 'end',
         x: x + 300,
-        y: y + 300,
+        y: y + 300
       })
       lf.createEdge({ sourceNodeId: id, targetNodeId: timeNode.id })
       lf.createEdge({ sourceNodeId: timeNode.id, targetNodeId: userNode.id })
@@ -92,8 +92,8 @@ export default defineComponent({
         text: {
           value: 'Y',
           x: x + 230,
-          y: y + 140,
-        },
+          y: y + 140
+        }
       })
       lf.createEdge({
         sourceNodeId: userNode.id,
@@ -101,17 +101,17 @@ export default defineComponent({
         text: {
           value: 'N',
           x: x + 160,
-          y: y + 230,
-        },
+          y: y + 230
+        }
       })
       lf.createEdge({
         sourceNodeId: pushNode.id,
         targetNodeId: endNode2.id,
-        endPoint: { x: x + 280, y: y + 300 },
+        endPoint: { x: x + 280, y: y + 300 }
       })
       this.$emit('addNodeFinish')
-    },
-  },
+    }
+  }
 })
 </script>
 <style scoped>

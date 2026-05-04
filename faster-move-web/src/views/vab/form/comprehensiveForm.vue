@@ -17,7 +17,14 @@
             </el-radio-group>
           </vab-query-form-left-panel>
         </vab-query-form>
-        <el-form ref="formRef" class="demo-form" :label-position="labelPosition" label-width="100px" :model="form" :rules="rules">
+        <el-form
+          ref="formRef"
+          class="demo-form"
+          :label-position="labelPosition"
+          label-width="100px"
+          :model="form"
+          :rules="rules"
+        >
           <el-form-item label="活动名称" prop="name">
             <el-input v-model="form.name" clearable />
           </el-form-item>
@@ -54,7 +61,13 @@
             <el-rate v-model="form.rate" show-text />
           </el-form-item>
           <el-form-item label="行政区划">
-            <el-cascader v-model="form.area" clearable filterable :options="areaOptions" :props="{ label: 'name', value: 'code' }" />
+            <el-cascader
+              v-model="form.area"
+              clearable
+              filterable
+              :options="areaOptions"
+              :props="{ label: 'name', value: 'code' }"
+            />
           </el-form-item>
           <el-form-item label="穿梭框">
             <el-transfer
@@ -80,7 +93,7 @@ import type { FormInstance } from 'element-plus'
 import { getList } from '/@/api/area'
 
 defineOptions({
-  name: 'ComprehensiveForm',
+  name: 'ComprehensiveForm'
 })
 
 const generateData = () => {
@@ -91,7 +104,7 @@ const generateData = () => {
     data.push({
       label: city,
       key: index,
-      pinyin: pinyin[index],
+      pinyin: pinyin[index]
     })
   })
   return data
@@ -110,7 +123,7 @@ const form = reactive<any>({
   description: '',
   rate: 0,
   area: [],
-  transfer: [],
+  transfer: []
 })
 const areaOptions = ref<any>([])
 const rules = reactive<any>({
@@ -120,8 +133,8 @@ const rules = reactive<any>({
       min: 3,
       max: 5,
       message: '长度在 3 到 5 个字符',
-      trigger: 'blur',
-    },
+      trigger: 'blur'
+    }
   ],
   region: [{ required: true, message: '请选择活动区域', trigger: 'change' }],
   date: [
@@ -129,19 +142,19 @@ const rules = reactive<any>({
       type: 'date',
       required: true,
       message: '请选择日期',
-      trigger: 'change',
-    },
+      trigger: 'change'
+    }
   ],
   type: [
     {
       type: 'array',
       required: true,
       message: '请至少选择一个活动性质',
-      trigger: 'change',
-    },
+      trigger: 'change'
+    }
   ],
   resource: [{ required: true, message: '请选择活动资源', trigger: 'change' }],
-  description: [{ required: true, message: '请填写活动形式', trigger: 'blur' }],
+  description: [{ required: true, message: '请填写活动形式', trigger: 'blur' }]
 })
 const data = ref<any>(generateData())
 

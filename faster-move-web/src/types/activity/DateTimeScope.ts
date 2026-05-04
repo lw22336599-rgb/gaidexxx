@@ -3,7 +3,7 @@
  */
 export interface DateTimeScope {
   /** 开始时间 */
-  Start: Date;
+  Start: Date
   /** 结束时间 */
-  End: Date;
+  End: Date
 }
