@@ -37,6 +37,24 @@ const API_UPSTREAM = (
 const LISTEN_PORT = Number(process.env.API_BRIDGE_PORT || fileEnv.API_BRIDGE_PORT || 5265);
 const LISTEN_HOST = (process.env.API_BRIDGE_BIND || fileEnv.API_BRIDGE_BIND || "127.0.0.1").trim();
 const BRIDGE_LAN_HOST = (process.env.API_BRIDGE_LAN_HOST || fileEnv.API_BRIDGE_LAN_HOST || "").trim();
+const CORS_EXTRA = String(
+  process.env.API_BRIDGE_CORS_WHITELIST || fileEnv.API_BRIDGE_CORS_WHITELIST || "",
+).trim();
+
+function parseCorsWhitelist() {
+  const defaults = [
+    "http://10.10.10.177:5173",
+    "http://10.10.10.177:5200",
+    "http://127.0.0.1:5173",
+    "http://localhost:5173",
+  ];
+  const extra = CORS_EXTRA.split(/[\s,]+/)
+    .map((s) => s.trim().replace(/\/$/, ""))
+    .filter(Boolean);
+  return [...new Set([...defaults, ...extra])];
+}
+
+const CORS_WHITELIST = parseCorsWhitelist();
 const UPSTREAM_TIMEOUT = Number(
   process.env.API_BRIDGE_UPSTREAM_TIMEOUT || fileEnv.API_BRIDGE_UPSTREAM_TIMEOUT || 4000
 );
@@ -698,6 +716,11 @@ function corsOriginAllowed(origin) {
   }
 }
 
+function isWeChatUa(clientReq) {
+  const ua = String(clientReq.headers["user-agent"] || "").toLowerCase();
+  return ua.includes("micromessenger");
+}
+
 function corsHeaders(clientReq) {
   const origin = clientReq.headers.origin;
   const h = {
@@ -706,14 +729,17 @@ function corsHeaders(clientReq) {
       clientReq.headers["access-control-request-headers"] ||
       "Authorization,Content-Type,DNT,User-Agent,X-Requested-With,Accept,Origin",
     "Access-Control-Max-Age": "86400",
+    Vary: "Origin",
   };
-  if (origin && corsOriginAllowed(origin)) {
-    h["Access-Control-Allow-Origin"] = origin;
+  /** 白名单内回显 Origin（便于带 Cookie 场景）；其余仍临时 * 方便联调 */
+  if (origin && typeof origin === "string" && CORS_WHITELIST.includes(origin.replace(/\/$/, ""))) {
+    h["Access-Control-Allow-Origin"] = origin.replace(/\/$/, "");
     h["Access-Control-Allow-Credentials"] = "true";
-  } else if (origin) {
-    h["Access-Control-Allow-Origin"] = "*";
   } else {
     h["Access-Control-Allow-Origin"] = "*";
+  }
+  if (isWeChatUa(clientReq)) {
+    h["X-WeChat-UA-Allowed"] = "1";
   }
   return h;
 }

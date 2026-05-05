@@ -2,7 +2,6 @@
   <view class="page">
     <view class="top">
       <text class="brand">极狐</text>
-      <text class="tagline">账号登录</text>
     </view>
 
     <view class="sheet">
@@ -30,36 +29,29 @@
     </view>
 
     <view class="foot">
-      <view class="opts">
-        <view class="opt" @tap="remember = !remember">
-          <view class="chk" :class="{ on: remember }" />
-          <text class="opt-t">记住密码</text>
-        </view>
-        <view class="opt" @tap="vlogin = !vlogin">
-          <view class="chk" :class="{ on: vlogin }" />
-          <text class="opt-t">自动登录</text>
-        </view>
-      </view>
-
-      <button class="btn primary" :loading="loading" @click="handleLogin">登 录</button>
-      <button v-if="mockMode" class="btn ghost" :loading="loading" :disabled="loading" @click="mockOneClick">
-        开发环境 · 免接口进首页
+      <button
+        class="btn primary"
+        type="button"
+        :loading="loading"
+        :disabled="loading"
+        hover-class="btn-hover"
+        @tap.stop="handleLogin"
+      >
+        登 录
       </button>
     </view>
   </view>
 </template>
 
 <script setup lang="ts">
-import { onLoad } from "@dcloudio/uni-app";
-import { computed, onMounted, reactive, ref } from "vue";
+import { onLoad, onShow } from "@dcloudio/uni-app";
+import { onMounted, reactive, ref } from "vue";
 import { ROUTE_BUSINESS_HOME } from "@/config/routes";
 import { AdmiPhoneResultType } from "@/constants/loginResult";
 import { isMockAuthEnabled, MOCK_DEFAULT_PHONE } from "@/config/mockAuth";
 import { useUserStore } from "@/stores/user";
-import { applyMockSessionFromQuery, applyMockSharedLoginState } from "@/utils/mockSession";
+import { applyMockSessionFromQuery, hydrateLoginStateFromShared } from "@/utils/mockSession";
 import { getToken } from "@/utils/token";
-
-const mockMode = computed(() => isMockAuthEnabled());
 
 /** H5：打开 `#/pages/login/login?clearStorage=1` 可一键清 Mock/旧 token；带 mock_token / mockBypass 可同步免登 */
 onLoad((opts) => {
@@ -83,6 +75,13 @@ const remember = ref(true);
 const vlogin = ref(true);
 const form = reactive({ phone: "", pwd: "" });
 
+function syncLoginUiState() {
+  hydrateLoginStateFromShared();
+  if (getToken() && !userStore.token.value) {
+    userStore.setToken(getToken());
+  }
+}
+
 function loadRemembered() {
   try {
     const raw = uni.getStorageSync("rememberuser") as string;
@@ -100,6 +99,14 @@ onMounted(() => {
     form.phone = MOCK_DEFAULT_PHONE;
   }
   loadRemembered();
+  syncLoginUiState();
+  if (getToken()) {
+    uni.reLaunch({ url: ROUTE_BUSINESS_HOME });
+  }
+});
+
+onShow(() => {
+  syncLoginUiState();
   if (getToken()) {
     uni.reLaunch({ url: ROUTE_BUSINESS_HOME });
   }
@@ -115,17 +122,6 @@ function describeResult(t: number | undefined): string {
       return "请输入令牌验证码";
     default:
       return t !== undefined ? `登录失败(${t})` : "登录失败";
-  }
-}
-
-async function mockOneClick() {
-  loading.value = true;
-  try {
-    applyMockSharedLoginState();
-    await userStore.getUserInfo();
-    uni.reLaunch({ url: ROUTE_BUSINESS_HOME });
-  } finally {
-    loading.value = false;
   }
 }
 
@@ -172,27 +168,21 @@ async function handleLogin() {
 }
 .top {
   flex-shrink: 0;
-  padding: 56rpx 8rpx 40rpx;
+  padding: 32rpx 8rpx 20rpx;
 }
 .brand {
   display: block;
-  font-size: 56rpx;
+  font-size: 50rpx;
   font-weight: 700;
   color: #1a1a2e;
   letter-spacing: 4rpx;
-}
-.tagline {
-  display: block;
-  margin-top: 12rpx;
-  font-size: 28rpx;
-  color: #606266;
 }
 .sheet {
   flex: 1;
   min-height: 0;
 }
 .field {
-  margin-bottom: 28rpx;
+  margin-bottom: 20rpx;
 }
 .label {
   display: block;
@@ -203,72 +193,31 @@ async function handleLogin() {
 }
 .input {
   width: 100%;
-  height: 96rpx;
-  padding: 0 28rpx;
+  height: 84rpx;
+  padding: 0 24rpx;
   box-sizing: border-box;
   border: 1rpx solid #dcdfe6;
   border-radius: 18rpx;
-  font-size: 32rpx;
+  font-size: 30rpx;
   background: #fff;
 }
 .foot {
   flex-shrink: 0;
-  padding-top: 8rpx;
-}
-.opts {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24rpx;
-  margin-bottom: 28rpx;
-  padding: 0 4rpx;
-}
-.opt {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 12rpx;
-  padding: 16rpx 8rpx;
-  margin: -16rpx -8rpx;
-}
-.chk {
-  width: 32rpx;
-  height: 32rpx;
-  border-radius: 8rpx;
-  border: 2rpx solid #c0c4cc;
-  box-sizing: border-box;
-  background: #fff;
-}
-.chk.on {
-  border-color: #2d6cdf;
-  background: #2d6cdf;
-  box-shadow: inset 0 0 0 4rpx #fff;
-}
-.opt-t {
-  font-size: 28rpx;
-  color: #606266;
+  padding-top: 2rpx;
 }
 .btn {
   width: 100%;
-  height: 96rpx;
-  line-height: 96rpx;
+  height: 84rpx;
+  line-height: 84rpx;
   border-radius: 18rpx;
-  font-size: 34rpx;
+  font-size: 32rpx;
   font-weight: 600;
 }
 .btn.primary {
   background: #2d6cdf;
   color: #fff;
 }
-.btn.ghost {
-  margin-top: 20rpx;
-  background: transparent;
-  color: #909399;
-  border: 1rpx dashed #dcdfe6;
-  font-size: 26rpx;
-  font-weight: 400;
-  height: 80rpx;
-  line-height: 80rpx;
+.btn-hover {
+  opacity: 0.92;
 }
 </style>

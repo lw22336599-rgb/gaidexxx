@@ -2,6 +2,7 @@
  * 对齐 faster-move-web `src/router/permissions.ts` 的「需登录」语义（uni-app 无 vue-router，用拦截器 + 页面内兜底）
  */
 import { loginInterception, routesWhiteList } from "@/config/setting.config";
+import { hydrateLoginStateFromShared } from "@/utils/mockSession";
 import { getToken } from "@/utils/token";
 
 function stripQuery(url: string) {
@@ -16,6 +17,7 @@ function isWhiteListPath(path: string): boolean {
 function shouldBlock(url: string): boolean {
   if (!loginInterception) return false;
   const path = stripQuery(url);
+  hydrateLoginStateFromShared();
   if (!getToken() && !isWhiteListPath(path)) return true;
   return false;
 }
@@ -47,6 +49,7 @@ export function assertAuthedOrRedirectLogin(): boolean {
   const cur = pages[pages.length - 1];
   const route = cur ? `/${cur.route}` : "";
   if (!loginInterception) return true;
+  hydrateLoginStateFromShared();
   if (getToken()) return true;
   if (isWhiteListPath(route)) return true;
   uni.redirectTo({ url: "/pages/login/login" });

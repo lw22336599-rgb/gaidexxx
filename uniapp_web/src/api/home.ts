@@ -2,5 +2,5 @@
 import { get } from "@/utils/request";
 
 export function getHomeData() {
-  return get("/homedata/v2/gethomedata");
+  return get("/homedata/v2/gethomedata", undefined, { timeout: 60000 });
 }

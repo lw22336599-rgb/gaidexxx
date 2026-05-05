@@ -4,9 +4,10 @@
       v-for="(item, index) in list"
       :key="item.pagePath"
       class="tab-item"
+      :class="{ selected: selected === index }"
       :hover-stay-time="70"
       hover-class="tab-hover"
-      @click="onSwitch(index, item.pagePath)"
+      @tap="onSwitch(index, item.pagePath)"
     >
       <image
         class="ico"
@@ -122,11 +123,15 @@ onBeforeUnmount(() => {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   min-width: 0;
-  min-height: 48px;
-  padding: 4px 2px 6px;
+  min-height: 56px;
+  padding: 6px 2px 10px;
   box-sizing: border-box;
+  transition: background-color 0.18s ease;
+}
+.tab-item.selected {
+  background: rgba(230, 180, 34, 0.08);
 }
 .tab-hover {
   opacity: 0.88;

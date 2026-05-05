@@ -46,9 +46,6 @@ function forcedBridgeOrigin(): string | null {
 export function resolvePcViteOrigin(): string {
   const forced = forcedApiOrigin();
   if (forced) return forced;
-  if (typeof window !== "undefined" && window.location?.hostname) {
-    return withPort(window.location.hostname, 5200);
-  }
   return UNI_H5_PC_API_ORIGIN.replace(/\/$/, "");
 }
 
@@ -56,8 +53,12 @@ export function resolvePcViteOrigin(): string {
 export function resolveBridgeOrigin(): string {
   const forced = forcedBridgeOrigin();
   if (forced) return forced;
-  if (typeof window !== "undefined" && window.location?.hostname) {
-    return withPort(window.location.hostname, 3000);
+  try {
+    const api = stripSlash(UNI_H5_PC_API_ORIGIN);
+    const u = new URL(api.includes("://") ? api : `http://${api}`);
+    u.port = "3000";
+    return stripSlash(u.origin);
+  } catch {
+    return "http://10.10.10.177:3000";
   }
-  return "http://127.0.0.1:3000";
 }

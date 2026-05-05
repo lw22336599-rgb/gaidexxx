@@ -15,7 +15,7 @@
           <text class="notice-bell-outline" aria-hidden="true">🔔</text>
         </view>
 
-        <!-- 今日指标：2×2 与参考稿一致；仅今日数 + 右上累计，无任何「相较于昨日」 -->
+        <!-- 今日指标：单列卡片与需求稿一致；数据来自 5200 → /homedata/v2/gethomedata -->
         <view v-if="metricRows.length" class="metrics-block">
           <view class="metric-grid">
             <view
@@ -42,11 +42,20 @@
         <view class="quick-card">
           <text class="quick-title">快捷功能</text>
           <view class="quick-row">
-            <view class="quick-item" hover-class="quick-hover" @tap="openAggregatedService">
-              <view class="quick-circle fox">
+            <view
+              v-for="(q, qi) in quickEntries"
+              :key="qi"
+              class="quick-item"
+              hover-class="quick-hover"
+              @tap="goAdminPc(q.path)"
+            >
+              <view v-if="q.kind === 'fox'" class="quick-circle fox">
                 <text class="fox-emo">🦊</text>
               </view>
-              <text class="quick-label">聚合客服</text>
+              <view v-else class="quick-ico-wrap">
+                <image class="quick-ico" :src="q.icon" mode="aspectFit" />
+              </view>
+              <text class="quick-label">{{ q.label }}</text>
             </view>
           </view>
         </view>
@@ -78,7 +87,9 @@ function goAdminPc(path: string) {
   // #ifdef H5
   uni.navigateTo({
     url: `/pages/admin-pc/admin-pc?path=${encodeURIComponent(p)}`,
-    fail: () => {},
+    fail: () => {
+      uni.showToast({ title: "暂无法打开该功能", icon: "none" });
+    },
   });
   // #endif
   // #ifndef H5
@@ -86,9 +97,30 @@ function goAdminPc(path: string) {
   // #endif
 }
 
-function openAggregatedService() {
-  goAdminPc(ALIGNED_PC_HASH.CUSTOMER_SERVICE_CHAT);
-}
+/** 与参考图一致：横向 4 项，无多余占位 */
+type QuickEntryFox = { kind: "fox"; label: string; path: string };
+type QuickEntryIcon = { kind: "icon"; label: string; path: string; icon: string };
+const quickEntries: readonly (QuickEntryFox | QuickEntryIcon)[] = [
+  { kind: "fox", label: "聚合客服", path: ALIGNED_PC_HASH.CUSTOMER_SERVICE_CHAT },
+  {
+    kind: "icon",
+    label: "数据大屏",
+    path: ALIGNED_PC_HASH.DATA_SCREEN,
+    icon: "/static/shortcut-icons/datascreen.svg",
+  },
+  {
+    kind: "icon",
+    label: "演示视频",
+    path: ALIGNED_PC_HASH.VIDEO,
+    icon: "/static/shortcut-icons/video.svg",
+  },
+  {
+    kind: "icon",
+    label: "分析图表",
+    path: ALIGNED_PC_HASH.ECHARTS,
+    icon: "/static/shortcut-icons/chart.svg",
+  },
+];
 
 onLoad((opts) => {
   applyMockSessionFromQuery(opts as Record<string, string | undefined>);
@@ -166,8 +198,22 @@ const WM_BY_TYPE: Record<number, string> = {
   2: "店",
 };
 
+/** 图1 栅格顺序：上行 成员、积分；下行 MT、ELM（与旧版截图一致） */
+const METRIC_KEY_ORDER = ["member_today", "integral_today", "mt_shop_today", "elm_shop_today"] as const;
+
+type MetricRow = {
+  key: string;
+  dataType: number;
+  title: string;
+  count: string;
+  unit: string;
+  totalRight: string;
+  wm: string;
+  target: { type: "stores" | "users" | "todos"; platform?: string } | undefined;
+};
+
 const metricRows = computed(() => {
-  return topData.value.map((row) => {
+  const rows: MetricRow[] = topData.value.map((row) => {
     const dt = Number((row as any).data_type ?? 0);
     const title = sanitizeMobileHomeTitle(
       String((row as any).title ?? (row as any).name ?? (row as any).key ?? ""),
@@ -188,6 +234,16 @@ const metricRows = computed(() => {
       target: (row as any).target as { type: "stores" | "users" | "todos"; platform?: string } | undefined,
     };
   });
+  const byKey = new Map(rows.map((r) => [r.key, r]));
+  const ordered: MetricRow[] = [];
+  for (const k of METRIC_KEY_ORDER) {
+    const x = byKey.get(k);
+    if (x) ordered.push(x);
+  }
+  for (const r of rows) {
+    if (!(METRIC_KEY_ORDER as readonly string[]).includes(r.key)) ordered.push(r);
+  }
+  return ordered;
 });
 
 const FALLBACK_METRIC_TARGET: Record<string, { type: "stores" | "users" | "todos"; platform?: string }> = {
@@ -232,8 +288,10 @@ async function load() {
   error.value = "";
   try {
     await userStore.getUserInfo({ silent: true });
+    /** 统一走 utils/request → PC Vite :5200 代理链，与 axios 开发环境一致 */
     const res = (await getHomeData()) as { code?: number; data?: Record<string, unknown> };
-    if (res.code !== 200 || !res.data) {
+    const ok = res.code === 200 || res.code === 0 || Number(res.code) === 200;
+    if (!ok || !res.data) {
       throw new Error("首页数据为空（/homedata/v2/gethomedata）");
     }
     if (seq !== loadSeq) return;
@@ -382,20 +440,20 @@ onPullDownRefresh(() => {
   margin-bottom: 24rpx;
 }
 .metrics-block {
-  margin-bottom: 24rpx;
+  margin-bottom: 28rpx;
 }
 .metric-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16rpx;
+  grid-template-columns: 1fr;
+  gap: 20rpx;
 }
 .metric-top-card {
   position: relative;
-  min-height: 200rpx;
-  border-radius: 20rpx;
-  box-shadow: 0 4rpx 20rpx rgba(28, 28, 40, 0.06);
-  border: 1rpx solid rgba(28, 28, 40, 0.06);
-  padding: 18rpx 16rpx 16rpx;
+  min-height: 188rpx;
+  border-radius: 22rpx;
+  box-shadow: 0 8rpx 24rpx rgba(28, 28, 40, 0.07);
+  border: 1rpx solid rgba(28, 28, 40, 0.05);
+  padding: 22rpx 24rpx 18rpx;
   box-sizing: border-box;
   background: #fff;
   overflow: hidden;
@@ -410,10 +468,10 @@ onPullDownRefresh(() => {
 .mc-title {
   flex: 1;
   min-width: 0;
-  font-size: 24rpx;
-  color: #303133;
+  font-size: 26rpx;
+  color: #1c1c28;
   font-weight: 600;
-  line-height: 1.25;
+  line-height: 1.3;
 }
 .mc-all {
   flex-shrink: 0;
@@ -421,6 +479,7 @@ onPullDownRefresh(() => {
   color: #909399;
   line-height: 1.25;
   white-space: nowrap;
+  font-weight: 500;
 }
 .quick-card {
   background: #fff;
@@ -439,18 +498,35 @@ onPullDownRefresh(() => {
   margin-bottom: 20rpx;
 }
 .quick-row {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  gap: 32rpx;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 12rpx;
+  row-gap: 16rpx;
+  width: 100%;
 }
 .quick-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 120rpx;
-  padding: 8rpx;
-  margin: -8rpx;
+  min-width: 0;
+  padding: 8rpx 4rpx;
+  margin: -8rpx 0;
+  box-sizing: border-box;
+}
+.quick-ico-wrap {
+  width: 112rpx;
+  height: 112rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f2f3f5;
+  box-shadow: 0 4rpx 14rpx rgba(28, 28, 40, 0.08);
+  box-sizing: border-box;
+}
+.quick-ico {
+  width: 56rpx;
+  height: 56rpx;
 }
 .quick-hover {
   opacity: 0.85;
@@ -477,17 +553,18 @@ onPullDownRefresh(() => {
   color: #606266;
 }
 .mc-mid {
-  margin-top: 14rpx;
+  margin-top: 18rpx;
   display: flex;
   flex-direction: row;
   align-items: baseline;
   flex-wrap: wrap;
 }
 .mc-count {
-  font-size: 48rpx;
+  font-size: 52rpx;
   font-weight: 700;
   color: #1c1c28;
-  line-height: 1.1;
+  line-height: 1.08;
+  letter-spacing: -0.5rpx;
 }
 .mc-unit {
   font-size: 24rpx;

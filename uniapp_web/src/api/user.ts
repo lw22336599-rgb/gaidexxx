@@ -8,9 +8,14 @@ import {
   mockGetUserInfoEnvelope,
   mockLoginSuccessEnvelope,
 } from "@/config/mockAuth";
+import { UNI_H5_PC_API_ORIGIN } from "@/config/http";
 import { loginRSA } from "@/config/setting.config";
 import { getToken } from "@/utils/token";
 import { get, post } from "@/utils/request";
+
+function loginApiBase(): string {
+  return UNI_H5_PC_API_ORIGIN.replace(/\/$/, "");
+}
 
 export async function login(data: Record<string, unknown>) {
   if (isMockAuthEnabled()) {
@@ -27,7 +32,7 @@ export async function login(data: Record<string, unknown>) {
   if (loginRSA) {
     throw new Error("当前移动端工程未接入 RSA 登录；请先在 setting.config 将 loginRSA 设为 false，或参考 PC 端补齐 encrypt/publicKey。");
   }
-  return post("/admin/agencylogin", data);
+  return post(`${loginApiBase()}/admin/agencylogin`, data);
 }
 
 export function getUserInfo() {

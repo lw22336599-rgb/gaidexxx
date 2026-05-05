@@ -78,10 +78,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, reactive } from "vue";
+import { computed, reactive, ref } from "vue";
 import { onShow } from "@dcloudio/uni-app";
 import { assertAuthedOrRedirectLogin } from "@/router/guard";
 import { setTabBarPageIndex } from "@/utils/tabBarIndex";
+import { readMineShopStats } from "@/utils/mineShopStatsCache";
 import { ALIGNED_PC_HASH } from "@/config/alignedPcRoutes";
 import { useUserStore } from "@/stores/user";
 import { resolveMediaUrl } from "@/utils/resolveMediaUrl";
@@ -142,9 +143,21 @@ const balanceText = computed(() => {
   return String(b);
 });
 
-/** 占位：真实门店分平台统计需单独接口，联调阶段由 homedata 种子或后续接口补齐 */
-const mtShopCount = computed(() => "—");
-const jdShopCount = computed(() => "—");
+const shopStatsTick = ref(0);
+
+/** 与首页 homedata.last_week 同步（经 storage）；无数据时仍为「—」 */
+const mtShopCount = computed(() => {
+  void shopStatsTick.value;
+  const s = readMineShopStats();
+  if (!s) return "—";
+  return String(s.mt);
+});
+const jdShopCount = computed(() => {
+  void shopStatsTick.value;
+  const s = readMineShopStats();
+  if (!s) return "—";
+  return String(s.jd);
+});
 
 function goPc(hashPath: string) {
   const p = hashPath.startsWith("/") ? hashPath : `/${hashPath}`;
@@ -167,6 +180,7 @@ function onFeedback() {
 
 onShow(() => {
   setTabBarPageIndex(3);
+  shopStatsTick.value += 1;
   if (!assertAuthedOrRedirectLogin()) return;
   readUserInfoCache();
   void userStore.getUserInfo().then(() => readUserInfoCache());

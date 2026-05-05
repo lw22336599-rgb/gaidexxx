@@ -2,6 +2,7 @@
  * 对齐 faster-move-web `src/views/index/index.vue` 中 getData 对 `/homedata/v2/gethomedata` 的解析逻辑
  */
 import { reactive, ref, type Ref } from "vue";
+import { syncMineShopStatsFromHomedata } from "@/utils/mineShopStatsCache";
 
 export interface TopMetricRow {
   key: string;
@@ -134,7 +135,8 @@ export function useHomeDashboard() {
   function applyPayload(data: Record<string, unknown>) {
     const td = (data.top_data || {}) as Record<string, any>;
     /* 与 PC `faster-move-web/src/views/index/index.vue` getData 顺序一致 */
-    const preferred = ["mt_shop_today", "elm_shop_today", "member_today", "integral_today"];
+    /* 与手机首页 metricRows 顺序一致：成员 → 积分 → MT → ELM */
+    const preferred = ["member_today", "integral_today", "mt_shop_today", "elm_shop_today"];
     const keys = Object.keys(td);
     let ordered = preferred.filter((k) => keys.includes(k));
     for (const k of keys) {
@@ -194,6 +196,7 @@ export function useHomeDashboard() {
     }
     updateTop.value = rawUpdates;
     weather.value = { ...(data.weather as Record<string, unknown>) || {} };
+    syncMineShopStatsFromHomedata(data);
   }
 
   return {

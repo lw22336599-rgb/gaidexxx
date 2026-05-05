@@ -8,7 +8,7 @@
         hover-class="pill-hover"
         :hover-stay-time="70"
         :class="{ active: currentTab === 1 }"
-        @click="switchTab(1, 'payTop')"
+        @tap="switchTab(1, 'payTop')"
       >
         <text class="pill-t">消耗积分数</text>
       </view>
@@ -17,7 +17,7 @@
         hover-class="pill-hover"
         :hover-stay-time="70"
         :class="{ active: currentTab === 2 }"
-        @click="switchTab(2, 'memberTop')"
+        @tap="switchTab(2, 'memberTop')"
       >
         <text class="pill-t">名下成员数</text>
       </view>
@@ -26,7 +26,7 @@
         hover-class="pill-hover"
         :hover-stay-time="70"
         :class="{ active: currentTab === 3 }"
-        @click="switchTab(3, 'shopTop')"
+        @tap="switchTab(3, 'shopTop')"
       >
         <text class="pill-t">名下店铺数</text>
       </view>

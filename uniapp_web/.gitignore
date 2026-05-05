@@ -19,3 +19,6 @@ dist
 *.njsproj
 *.sln
 *.sw?
+
+# 本地 curl 测试用，勿入库
+scripts/tmp-login-body.json

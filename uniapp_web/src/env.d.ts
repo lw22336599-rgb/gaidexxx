@@ -18,7 +18,7 @@ interface ImportMetaEnv {
   readonly VITE_APP_BASE_URL: string;
   /** 仅开发：Vite 将 /proxy 转发到此地址（见 vite.config.ts） */
   readonly VITE_PROXY_TARGET: string;
-  /** H5 内嵌 faster-move-web 完整后台的根地址（无尾斜杠），如 http://127.0.0.1:5200 */
+  /** H5 内嵌 faster-move-web 完整后台的根地址（无尾斜杠），如 http://10.10.10.177:5200 */
   readonly VITE_PC_ADMIN_ORIGIN: string;
   /** H5 为 true 时启动即整页跳转到 PC 管理端（不再走 uni 页面） */
   readonly VITE_H5_ENTRY_PC: string;
