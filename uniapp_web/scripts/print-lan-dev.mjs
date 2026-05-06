@@ -41,7 +41,7 @@ const port = Number(env.VITE_DEV_PORT || 5173) || 5173;
 const preferred = (env.VITE_LAN_ENTRY_HOST || "10.10.10.177").trim();
 const cands = listLanIpv4();
 const host = cands.includes(preferred) ? preferred : cands.find((a) => a.startsWith("192.168.")) || cands[0] || "127.0.0.1";
-const pcBase = `http://${host}:5200`;
+const pcBase = "http://10.10.10.177:5200";
 
 console.log("\n========== 局域网实时预览（与电脑同 WiFi）==========");
 console.log("【必做】先在项目根目录执行并保持窗口打开:  npm run dev:h5");

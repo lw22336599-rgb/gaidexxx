@@ -1,7 +1,7 @@
 import autoprefixer from 'autoprefixer'
 import dayjs from 'dayjs'
 import { resolve } from 'node:path'
-import type { ConfigEnv, UserConfig } from 'vite'
+import type { ConfigEnv, Plugin, UserConfig } from 'vite'
 import { defineConfig, loadEnv } from 'vite'
 
 import {
@@ -63,6 +63,26 @@ function pcBridgeRootBypass(req: {
   }
   // Vite bypass：仅 `string` 改写后走本地中间件；`false` 会令 dev server 直接 404，从不转发到 target
   return undefined;
+}
+
+/** 启动后在终端打印监听地址，便于确认 0.0.0.0:5200 */
+function createPcDevBindLogPlugin(host: string, listenPort: number): Plugin {
+  return {
+    name: 'pc-dev-bind-log',
+    configureServer(server) {
+      server.httpServer?.once('listening', () => {
+        const addr = server.httpServer?.address()
+        console.log('\n========== [faster-move-web] Vite dev ==========')
+        console.log('[faster-move-web] server.host (VITE_PC_DEV_BIND):', host)
+        console.log('[faster-move-web] listen():', addr)
+        console.log('[faster-move-web] port:', listenPort)
+        if (host === '0.0.0.0') {
+          console.log('[faster-move-web] OK: 已绑定 0.0.0.0，可从 127.0.0.1 与本机局域网 IP 访问')
+        }
+        console.log('==================================================\n')
+      })
+    },
+  }
 }
 
 export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
@@ -174,7 +194,10 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
       },
       devSourcemap: true,
     },
-    plugins:   createVitePlugin(env),//vitePluginCommonjs({externals: ["fs","path"]}),
+    plugins: [
+      createPcDevBindLogPlugin(pcDevBind, Number(port)),
+      ...(createVitePlugin(env) || []),
+    ],
     define: {
       // 如果您必须使用华为组件库且打包报错，请放开该行，放开注释后会将您的环境变量暴露给华为组件库
       // 'process.env': { ...process.env },

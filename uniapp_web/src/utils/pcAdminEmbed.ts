@@ -1,6 +1,6 @@
 /**
  * H5 内嵌 faster-move-web（hash 路由）时的根地址与完整 URL。
- * 开发态手机：与 5173 同源 hostname 的 :5200，避免 env 写死 IP 导致 web-view 白屏。
+ * 与 `resolvePcAdminEmbedOrigin` 一致，默认联调基址 http://10.10.10.177:5200（见 .env / config/http）。
  */
 import { resolvePcAdminEmbedOrigin } from "@/utils/h5DevOrigins";
 
