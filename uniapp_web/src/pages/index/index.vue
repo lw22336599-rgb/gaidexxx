@@ -15,14 +15,13 @@
           <text class="notice-bell-outline" aria-hidden="true">🔔</text>
         </view>
 
-        <!-- 今日指标：单列卡片与需求稿一致；数据来自 5200 → /homedata/v2/gethomedata -->
+        <!-- 原版 2×2 四宫格；顺序：成员 → 积分 → MT店 → ELM店。数据同源：5200 代理 GET /homedata/v2/gethomedata → top_data -->
         <view v-if="metricRows.length" class="metrics-block">
           <view class="metric-grid">
             <view
               v-for="(m, i) in metricRows"
               :key="m.key || i"
               class="metric-top-card tappable"
-              :class="'dt-' + m.dataType"
               hover-class="metric-hover"
               @tap.stop="onMetricTap(m)"
             >
@@ -34,7 +33,12 @@
                 <text class="mc-count">{{ m.count }}</text>
                 <text v-if="m.unit" class="mc-unit">{{ m.unit }}</text>
               </view>
-              <text class="mc-watermark">{{ m.wm }}</text>
+              <view class="mc-compare">
+                <text class="mc-cmp-label">相较于昨日</text>
+                <text class="mc-cmp-val" :class="{ 'cmp-down': !m.compareUp }">
+                  {{ m.compareDelta }}{{ m.compareUp ? "↑" : "↓" }}
+                </text>
+              </view>
             </view>
           </view>
         </view>
@@ -49,20 +53,30 @@
               hover-class="quick-hover"
               @tap="goAdminPc(q.path)"
             >
-              <view v-if="q.kind === 'fox'" class="quick-circle fox">
+              <view class="quick-circle fox">
                 <text class="fox-emo">🦊</text>
-              </view>
-              <view v-else class="quick-ico-wrap">
-                <image class="quick-ico" :src="q.icon" mode="aspectFit" />
               </view>
               <text class="quick-label">{{ q.label }}</text>
             </view>
           </view>
         </view>
 
+        <HomeTrendChart
+          :x-axis-data="xAxisData"
+          :centre="centre"
+          :prov="prov"
+          :add-num="addNum"
+          :integral="integral"
+          :jd-data="JdData"
+        />
+
         <DashboardAccountRanks :month-member-data="monthMemberData" />
 
-        <DashboardTeamChart :team-top-list="teamTopList" />
+        <DashboardTodo :todo-data="todoData" @changed="onTodoChanged" />
+
+        <DashboardTeamMembers :team-top-list="teamTopList" />
+
+        <DashboardUpdateLog :update-top="updateTop" :version="appVersionName" />
       </template>
     </view>
   </view>
@@ -80,7 +94,10 @@ import { ALIGNED_PC_HASH, shopV2HashForPlatform } from "@/config/alignedPcRoutes
 import { devMockBaseURL, refreshDevMockConfig, applyBridgeEvent } from "@/config/devMock";
 import { sanitizeMobileHomeTitle, useHomeDashboard } from "@/composables/useHomeDashboard";
 import DashboardAccountRanks from "@/components/home/DashboardAccountRanks.vue";
-import DashboardTeamChart from "@/components/home/DashboardTeamChart.vue";
+import DashboardTeamMembers from "@/components/home/DashboardTeamMembers.vue";
+import HomeTrendChart from "@/components/home/HomeTrendChart.vue";
+import DashboardTodo from "@/components/home/DashboardTodo.vue";
+import DashboardUpdateLog from "@/components/home/DashboardUpdateLog.vue";
 
 function goAdminPc(path: string) {
   const p = path.startsWith("/") ? path : `/${path}`;
@@ -97,30 +114,9 @@ function goAdminPc(path: string) {
   // #endif
 }
 
-/** 与参考图一致：横向 4 项，无多余占位 */
-type QuickEntryFox = { kind: "fox"; label: string; path: string };
-type QuickEntryIcon = { kind: "icon"; label: string; path: string; icon: string };
-const quickEntries: readonly (QuickEntryFox | QuickEntryIcon)[] = [
-  { kind: "fox", label: "聚合客服", path: ALIGNED_PC_HASH.CUSTOMER_SERVICE_CHAT },
-  {
-    kind: "icon",
-    label: "数据大屏",
-    path: ALIGNED_PC_HASH.DATA_SCREEN,
-    icon: "/static/shortcut-icons/datascreen.svg",
-  },
-  {
-    kind: "icon",
-    label: "演示视频",
-    path: ALIGNED_PC_HASH.VIDEO,
-    icon: "/static/shortcut-icons/video.svg",
-  },
-  {
-    kind: "icon",
-    label: "分析图表",
-    path: ALIGNED_PC_HASH.ECHARTS,
-    icon: "/static/shortcut-icons/chart.svg",
-  },
-];
+/** 与原版首页一致：仅「聚合客服」一项 */
+type QuickEntry = { label: string; path: string };
+const quickEntries: readonly QuickEntry[] = [{ label: "聚合客服", path: ALIGNED_PC_HASH.CUSTOMER_SERVICE_CHAT }];
 
 onLoad((opts) => {
   applyMockSessionFromQuery(opts as Record<string, string | undefined>);
@@ -131,7 +127,22 @@ const {
   monthMemberData,
   teamTopList,
   applyPayload,
+  xAxisData,
+  centre,
+  prov,
+  addNum,
+  integral,
+  JdData,
+  todoData,
+  updateTop,
 } = useHomeDashboard();
+
+/** 与 manifest versionName 对齐，供更新记录页眉展示 */
+const appVersionName = "1.0.0";
+
+function onTodoChanged() {
+  void load();
+}
 
 let sseInstance: { close: () => void } | null = null;
 let pendingTimer: ReturnType<typeof setTimeout> | null = null;
@@ -191,14 +202,7 @@ const loading = ref(false);
 const error = ref("");
 let loadSeq = 0;
 
-const WM_BY_TYPE: Record<number, string> = {
-  200: "员",
-  100: "分",
-  1: "店",
-  2: "店",
-};
-
-/** 图1 栅格顺序：上行 成员、积分；下行 MT、ELM（与旧版截图一致） */
+/** 栅格顺序：上行 成员、积分；下行 MT、ELM（与原版截图一致） */
 const METRIC_KEY_ORDER = ["member_today", "integral_today", "mt_shop_today", "elm_shop_today"] as const;
 
 type MetricRow = {
@@ -208,9 +212,26 @@ type MetricRow = {
   count: string;
   unit: string;
   totalRight: string;
-  wm: string;
+  compareDelta: string;
+  compareUp: boolean;
   target: { type: "stores" | "users" | "todos"; platform?: string } | undefined;
 };
+
+function formatYdayDelta(raw: unknown): { text: string; up: boolean } {
+  if (raw === undefined || raw === null || raw === "") return { text: "0", up: true };
+  const n = Number(raw);
+  if (!Number.isNaN(n)) {
+    return { text: String(Math.abs(n)), up: n >= 0 };
+  }
+  const s = String(raw).trim();
+  const neg = /^[-−]/.test(s) || s.includes("下降") || s.includes("减少");
+  const digits = s.replace(/[^\d.-]/g, "");
+  const num = Number(digits);
+  if (!Number.isNaN(num)) {
+    return { text: String(Math.abs(num)), up: !neg && num >= 0 };
+  }
+  return { text: s || "0", up: !neg };
+}
 
 const metricRows = computed(() => {
   const rows: MetricRow[] = topData.value.map((row) => {
@@ -223,6 +244,7 @@ const metricRows = computed(() => {
     const allRaw = (row as any).all_total;
     const allNum = allRaw !== undefined && allRaw !== null ? Number(allRaw) : Number((row as any).count) || 0;
     const totalRight = `全部${allNum}${unit || ""}`;
+    const y = formatYdayDelta((row as any).of_yday);
     return {
       key: String((row as any).key),
       dataType: dt,
@@ -230,7 +252,8 @@ const metricRows = computed(() => {
       count,
       unit,
       totalRight,
-      wm: WM_BY_TYPE[dt] || "数",
+      compareDelta: y.text,
+      compareUp: y.up,
       target: (row as any).target as { type: "stores" | "users" | "todos"; platform?: string } | undefined,
     };
   });
@@ -243,7 +266,7 @@ const metricRows = computed(() => {
   for (const r of rows) {
     if (!(METRIC_KEY_ORDER as readonly string[]).includes(r.key)) ordered.push(r);
   }
-  return ordered;
+  return ordered.slice(0, 4);
 });
 
 const FALLBACK_METRIC_TARGET: Record<string, { type: "stores" | "users" | "todos"; platform?: string }> = {
@@ -353,12 +376,15 @@ onPullDownRefresh(() => {
 }
 /* 仅内容区滚动；底部留白避免被 tabBar 遮挡 */
 .index-dashboard-shell {
+  position: relative;
+  z-index: 0;
   flex: 1 1 auto;
   min-height: 0;
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-y: contain;
+  touch-action: pan-y;
   box-sizing: border-box;
   padding: calc(12rpx + env(safe-area-inset-top)) 20rpx 28rpx;
   padding-bottom: calc(140rpx + env(safe-area-inset-bottom));
@@ -440,20 +466,24 @@ onPullDownRefresh(() => {
   margin-bottom: 24rpx;
 }
 .metrics-block {
-  margin-bottom: 28rpx;
+  margin-bottom: 20rpx;
 }
 .metric-grid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 20rpx;
+  grid-template-columns: 1fr 1fr;
+  gap: 16rpx;
+  align-items: stretch;
 }
 .metric-top-card {
   position: relative;
-  min-height: 188rpx;
-  border-radius: 22rpx;
-  box-shadow: 0 8rpx 24rpx rgba(28, 28, 40, 0.07);
-  border: 1rpx solid rgba(28, 28, 40, 0.05);
-  padding: 22rpx 24rpx 18rpx;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 220rpx;
+  border-radius: 20rpx;
+  box-shadow: 0 4rpx 20rpx rgba(28, 28, 40, 0.06);
+  border: 1rpx solid rgba(28, 28, 40, 0.06);
+  padding: 18rpx 16rpx 14rpx;
   box-sizing: border-box;
   background: #fff;
   overflow: hidden;
@@ -468,18 +498,18 @@ onPullDownRefresh(() => {
 .mc-title {
   flex: 1;
   min-width: 0;
-  font-size: 26rpx;
-  color: #1c1c28;
+  font-size: 24rpx;
+  color: #303133;
   font-weight: 600;
-  line-height: 1.3;
+  line-height: 1.25;
 }
 .mc-all {
   flex-shrink: 0;
-  font-size: 22rpx;
+  font-size: 20rpx;
   color: #909399;
-  line-height: 1.25;
+  line-height: 1.2;
   white-space: nowrap;
-  font-weight: 500;
+  font-weight: 400;
 }
 .quick-card {
   background: #fff;
@@ -498,10 +528,12 @@ onPullDownRefresh(() => {
   margin-bottom: 20rpx;
 }
 .quick-row {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  column-gap: 12rpx;
-  row-gap: 16rpx;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 24rpx 32rpx;
   width: 100%;
 }
 .quick-item {
@@ -553,51 +585,52 @@ onPullDownRefresh(() => {
   color: #606266;
 }
 .mc-mid {
-  margin-top: 18rpx;
+  margin-top: 12rpx;
+  flex: 1 1 auto;
   display: flex;
   flex-direction: row;
   align-items: baseline;
   flex-wrap: wrap;
 }
 .mc-count {
-  font-size: 52rpx;
+  font-size: 48rpx;
   font-weight: 700;
   color: #1c1c28;
-  line-height: 1.08;
-  letter-spacing: -0.5rpx;
+  line-height: 1.1;
 }
 .mc-unit {
-  font-size: 24rpx;
+  font-size: 22rpx;
   color: #606266;
-  margin-left: 8rpx;
+  margin-left: 6rpx;
   font-weight: 500;
 }
-.mc-watermark {
-  position: absolute;
-  right: 4rpx;
-  bottom: -6rpx;
-  font-size: 88rpx;
-  font-weight: 800;
-  color: rgba(48, 49, 51, 0.06);
-  line-height: 1;
-  pointer-events: none;
+.mc-compare {
+  margin-top: auto;
+  padding-top: 10rpx;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4rpx 6rpx;
+}
+.mc-cmp-label {
+  font-size: 20rpx;
+  color: #a8abb2;
+  line-height: 1.3;
+}
+.mc-cmp-val {
+  font-size: 22rpx;
+  font-weight: 500;
+  color: #67c23a;
+  line-height: 1.3;
+}
+.mc-cmp-val.cmp-down {
+  color: #f56c6c;
 }
 .tappable {
   cursor: pointer;
 }
 .metric-hover {
   opacity: 0.94;
-}
-.dt-1 .mc-watermark {
-  color: rgba(255, 149, 0, 0.12);
-}
-.dt-2 .mc-watermark {
-  color: rgba(0, 122, 255, 0.1);
-}
-.dt-200 .mc-watermark {
-  color: rgba(155, 89, 182, 0.1);
-}
-.dt-100 .mc-watermark {
-  color: rgba(241, 196, 15, 0.12);
 }
 </style>

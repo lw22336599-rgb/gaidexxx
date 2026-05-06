@@ -40,19 +40,10 @@
         <text class="th th-b">{{ colB }}</text>
       </view>
 
-      <view v-if="loading" class="tbody muted">加载中…</view>
-      <view v-else-if="!fullRows.length" class="tbody empty">暂无数据</view>
-      <scroll-view
-        v-else
-        scroll-y
-        class="tbody-scroll"
-        :show-scrollbar="false"
-        :lower-threshold="120"
-        :scroll-with-animation="true"
-        @scrolltolower="onLoadMore"
-      >
+      <view v-if="!fullRows.length" class="tbody empty">暂无数据</view>
+      <view v-else class="tbody-list">
         <view
-          v-for="(row, idx) in displayedRows"
+          v-for="(row, idx) in fullRows"
           :key="idx"
           class="trow"
           hover-class="row-hover"
@@ -73,9 +64,7 @@
           <text class="td td-num">{{ cellA(row) }}</text>
           <text class="td td-num">{{ cellB(row) }}</text>
         </view>
-        <view v-if="hasMore" class="load-foot">上拉加载更多</view>
-        <view v-else-if="fullRows.length > PAGE" class="load-foot done">已显示全部 {{ fullRows.length }} 条</view>
-      </scroll-view>
+      </view>
     </view>
   </view>
 </template>
@@ -87,15 +76,9 @@ const props = defineProps<{
   monthMemberData: { payTop: unknown[]; memberTop: unknown[]; shopTop: unknown[] };
 }>();
 
-const PAGE = 10;
 const currentTab = ref(2);
 const typeKey = ref<"payTop" | "memberTop" | "shopTop">("memberTop");
 const fullRows = ref<unknown[]>([]);
-const visibleCount = ref(PAGE);
-const loading = ref(false);
-
-const displayedRows = computed(() => fullRows.value.slice(0, visibleCount.value));
-const hasMore = computed(() => visibleCount.value < fullRows.value.length);
 
 const colA = computed(() => {
   if (typeKey.value === "payTop") return "上月消耗";
@@ -124,23 +107,15 @@ function cellB(row: unknown) {
 }
 
 function applyRowsFromProps() {
-  loading.value = true;
   const key = typeKey.value;
   const src = ((props.monthMemberData as Record<string, unknown[]>)[key] || []) as unknown[];
   fullRows.value = [...src];
-  visibleCount.value = Math.min(PAGE, fullRows.value.length);
-  loading.value = false;
 }
 
 function switchTab(num: number, key: "payTop" | "memberTop" | "shopTop") {
   currentTab.value = num;
   typeKey.value = key;
   applyRowsFromProps();
-}
-
-function onLoadMore() {
-  if (!hasMore.value) return;
-  visibleCount.value = Math.min(visibleCount.value + PAGE, fullRows.value.length);
 }
 
 watch(
@@ -152,7 +127,7 @@ watch(
 
 <style scoped>
 .account-card {
-  margin-top: 32rpx;
+  margin-top: 24rpx;
   padding: 28rpx 0 20rpx;
   background: #ffffff;
   border-radius: 24rpx;
@@ -237,21 +212,16 @@ watch(
   min-width: 0;
   text-align: center;
 }
-.tbody,
-.tbody-scroll {
+.tbody.empty {
   min-height: 120rpx;
-  max-height: 520rpx;
-  background: #fff;
-}
-.tbody-scroll {
-  -webkit-overflow-scrolling: touch;
-  overscroll-behavior: contain;
-}
-.tbody {
   text-align: center;
   padding: 48rpx 24rpx;
   font-size: 26rpx;
   color: #a8abb2;
+  background: #fff;
+}
+.tbody-list {
+  background: #fff;
 }
 .trow {
   display: flex;
@@ -335,14 +305,5 @@ watch(
   background: transparent;
   color: #909399;
   font-weight: 600;
-}
-.load-foot {
-  text-align: center;
-  padding: 20rpx 12rpx 28rpx;
-  font-size: 22rpx;
-  color: #909399;
-}
-.load-foot.done {
-  color: #c0c4cc;
 }
 </style>

@@ -21,7 +21,7 @@ export interface MonthMemberDataShape {
   shopTop: unknown[];
 }
 
-/** 手机端指标卡：仅展示「今日」核心数，剔除 PC TopCard 的昨日对比文案与字段 */
+/** 手机端指标卡标题：去掉标题里内嵌的「相较于昨日」长句；昨日差值单独用字段 `of_yday` 展示 */
 export function sanitizeMobileHomeTitle(raw: string): string {
   let s = String(raw || "").trim();
   if (!s) return s;
@@ -35,11 +35,9 @@ export function sanitizeMobileHomeTitle(raw: string): string {
   return s;
 }
 
-/** 与「相较于昨日 / of_yday」等相关的上游字段，手机端不展示也不参与逻辑 */
+/** 与昨日对比相关的冗余字段（保留 `of_yday`：首页四宫格底部「相较于昨日」与 PC TopCard 一致） */
 const MOBILE_TOP_METRIC_STRIP_KEYS_LOWER = new Set(
   [
-    "of_yday",
-    "ofyday",
     "yesterday",
     "yesterday_count",
     "yday_count",
