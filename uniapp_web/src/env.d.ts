@@ -8,7 +8,7 @@ declare module "*.json" {
 interface ImportMetaEnv {
   /** H5：uni.request / SSE 强制直连 PC 端 Vite（如 http://10.10.10.177:5200），不设则用内置默认 */
   readonly VITE_UNI_FORCE_API_BASE: string;
-  /** 可选：固定 bridge 根（默认由 FORCE_API 推导为同主机 :3000） */
+  /** 与 VITE_UNI_FORCE_API_BASE 一致时为：移动端走 PC :5200 代理 /seed（勿直连 :3000） */
   readonly VITE_UNI_FORCE_BRIDGE_BASE: string;
   readonly VITE_APP_BASE_API: string;
   /** 资源与兼容用基址（与 FORCE 同机时可都指向 :5200） */
