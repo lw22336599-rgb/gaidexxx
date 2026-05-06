@@ -206,6 +206,7 @@ export default defineConfig(({ mode }) => {
         "/homedata": { target: bridgeOrigin, changeOrigin: true },
         "/seed": { target: bridgeOrigin, changeOrigin: true },
         "/userManagement": { target: bridgeOrigin, changeOrigin: true },
+        "/system": { target: bridgeOrigin, changeOrigin: true },
         "/api": { target: bridgeOrigin, changeOrigin: true },
         "/": {
           target: bridgeOrigin,

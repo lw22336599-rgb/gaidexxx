@@ -316,7 +316,7 @@ function shouldLogApiPath(pathname) {
     pathname.startsWith("/shop/") ||
     pathname.startsWith("/shopmg") ||
     pathname.startsWith("/shopusergroup") ||
-    pathname.startsWith("/system/") ||
+    pathname.startsWith("/system") ||
     pathname.startsWith("/userManagement")
   );
 }
@@ -458,6 +458,30 @@ function emitClear() {
 /* ---------- 本地直接处理（CRUD + 已知接口），不经过上游 ---------- */
 function requestPath(urlPath) {
   return String(urlPath || "/").split("?")[0];
+}
+
+/** 与 PC `calendar`、手机 DashboardTodo 字段一致；底层仍为 SEED_TODOS */
+function seedTodoToCalendarRow(t) {
+  const calState = Number(t.status) === 1 ? 2 : 1;
+  return {
+    id: t.id,
+    name: String(t.title || ""),
+    content: String(t.due || ""),
+    top: Number(t.calendar_top ?? 3),
+    type: 3,
+    state: calState,
+    avtag: true,
+  };
+}
+
+function parseUrlQuery(urlPath) {
+  const i = String(urlPath).indexOf("?");
+  if (i === -1) return {};
+  const o = {};
+  for (const [k, v] of new URLSearchParams(String(urlPath).slice(i + 1))) {
+    o[k] = v;
+  }
+  return o;
 }
 
 function localHandle(method, urlPath, body) {
@@ -657,6 +681,70 @@ function localHandle(method, urlPath, body) {
     SEED_TODOS = SEED_TODOS.filter((t) => t.id !== id);
     emitChange("todos", "delete", { id });
     return ok({ removed: before - SEED_TODOS.length }, "deleted (dev-seed)");
+  }
+
+  /* /system/business/calendar — 与 faster-move-web `src/api/business.ts` 一致，待办与 SEED_TODOS / PC 种子同源 */
+  if (method === "GET" && path.startsWith("/system/business/calendar/getlistorderbyctime")) {
+    const q = parseUrlQuery(urlPath);
+    const state = Number(q.state ?? 0);
+    const pageindex = Math.max(1, Number(q.pageindex || 1));
+    const pagesize = Math.max(1, Math.min(100, Number(q.pagesize || 10)));
+    let rows = SEED_TODOS.map(seedTodoToCalendarRow);
+    if (state === 1) rows = rows.filter((r) => r.state === 1);
+    else if (state === 2) rows = rows.filter((r) => r.state === 2);
+    const total = rows.length;
+    const start = (pageindex - 1) * pagesize;
+    rows = rows.slice(start, start + pagesize);
+    return ok({ rows, total });
+  }
+  if (method === "POST" && path.startsWith("/system/business/calendar/add")) {
+    const calState = Number(body.state ?? 1);
+    const top = Math.min(4, Math.max(1, Number(body.top ?? 3)));
+    const row = {
+      id: nextId(SEED_TODOS, "id"),
+      user_id: (SEED_USERS[0] && SEED_USERS[0].id) || 0,
+      title: String(body.name || `待办-${Date.now()}`),
+      status: calState === 2 ? 1 : 0,
+      due: String(body.content || ""),
+      calendar_top: top,
+      create_time: new Date().toISOString().replace("T", " ").slice(0, 19),
+      ...MOCK_TAG,
+    };
+    SEED_TODOS.push(row);
+    emitChange("todos", "add", row);
+    return ok(seedTodoToCalendarRow(row), "added (calendar)");
+  }
+  if (method === "POST" && path.startsWith("/system/business/calendar/update")) {
+    const idx = SEED_TODOS.findIndex((t) => t.id === Number(body.id));
+    if (idx < 0) return { code: 404, msg: "todo not found", data: null };
+    const calState =
+      body.state !== undefined && body.state !== null
+        ? Number(body.state)
+        : SEED_TODOS[idx].status === 1
+          ? 2
+          : 1;
+    const nextTop =
+      body.top !== undefined && body.top !== null
+        ? Math.min(4, Math.max(1, Number(body.top)))
+        : SEED_TODOS[idx].calendar_top ?? 3;
+    SEED_TODOS[idx] = {
+      ...SEED_TODOS[idx],
+      title: body.name != null ? String(body.name) : SEED_TODOS[idx].title,
+      due: body.content != null ? String(body.content) : SEED_TODOS[idx].due,
+      status: calState === 2 ? 1 : 0,
+      calendar_top: nextTop,
+      id: SEED_TODOS[idx].id,
+    };
+    emitChange("todos", "update", SEED_TODOS[idx]);
+    return ok(seedTodoToCalendarRow(SEED_TODOS[idx]), "updated (calendar)");
+  }
+  if (method === "POST" && path.startsWith("/system/business/calendar/delete")) {
+    const q = parseUrlQuery(urlPath);
+    const id = Number(q.id !== undefined ? q.id : body.id);
+    const before = SEED_TODOS.length;
+    SEED_TODOS = SEED_TODOS.filter((t) => t.id !== id);
+    emitChange("todos", "delete", { id });
+    return ok({ removed: before - SEED_TODOS.length }, "deleted (calendar)");
   }
 
   return null;

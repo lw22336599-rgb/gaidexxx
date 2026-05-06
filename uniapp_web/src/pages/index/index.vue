@@ -141,9 +141,20 @@ function onTodoChanged() {
 
 let sseInstance: { close: () => void } | null = null;
 let pendingTimer: ReturnType<typeof setTimeout> | null = null;
+/** 小程序 / App 无 EventSource：轮询 bridge 配置与首页，与 PC 种子数据大致同步 */
+let bridgePollTimer: ReturnType<typeof setInterval> | null = null;
+
+function envMockFlagOn(): boolean {
+  const v = String(import.meta.env.VITE_USE_MOCK || "").toLowerCase();
+  return v === "true" || v === "1";
+}
+
+function supportsEventSource(): boolean {
+  return typeof window !== "undefined" && typeof EventSource !== "undefined";
+}
 
 function subscribeRealtime() {
-  if (typeof window === "undefined" || typeof EventSource === "undefined") return;
+  if (!supportsEventSource()) return;
   if (sseInstance) return;
   try {
     const es = new EventSource(`${devMockBaseURL()}/seed/events`);
@@ -180,6 +191,16 @@ function subscribeRealtime() {
   }
 }
 
+/** H5 用 SSE；非 H5 且开启 VITE_USE_MOCK 时定时拉取，对齐 PC dev-bridge */
+function startBridgeRealtimeSync() {
+  subscribeRealtime();
+  if (supportsEventSource() || !envMockFlagOn()) return;
+  if (bridgePollTimer) return;
+  bridgePollTimer = setInterval(() => {
+    void refreshDevMockConfig().then(() => void load());
+  }, 15000);
+}
+
 onBeforeUnmount(() => {
   if (sseInstance) {
     try {
@@ -190,6 +211,10 @@ onBeforeUnmount(() => {
     sseInstance = null;
   }
   if (pendingTimer) clearTimeout(pendingTimer);
+  if (bridgePollTimer) {
+    clearInterval(bridgePollTimer);
+    bridgePollTimer = null;
+  }
 });
 
 const userStore = useUserStore();
@@ -333,8 +358,8 @@ onShow(async () => {
   applyMockSessionFromQuery(cur?.options);
   await refreshDevMockConfig();
   void load();
-  /* 与 PC 首页一致：始终订阅 bridge SSE，用于 mode/clear/reset 及 mock 模式下的 change 实时刷新 */
-  subscribeRealtime();
+  /* 与 PC 首页一致：H5 用 SSE；小程序/App 用轮询拉齐 dev-bridge 种子数据 */
+  startBridgeRealtimeSync();
 });
 
 onPullDownRefresh(() => {
