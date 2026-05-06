@@ -5,6 +5,7 @@
 import { spawn } from "node:child_process";
 import { createConnection } from "node:net";
 import fs from "node:fs";
+import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import process from "node:process";
@@ -80,6 +81,20 @@ function prefixSpawn(tag, command, args, opts) {
   return child;
 }
 
+function listLanIPv4() {
+  const c = [];
+  for (const arr of Object.values(os.networkInterfaces())) {
+    for (const n of arr || []) {
+      const fam = n.family;
+      if (fam !== "IPv4" && fam !== 4) continue;
+      if (n.internal) continue;
+      if (!n.address || n.address.startsWith("169.254.")) continue;
+      c.push(n.address);
+    }
+  }
+  return [...new Set(c)];
+}
+
 if (!fs.existsSync(pcRoot)) {
   console.error(`[restart-pc-dev-stack] 未找到 PC 工程: ${pcRoot}`);
   process.exit(1);
@@ -113,7 +128,8 @@ const pc = prefixSpawn("pc-5200", pnpm, ["run", "dev"], {
   env: { ...process.env },
 });
 
-const pcWaitHosts = ["127.0.0.1", "10.10.10.177"];
+/** 验证 5200：先试回环，再试本机各局域网 IP（避免仅 177 而实际网卡为 137 时误以为未启动） */
+const pcWaitHosts = ["127.0.0.1", ...listLanIPv4()];
 
 try {
   const okHost = await waitPortFirstHosts(pcWaitHosts, PC_PORT, 180000);
@@ -126,8 +142,10 @@ try {
 }
 
 console.log("\n========================================");
-console.log("[restart-pc-dev-stack] PC 栈已启动；手机 API 仍指向 http://<PC局域网IP>:5200/");
-console.log("  若登录仍 502：确认本机 faster-move-web .env 中 VITE_PROXY_TARGET 指向 127.0.0.1:3000");
+console.log("[restart-pc-dev-stack] PC 栈已启动。");
+console.log("  PC 后台: 本机浏览器 http://127.0.0.1:5200/ ；局域网用手机或其它电脑打开 http://<本机IP>:5200/");
+console.log(`  当前检测到 IPv4（示例）: ${listLanIPv4().join(", ") || "（仅回环）"}`);
+console.log("  手机 H5 另需: cd uniapp_web && npm run dev:h5（5173），登录走 Vite→bridge→上游");
 console.log("========================================\n");
 
 function shutdown() {

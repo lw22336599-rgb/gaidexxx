@@ -23,8 +23,8 @@ import { createVitePlugin, createWatch } from '/@vab/build'
 
 const lastBuildTime = dayjs().format('YYYY-MM-DD HH:mm:ss')
 
-/** PC 开发机与手机 H5 对齐的局域网 bridge 根地址（仅 dev server 代理用） */
-const DEFAULT_BRIDGE = 'http://10.10.10.177:3000/'
+/** PC dev 代理默认走本机 bridge（避免写死局域网 IP 导致本机无该网卡时 5200 起不来或代理不可达） */
+const DEFAULT_BRIDGE = 'http://127.0.0.1:3000/'
 
 /** PC dev：`/` 通配 → bridge；放行 Vite 模块、源码与静态 */
 function pcBridgeRootBypass(req: {
@@ -75,7 +75,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
   const bridge = (env.VITE_PROXY_TARGET || DEFAULT_BRIDGE).trim()
   const bridgeTarget = bridge.endsWith('/') ? bridge : `${bridge}/`
   const bridgeOrigin = bridgeTarget.replace(/\/$/, '')
-  const pcDevBind = (env.VITE_PC_DEV_BIND || '10.10.10.177').trim()
+  const pcDevBind = (env.VITE_PC_DEV_BIND || '0.0.0.0').trim()
 
   return {
     base,

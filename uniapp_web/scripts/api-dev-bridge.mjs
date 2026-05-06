@@ -456,9 +456,14 @@ function emitClear() {
 }
 
 /* ---------- 本地直接处理（CRUD + 已知接口），不经过上游 ---------- */
+function requestPath(urlPath) {
+  return String(urlPath || "/").split("?")[0];
+}
+
 function localHandle(method, urlPath, body) {
+  const path = requestPath(urlPath);
   // 中央配置端点（无论 mode，始终可读）
-  if (method === "GET" && urlPath.startsWith("/seed/config")) {
+  if (method === "GET" && path.startsWith("/seed/config")) {
     return ok({
       mode: bridgeMode,
       mock: bridgeMode === "mock",
@@ -466,13 +471,13 @@ function localHandle(method, urlPath, body) {
       ts: Date.now(),
     });
   }
-  if (method === "POST" && urlPath.startsWith("/seed/mode")) {
+  if (method === "POST" && path.startsWith("/seed/mode")) {
     const next = String(body && body.mode || "").toLowerCase() === "real" ? "real" : "mock";
     bridgeMode = next;
     emitMode("toggle");
     return ok({ mode: bridgeMode, mock: bridgeMode === "mock" }, "mode switched");
   }
-  if (method === "POST" && urlPath.startsWith("/seed/clear")) {
+  if (method === "POST" && path.startsWith("/seed/clear")) {
     SEED_STORES = [];
     SEED_USERS = [];
     SEED_TODOS = [];
@@ -483,7 +488,7 @@ function localHandle(method, urlPath, body) {
     emitClear();
     return ok({ stats: buildStats() }, "cleared");
   }
-  if (method === "POST" && urlPath.startsWith("/seed/reset")) {
+  if (method === "POST" && path.startsWith("/seed/reset")) {
     // 还原到默认初始 15/20/5 种子（便于演示重置）
     initialSeed();
     emitChange("stores", "reset", SEED_STORES);
@@ -497,10 +502,10 @@ function localHandle(method, urlPath, body) {
   if (bridgeMode === "real") return null;
 
   // 登录 / 当前用户 / 首页聚合
-  if (method === "POST" && urlPath.startsWith("/admin/agencylogin")) {
+  if (method === "POST" && path.startsWith("/admin/agencylogin")) {
     return ok({ ResultType: 0, Token: "dev-seed-token" });
   }
-  if (method === "GET" && urlPath.startsWith("/admin/getagencyinfo")) {
+  if (method === "GET" && path.startsWith("/admin/getagencyinfo")) {
     const me = SEED_USERS[0];
     if (!me) {
       return ok({
@@ -527,16 +532,16 @@ function localHandle(method, urlPath, body) {
       },
     });
   }
-  if (method === "GET" && urlPath.startsWith("/homedata/v2/gethomedata")) {
+  if (method === "GET" && path.startsWith("/homedata/v2/gethomedata")) {
     return ok(buildHomeAggregate());
   }
-  if (method === "GET" && urlPath.startsWith("/seed/stats")) {
+  if (method === "GET" && path.startsWith("/seed/stats")) {
     return ok(buildStats());
   }
 
   /* /seed/stores 相关 */
-  if (method === "GET" && urlPath.startsWith("/seed/stores")) return ok(SEED_STORES);
-  if (method === "POST" && urlPath.startsWith("/seed/stores/add")) {
+  if (method === "GET" && path.startsWith("/seed/stores")) return ok(SEED_STORES);
+  if (method === "POST" && path.startsWith("/seed/stores/add")) {
     const platform =
       SEED_PLATFORMS.find((p) => p.typeStr === body.platform_type) || SEED_PLATFORMS[0];
     const row = {
@@ -553,7 +558,7 @@ function localHandle(method, urlPath, body) {
     emitChange("stores", "add", row);
     return ok(row, "added (dev-seed)");
   }
-  if (method === "POST" && urlPath.startsWith("/seed/stores/update")) {
+  if (method === "POST" && path.startsWith("/seed/stores/update")) {
     const idx = SEED_STORES.findIndex((s) => s.shop_id === Number(body.shop_id));
     if (idx < 0) return { code: 404, msg: "store not found", data: null };
     const platform = SEED_PLATFORMS.find((p) => p.typeStr === body.platform_type);
@@ -566,7 +571,7 @@ function localHandle(method, urlPath, body) {
     emitChange("stores", "update", SEED_STORES[idx]);
     return ok(SEED_STORES[idx], "updated (dev-seed)");
   }
-  if (method === "POST" && urlPath.startsWith("/seed/stores/delete")) {
+  if (method === "POST" && path.startsWith("/seed/stores/delete")) {
     const id = Number(body.shop_id);
     const before = SEED_STORES.length;
     SEED_STORES = SEED_STORES.filter((s) => s.shop_id !== id);
@@ -576,13 +581,13 @@ function localHandle(method, urlPath, body) {
 
   /* /seed/users 相关（PC userManagement.* 也别名到这里） */
   if (
-    (method === "GET" && (urlPath.startsWith("/seed/users") || urlPath.startsWith("/userManagement/getList")))
+    (method === "GET" && (path.startsWith("/seed/users") || path.startsWith("/userManagement/getList")))
   ) {
     return ok({ list: SEED_USERS, total: SEED_USERS.length });
   }
   if (
     method === "POST" &&
-    (urlPath.startsWith("/seed/users/add") || urlPath.startsWith("/userManagement/doEdit"))
+    (path.startsWith("/seed/users/add") || path.startsWith("/userManagement/doEdit"))
   ) {
     if (body && Number(body.id)) {
       const idx = SEED_USERS.findIndex((u) => u.id === Number(body.id));
@@ -615,7 +620,7 @@ function localHandle(method, urlPath, body) {
   }
   if (
     method === "POST" &&
-    (urlPath.startsWith("/seed/users/delete") || urlPath.startsWith("/userManagement/doDelete"))
+    (path.startsWith("/seed/users/delete") || path.startsWith("/userManagement/doDelete"))
   ) {
     const id = Number(body.id);
     const before = SEED_USERS.length;
@@ -625,8 +630,8 @@ function localHandle(method, urlPath, body) {
   }
 
   /* /seed/todos 相关 */
-  if (method === "GET" && urlPath.startsWith("/seed/todos")) return ok(SEED_TODOS);
-  if (method === "POST" && urlPath.startsWith("/seed/todos/add")) {
+  if (method === "GET" && path.startsWith("/seed/todos")) return ok(SEED_TODOS);
+  if (method === "POST" && path.startsWith("/seed/todos/add")) {
     const row = {
       id: nextId(SEED_TODOS, "id"),
       user_id: Number(body.user_id) || (SEED_USERS[0] && SEED_USERS[0].id) || 0,
@@ -639,14 +644,14 @@ function localHandle(method, urlPath, body) {
     emitChange("todos", "add", row);
     return ok(row, "added (dev-seed)");
   }
-  if (method === "POST" && urlPath.startsWith("/seed/todos/update")) {
+  if (method === "POST" && path.startsWith("/seed/todos/update")) {
     const idx = SEED_TODOS.findIndex((t) => t.id === Number(body.id));
     if (idx < 0) return { code: 404, msg: "todo not found", data: null };
     SEED_TODOS[idx] = { ...SEED_TODOS[idx], ...body, id: SEED_TODOS[idx].id };
     emitChange("todos", "update", SEED_TODOS[idx]);
     return ok(SEED_TODOS[idx], "updated (dev-seed)");
   }
-  if (method === "POST" && urlPath.startsWith("/seed/todos/delete")) {
+  if (method === "POST" && path.startsWith("/seed/todos/delete")) {
     const id = Number(body.id);
     const before = SEED_TODOS.length;
     SEED_TODOS = SEED_TODOS.filter((t) => t.id !== id);
@@ -657,13 +662,17 @@ function localHandle(method, urlPath, body) {
   return null;
 }
 
-/** real 模式且上游不可达时，用内存种子兜底少量只读接口（响应头仍带 X-Dev-Fallback），避免联调环境断网时 H5 首页仅显示加载失败 */
+/** real 模式且上游不可达/5xx 时，对部分接口用种子兜底（含登录 POST，避免上游 500 时手机无法进首页） */
 function realModeUpstreamFallback(method, urlPath) {
   if (!FALLBACK_ON_FAIL || bridgeMode !== "real") return null;
-  if (method === "GET" && urlPath.startsWith("/homedata/v2/gethomedata")) {
+  const path = requestPath(urlPath);
+  if (method === "POST" && path.startsWith("/admin/agencylogin")) {
+    return ok({ ResultType: 0, Token: "dev-seed-token" });
+  }
+  if (method === "GET" && path.startsWith("/homedata/v2/gethomedata")) {
     return ok(buildHomeAggregate());
   }
-  if (method === "GET" && urlPath.startsWith("/admin/getagencyinfo")) {
+  if (method === "GET" && path.startsWith("/admin/getagencyinfo")) {
     const me = SEED_USERS[0];
     if (!me) {
       return ok({
