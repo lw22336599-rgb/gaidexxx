@@ -34,7 +34,7 @@
                 <text v-if="m.unit" class="mc-unit">{{ m.unit }}</text>
               </view>
               <view class="mc-compare">
-                <text class="mc-cmp-label">相较于昨日</text>
+                <text class="mc-cmp-label">相对于昨日</text>
                 <text class="mc-cmp-val" :class="{ 'cmp-down': !m.compareUp }">
                   {{ m.compareDelta }}{{ m.compareUp ? "↑" : "↓" }}
                 </text>
@@ -101,17 +101,12 @@ import DashboardUpdateLog from "@/components/home/DashboardUpdateLog.vue";
 
 function goAdminPc(path: string) {
   const p = path.startsWith("/") ? path : `/${path}`;
-  // #ifdef H5
   uni.navigateTo({
     url: `/pages/admin-pc/admin-pc?path=${encodeURIComponent(p)}`,
     fail: () => {
       uni.showToast({ title: "暂无法打开该功能", icon: "none" });
     },
   });
-  // #endif
-  // #ifndef H5
-  uni.showToast({ title: "请在 H5 中打开完整后台", icon: "none" });
-  // #endif
 }
 
 /** 与原版首页一致：仅「聚合客服」一项 */
@@ -281,7 +276,6 @@ function onMetricTap(m: { key: string; target?: { type: string; platform?: strin
   if (!t) {
     return;
   }
-  // #ifdef H5
   if (t.type === "stores") {
     goAdminPc(shopV2HashForPlatform(t.platform));
     return;
@@ -295,10 +289,6 @@ function onMetricTap(m: { key: string; target?: { type: string; platform?: strin
     goAdminPc(ALIGNED_PC_HASH.USER_OPERATE_TODOS);
     return;
   }
-  // #endif
-  const q: string[] = [`type=${encodeURIComponent(t.type)}`];
-  if (t.platform) q.push(`platform=${encodeURIComponent(t.platform)}`);
-  uni.navigateTo({ url: `/pages/seed-list/seed-list?${q.join("&")}` });
 }
 
 async function load() {

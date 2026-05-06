@@ -1,18 +1,33 @@
 <template>
   <!-- #ifdef H5 -->
   <view class="shell">
-    <view class="toolbar">
+    <view class="toolbar toolbar-dark">
       <button class="back" size="mini" @click="goBack">返回</button>
-      <text class="title">完整后台</text>
+      <text class="title title-light">完整后台</text>
     </view>
     <web-view class="wv" :src="embedUrl" />
   </view>
   <!-- #endif -->
+
+  <!-- #ifdef MP-WEIXIN || APP-PLUS -->
+  <view class="shell shell-embed">
+    <view class="toolbar toolbar-dark">
+      <button class="back" size="mini" @click="goBack">返回</button>
+      <text class="title title-light">完整后台</text>
+    </view>
+    <web-view class="wv wv-embed" :src="embedUrl" />
+  </view>
+  <!-- #endif -->
+
   <!-- #ifndef H5 -->
+  <!-- #ifndef MP-WEIXIN -->
+  <!-- #ifndef APP-PLUS -->
   <view class="shell pad">
-    <text class="tip">内嵌完整后台仅支持 H5 浏览器。小程序/App 请使用电脑浏览器打开 PC 后台。</text>
+    <text class="tip">当前平台暂不支持内嵌后台，请使用微信 / App / 浏览器 H5。</text>
     <button class="ghost" @click="goBack">返回</button>
   </view>
+  <!-- #endif -->
+  <!-- #endif -->
   <!-- #endif -->
 </template>
 
@@ -24,7 +39,6 @@ import { buildPcAdminEmbedUrl } from "@/utils/pcAdminEmbed";
 const embedUrl = ref("");
 
 onLoad((opts) => {
-  // #ifdef H5
   const raw = (opts?.path || opts?.p || "/index") as string;
   let path = raw;
   try {
@@ -33,7 +47,6 @@ onLoad((opts) => {
     path = raw;
   }
   embedUrl.value = buildPcAdminEmbedUrl(path);
-  // #endif
 });
 
 function goBack() {
@@ -50,6 +63,9 @@ function goBack() {
   box-sizing: border-box;
   background: #1c1c28;
 }
+.shell-embed {
+  background: #1c1c28;
+}
 .toolbar {
   flex-shrink: 0;
   display: flex;
@@ -57,8 +73,10 @@ function goBack() {
   gap: 16rpx;
   padding: 12rpx 20rpx;
   padding-top: calc(12rpx + env(safe-area-inset-top));
-  background: #1c1c28;
   border-bottom: 1rpx solid rgba(255, 255, 255, 0.08);
+}
+.toolbar-dark {
+  background: #1c1c28;
 }
 .back {
   flex-shrink: 0;
@@ -67,15 +85,20 @@ function goBack() {
   flex: 1;
   font-size: 30rpx;
   font-weight: 600;
-  color: #fff;
   text-align: center;
   padding-right: 120rpx;
   box-sizing: border-box;
+}
+.title-light {
+  color: #fff;
 }
 .wv {
   flex: 1;
   width: 100%;
   min-height: 0;
+}
+.wv-embed {
+  min-height: 400rpx;
 }
 .pad {
   padding: 40rpx 32rpx;

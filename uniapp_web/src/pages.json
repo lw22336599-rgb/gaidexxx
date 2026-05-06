@@ -55,7 +55,10 @@
       "style": {
         "navigationBarTitleText": "完整后台",
         "navigationStyle": "custom",
-        "disableScroll": true
+        "disableScroll": true,
+        "mp-weixin": {
+          "disableScroll": true
+        }
       }
     },
     {
