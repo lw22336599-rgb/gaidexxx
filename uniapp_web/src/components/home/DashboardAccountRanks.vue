@@ -1,10 +1,13 @@
 <template>
   <view class="card account-card">
-    <text class="hdr-title">月度成员数据排行</text>
+    <view class="hdr-row">
+      <text class="hdr-title">月度成员数据排行</text>
+      <text class="view-all tappable" hover-class="view-all-hover" @tap="$emit('viewAll')">查看全部 ›</text>
+    </view>
 
     <view class="tabs">
       <view
-        class="pill"
+        class="pill tappable"
         hover-class="pill-hover"
         :hover-stay-time="70"
         :class="{ active: currentTab === 1 }"
@@ -13,7 +16,7 @@
         <text class="pill-t">消耗积分数</text>
       </view>
       <view
-        class="pill"
+        class="pill tappable"
         hover-class="pill-hover"
         :hover-stay-time="70"
         :class="{ active: currentTab === 2 }"
@@ -22,7 +25,7 @@
         <text class="pill-t">名下成员数</text>
       </view>
       <view
-        class="pill"
+        class="pill tappable"
         hover-class="pill-hover"
         :hover-stay-time="70"
         :class="{ active: currentTab === 3 }"
@@ -45,9 +48,10 @@
         <view
           v-for="(row, idx) in fullRows"
           :key="idx"
-          class="trow"
+          class="trow tappable"
           hover-class="row-hover"
           :hover-stay-time="60"
+          @tap="$emit('rowTap', row)"
         >
           <view class="td td-rank">
             <text v-if="idx === 0" class="badge g1">1</text>
@@ -74,6 +78,11 @@ import { computed, ref, watch } from "vue";
 
 const props = defineProps<{
   monthMemberData: { payTop: unknown[]; memberTop: unknown[]; shopTop: unknown[] };
+}>();
+
+const emit = defineEmits<{
+  (e: "rowTap", row: unknown): void;
+  (e: "viewAll"): void;
 }>();
 
 const currentTab = ref(2);
@@ -135,13 +144,24 @@ watch(
   border: 1rpx solid rgba(28, 28, 40, 0.04);
   overflow: hidden;
 }
-.hdr-title {
-  display: block;
+.hdr-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   padding: 0 28rpx 24rpx;
+}
+.hdr-title {
   font-size: 30rpx;
   font-weight: 600;
   color: #1c1c28;
 }
+.view-all {
+  font-size: 24rpx;
+  color: #2d6cdf;
+  flex-shrink: 0;
+}
+.view-all-hover { opacity: 0.75; }
 .tabs {
   display: flex;
   flex-direction: row;
@@ -159,24 +179,11 @@ watch(
   background: #eceff4;
   text-align: center;
   box-sizing: border-box;
-  transition: transform 0.12s ease, opacity 0.12s ease;
 }
-.pill-hover {
-  opacity: 0.92;
-  transform: scale(0.98);
-}
-.pill.active {
-  background: #2ecc71;
-}
-.pill-t {
-  font-size: 22rpx;
-  color: #303133;
-  font-weight: 500;
-}
-.pill.active .pill-t {
-  color: #ffffff;
-  font-weight: 600;
-}
+.pill-hover { opacity: 0.88; transform: scale(0.97); }
+.pill.active { background: #2ecc71; }
+.pill-t { font-size: 22rpx; color: #303133; font-weight: 500; }
+.pill.active .pill-t { color: #ffffff; font-weight: 600; }
 .table-wrap {
   margin: 8rpx 20rpx 24rpx;
   border-radius: 12rpx;
@@ -191,27 +198,10 @@ watch(
   padding: 22rpx 12rpx;
   box-sizing: border-box;
 }
-.th {
-  font-size: 22rpx;
-  color: #606266;
-  font-weight: 500;
-}
-.th-rank {
-  width: 72rpx;
-  flex-shrink: 0;
-  text-align: center;
-}
-.th-account {
-  flex: 1.4;
-  min-width: 0;
-  padding-left: 8rpx;
-}
-.th-a,
-.th-b {
-  flex: 1;
-  min-width: 0;
-  text-align: center;
-}
+.th { font-size: 22rpx; color: #606266; font-weight: 500; }
+.th-rank { width: 72rpx; flex-shrink: 0; text-align: center; }
+.th-account { flex: 1.4; min-width: 0; padding-left: 8rpx; }
+.th-a, .th-b { flex: 1; min-width: 0; text-align: center; }
 .tbody.empty {
   min-height: 120rpx;
   text-align: center;
@@ -220,9 +210,7 @@ watch(
   color: #a8abb2;
   background: #fff;
 }
-.tbody-list {
-  background: #fff;
-}
+.tbody-list { background: #fff; }
 .trow {
   display: flex;
   flex-direction: row;
@@ -230,25 +218,10 @@ watch(
   padding: 26rpx 12rpx;
   border-top: 1rpx solid #f0f0f0;
   background: #fff;
-  transition: background 0.15s ease;
 }
-.row-hover {
-  background: #f9fafb;
-}
-.td-rank {
-  width: 72rpx;
-  flex-shrink: 0;
-  display: flex;
-  justify-content: center;
-}
-.td-account {
-  flex: 1.4;
-  min-width: 0;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10rpx;
-}
+.row-hover { background: #f0f7ff; }
+.td-rank { width: 72rpx; flex-shrink: 0; display: flex; justify-content: center; }
+.td-account { flex: 1.4; min-width: 0; display: flex; flex-direction: row; align-items: center; gap: 10rpx; }
 .img-box {
   width: 48rpx;
   height: 48rpx;
@@ -259,26 +232,9 @@ watch(
   justify-content: center;
   flex-shrink: 0;
 }
-.z {
-  font-size: 20rpx;
-  color: #666;
-}
-.acc-name {
-  flex: 1;
-  min-width: 0;
-  font-size: 24rpx;
-  color: #303133;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-.td-num {
-  flex: 1;
-  min-width: 0;
-  text-align: center;
-  font-size: 24rpx;
-  color: #606266;
-}
+.z { font-size: 20rpx; color: #666; }
+.acc-name { flex: 1; min-width: 0; font-size: 24rpx; color: #303133; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.td-num { flex: 1; min-width: 0; text-align: center; font-size: 24rpx; color: #606266; }
 .badge {
   display: flex;
   align-items: center;
@@ -289,21 +245,9 @@ watch(
   font-size: 22rpx;
   font-weight: 700;
 }
-.badge.g1 {
-  background: #e6a23c;
-  color: #fff;
-}
-.badge.g2 {
-  background: #909399;
-  color: #fff;
-}
-.badge.g3 {
-  background: #b88230;
-  color: #fff;
-}
-.badge.gx {
-  background: transparent;
-  color: #909399;
-  font-weight: 600;
-}
+.badge.g1 { background: #e6a23c; color: #fff; }
+.badge.g2 { background: #909399; color: #fff; }
+.badge.g3 { background: #b88230; color: #fff; }
+.badge.gx { background: transparent; color: #909399; font-weight: 600; }
+.tappable { cursor: pointer; }
 </style>

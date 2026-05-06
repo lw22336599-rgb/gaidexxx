@@ -1,21 +1,45 @@
 <template>
   <view class="page">
     <view class="index-dashboard-shell">
+
+      <!-- 顶部用户信息头 -->
+      <view class="page-hdr">
+        <view class="hdr-left">
+          <text class="hdr-brand">极狐</text>
+          <text class="hdr-welcome">欢迎回来，{{ displayName }}</text>
+        </view>
+        <view
+          class="hdr-avatar tappable"
+          hover-class="hdr-avatar-hover"
+          @tap="goAdminPc(ALIGNED_PC_HASH.SETTING_PERSONAL_CENTER)"
+        >
+          <text class="avatar-letter">{{ avatarLetter }}</text>
+        </view>
+      </view>
+
       <view v-if="loading" class="card muted load-hint">加载中…</view>
       <view v-else-if="error" class="card err err-card">
         <text class="err-msg">{{ error }}</text>
         <button class="retry-btn" @tap="load">重试</button>
       </view>
       <template v-else>
-        <view class="notice-strip">
+
+        <!-- 通知栏：点击进入公告列表 -->
+        <view
+          class="notice-strip tappable"
+          hover-class="notice-hover"
+          @tap="goAdminPc('/team/notification')"
+        >
           <view class="notice-alert">
             <text class="notice-exclaim">!</text>
           </view>
+          <text class="notice-tip">点击查看最新公告</text>
           <view class="notice-fill" />
           <text class="notice-bell-outline" aria-hidden="true">🔔</text>
+          <text class="notice-arrow">›</text>
         </view>
 
-        <!-- 原版 2×2 四宫格；顺序：成员 → 积分 → MT店 → ELM店。数据同源：5200 代理 GET /homedata/v2/gethomedata → top_data -->
+        <!-- 2×2 指标四宫格 -->
         <view v-if="metricRows.length" class="metrics-block">
           <view class="metric-grid">
             <view
@@ -43,24 +67,26 @@
           </view>
         </view>
 
+        <!-- 快捷功能 -->
         <view class="quick-card">
           <text class="quick-title">快捷功能</text>
           <view class="quick-row">
             <view
               v-for="(q, qi) in quickEntries"
               :key="qi"
-              class="quick-item"
+              class="quick-item tappable"
               hover-class="quick-hover"
               @tap="goAdminPc(q.path)"
             >
-              <view class="quick-circle fox">
-                <text class="fox-emo">🦊</text>
+              <view class="quick-circle" :class="q.circleClass">
+                <text class="quick-emo">{{ q.icon }}</text>
               </view>
               <text class="quick-label">{{ q.label }}</text>
             </view>
           </view>
         </view>
 
+        <!-- 近七日趋势图 -->
         <HomeTrendChart
           :x-axis-data="xAxisData"
           :centre="centre"
@@ -70,13 +96,30 @@
           :jd-data="JdData"
         />
 
-        <DashboardAccountRanks :month-member-data="monthMemberData" />
+        <!-- 月度成员排行 -->
+        <DashboardAccountRanks
+          :month-member-data="monthMemberData"
+          @row-tap="onRankRowTap"
+          @view-all="goAdminPc(ALIGNED_PC_HASH.TEAM_MEMBER)"
+        />
 
+        <!-- 待办事项 -->
         <DashboardTodo :todo-data="todoData" @changed="onTodoChanged" />
 
-        <DashboardTeamMembers :team-top-list="teamTopList" />
+        <!-- 团队成员 -->
+        <DashboardTeamMembers
+          :team-top-list="teamTopList"
+          @row-tap="onTeamRowTap"
+          @view-all="goAdminPc(ALIGNED_PC_HASH.TEAM_MEMBER)"
+        />
 
-        <DashboardUpdateLog :update-top="updateTop" :version="appVersionName" />
+        <!-- 更新记录 -->
+        <DashboardUpdateLog
+          :update-top="updateTop"
+          :version="appVersionName"
+          @view-all="goAdminPc('/team/notification')"
+        />
+
       </template>
     </view>
   </view>
@@ -109,9 +152,14 @@ function goAdminPc(path: string) {
   });
 }
 
-/** 与原版首页一致：仅「聚合客服」一项 */
-type QuickEntry = { label: string; path: string };
-const quickEntries: readonly QuickEntry[] = [{ label: "聚合客服", path: ALIGNED_PC_HASH.CUSTOMER_SERVICE_CHAT }];
+/** 快捷入口：聚合客服 + 常用功能 */
+type QuickEntry = { label: string; path: string; icon: string; circleClass: string };
+const quickEntries: readonly QuickEntry[] = [
+  { label: "聚合客服", path: ALIGNED_PC_HASH.CUSTOMER_SERVICE_CHAT, icon: "🦊", circleClass: "fox" },
+  { label: "门店管理", path: ALIGNED_PC_HASH.SHOP_V2_FUNCTIONAL, icon: "🏪", circleClass: "shop" },
+  { label: "团队成员", path: ALIGNED_PC_HASH.TEAM_MEMBER, icon: "👥", circleClass: "team" },
+  { label: "数据大屏", path: ALIGNED_PC_HASH.DATA_SCREEN, icon: "📊", circleClass: "chart" },
+];
 
 onLoad((opts) => {
   applyMockSessionFromQuery(opts as Record<string, string | undefined>);
@@ -132,16 +180,40 @@ const {
   updateTop,
 } = useHomeDashboard();
 
-/** 与 manifest versionName 对齐，供更新记录页眉展示 */
 const appVersionName = "1.0.0";
+
+const userStore = useUserStore();
+
+const displayName = computed(() => {
+  const n = userStore.username.value;
+  return n && n !== "游客" ? n : "用户";
+});
+
+const avatarLetter = computed(() => {
+  const n = displayName.value;
+  return n.charAt(0).toUpperCase() || "U";
+});
 
 function onTodoChanged() {
   void load();
 }
 
+function onRankRowTap(row: unknown) {
+  const r = row as Record<string, unknown>;
+  const memberId = r.member_id || r.admin;
+  if (memberId) {
+    goAdminPc(`${ALIGNED_PC_HASH.TEAM_MEMBER}`);
+  } else {
+    goAdminPc(ALIGNED_PC_HASH.TEAM_MEMBER);
+  }
+}
+
+function onTeamRowTap(_row: unknown) {
+  goAdminPc(ALIGNED_PC_HASH.TEAM_MEMBER);
+}
+
 let sseInstance: { close: () => void } | null = null;
 let pendingTimer: ReturnType<typeof setTimeout> | null = null;
-/** 小程序 / App 无 EventSource：轮询 bridge 配置与首页，与 PC 种子数据大致同步 */
 let bridgePollTimer: ReturnType<typeof setInterval> | null = null;
 
 function envMockFlagOn(): boolean {
@@ -169,29 +241,22 @@ function subscribeRealtime() {
       try {
         const d = JSON.parse((ev as MessageEvent).data);
         applyBridgeEvent("hello", d);
-      } catch {
-        /* ignore */
-      }
+      } catch { /* ignore */ }
     });
     es.addEventListener("mode", (ev) => {
       try {
         const d = JSON.parse((ev as MessageEvent).data);
         applyBridgeEvent("mode", d);
         reloadDebounced();
-      } catch {
-        /* ignore */
-      }
+      } catch { /* ignore */ }
     });
     es.addEventListener("change", reloadDebounced);
     es.addEventListener("clear", reloadDebounced);
     es.addEventListener("reset", reloadDebounced);
     sseInstance = es as unknown as { close: () => void };
-  } catch {
-    /* ignore */
-  }
+  } catch { /* ignore */ }
 }
 
-/** H5 用 SSE；非 H5 且开启 VITE_USE_MOCK 时定时拉取，对齐 PC dev-bridge */
 function startBridgeRealtimeSync() {
   subscribeRealtime();
   if (supportsEventSource() || !envMockFlagOn()) return;
@@ -203,11 +268,7 @@ function startBridgeRealtimeSync() {
 
 onBeforeUnmount(() => {
   if (sseInstance) {
-    try {
-      sseInstance.close();
-    } catch {
-      /* ignore */
-    }
+    try { sseInstance.close(); } catch { /* ignore */ }
     sseInstance = null;
   }
   if (pendingTimer) clearTimeout(pendingTimer);
@@ -217,12 +278,10 @@ onBeforeUnmount(() => {
   }
 });
 
-const userStore = useUserStore();
 const loading = ref(false);
 const error = ref("");
 let loadSeq = 0;
 
-/** 栅格顺序：上行 成员、积分；下行 MT、ELM（与原版截图一致） */
 const METRIC_KEY_ORDER = ["member_today", "integral_today", "mt_shop_today", "elm_shop_today"] as const;
 
 type MetricRow = {
@@ -240,16 +299,12 @@ type MetricRow = {
 function formatYdayDelta(raw: unknown): { text: string; up: boolean } {
   if (raw === undefined || raw === null || raw === "") return { text: "0", up: true };
   const n = Number(raw);
-  if (!Number.isNaN(n)) {
-    return { text: String(Math.abs(n)), up: n >= 0 };
-  }
+  if (!Number.isNaN(n)) return { text: String(Math.abs(n)), up: n >= 0 };
   const s = String(raw).trim();
   const neg = /^[-−]/.test(s) || s.includes("下降") || s.includes("减少");
   const digits = s.replace(/[^\d.-]/g, "");
   const num = Number(digits);
-  if (!Number.isNaN(num)) {
-    return { text: String(Math.abs(num)), up: !neg && num >= 0 };
-  }
+  if (!Number.isNaN(num)) return { text: String(Math.abs(num)), up: !neg && num >= 0 };
   return { text: s || "0", up: !neg };
 }
 
@@ -259,10 +314,16 @@ const metricRows = computed(() => {
     const title = sanitizeMobileHomeTitle(
       String((row as any).title ?? (row as any).name ?? (row as any).key ?? ""),
     );
-    const count = (row as any).count !== undefined && (row as any).count !== null ? String((row as any).count) : "—";
+    const count =
+      (row as any).count !== undefined && (row as any).count !== null
+        ? String((row as any).count)
+        : "—";
     const unit = String((row as any).unit ?? (row as any).suffix ?? "");
     const allRaw = (row as any).all_total;
-    const allNum = allRaw !== undefined && allRaw !== null ? Number(allRaw) : Number((row as any).count) || 0;
+    const allNum =
+      allRaw !== undefined && allRaw !== null
+        ? Number(allRaw)
+        : Number((row as any).count) || 0;
     const totalRight = `全部${allNum}${unit || ""}`;
     const y = formatYdayDelta((row as any).of_yday);
     return {
@@ -274,7 +335,9 @@ const metricRows = computed(() => {
       totalRight,
       compareDelta: y.text,
       compareUp: y.up,
-      target: (row as any).target as { type: "stores" | "users" | "todos"; platform?: string } | undefined,
+      target: (row as any).target as
+        | { type: "stores" | "users" | "todos"; platform?: string }
+        | undefined,
     };
   });
   const byKey = new Map(rows.map((r) => [r.key, r]));
@@ -289,7 +352,10 @@ const metricRows = computed(() => {
   return ordered.slice(0, 4);
 });
 
-const FALLBACK_METRIC_TARGET: Record<string, { type: "stores" | "users" | "todos"; platform?: string }> = {
+const FALLBACK_METRIC_TARGET: Record<
+  string,
+  { type: "stores" | "users" | "todos"; platform?: string }
+> = {
   mt_shop_today: { type: "stores", platform: "mt-shop-feature" },
   elm_shop_today: { type: "stores", platform: "elm-shop-feature" },
   member_today: { type: "users" },
@@ -298,9 +364,7 @@ const FALLBACK_METRIC_TARGET: Record<string, { type: "stores" | "users" | "todos
 
 function onMetricTap(m: { key: string; target?: { type: string; platform?: string } }) {
   const t = m.target || FALLBACK_METRIC_TARGET[m.key];
-  if (!t) {
-    return;
-  }
+  if (!t) return;
   if (t.type === "stores") {
     goAdminPc(shopV2HashForPlatform(t.platform));
     return;
@@ -326,39 +390,32 @@ async function load() {
   error.value = "";
   try {
     await userStore.getUserInfo({ silent: true });
-    /** 统一走 utils/request → PC Vite :5200 代理链，与 axios 开发环境一致 */
     const res = (await getHomeData()) as { code?: number; data?: Record<string, unknown> };
     const ok = res.code === 200 || res.code === 0 || Number(res.code) === 200;
-    if (!ok || !res.data) {
-      throw new Error("首页数据为空（/homedata/v2/gethomedata）");
-    }
+    if (!ok || !res.data) throw new Error("首页数据为空（/homedata/v2/gethomedata）");
     if (seq !== loadSeq) return;
     applyPayload(res.data);
   } catch (e: unknown) {
     if (seq !== loadSeq) return;
-    if (e instanceof Error) {
-      error.value = e.message;
-    } else if (e && typeof e === "object" && "errMsg" in e) {
+    if (e instanceof Error) error.value = e.message;
+    else if (e && typeof e === "object" && "errMsg" in e)
       error.value = String((e as { errMsg?: string }).errMsg || "加载失败");
-    } else {
-      error.value = typeof e === "string" ? e : JSON.stringify(e);
-    }
+    else error.value = typeof e === "string" ? e : JSON.stringify(e);
     if (!error.value || error.value === "{}") error.value = "加载失败";
   } finally {
-    if (seq === loadSeq) {
-      loading.value = false;
-    }
+    if (seq === loadSeq) loading.value = false;
   }
 }
 
 onShow(async () => {
   setTabBarPageIndex(0);
   const pages = getCurrentPages();
-  const cur = pages[pages.length - 1] as unknown as { options?: Record<string, string | undefined> };
+  const cur = pages[pages.length - 1] as unknown as {
+    options?: Record<string, string | undefined>;
+  };
   applyMockSessionFromQuery(cur?.options);
   await refreshDevMockConfig();
   void load();
-  /* 与 PC 首页一致：H5 用 SSE；小程序/App 用轮询拉齐 dev-bridge 种子数据 */
   startBridgeRealtimeSync();
 });
 
@@ -374,7 +431,6 @@ onPullDownRefresh(() => {
 </script>
 
 <style scoped>
-/* 外层固定为导航栏与 tabBar 之间的可视高度，禁止整页跟内容一起「长高」乱跑 */
 .page {
   height: 100%;
   min-height: 0;
@@ -389,7 +445,6 @@ onPullDownRefresh(() => {
   flex-direction: column;
   overflow: hidden;
 }
-/* 仅内容区滚动；底部留白避免被 tabBar 遮挡 */
 .index-dashboard-shell {
   position: relative;
   z-index: 0;
@@ -404,6 +459,54 @@ onPullDownRefresh(() => {
   padding: calc(12rpx + env(safe-area-inset-top)) 20rpx 28rpx;
   padding-bottom: calc(140rpx + env(safe-area-inset-bottom));
 }
+/* 顶部用户信息头 */
+.page-hdr {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10rpx 4rpx 20rpx;
+}
+.hdr-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+  min-width: 0;
+}
+.hdr-brand {
+  font-size: 42rpx;
+  font-weight: 800;
+  color: #1a1a2e;
+  letter-spacing: 2rpx;
+  line-height: 1.2;
+}
+.hdr-welcome {
+  font-size: 24rpx;
+  color: #909399;
+  line-height: 1.3;
+}
+.hdr-avatar {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #e6b422 0%, #f07c32 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4rpx 16rpx rgba(230, 180, 34, 0.4);
+}
+.hdr-avatar-hover {
+  opacity: 0.88;
+  transform: scale(0.96);
+}
+.avatar-letter {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1;
+}
+/* 通知栏 */
 .notice-strip {
   display: flex;
   flex-direction: row;
@@ -416,8 +519,11 @@ onPullDownRefresh(() => {
   border-radius: 20rpx;
   border: 1rpx solid rgba(230, 180, 34, 0.22);
 }
+.notice-hover {
+  opacity: 0.9;
+}
 .notice-alert {
-  width: 64rpx;
+  width: 56rpx;
   height: 56rpx;
   border-radius: 14rpx;
   background: #fff4dd;
@@ -428,19 +534,33 @@ onPullDownRefresh(() => {
   flex-shrink: 0;
 }
 .notice-exclaim {
-  font-size: 34rpx;
+  font-size: 32rpx;
   font-weight: 800;
   color: #e67e22;
   line-height: 1;
 }
-.notice-fill {
+.notice-tip {
+  font-size: 26rpx;
+  color: #7a6030;
+  margin-left: 16rpx;
   flex: 1;
+  min-width: 0;
+}
+.notice-fill {
+  flex: 0 0 8rpx;
 }
 .notice-bell-outline {
-  font-size: 40rpx;
+  font-size: 38rpx;
   line-height: 1;
   flex-shrink: 0;
-  opacity: 0.92;
+  opacity: 0.9;
+}
+.notice-arrow {
+  font-size: 36rpx;
+  color: #c8960a;
+  line-height: 1;
+  margin-left: 8rpx;
+  flex-shrink: 0;
 }
 .card {
   background: #ffffff;
@@ -455,34 +575,18 @@ onPullDownRefresh(() => {
   font-size: 28rpx;
   color: #666;
 }
-.card.err {
-  color: #c0392b;
-  line-height: 1.55;
-}
-.err-card {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  gap: 24rpx;
-}
-.err-msg {
-  font-size: 28rpx;
-  line-height: 1.5;
-}
+.card.err { color: #c0392b; line-height: 1.55; }
+.err-card { display: flex; flex-direction: column; align-items: stretch; gap: 24rpx; }
+.err-msg { font-size: 28rpx; line-height: 1.5; }
 .retry-btn {
   border-radius: 16rpx;
   font-size: 28rpx;
   background: #409eff;
   color: #fff;
 }
-.load-hint {
-  text-align: center;
-  padding: 48rpx 24rpx !important;
-  margin-bottom: 24rpx;
-}
-.metrics-block {
-  margin-bottom: 20rpx;
-}
+.load-hint { text-align: center; padding: 48rpx 24rpx !important; margin-bottom: 24rpx; }
+/* 指标四宫格 */
+.metrics-block { margin-bottom: 20rpx; }
 .metric-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -510,22 +614,16 @@ onPullDownRefresh(() => {
   justify-content: space-between;
   gap: 8rpx;
 }
-.mc-title {
-  flex: 1;
-  min-width: 0;
-  font-size: 24rpx;
-  color: #303133;
-  font-weight: 600;
-  line-height: 1.25;
-}
-.mc-all {
-  flex-shrink: 0;
-  font-size: 20rpx;
-  color: #909399;
-  line-height: 1.2;
-  white-space: nowrap;
-  font-weight: 400;
-}
+.mc-title { flex: 1; min-width: 0; font-size: 24rpx; color: #303133; font-weight: 600; line-height: 1.25; }
+.mc-all { flex-shrink: 0; font-size: 20rpx; color: #909399; line-height: 1.2; white-space: nowrap; font-weight: 400; }
+.mc-mid { margin-top: 12rpx; flex: 1 1 auto; display: flex; flex-direction: row; align-items: baseline; flex-wrap: wrap; }
+.mc-count { font-size: 48rpx; font-weight: 700; color: #1c1c28; line-height: 1.1; }
+.mc-unit { font-size: 22rpx; color: #606266; margin-left: 6rpx; font-weight: 500; }
+.mc-compare { margin-top: auto; padding-top: 10rpx; display: flex; flex-direction: row; align-items: center; flex-wrap: wrap; gap: 4rpx 6rpx; }
+.mc-cmp-label { font-size: 20rpx; color: #a8abb2; line-height: 1.3; }
+.mc-cmp-val { font-size: 22rpx; font-weight: 500; color: #67c23a; line-height: 1.3; }
+.mc-cmp-val.cmp-down { color: #f56c6c; }
+/* 快捷功能 */
 .quick-card {
   background: #fff;
   border-radius: 20rpx;
@@ -535,48 +633,23 @@ onPullDownRefresh(() => {
   border: 1rpx solid rgba(28, 28, 40, 0.04);
   box-sizing: border-box;
 }
-.quick-title {
-  display: block;
-  font-size: 28rpx;
-  font-weight: 600;
-  color: #1c1c28;
-  margin-bottom: 20rpx;
-}
+.quick-title { display: block; font-size: 28rpx; font-weight: 600; color: #1c1c28; margin-bottom: 20rpx; }
 .quick-row {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   align-items: flex-start;
   justify-content: flex-start;
-  gap: 24rpx 32rpx;
+  gap: 24rpx 0;
   width: 100%;
 }
 .quick-item {
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-width: 0;
+  width: 25%;
   padding: 8rpx 4rpx;
-  margin: -8rpx 0;
   box-sizing: border-box;
-}
-.quick-ico-wrap {
-  width: 112rpx;
-  height: 112rpx;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f2f3f5;
-  box-shadow: 0 4rpx 14rpx rgba(28, 28, 40, 0.08);
-  box-sizing: border-box;
-}
-.quick-ico {
-  width: 56rpx;
-  height: 56rpx;
-}
-.quick-hover {
-  opacity: 0.85;
 }
 .quick-circle {
   width: 112rpx;
@@ -585,67 +658,16 @@ onPullDownRefresh(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 8rpx 24rpx rgba(255, 149, 0, 0.35);
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.18);
 }
-.quick-circle.fox {
-  background: linear-gradient(145deg, #ff9f43 0%, #ff6b35 100%);
-}
-.fox-emo {
-  font-size: 56rpx;
-  line-height: 1;
-}
-.quick-label {
-  margin-top: 12rpx;
-  font-size: 24rpx;
-  color: #606266;
-}
-.mc-mid {
-  margin-top: 12rpx;
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: row;
-  align-items: baseline;
-  flex-wrap: wrap;
-}
-.mc-count {
-  font-size: 48rpx;
-  font-weight: 700;
-  color: #1c1c28;
-  line-height: 1.1;
-}
-.mc-unit {
-  font-size: 22rpx;
-  color: #606266;
-  margin-left: 6rpx;
-  font-weight: 500;
-}
-.mc-compare {
-  margin-top: auto;
-  padding-top: 10rpx;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 4rpx 6rpx;
-}
-.mc-cmp-label {
-  font-size: 20rpx;
-  color: #a8abb2;
-  line-height: 1.3;
-}
-.mc-cmp-val {
-  font-size: 22rpx;
-  font-weight: 500;
-  color: #67c23a;
-  line-height: 1.3;
-}
-.mc-cmp-val.cmp-down {
-  color: #f56c6c;
-}
-.tappable {
-  cursor: pointer;
-}
-.metric-hover {
-  opacity: 0.94;
-}
+.quick-circle.fox { background: linear-gradient(145deg, #ff9f43 0%, #ff6b35 100%); box-shadow: 0 8rpx 24rpx rgba(255, 149, 0, 0.35); }
+.quick-circle.shop { background: linear-gradient(145deg, #43d8a4 0%, #0dbf7e 100%); box-shadow: 0 8rpx 24rpx rgba(13, 191, 126, 0.32); }
+.quick-circle.team { background: linear-gradient(145deg, #4da3ff 0%, #2d6cdf 100%); box-shadow: 0 8rpx 24rpx rgba(45, 108, 223, 0.32); }
+.quick-circle.chart { background: linear-gradient(145deg, #bc6aff 0%, #8e44ad 100%); box-shadow: 0 8rpx 24rpx rgba(142, 68, 173, 0.32); }
+.quick-emo { font-size: 52rpx; line-height: 1; }
+.quick-hover { opacity: 0.85; transform: scale(0.97); }
+.quick-label { margin-top: 12rpx; font-size: 24rpx; color: #606266; }
+/* 通用 */
+.tappable { cursor: pointer; }
+.metric-hover { opacity: 0.94; }
 </style>
