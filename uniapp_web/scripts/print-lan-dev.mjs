@@ -49,8 +49,8 @@ console.log("       否则本机没有进程监听 5173，浏览器会 ERR_CONNE
 console.log("       启动后请以终端里 [H5] External / Vite「Network」行为准打开页面。");
 console.log("H5 访问（手机浏览器 / 内嵌 WebView 调试）:");
 console.log(`  ${`http://${host}:${port}/#/pages/index/index`}`);
-console.log("业务 API（已与项目内 uni.request 基址对齐）:");
-console.log(`  ${apiBase}`);
+console.log("业务 API：小程序/App 基址多为 " + apiBase + "；H5 开发时 uni.request 走当前页.origin（5173）经 Vite 代理。");
+console.log(`  直连参考（PC faster-move-web）: ${apiBase}`);
 console.log("微信小程序：");
 console.log("  npm run dev:mp-weixin（监听源码变更自动重新编译；需在开发者工具勾选「不校验合法域名」以访问内网 API）");
 console.log("App：");
