@@ -25,7 +25,10 @@
       "style": {
         "navigationBarTitleText": "门店管理",
         "navigationStyle": "custom",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#ffffff",
+        "mp-weixin": {
+          "disableScroll": true
+        }
       }
     },
     {
@@ -33,7 +36,10 @@
       "style": {
         "navigationBarTitleText": "微信推送-经营日报推送",
         "navigationStyle": "custom",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#ffffff",
+        "mp-weixin": {
+          "disableScroll": true
+        }
       }
     },
     {

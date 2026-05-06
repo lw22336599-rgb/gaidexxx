@@ -7,10 +7,24 @@
     <web-view class="wv" :src="embedUrl" @load="onWvLoad" />
   </view>
   <!-- #endif -->
-  <!-- #ifndef H5 -->
-  <view class="shell pad">
-    <text class="tip">内嵌 PC 后台仅支持 H5。请在浏览器中打开移动端 H5。</text>
+
+  <!-- #ifdef MP-WEIXIN || APP-PLUS -->
+  <view class="shell shell-native">
+    <view class="toolbar">
+      <text class="title">{{ title }}</text>
+    </view>
+    <web-view class="wv-native" :src="embedUrl" @load="onWvLoad" />
   </view>
+  <!-- #endif -->
+
+  <!-- #ifndef H5 -->
+  <!-- #ifndef MP-WEIXIN -->
+  <!-- #ifndef APP-PLUS -->
+  <view class="shell pad">
+    <text class="tip">当前平台暂不支持内嵌 PC 后台，请使用微信 / App 或浏览器 H5。</text>
+  </view>
+  <!-- #endif -->
+  <!-- #endif -->
   <!-- #endif -->
 </template>
 
@@ -158,6 +172,11 @@ onBeforeUnmount(() => {
   box-sizing: border-box;
   background: #fffdf5;
 }
+.shell-native {
+  /* 小程序 / App：web-view 占满标题栏下方区域，底部为自定义 tab 预留 */
+  height: 100vh;
+  padding-bottom: calc(120rpx + env(safe-area-inset-bottom, 0px));
+}
 .toolbar {
   flex-shrink: 0;
   display: flex;
@@ -183,6 +202,11 @@ onBeforeUnmount(() => {
   flex: 1;
   width: 100%;
   min-height: 0;
+}
+.wv-native {
+  flex: 1;
+  width: 100%;
+  min-height: 400rpx;
 }
 .pad {
   padding: 40rpx 32rpx;
